@@ -32,15 +32,23 @@ namespace ProjectBS.Combat
 
             public class Buff
             {
-                public int ID = 0;
+                public int effectID = 0;
                 public int remainingTime = 1;
                 public int stackCount = 1;
+            }
+
+            public class StatusAdder
+            {
+                public string statusType = "HP";
+                public string valueString = "0";
+                public Buff parentBuff = null;
             }
 
             public string name = "";
             public UnityEngine.Sprite sprite = null;
             public Camp camp = Camp.Player;
-            public int rawHP = 100;
+            public int HP = 100;
+            public int rawMaxHP = 100;
             public int rawSP = 100;
             public int rawAttack = 10;
             public int rawDefence = 10;
@@ -52,30 +60,36 @@ namespace ProjectBS.Combat
             public string skills = "";
             public string ai = "";
             public List<Buff> buffs = new List<Buff>();
+            public List<StatusAdder> statusAdders = new List<StatusAdder>();
 
             public int GetHP()
             {
+                return -1;
+            }
 
+            public int GetMaxHP()
+            {
+                return -1;
             }
 
             public int GetSP()
             {
-
+                return -1;
             }
 
             public int GetAttack()
             {
-
+                return -1;
             }
 
             public int GetDefence()
             {
-
+                return -1;
             }
 
             public int GetSpeed()
             {
-
+                return -1;
             }
         }
 
@@ -94,8 +108,9 @@ namespace ProjectBS.Combat
                 rawAttack = boss.Attack,
                 camp = CombatUnit.Camp.Boss,
                 rawDefence = boss.Defence,
-                rawHP = boss.HP,
-                name = boss.Name,
+                rawMaxHP = boss.HP,
+                HP = boss.HP,
+                name = boss.NameContextID.ToString(),
                 skills = "",
                 rawSP = boss.SP,
                 rawSpeed = boss.Speed,
@@ -104,7 +119,8 @@ namespace ProjectBS.Combat
                 foot = null,
                 hand = null,
                 head = null,
-                buffs = new List<CombatUnit.Buff>()
+                buffs = new List<CombatUnit.Buff>(),
+                statusAdders = new List<CombatUnit.StatusAdder>()
             });
         }
 
@@ -116,7 +132,8 @@ namespace ProjectBS.Combat
                 rawAttack = character.Attack,
                 camp = CombatUnit.Camp.Player,
                 rawDefence = character.Defence,
-                rawHP = character.HP,
+                rawMaxHP = character.HP,
+                HP = character.HP,
                 name = GameDataLoader.Instance.GetCharacterName(character.CharacterNameID),
                 skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SKillSlot_2, character.SKillSlot_3),
                 rawSP = character.SP,
@@ -126,7 +143,8 @@ namespace ProjectBS.Combat
                 foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
                 hand = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Hand),
                 head = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Head),
-                buffs = new List<CombatUnit.Buff>()
+                buffs = new List<CombatUnit.Buff>(),
+                statusAdders = new List<CombatUnit.StatusAdder>()
             });
         }
     }
