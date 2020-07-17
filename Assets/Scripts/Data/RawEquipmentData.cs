@@ -11,7 +11,7 @@ namespace ProjectBS.Data
         public int MinSkillEffectCount { get; private set; }
         public int MaxSkillEffectCount { get; private set; }
         public string EquipmentType { get; private set; }
-        public string Description { get; private set; }
+        public int DescriptionContextID { get; private set; }
         public string EquipmentUpgradeItemIDs { get; private set; }
     }
 }
