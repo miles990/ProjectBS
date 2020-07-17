@@ -26,7 +26,7 @@ namespace ProjectBS
 
         public string GetCharacterName(int ID)
         {
-            return GameDataManager.GetGameData<CharacterNamePoolData>(ID).Name;
+            return GameDataManager.GetGameData<CharacterNamePoolData>(ID).NameContextID.ToString();
         }
 
         public Sprite GetSprite(int ID)
