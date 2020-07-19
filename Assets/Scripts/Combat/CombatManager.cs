@@ -22,87 +22,24 @@ namespace ProjectBS.Combat
 
         private CombatManager() { } 
 
-        public class CombatUnit
-        {
-            public enum Camp
-            {
-                Player,
-                Boss
-            }
-
-            public class Buff
-            {
-                public int effectID = 0;
-                public int remainingTime = 1;
-                public int stackCount = 1;
-            }
-
-            public class StatusAdder
-            {
-                public string statusType = "HP";
-                public string valueString = "0";
-                public Buff parentBuff = null;
-            }
-
-            public string name = "";
-            public UnityEngine.Sprite sprite = null;
-            public Camp camp = Camp.Player;
-            public int HP = 100;
-            public int rawMaxHP = 100;
-            public int rawSP = 100;
-            public int rawAttack = 10;
-            public int rawDefence = 10;
-            public int rawSpeed = 1;
-            public OwningEquipmentData head = null;
-            public OwningEquipmentData body = null;
-            public OwningEquipmentData hand = null;
-            public OwningEquipmentData foot = null;
-            public string skills = "";
-            public string ai = "";
-            public List<Buff> buffs = new List<Buff>();
-            public List<StatusAdder> statusAdders = new List<StatusAdder>();
-
-            public int GetHP()
-            {
-                return -1;
-            }
-
-            public int GetMaxHP()
-            {
-                return -1;
-            }
-
-            public int GetSP()
-            {
-                return -1;
-            }
-
-            public int GetAttack()
-            {
-                return -1;
-            }
-
-            public int GetDefence()
-            {
-                return -1;
-            }
-
-            public int GetSpeed()
-            {
-                return -1;
-            }
-        }
-
-        private List<CombatUnit> m_units = new List<CombatUnit>();
+        private List<CombatUnit> m_allUnits = new List<CombatUnit>();
+        private List<CombatUnit> m_battlingUnits = null;
 
         public void StartCombat(PartyData player, BossData boss)
         {
-            m_units.Clear();
+            m_allUnits.Clear();
+            InitBattleUnits(player, boss);
+            SortUnitsBySpeed();
+            StartProcessEquipmentEffect();
+        }
+
+        private void InitBattleUnits(PartyData player, BossData boss)
+        {
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_0));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_2));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
-            m_units.Add(new CombatUnit
+            m_allUnits.Add(new CombatUnit
             {
                 ai = boss.AI,
                 rawAttack = boss.Attack,
@@ -126,7 +63,7 @@ namespace ProjectBS.Combat
 
         private void AddUnit(OwningCharacterData character)
         {
-            m_units.Add(new CombatUnit
+            m_allUnits.Add(new CombatUnit
             {
                 ai = "",
                 rawAttack = character.Attack,
@@ -146,6 +83,20 @@ namespace ProjectBS.Combat
                 buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             });
+        }
+
+        private void SortUnitsBySpeed()
+        {
+            m_battlingUnits = new List<CombatUnit>(m_allUnits);
+            m_battlingUnits.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
+        }
+
+        private void StartProcessEquipmentEffect()
+        {
+            for(int i = 0; i < m_allUnits.Count; i++)
+            {
+
+            }
         }
     }
 }
