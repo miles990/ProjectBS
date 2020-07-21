@@ -30,7 +30,7 @@ namespace ProjectBS.Combat
         public Camp camp = Camp.Player;
         public int HP = 100;
         public int rawMaxHP = 100;
-        public int rawSP = 100;
+        public int SP = 100;
         public int rawAttack = 10;
         public int rawDefence = 10;
         public int rawSpeed = 1;
@@ -43,17 +43,7 @@ namespace ProjectBS.Combat
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
 
-        public int GetHP()
-        {
-            return -1;
-        }
-
         public int GetMaxHP()
-        {
-            return -1;
-        }
-
-        public int GetSP()
         {
             return -1;
         }
