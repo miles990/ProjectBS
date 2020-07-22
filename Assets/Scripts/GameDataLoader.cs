@@ -34,9 +34,9 @@ namespace ProjectBS
             return Resources.Load<Sprite>(GameDataManager.GetGameData<AppearanceData>(ID).SpriteAssetPath);
         }
 
-        public SkillEffectData GetSkillEffect(int ID)
+        public SkillEffectData GetSkillEffect(string ID)
         {
-            return GameDataManager.GetGameData<SkillEffectData>(ID);
+            return GameDataManager.GetGameData<SkillEffectData>(int.Parse(ID));
         }
     }
 }

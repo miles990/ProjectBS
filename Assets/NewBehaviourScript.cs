@@ -5,6 +5,7 @@ using UnityEngine;
 public class NewBehaviourScript : MonoBehaviour
 {
     public float t;
+    public TextAsset textAsset;
 
     // Start is called before the first frame update
     void Start()
@@ -17,5 +18,7 @@ public class NewBehaviourScript : MonoBehaviour
                 formula = "1.4*1.3+1.2"
             }
             );
+
+        Debug.Log(textAsset.text.RemoveBlankCharacters());
     }
 }

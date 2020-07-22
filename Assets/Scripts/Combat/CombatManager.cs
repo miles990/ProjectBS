@@ -30,7 +30,6 @@ namespace ProjectBS.Combat
             m_allUnits.Clear();
             InitBattleUnits(player, boss);
             SortUnitsBySpeed();
-            StartProcessEquipmentEffect();
         }
 
         private void InitBattleUnits(PartyData player, BossData boss)
@@ -91,38 +90,6 @@ namespace ProjectBS.Combat
             m_battlingUnits.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
         }
 
-        private int m_currentUnitIndex = 0;
-        private int m_currentEquipmentIndex = 0;
-        private int m_currentEquipmentEffectIndex = 0;
-        private void StartProcessEquipmentEffect()
-        {
-            CombatUnit _currnetUnit = m_allUnits[m_currentUnitIndex];
-            OwningEquipmentData _currentEqiupment = null;
-            switch(m_currentEquipmentIndex)
-            {
-                case 0:
-                    _currentEqiupment = _currnetUnit.head;
-                    break;
-                case 1:
-                    _currentEqiupment = _currnetUnit.body;
-                    break;
-                case 2:
-                    _currentEqiupment = _currnetUnit.hand;
-                    break;
-                case 3:
-                    _currentEqiupment = _currnetUnit.foot;
-                    break;
-            }
-            string[] _effectIDs = _currentEqiupment.EffectIDs.Split(',');
-            string _rawEffectString = GameDataLoader.Instance.GetSkillEffect(int.Parse(_effectIDs[m_currentEquipmentEffectIndex])).Command;
 
-            new EffectProcesser(_rawEffectString).Start(new EffectProcesser.ProcessData
-            {
-                caster = m_allUnits[m_currentUnitIndex],
-                target = m_allUnits[m_currentUnitIndex],
-                onEnded = null,
-                timing = EffectProcesser.TriggerTiming.OnBattleStarted
-            });
-        }
     }
 }
