@@ -2,6 +2,8 @@
 using KahaGameCore.Common;
 using System;
 using System.Collections.Generic;
+using ProjectBS.Combat.EffectCommand;
+using UnityEngine;
 
 namespace ProjectBS.Combat
 {
@@ -19,6 +21,7 @@ namespace ProjectBS.Combat
             OnAttacked,
             OnDied,
             OnStartToEndAction,
+            OnStartToEndTurn,
             OnBattleEnded,
             OnBuffGained,
             OnStartToLoseBuff,
@@ -49,15 +52,30 @@ namespace ProjectBS.Combat
 
         public EffectProcesser(string rawCommandString)
         {
+            if (string.IsNullOrEmpty(rawCommandString))
+                return;
+
+            rawCommandString = rawCommandString.RemoveBlankCharacters();
+
             string[] _timings = Enum.GetNames(typeof(TriggerTiming));
             for (int _timingStringIndex = 0; _timingStringIndex < _timings.Length; _timingStringIndex++)
             {
                 string _rawCommandString = DeserializeCommandRawDatas(_timings[_timingStringIndex], rawCommandString);
+
+                if (_rawCommandString == null)
+                    continue;
+                
                 string[] _commandStrings = _rawCommandString.Split(';');
                 List<EffectData> _effects = new List<EffectData>();
                 for(int _commandStringIndex = 0; _commandStringIndex < _commandStrings.Length; _commandStringIndex++)
                 {
-                    _effects.Add(DeserializeCommands(_commandStrings[_commandStringIndex]));
+                    EffectData _effectData = DeserializeCommands(_commandStrings[_commandStringIndex]);
+                    if(_effectData == null)
+                    {
+                        continue;
+                    }
+
+                    _effects.Add(_effectData);
                 }
                 m_timingToEffectProcesser.Add(_timings[_timingStringIndex], _effects);
             }
@@ -174,7 +192,7 @@ namespace ProjectBS.Combat
 
         private EffectCommandBase GetEffectCommand(string command)
         {
-            switch (command)
+            switch (command.Trim())
             {
                 case "SetStatus":
                     {
@@ -183,6 +201,10 @@ namespace ProjectBS.Combat
                 case "AddStatus":
                     {
                         return null;
+                    }
+                case "DealDamage":
+                    {
+                        return new EffectCommand_DealDamage();
                     }
                 case "AddDamage":
                     {
@@ -205,6 +227,14 @@ namespace ProjectBS.Combat
                         return null;
                     }
                 case "BeginIf":
+                    {
+                        return null;
+                    }
+                case "ElseIf":
+                    {
+                        return null;
+                    }
+                case "Else":
                     {
                         return null;
                     }

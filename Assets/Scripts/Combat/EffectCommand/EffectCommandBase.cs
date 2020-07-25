@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectBS.Combat
+namespace ProjectBS.Combat.EffectCommand
 {
     public abstract class EffectCommandBase
     {

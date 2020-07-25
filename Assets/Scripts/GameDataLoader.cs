@@ -21,7 +21,7 @@ namespace ProjectBS
 
         private GameDataLoader() 
         {
-            // load data...
+            GameDataManager.LoadGameData<SkillData>("SkillData");
         }
 
         public string GetCharacterName(int ID)
@@ -32,6 +32,11 @@ namespace ProjectBS
         public Sprite GetSprite(int ID)
         {
             return Resources.Load<Sprite>(GameDataManager.GetGameData<AppearanceData>(ID).SpriteAssetPath);
+        }
+
+        public SkillData GetSkill(string ID)
+        {
+            return GameDataManager.GetGameData<SkillData>(int.Parse(ID));
         }
 
         public SkillEffectData GetSkillEffect(string ID)

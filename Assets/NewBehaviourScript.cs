@@ -4,21 +4,10 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    public float t;
-    public TextAsset textAsset;
-
     // Start is called before the first frame update
     void Start()
     {
-        t = ProjectBS.Combat.CombatUtility.Calculate(
-            new ProjectBS.Combat.CombatUtility.CalculateData
-            {
-                caster = null,
-                target = null,
-                formula = "1.4*1.3+1.2"
-            }
-            );
-
-        Debug.Log(textAsset.text.RemoveBlankCharacters());
+        ProjectBS.PlayerManager.Instance.Init();
+        ProjectBS.Combat.CombatManager.Instance.StartCombat(ProjectBS.PlayerManager.Instance.Player.Party, new ProjectBS.Data.BossData());
     }
 }

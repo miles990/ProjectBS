@@ -1,0 +1,3 @@
+[{"ID":0,"NameContextID":0,"DescriptionContextID":1,"Command":"OnActived\n{
+     DealDamage(SelectOpponent(1), Self.Attack * 1.3);
+}","SkillScrollItemID":1,"SkillScrollItemRequireAmount":5}]

@@ -35,6 +35,7 @@ namespace ProjectBS.Combat
         public int rawAttack = 10;
         public int rawDefence = 10;
         public int rawSpeed = 1;
+        public int hatred = 0;
         public OwningEquipmentData head = null;
         public OwningEquipmentData body = null;
         public OwningEquipmentData hand = null;
@@ -63,6 +64,5 @@ namespace ProjectBS.Combat
         {
             return -1;
         }
-
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-namespace ProjectBS.Combat
+namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_SetStatus : EffectCommandBase
     {
