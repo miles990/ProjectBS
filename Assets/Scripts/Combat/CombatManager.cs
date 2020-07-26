@@ -2,6 +2,7 @@
 using ProjectBS.Data;
 using System.Collections.Generic;
 using System;
+using ProjectBS.UI;
 
 namespace ProjectBS.Combat
 {
@@ -28,13 +29,18 @@ namespace ProjectBS.Combat
         private int m_currentTurn = 0;
         private int m_currentActionIndex = -1;
 
+        private CombatUnitEffectProcesser m_combatUnitEffectProcesserBuffer = null;
+
         public void StartCombat(PartyData player, BossData boss)
         {
             m_allUnits.Clear();
 
             InitBattleUnits(player, boss);
-            OnCombatInited();
+            GetPage<CombatUIView>().InitBattleUnits(m_allUnits);
+            GetPage<CombatUIView>().Show(this, true, OnCombatInited);
         }
+
+        //////////////////////////////////////////////////////////////////////////////
 
         private void InitBattleUnits(PartyData player, BossData boss)
         {
@@ -76,6 +82,7 @@ namespace ProjectBS.Combat
                 rawMaxHP = character.HP,
                 HP = character.HP,
                 //name = GameDataLoader.Instance.GetCharacterName(character.CharacterNameID),
+                name = "character " + character.UDID,
                 skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SKillSlot_2, character.SKillSlot_3),
                 SP = character.SP,
                 rawSpeed = character.Speed,
@@ -93,7 +100,9 @@ namespace ProjectBS.Combat
         private void OnCombatInited()
         {
             SortUnitsBySpeed();
-            new CombatUnitEffectProcesser(m_battlingUnits).Start(
+
+            m_combatUnitEffectProcesserBuffer = new CombatUnitEffectProcesser(m_battlingUnits);
+            m_combatUnitEffectProcesserBuffer.Start(
                 new CombatUnitEffectProcesser.ProcesserData
                 {
                      caster = null,
@@ -118,7 +127,7 @@ namespace ProjectBS.Combat
         private void GoNextTurn()
         {
             m_currentTurn++;
-            new CombatUnitEffectProcesser(m_battlingUnits).Start(
+            m_combatUnitEffectProcesserBuffer.Start(
                 new CombatUnitEffectProcesser.ProcesserData
                 {
                     caster = null,
@@ -142,7 +151,7 @@ namespace ProjectBS.Combat
                 EndTurn();
                 return;
             }
-            new CombatUnitEffectProcesser(m_battlingUnits).Start(
+            m_combatUnitEffectProcesserBuffer.Start(
                 new CombatUnitEffectProcesser.ProcesserData
                 {
                     caster = null,
@@ -154,15 +163,26 @@ namespace ProjectBS.Combat
 
         private void OnActionStartedEffectEnded()
         {
-            // enable UI, wait player input...
+            if(m_battlingUnits[m_currentActionIndex].camp == CombatUnit.Camp.Boss)
+            {
+                EndAction();
+                return;
+            }
 
-            // assume pleyer had selected a skill
-            SkillActiver.Active(m_battlingUnits[m_currentActionIndex], GameDataLoader.Instance.GetSkill("0"), null);
+            GetPage<CombatUIView>().OnSkillSelected += OnSkillSelected;
+            GetPage<CombatUIView>().RefreshCurrentSkillMenu(m_battlingUnits[m_currentActionIndex]);
+        }
+
+        private void OnSkillSelected(int skillIndex)
+        {
+            GetPage<CombatUIView>().OnSkillSelected -= OnSkillSelected;
+            string[] _skills = m_battlingUnits[m_currentActionIndex].skills.Split(',');
+            SkillActiver.Active(m_battlingUnits[m_currentActionIndex], GameDataLoader.Instance.GetSkill(_skills[skillIndex]), EndAction);
         }
 
         private void EndAction()
         {
-            new CombatUnitEffectProcesser(m_battlingUnits).Start(
+            m_combatUnitEffectProcesserBuffer.Start(
                 new CombatUnitEffectProcesser.ProcesserData
                 {
                     caster = null,
@@ -174,7 +194,7 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
-            new CombatUnitEffectProcesser(m_battlingUnits).Start(
+            m_combatUnitEffectProcesserBuffer.Start(
                 new CombatUnitEffectProcesser.ProcesserData
                 {
                     caster = null,

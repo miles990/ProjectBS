@@ -1,6 +1,5 @@
 ﻿using ProjectBS.Data;
 using System;
-using UnityEngine;
 
 namespace ProjectBS.Combat
 {
@@ -8,7 +7,6 @@ namespace ProjectBS.Combat
     {
         public static void Active(CombatUnit attacker, SkillData skill, Action onAttackEnded)
         {
-            Debug.Log(skill.Command.RemoveBlankCharacters());
             new EffectProcesser(skill.Command).Start(
                 new EffectProcesser.ProcessData
                 {
