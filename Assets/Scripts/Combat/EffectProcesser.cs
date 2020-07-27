@@ -13,16 +13,22 @@ namespace ProjectBS.Combat
         {
             OnBattleStarted,
             OnTurnStarted,
-            OnActionStarted,
-            OnSelfActionStarted,
-            OStartToAttack,
-            OnStartToDealDamage,
-            OnStartToTakeDamage,
-            OnDamageTaken,
-            OnAttacked,
-            OnDied,
-            OnStartToEndAction,
-            OnStartToEndSelfAction,
+            OnActionStarted_Any,
+            OnActionStarted_Self,
+            OStartToAttack_Any,
+            OStartToAttack_Self,
+            OnStartToDealDamage_Any,
+            OnStartToDealDamage_Self,
+            OnStartToTakeDamage_Any,
+            OnStartToTakeDamage_Self,
+            OnDamageTaken_Any,
+            OnDamageTaken_Self,
+            OnAttacked_Any,
+            OnAttacked_Self,
+            OnDied_Any,
+            OnDied_Self,
+            OnStartToEndAction_Any,
+            OnStartToEndAction_Self,
             OnStartToEndTurn,
             OnBattleEnded,
             OnBuffGained,
@@ -36,6 +42,7 @@ namespace ProjectBS.Combat
             public TriggerTiming timing = TriggerTiming.OnActived;
             public CombatUnit caster = null;
             public CombatUnit target = null;
+            public CombatUnitEffectProcesser processer = null;
             public Action onEnded = null;
         }
 
@@ -100,6 +107,7 @@ namespace ProjectBS.Combat
                 {
                     _effects[i].command.caster = processData.caster;
                     _effects[i].command.target = processData.target;
+                    _effects[i].command.processer = processData.processer;
                 }
 
                 new Processer<EffectData>(_effects.ToArray()).Start(processData.onEnded);

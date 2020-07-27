@@ -26,7 +26,7 @@ namespace ProjectBS.Combat
         private int m_currentSkillIndex = -1;
         private int m_currentBuffIndex = -1;
 
-        public CombatUnitEffectProcesser(ref List<CombatUnit> units)
+        public CombatUnitEffectProcesser(List<CombatUnit> units)
         {
             m_units = units;
         }
@@ -47,8 +47,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            if(m_data.timing == EffectProcesser.TriggerTiming.OnSelfActionStarted
-                || m_data.timing == EffectProcesser.TriggerTiming.OnStartToEndSelfAction)
+            if(m_data.timing.ToString().Contains("_Self"))
             {
                 if(m_data.caster == null || m_units[m_currentUnitIndex] != m_data.caster)
                 {
@@ -140,6 +139,7 @@ namespace ProjectBS.Combat
                     caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                     target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                     timing = m_data.timing,
+                    processer = this,
                     onEnded = GoNextEquipmentEffect
                 });
         }
@@ -167,6 +167,7 @@ namespace ProjectBS.Combat
                     caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                     target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                     timing = m_data.timing,
+                    processer = this,
                     onEnded = GoNextOwingSkill
                 });
         }
@@ -188,6 +189,7 @@ namespace ProjectBS.Combat
                     caster = _currentBuff.from,
                     target = m_units[m_currentUnitIndex],
                     timing = m_data.timing,
+                    processer = this,
                     onEnded = GoNextBuff
                 });
         }

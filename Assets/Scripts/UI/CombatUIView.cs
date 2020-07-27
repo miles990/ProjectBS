@@ -17,7 +17,7 @@ namespace ProjectBS.UI
 
         public override bool IsShowing => throw new NotImplementedException();
 
-        public event Action<int> OnSkillSelected = null;
+        public event Action<Data.SkillData> OnSkillSelected = null;
 
         public class SelectTargetData
         {
@@ -27,6 +27,8 @@ namespace ProjectBS.UI
             public bool random = false;
             public Action<List<CombatUnit>> onSelected = null;
         }
+
+        private List<Data.SkillData> m_currentShowingSkills = null;
 
         // 0~3:Player 4~8:Boss
         private Dictionary<int, CombatUnit> m_indexToCombatUnit = new Dictionary<int, CombatUnit>();
@@ -74,15 +76,15 @@ namespace ProjectBS.UI
             }
         }
 
-        public void RefreshCurrentSkillMenu(CombatUnit actor)
+        public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)
         {
             Debug.Log("------------------------------");
-            Debug.Log("Current Actor:" + actor.name);
 
-            string[] _skillIDs = actor.skills.Split(',');
-            for(int i = 0; i < _skillIDs.Length; i++)
+            m_currentShowingSkills = datas;
+
+            for (int i = 0; i < m_currentShowingSkills.Count; i++)
             {
-                Debug.LogFormat("Skill {0}: ContextID={1}", i, GameDataLoader.Instance.GetSkill(_skillIDs[i]).NameContextID);
+                Debug.LogFormat("Skill {0}: ContextID={1}", i, m_currentShowingSkills[i].NameContextID);
             }
         }
 
@@ -100,7 +102,7 @@ namespace ProjectBS.UI
         public void Button_SelectSkill(int index)
         {
             Debug.Log("Select Skill Index " + index);
-            OnSkillSelected?.Invoke(index);
+            OnSkillSelected?.Invoke(m_currentShowingSkills[index]);
         }
 
         public void Button_SelectCharacter(int index)

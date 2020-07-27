@@ -2,7 +2,6 @@
 using ProjectBS.Data;
 using System.Collections.Generic;
 using System;
-using ProjectBS.UI;
 
 namespace ProjectBS.Combat
 {
@@ -26,40 +25,36 @@ namespace ProjectBS.Combat
         private List<CombatUnit> m_units = new List<CombatUnit>();
 
         private int m_currentTurn = 0;
-        private int m_currentActionIndex = -1;
 
-        private CombatUnitEffectProcesser m_combatUnitEffectProcesserBuffer = null;
+        private CombatUnitEffectProcesser m_processer = null;
+        private List<CombatUnitAction> m_unitActions = null;
 
         public void StartCombat(PartyData player, BossData boss)
         {
             m_units.Clear();
-
-            InitBattleUnits(player, boss);
-            GetPage<CombatUIView>().InitBattleUnits(m_units);
-            GetPage<CombatUIView>().Show(this, true, OnCombatInited);
-        }
-
-        //////////////////////////////////////////////////////////////////////////////
-
-        private void InitBattleUnits(PartyData player, BossData boss)
-        {
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_0));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_2));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
             m_units.Add(new CombatUnit
             {
-                ai = boss.AI,
+                //ai = boss.AI,
+                ai = "Boss AI here",
                 rawAttack = boss.Attack,
                 camp = CombatUnit.Camp.Boss,
-                rawDefence = boss.Defence,
-                rawMaxHP = boss.HP,
-                HP = boss.HP,
+                //rawDefence = boss.Defence,
+                rawDefence = 100,
+                //rawMaxHP = boss.HP,
+                rawMaxHP = 10000,
+                //HP = boss.HP,
+                HP = 10000,
                 //name = boss.NameContextID.ToString(),
                 name = "Boss",
                 skills = "",
-                SP = boss.SP,
-                rawSpeed = boss.Speed,
+                //SP = boss.SP,
+                SP = 100,
+                //rawSpeed = boss.Speed,
+                rawSpeed = 100,
                 hatred = 1,
                 //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
                 body = null,
@@ -69,6 +64,9 @@ namespace ProjectBS.Combat
                 buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             });
+
+            GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
+            GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
         }
 
         private void AddUnit(OwningCharacterData character)
@@ -97,142 +95,76 @@ namespace ProjectBS.Combat
             });
         }
 
-        private void OnCombatInited()
-        {
-            m_combatUnitEffectProcesserBuffer = new CombatUnitEffectProcesser(ref m_units);
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                     caster = null,
-                     target = null,
-                     timing = EffectProcesser.TriggerTiming.OnBattleStarted,
-                     onEnded = OnBattleStartedEffectEnded
-                });
-        }
-
-        private void OnBattleStartedEffectEnded()
+        private void StartBattle()
         {
             m_currentTurn = 0;
-            GoNextTurn();
+
+            m_processer = new CombatUnitEffectProcesser(m_units);
+            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnBattleStarted,
+                onEnded = StartNewTurn
+            });
         }
 
-        private void GoNextTurn()
+        private void StartNewTurn()
         {
-            m_units.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
-
             m_currentTurn++;
-            UnityEngine.Debug.Log("------------------------------");
-            UnityEngine.Debug.Log("New Turn Start: Turn " + m_currentTurn);
-            UnityEngine.Debug.Log("------------------------------");
+            UnityEngine.Debug.Log("Start New Turn:" + m_currentTurn);
 
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = null,
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnTurnStarted,
-                    onEnded = OnTurnStartedEffectEnded
-                });
+            m_units.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
+            m_unitActions = new List<CombatUnitAction>();
+
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                m_unitActions.Add(new CombatUnitAction(m_units[i], m_processer));
+            }
+
+            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnTurnStarted,
+                onEnded = GoNextAction
+            });
         }
 
-        private void OnTurnStartedEffectEnded()
+        private void GoNextAction()
         {
-            m_currentActionIndex = -1;
-            GoNextUnitAction();
+            if(m_unitActions.Count <= 0)
+            {
+                return;
+            }
+
+            CombatUnitAction _currentAction = m_unitActions[0];
+            m_unitActions.RemoveAt(0);
+
+            _currentAction.Start(OnActionEnded);
         }
 
-        private void GoNextUnitAction()
+        private void OnActionEnded()
         {
-            m_currentActionIndex++;
-            if(m_currentActionIndex >= m_units.Count)
+            if(m_unitActions.Count > 0)
+            {
+                GoNextAction();
+            }
+            else
             {
                 EndTurn();
-                return;
             }
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = m_units[m_currentActionIndex],
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnSelfActionStarted,
-                    onEnded = OnSelfActionStartedEffectEnded
-                });
-        }
-
-        private void OnSelfActionStartedEffectEnded()
-        {
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = null,
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnActionStarted,
-                    onEnded = OnActionStartedEffectEnded
-                });
-        }
-
-        private void OnActionStartedEffectEnded()
-        {
-            if(m_units[m_currentActionIndex].camp == CombatUnit.Camp.Boss)
-            {
-                // FOR NOW
-                // should process AI here
-                UnityEngine.Debug.Log("Boss Turn, Skip Now");
-                EndAction();
-                return;
-            }
-
-            GetPage<CombatUIView>().OnSkillSelected += OnSkillSelected;
-            GetPage<CombatUIView>().RefreshCurrentSkillMenu(m_units[m_currentActionIndex]);
-        }
-
-        private void OnSkillSelected(int skillIndex)
-        {
-            GetPage<CombatUIView>().OnSkillSelected -= OnSkillSelected;
-            string[] _skills = m_units[m_currentActionIndex].skills.Split(',');
-            SkillActiver.Active(m_units[m_currentActionIndex], GameDataLoader.Instance.GetSkill(_skills[skillIndex]), EndAction);
-        }
-
-        private void EndAction()
-        {
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = m_units[m_currentActionIndex],
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnStartToEndSelfAction,
-                    onEnded = OnStartToEndSelfActionEffectEnded
-                });
-        }
-
-        private void OnStartToEndSelfActionEffectEnded()
-        {
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = null,
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnStartToEndAction,
-                    onEnded = GoNextUnitAction
-                });
         }
 
         private void EndTurn()
         {
-            m_combatUnitEffectProcesserBuffer.Start(
-                new CombatUnitEffectProcesser.ProcesserData
-                {
-                    caster = null,
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnStartToEndTurn,
-                    onEnded = OnStartToEndTurnEffectEnded
-                });
-        }
-
-        private void OnStartToEndTurnEffectEnded()
-        {
-            // some UI effect here...
-            GoNextTurn();
+            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnStartToEndTurn,
+                onEnded = StartNewTurn
+            });
         }
     }
 }
