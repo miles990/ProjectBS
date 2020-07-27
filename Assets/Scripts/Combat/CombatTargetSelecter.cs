@@ -49,7 +49,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.SameSide
+                            selectType = UI.CombatUIView.SelectType.SameSide,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -60,7 +61,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.Opponent
+                            selectType = UI.CombatUIView.SelectType.Opponent,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -71,7 +73,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.All
+                            selectType = UI.CombatUIView.SelectType.All,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -82,7 +85,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = -1,
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.SameSide
+                            selectType = UI.CombatUIView.SelectType.SameSide,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -93,7 +97,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = -1,
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.Opponent
+                            selectType = UI.CombatUIView.SelectType.Opponent,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -104,7 +109,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = -1,
                             random = false,
-                            selectType = UI.CombatUIView.SelectType.All
+                            selectType = UI.CombatUIView.SelectType.All,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -115,7 +121,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = true,
-                            selectType = UI.CombatUIView.SelectType.All
+                            selectType = UI.CombatUIView.SelectType.All,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -126,7 +133,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = true,
-                            selectType = UI.CombatUIView.SelectType.SameSide
+                            selectType = UI.CombatUIView.SelectType.SameSide,
+                            onSelected = data.onSelected
                         };
                         break;
                     }
@@ -137,7 +145,8 @@ namespace ProjectBS.Combat
                             attacker = data.attacker,
                             needCount = int.Parse(_targetSelection[1]),
                             random = true,
-                            selectType = UI.CombatUIView.SelectType.Opponent
+                            selectType = UI.CombatUIView.SelectType.Opponent,
+                            onSelected = data.onSelected
                         };
                         break;
                     }

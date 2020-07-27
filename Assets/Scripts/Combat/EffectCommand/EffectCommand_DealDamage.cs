@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
+using ProjectBS.Combat;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ProjectBS.Combat.EffectCommand
 {
@@ -9,12 +8,21 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
+            CombatTargetSelecter.Instance.StartSelect(
+                new CombatTargetSelecter.SelectTargetData
+                {
+                    attacker = caster,
+                    commandString = vars[0],
+                    onSelected = OnTargetSelected
+                });
+        }
 
-
-            // UI.EnableSelectSkillUI(Action<SkillData> OnSelected)
-            // UI.EnableSelectCharacter(int count, Action<List<Character>> OnSelected, bool random = false)
-
-
+        private void OnTargetSelected(List<CombatUnit> targets)
+        {
+            for(int i = 0; i < targets.Count; i++)
+            {
+                UnityEngine.Debug.Log("Selected:" + targets[i].name);
+            }
         }
     }
 }

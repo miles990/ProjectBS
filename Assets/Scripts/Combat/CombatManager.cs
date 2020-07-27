@@ -56,7 +56,8 @@ namespace ProjectBS.Combat
                 rawDefence = boss.Defence,
                 rawMaxHP = boss.HP,
                 HP = boss.HP,
-                name = boss.NameContextID.ToString(),
+                //name = boss.NameContextID.ToString(),
+                name = "Boss",
                 skills = "",
                 SP = boss.SP,
                 rawSpeed = boss.Speed,
@@ -165,6 +166,8 @@ namespace ProjectBS.Combat
         {
             if(m_battlingUnits[m_currentActionIndex].camp == CombatUnit.Camp.Boss)
             {
+                // FOR NOW
+                // should process AI here
                 EndAction();
                 return;
             }
