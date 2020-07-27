@@ -52,14 +52,14 @@ namespace ProjectBS.UI
 
             for(int i = 0; i < units.Count; i++)
             {
-                Debug.Log("Set Unit------------------------------");
+                Debug.Log("Set Unit UI------------------------------");
                 Debug.LogFormat("units[{0}].camp={1}", i, units[i].camp.ToString());
                 Debug.LogFormat("units[{0}].name={1}", i , units[i].name);
                 Debug.LogFormat("units[{0}].hp={1}", i, units[i].HP);
                 Debug.LogFormat("units[{0}].sp={1}", i, units[i].SP);
                 Debug.Log("------------------------------");
 
-                if(units[i].camp == CombatUnit.Camp.Player)
+                if (units[i].camp == CombatUnit.Camp.Player)
                 {
                     m_indexToCombatUnit.Add(_currentPlayerIndex, units[i]);
                     m_indexToEnableState.Add(_currentPlayerIndex, false);
@@ -99,6 +99,7 @@ namespace ProjectBS.UI
 
         public void Button_SelectSkill(int index)
         {
+            Debug.Log("Select Skill Index " + index);
             OnSkillSelected?.Invoke(index);
         }
 
@@ -124,7 +125,8 @@ namespace ProjectBS.UI
             {
                 EnableSelectBossButton(false);
                 EnableSelectPlayerButton(false);
-                m_currentSelectData.onSelected?.Invoke(m_currentTargets);   
+                m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+                m_currentSelectData = null;
             }
         }
 
@@ -208,6 +210,7 @@ namespace ProjectBS.UI
             }
 
             m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+            m_currentSelectData = null;
         }
 
         private void RandomSelect()
@@ -283,6 +286,7 @@ namespace ProjectBS.UI
             }
 
             m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+            m_currentSelectData = null;
         }
 
         private void WaitPlayerSelect()

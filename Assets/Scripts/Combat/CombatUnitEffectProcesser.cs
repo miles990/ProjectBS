@@ -26,9 +26,9 @@ namespace ProjectBS.Combat
         private int m_currentSkillIndex = -1;
         private int m_currentBuffIndex = -1;
 
-        public CombatUnitEffectProcesser(List<CombatUnit> units)
+        public CombatUnitEffectProcesser(ref List<CombatUnit> units)
         {
-            m_units = new List<CombatUnit>(units);
+            m_units = units;
         }
 
         public void Start(ProcesserData data)
@@ -45,6 +45,16 @@ namespace ProjectBS.Combat
             {
                 m_data.onEnded?.Invoke();
                 return;
+            }
+
+            if(m_data.timing == EffectProcesser.TriggerTiming.OnSelfActionStarted
+                || m_data.timing == EffectProcesser.TriggerTiming.OnStartToEndSelfAction)
+            {
+                if(m_data.caster == null || m_units[m_currentUnitIndex] != m_data.caster)
+                {
+                    GoNextUnit();
+                    return;
+                }
             }
 
             m_currentEquipment = -1;

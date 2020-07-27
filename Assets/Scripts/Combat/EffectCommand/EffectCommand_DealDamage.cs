@@ -6,8 +6,14 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_DealDamage : EffectCommandBase
     {
+        private Action m_onCompleted = null;
+        private string m_valueString = "";
+
         public override void Process(string[] vars, Action onCompleted)
         {
+            m_valueString = vars[1];
+            m_onCompleted = onCompleted;
+
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
@@ -22,7 +28,10 @@ namespace ProjectBS.Combat.EffectCommand
             for(int i = 0; i < targets.Count; i++)
             {
                 UnityEngine.Debug.Log("Selected:" + targets[i].name);
+                UnityEngine.Debug.Log("m_valueString:" + m_valueString);
             }
+
+            m_onCompleted?.Invoke();
         }
     }
 }
