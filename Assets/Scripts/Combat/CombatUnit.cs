@@ -47,22 +47,101 @@ namespace ProjectBS.Combat
 
         public int GetMaxHP()
         {
-            return -1;
+            return GetResult(rawMaxHP, Keyword.MaxHP);
         }
 
         public int GetAttack()
         {
-            return -1;
+            return GetResult(rawAttack, Keyword.Attack);
         }
 
         public int GetDefence()
         {
-            return -1;
+            return GetResult(rawDefence, Keyword.Defence);
         }
 
         public int GetSpeed()
         {
-            return -1;
+            return GetResult(rawSpeed, Keyword.Speed);
+        }
+
+        private int GetResult(int rawValue, string statusType)
+        {
+            int _temp = rawValue;
+
+            AddValueByEquipment(head, statusType, ref _temp);
+            AddValueByEquipment(body, statusType, ref _temp);
+            AddValueByEquipment(hand, statusType, ref _temp);
+            AddValueByEquipment(foot, statusType, ref _temp);
+
+            List<StatusAdder> _adderList = new List<StatusAdder>(statusAdders);
+
+            for (int i = 0; i < _adderList.Count; i++)
+            {
+                if (_adderList[i].statusType == statusType)
+                {
+                    if (int.TryParse(_adderList[i].valueString, out int _adderValue))
+                    {
+                        _temp += _adderValue;
+                        continue;
+                    }
+                    else
+                    {
+                        float _result = CombatUtility.Calculate(new CombatUtility.CalculateData
+                        {
+                            caster = _adderList[i].parentBuff.from,
+                            target = this,
+                            formula = _adderList[i].valueString,
+                            useRawValue = true
+                        });
+
+                        _temp += System.Convert.ToInt32(_result);
+                    }
+                }
+                else
+                {
+                    _adderList.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            return _temp;
+        }
+
+        private void AddValueByEquipment(OwningEquipmentData equipmentData, string statusType, ref int value)
+        {
+            if (equipmentData == null)
+                return;
+
+            switch (statusType)
+            {
+                case Keyword.HP:
+                case Keyword.MaxHP:
+                    {
+                        value += equipmentData.HP;
+                        break;
+                    }
+                case Keyword.Attack:
+                    {
+                        value += equipmentData.Attack;
+                        break;
+                    }
+                case Keyword.Defence:
+                    {
+                        value += equipmentData.Defence;
+                        break;
+                    }
+                case Keyword.Speed:
+                    {
+                        value += equipmentData.Speed;
+                        break;
+                    }
+                case Keyword.SP:
+                    {
+                        value += equipmentData.SP;
+                        break;
+                    }
+            }
         }
     }
 }

@@ -9,6 +9,10 @@ namespace ProjectBS.Combat.EffectCommand
         private Action m_onCompleted = null;
         private string m_valueString = "";
 
+        private List<CombatUnit> m_targets = null;
+        private int m_currentTargetIndex = -1;
+        private Dictionary<CombatUnit, int> m_targetToDmg = new Dictionary<CombatUnit, int>();
+
         public override void Process(string[] vars, Action onCompleted)
         {
             m_valueString = vars[1];
@@ -25,13 +29,42 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnTargetSelected(List<CombatUnit> targets)
         {
-            for(int i = 0; i < targets.Count; i++)
+            m_targets = targets;
+            m_currentTargetIndex = -1;
+            GoNextTarget();
+        }
+
+        private void GoNextTarget()
+        {
+            m_currentTargetIndex++;
+            if (m_currentTargetIndex >= m_targets.Count)
             {
-                UnityEngine.Debug.Log("Selected:" + targets[i].name);
-                UnityEngine.Debug.Log("m_valueString:" + m_valueString);
+                return;
             }
 
-            m_onCompleted?.Invoke();
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = m_targets[m_currentTargetIndex],
+                timing = EffectProcesser.TriggerTiming.OnStartToDealDamage_Any,
+                onEnded = OnStartToDealDamageAnyEnded
+            });
+        }
+
+        private void OnStartToDealDamageAnyEnded()
+        {
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = caster,
+                target = m_targets[m_currentTargetIndex],
+                timing = EffectProcesser.TriggerTiming.OnStartToDealDamage_Self,
+                onEnded = OnStartToDealDamageSelfEnded
+            });
+        }
+
+        private void OnStartToDealDamageSelfEnded()
+        {
+
         }
     }
 }

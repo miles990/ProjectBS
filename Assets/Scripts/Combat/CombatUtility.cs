@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace ProjectBS.Combat
 {
@@ -11,6 +9,7 @@ namespace ProjectBS.Combat
             public CombatUnit caster = null;
             public CombatUnit target = null;
             public string formula = "";
+            public bool useRawValue = false;
         }
         public static float Calculate(CalculateData data)
         {
@@ -51,31 +50,43 @@ namespace ProjectBS.Combat
             return float.Parse(Arithmetic(data, _buffer[_buffer.Count - 1]));
         }
 
-        public static int GetStatusValue(CombatUnit unit, string statusName)
+        public static int GetStatusValue(CombatUnit unit, string statusName, bool useRawValue)
         {
             switch(statusName)
             {
-                case "MaxHP":
+                case Keyword.MaxHP:
                     {
-                        return unit.GetMaxHP();
+                        if (useRawValue)
+                            return unit.rawMaxHP;
+                        else
+                            return unit.GetMaxHP();
                     }
-                case "HP":
+                case Keyword.HP:
                     {
                         return unit.HP;
                     }
-                case "Attack":
+                case Keyword.Attack:
                     {
-                        return unit.GetAttack();
+                        if (useRawValue)
+                            return unit.rawAttack;
+                        else 
+                            return unit.GetAttack();
                     }
-                case "Defence":
+                case Keyword.Defence:
                     {
-                        return unit.GetDefence();
+                        if (useRawValue)
+                            return unit.rawDefence;
+                        else
+                            return unit.GetDefence();
                     }
-                case "Speed":
+                case Keyword.Speed:
                     {
-                        return unit.GetSpeed();
+                        if (useRawValue)
+                            return unit.rawSpeed;
+                        else
+                            return unit.GetSpeed();
                     }
-                case "SP":
+                case Keyword.SP:
                     {
                         return unit.SP;
                     }
@@ -89,13 +100,12 @@ namespace ProjectBS.Combat
         private static int GetValueByParaString(CalculateData data, string paraString)
         {
             string[] _getValueData = paraString.Split('.');
-            CombatUnit _getValueTarget = null;
-
-            if (_getValueData[0] == "Self")
+            CombatUnit _getValueTarget;
+            if (_getValueData[0] == Keyword.Self)
             {
                 _getValueTarget = data.caster;
             }
-            else if (_getValueData[0] == "Target")
+            else if (_getValueData[0] == Keyword.Target)
             {
                 _getValueTarget = data.target;
             }
@@ -104,7 +114,7 @@ namespace ProjectBS.Combat
                 return 0;
             }
 
-            return GetStatusValue(_getValueTarget, _getValueData[1]);
+            return GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);
         }
 
         private static string Arithmetic(CalculateData data, string arithmeticString)

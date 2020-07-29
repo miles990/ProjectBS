@@ -31,9 +31,6 @@ namespace ProjectBS.Combat
             OnStartToEndAction_Self,
             OnStartToEndTurn,
             OnBattleEnded,
-            OnBuffGained,
-            OnStartToLoseBuff,
-            OnStatusValueChanged,
             OnActived
         }
 
