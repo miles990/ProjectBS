@@ -90,6 +90,10 @@ namespace ProjectBS.Combat
                     {
                         return unit.SP;
                     }
+                case Keyword.Hand:
+                    {
+                        return unit.hatred;
+                    }
                 default:
                     {
                         return 0;

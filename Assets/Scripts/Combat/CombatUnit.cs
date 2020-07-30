@@ -45,6 +45,8 @@ namespace ProjectBS.Combat
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
 
+        public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
+
         public int GetMaxHP()
         {
             return GetResult(rawMaxHP, Keyword.MaxHP);

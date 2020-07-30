@@ -11,6 +11,7 @@
         public const string Attack = "Attack";
         public const string Defence = "Defence";
         public const string Speed = "Speed";
+        public const string Hatred = "Hatred";
         public const string UsingSkillID = "UsingSkillID";
         public const string SkillTarget = "SkillTarget";
         public const string Effect = "Effect";

@@ -25,11 +25,11 @@ namespace ProjectBS.Combat
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActionStarted_Any,
-                onEnded = OnActionStartedAnyEffectEnded
+                onEnded = OnActionStarted_Any_Ended
             });
         }
 
-        private void OnActionStartedAnyEffectEnded()
+        private void OnActionStarted_Any_Ended()
         {
             m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
