@@ -42,6 +42,7 @@ namespace ProjectBS.Combat.EffectCommand
             m_currentTargetIndex++;
             if (m_currentTargetIndex >= m_targets.Count)
             {
+                ShowAttackAnimation();
                 return;
             }
 
@@ -73,8 +74,19 @@ namespace ProjectBS.Combat.EffectCommand
             if (_roll == -1)
                 _roll = UnityEngine.Random.Range(0, 101);
 
+            if(!int.TryParse(m_valueString, out int _attack))
+            {
+                CombatUtility.Calculate(new CombatUtility.CalculateData
+                {
+                    caster = caster,
+                    target = m_targets[m_currentTargetIndex],
+                    formula = m_valueString,
+                    useRawValue = false
+                });
+            }
+
             float _flee = 0.5f - (float)(caster.GetSpeed() / (float)(caster.GetSpeed() + _attackTarget.GetSpeed()));
-            float _rawDmg = ((caster.GetAttack() * _roll) - (_attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
+            float _rawDmg = (float)((_attack * _roll) - (_attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
@@ -98,7 +110,72 @@ namespace ProjectBS.Combat.EffectCommand
                 caster = caster,
                 target = m_targets[m_currentTargetIndex],
                 timing = EffectProcesser.TriggerTiming.OnDamageCalculated_Self,
+                onEnded = OnDamageCalculated_Self_Ended
+            });
+        }
+
+        private void OnDamageCalculated_Self_Ended()
+        {
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = caster,
+                timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Any,
+                onEnded = OnStartToTakeDamage_Any_Ended
+            });
+        }
+
+        private void OnStartToTakeDamage_Any_Ended()
+        {
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = m_targets[m_currentTargetIndex],
+                target = caster,
+                timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Self,
                 onEnded = GoNextTarget
+            });
+        }
+
+        private void ShowAttackAnimation()
+        {
+            UnityEngine.Debug.Log("ShowAttackAnimation");
+            m_currentTargetIndex = -1;
+            ApplyDamageToNextTarget();
+        }
+
+        private void ApplyDamageToNextTarget()
+        {
+            m_currentTargetIndex++;
+            if (m_currentTargetIndex >= m_targets.Count)
+            {
+                m_onCompleted?.Invoke();
+                return;
+            }
+
+            m_targets[m_currentTargetIndex].HP -= caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            UnityEngine.Debug.LogFormat("{0} take dmg {1}, HP {2}=>{3}",
+                m_targets[m_currentTargetIndex].name,
+                caster.targetToDmg[m_targets[m_currentTargetIndex]],
+                m_targets[m_currentTargetIndex].HP + caster.targetToDmg[m_targets[m_currentTargetIndex]],
+                m_targets[m_currentTargetIndex].HP);
+
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = caster,
+                timing = EffectProcesser.TriggerTiming.OnDamageTaken_Any,
+                onEnded = OnDamageTaken_Any_Ended
+            });
+        }
+
+        private void OnDamageTaken_Any_Ended()
+        {
+            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = m_targets[m_currentTargetIndex],
+                target = caster,
+                timing = EffectProcesser.TriggerTiming.OnDamageTaken_Self,
+                onEnded = ApplyDamageToNextTarget
             });
         }
     }

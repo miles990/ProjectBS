@@ -29,6 +29,8 @@ namespace ProjectBS.Combat
         private CombatUnitEffectProcesser m_processer = null;
         private List<CombatUnitAction> m_unitActions = null;
 
+        private CombatUnit m_currentDyingUnit = null;
+
         public void StartCombat(PartyData player, BossData boss)
         {
             m_units.Clear();
@@ -146,14 +148,78 @@ namespace ProjectBS.Combat
 
         private void OnActionEnded()
         {
-            if(m_unitActions.Count > 0)
+            for(int i = 0; i < m_units.Count; i++)
             {
-                GoNextAction();
+                if(m_units[i].HP <= 0)
+                {
+                    m_currentDyingUnit = m_units[i];
+                    m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+                    {
+                        caster = null,
+                        target = null,
+                        timing = EffectProcesser.TriggerTiming.OnDied_Any,
+                        onEnded = OnDied_Any_Ended
+                    });
+                    return;
+                }
+            }
+
+            CheckGameEnd();
+        }
+
+        private void CheckGameEnd()
+        {
+            int _playerCount = 0;
+            int _bossCount = 0;
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                if (m_units[i].camp == CombatUnit.Camp.Boss)
+                    _bossCount++;
+                else
+                    _playerCount++;
+            }
+
+            if (_playerCount > 0 && _bossCount > 0)
+            {
+                if (m_unitActions.Count > 0)
+                {
+                    GoNextAction();
+                }
+                else
+                {
+                    EndTurn();
+                }
             }
             else
             {
-                EndTurn();
+                if(_playerCount == 0)
+                {
+                    UnityEngine.Debug.Log("Player Lose");
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("Player Win");
+                }
             }
+        }
+
+        private void OnDied_Any_Ended()
+        {
+            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            {
+                caster = m_currentDyingUnit,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnDied_Self,
+                onEnded = OnDied_Self_Ended
+            });
+        }
+
+        private void OnDied_Self_Ended()
+        {
+            // animation ui....
+            m_units.Remove(m_currentDyingUnit);
+            m_currentDyingUnit = null;
+            OnActionEnded();
         }
 
         private void EndTurn()
