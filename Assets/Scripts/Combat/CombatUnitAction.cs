@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System;
 using KahaGameCore.Interface;
+using ProjectBS.Data;
 
 namespace ProjectBS.Combat
 {
     public class CombatUnitAction : Manager
     {
+        public SkillData CastingSkill { get; private set; } = null;
+
         private CombatUnit m_actor = null;
         private CombatUnitEffectProcesser m_processer = null;
         private Action m_onEnded = null;
@@ -20,6 +23,13 @@ namespace ProjectBS.Combat
         {
             m_onEnded = onEnded;
 
+            GetPage<UI.CombatUIView>().OnActionAnimationEnded += OnActionAnimationEnded;
+            GetPage<UI.CombatUIView>().ShowActorActionStart(m_actor);
+        }
+
+        private void OnActionAnimationEnded()
+        {
+            GetPage<UI.CombatUIView>().OnActionAnimationEnded -= OnActionAnimationEnded;
             m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -50,7 +60,7 @@ namespace ProjectBS.Combat
             else
             {
                 GetPage<UI.CombatUIView>().OnSkillSelected += OnSkillSelected;
-                List<Data.SkillData> _skills = new List<Data.SkillData>();
+                List<SkillData> _skills = new List<SkillData>();
                 string[] _skillIDs = m_actor.skills.Split(',');
                 for(int i = 0; i < _skillIDs.Length; i++)
                 {
@@ -60,9 +70,11 @@ namespace ProjectBS.Combat
             }
         }
 
-        private void OnSkillSelected(Data.SkillData skill)
+        private void OnSkillSelected(SkillData skill)
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
+            CastingSkill = skill;
+
             new EffectProcesser(skill.Command).Start(new EffectProcesser.ProcessData
             {
                 caster = m_actor,

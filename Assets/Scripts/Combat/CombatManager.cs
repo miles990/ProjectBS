@@ -1,7 +1,6 @@
 ﻿using KahaGameCore.Interface;
 using ProjectBS.Data;
 using System.Collections.Generic;
-using System;
 
 namespace ProjectBS.Combat
 {
@@ -27,9 +26,11 @@ namespace ProjectBS.Combat
         private int m_currentTurn = 0;
 
         private CombatUnitEffectProcesser m_processer = null;
-        private List<CombatUnitAction> m_unitActions = null;
+        private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
 
         private CombatUnit m_currentDyingUnit = null;
+
+        public CombatUnitAction CurrentActionInfo { get; private set; }
 
         public void StartCombat(PartyData player, BossData boss)
         {
@@ -50,7 +51,7 @@ namespace ProjectBS.Combat
                 rawMaxHP = 10000,
                 //HP = boss.HP,
                 HP = 10000,
-                //name = boss.NameContextID.ToString(),
+                //name = ContextConverter.Instance.GetContext(boss.NameContextID),
                 name = "Boss",
                 skills = "",
                 //SP = boss.SP,
@@ -81,7 +82,6 @@ namespace ProjectBS.Combat
                 rawDefence = character.Defence,
                 rawMaxHP = character.HP,
                 HP = character.HP,
-                //name = GameDataLoader.Instance.GetCharacterName(character.CharacterNameID),
                 name = "character " + character.UDID,
                 skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SKillSlot_2, character.SKillSlot_3),
                 SP = character.SP,
@@ -114,15 +114,22 @@ namespace ProjectBS.Combat
         private void StartNewTurn()
         {
             m_currentTurn++;
-            UnityEngine.Debug.Log("Start New Turn:" + m_currentTurn);
 
             m_units.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
-            m_unitActions = new List<CombatUnitAction>();
+            m_unitActions.Clear();
 
             for (int i = 0; i < m_units.Count; i++)
             {
                 m_unitActions.Add(new CombatUnitAction(m_units[i], m_processer));
             }
+
+            GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded += OnTurnStartAnimationEnded;
+            GetPage<UI.CombatUIView>().ShowTurnStart(m_currentTurn);
+        }
+
+        private void OnTurnStartAnimationEnded()
+        {
+            GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded -= OnTurnStartAnimationEnded;
 
             m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
@@ -140,10 +147,10 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            CombatUnitAction _currentAction = m_unitActions[0];
+            CurrentActionInfo = m_unitActions[0];
             m_unitActions.RemoveAt(0);
 
-            _currentAction.Start(OnActionEnded);
+            CurrentActionInfo.Start(OnActionEnded);
         }
 
         private void OnActionEnded()
@@ -194,11 +201,9 @@ namespace ProjectBS.Combat
             {
                 if(_playerCount == 0)
                 {
-                    UnityEngine.Debug.Log("Player Lose");
                 }
                 else
                 {
-                    UnityEngine.Debug.Log("Player Win");
                 }
             }
         }
@@ -216,7 +221,6 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            // animation ui....
             m_units.Remove(m_currentDyingUnit);
             m_currentDyingUnit = null;
             OnActionEnded();

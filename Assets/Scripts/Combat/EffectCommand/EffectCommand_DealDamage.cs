@@ -138,7 +138,12 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void ShowAttackAnimation()
         {
-            UnityEngine.Debug.Log("ShowAttackAnimation");
+            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + CombatManager.Instance.CurrentActionInfo.CastingSkill.ID);
+            KahaGameCore.Static.TimerManager.Schedule(1f, OnAnimationShown);
+        }
+
+        private void OnAnimationShown()
+        {
             m_currentTargetIndex = -1;
             ApplyDamageToNextTarget();
         }
@@ -148,16 +153,17 @@ namespace ProjectBS.Combat.EffectCommand
             m_currentTargetIndex++;
             if (m_currentTargetIndex >= m_targets.Count)
             {
-                m_onCompleted?.Invoke();
+                KahaGameCore.Static.TimerManager.Schedule(1f, m_onCompleted);
                 return;
             }
 
             m_targets[m_currentTargetIndex].HP -= caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            UnityEngine.Debug.LogFormat("{0} take dmg {1}, HP {2}=>{3}",
+            UnityEngine.Debug.LogFormat("{0} 使用 {1} 攻擊 {2}，造成 {3} 傷害",
+                caster.name,
+                ContextConverter.Instance.GetContext(CombatManager.Instance.CurrentActionInfo.CastingSkill.NameContextID),
                 m_targets[m_currentTargetIndex].name,
-                caster.targetToDmg[m_targets[m_currentTargetIndex]],
-                m_targets[m_currentTargetIndex].HP + caster.targetToDmg[m_targets[m_currentTargetIndex]],
-                m_targets[m_currentTargetIndex].HP);
+                caster.targetToDmg[m_targets[m_currentTargetIndex]]
+                );
 
             processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {

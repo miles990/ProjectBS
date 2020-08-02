@@ -3,6 +3,7 @@ using KahaGameCore.Interface;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using KahaGameCore.Static;
 
 namespace ProjectBS.UI
 {
@@ -17,6 +18,8 @@ namespace ProjectBS.UI
 
         public override bool IsShowing => throw new NotImplementedException();
 
+        public event Action OnTurnStartAnimationEnded = null;
+        public event Action OnActionAnimationEnded = null;
         public event Action<Data.SkillData> OnSkillSelected = null;
 
         public class SelectTargetData
@@ -31,7 +34,8 @@ namespace ProjectBS.UI
         private List<Data.SkillData> m_currentShowingSkills = null;
 
         // 0~3:Player 4~8:Boss
-        private Dictionary<int, CombatUnit> m_indexToCombatUnit = new Dictionary<int, CombatUnit>();
+        private Dictionary<int, CombatUnit> m_indexToUnit = new Dictionary<int, CombatUnit>();
+        private Dictionary<CombatUnit, int> m_unitToIndex = new Dictionary<CombatUnit, int>();
         private Dictionary<int, bool> m_indexToEnableState = new Dictionary<int, bool>();
 
         private SelectTargetData m_currentSelectData = null;
@@ -52,39 +56,56 @@ namespace ProjectBS.UI
             int _currentPlayerIndex = 0;
             int _currentBossIndex = 4;
 
-            for(int i = 0; i < units.Count; i++)
-            {
-                Debug.Log("Set Unit UI------------------------------");
-                Debug.LogFormat("units[{0}].camp={1}", i, units[i].camp.ToString());
-                Debug.LogFormat("units[{0}].name={1}", i , units[i].name);
-                Debug.LogFormat("units[{0}].hp={1}", i, units[i].HP);
-                Debug.LogFormat("units[{0}].sp={1}", i, units[i].SP);
-                Debug.Log("------------------------------");
+            string _log = "";
+            for (int i = 0; i < units.Count; i++)
+            { 
+                _log += "Set Unit UI------------------------------\n";
+                _log += string.Format("units[{0}].camp={1}\n", i, units[i].camp.ToString());
+                _log += string.Format("units[{0}].name={1}={1}\n", i, units[i].name);
+                _log += string.Format("units[{0}].hp={1}\n", i, units[i].HP);
+                _log += string.Format("units[{0}].sp={1}\n", i, units[i].SP);
 
                 if (units[i].camp == CombatUnit.Camp.Player)
                 {
-                    m_indexToCombatUnit.Add(_currentPlayerIndex, units[i]);
+                    m_indexToUnit.Add(_currentPlayerIndex, units[i]);
+                    m_unitToIndex.Add(units[i], _currentPlayerIndex);
                     m_indexToEnableState.Add(_currentPlayerIndex, false);
                     _currentPlayerIndex++;
                 }
                 else
                 {
-                    m_indexToCombatUnit.Add(_currentBossIndex, units[i]);
+                    m_indexToUnit.Add(_currentBossIndex, units[i]);
+                    m_unitToIndex.Add(units[i], _currentBossIndex);
                     m_indexToEnableState.Add(_currentBossIndex, false);
                     _currentBossIndex++;
                 }
             }
+
+            Debug.Log(_log);
+        }
+
+        public void ShowTurnStart(int turnCount)
+        {
+            Debug.LogFormat("第 {0} 回合", turnCount);
+            TimerManager.Schedule(1f, OnTurnStartAnimationEnded);
+        }
+
+        public void ShowActorActionStart(CombatUnit actor)
+        {
+            Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
+            TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 
         public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)
         {
             Debug.Log("------------------------------");
+            Debug.Log("開始選擇技能");
 
             m_currentShowingSkills = datas;
 
             for (int i = 0; i < m_currentShowingSkills.Count; i++)
             {
-                Debug.LogFormat("Skill {0}: ContextID={1}", i, m_currentShowingSkills[i].NameContextID);
+                Debug.LogFormat("Skill {0}: {1}", i, ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID));
             }
         }
 
@@ -101,13 +122,13 @@ namespace ProjectBS.UI
 
         public void Button_SelectSkill(int index)
         {
-            Debug.Log("Select Skill Index " + index);
+            Debug.Log("已選擇技能 " + ContextConverter.Instance.GetContext(m_currentShowingSkills[index].NameContextID));
             OnSkillSelected?.Invoke(m_currentShowingSkills[index]);
         }
 
         public void Button_SelectCharacter(int index)
         {
-            if(!m_indexToCombatUnit.ContainsKey(index))
+            if(!m_indexToUnit.ContainsKey(index))
             {
                 return;
             }
@@ -117,7 +138,8 @@ namespace ProjectBS.UI
                 return;
             }
 
-            m_currentTargets.Add(m_indexToCombatUnit[index]);
+            Debug.Log("已選擇目標 " + m_indexToUnit[index].name);
+            m_currentTargets.Add(m_indexToUnit[index]);
 
             if(m_currentTargets.Count < m_currentSelectData.needCount)
             {
@@ -150,14 +172,14 @@ namespace ProjectBS.UI
 
         private void SelectAll()
         {
-            List<int> _allKeys = new List<int>(m_indexToCombatUnit.Keys);
+            List<int> _allKeys = new List<int>(m_indexToUnit.Keys);
             switch (m_currentSelectData.selectType)
             {
                 case SelectType.All:
                     {
                         for(int i = 0; i < _allKeys.Count; i++)
                         {
-                            m_currentTargets.Add(m_indexToCombatUnit[_allKeys[i]]);
+                            m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
                         }
                         break;
                     }
@@ -169,7 +191,7 @@ namespace ProjectBS.UI
                             {
                                 if(_allKeys[i] <= 3)
                                 {
-                                    m_currentTargets.Add(m_indexToCombatUnit[_allKeys[i]]);
+                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -179,7 +201,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] > 3)
                                 {
-                                    m_currentTargets.Add(m_indexToCombatUnit[_allKeys[i]]);
+                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -193,7 +215,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] > 3)
                                 {
-                                    m_currentTargets.Add(m_indexToCombatUnit[_allKeys[i]]);
+                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -203,7 +225,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] <= 3)
                                 {
-                                    m_currentTargets.Add(m_indexToCombatUnit[_allKeys[i]]);
+                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -266,10 +288,10 @@ namespace ProjectBS.UI
             while(_randomPool.Count > 0)
             {
                 int _roll = UnityEngine.Random.Range(0, _randomPool.Count);
-                if(m_indexToCombatUnit.ContainsKey(_randomPool[_roll])
-                    && m_indexToCombatUnit[_randomPool[_roll]] != m_currentSelectData.attacker)
+                if(m_indexToUnit.ContainsKey(_randomPool[_roll])
+                    && m_indexToUnit[_randomPool[_roll]] != m_currentSelectData.attacker)
                 {
-                    m_currentTargets.Add(m_indexToCombatUnit[_randomPool[_roll]]);
+                    m_currentTargets.Add(m_indexToUnit[_randomPool[_roll]]);
 
                     if(m_currentTargets.Count == m_currentSelectData.needCount)
                     {
@@ -332,10 +354,10 @@ namespace ProjectBS.UI
         {
             for(int i = 4; i < 9; i++)
             {
-                if(m_indexToCombatUnit.ContainsKey(i))
+                if(m_indexToUnit.ContainsKey(i))
                 {
                     if(enable)
-                        Debug.Log("Enable Key Index:" + i);
+                        Debug.Log("可選擇目標:" + m_indexToUnit[i].name);
                     m_indexToEnableState[i] = enable;
                 }
             }
@@ -345,10 +367,10 @@ namespace ProjectBS.UI
         {
             for (int i = 0; i < 4; i++)
             {
-                if (m_indexToCombatUnit.ContainsKey(i))
+                if (m_indexToUnit.ContainsKey(i))
                 {
                     if (enable)
-                        Debug.Log("Enable Key Index:" + i);
+                        Debug.Log("可選擇目標:" + m_indexToUnit[i].name);
                     m_indexToEnableState[i] = enable;
                 }
             }

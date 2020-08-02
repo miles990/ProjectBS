@@ -1,18 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using KahaGameCore.Interface;
 
-public class ContextData : MonoBehaviour
+namespace ProjectBS.Data
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ContextData : IGameData
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public int ID { get; private set; }
+        public string zh_tw { get; private set; }
+        public string en_us { get; private set; }
+        public string ja_jp { get; private set; }
     }
 }
