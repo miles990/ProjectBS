@@ -2,6 +2,7 @@
 using System;
 using KahaGameCore.Interface;
 using ProjectBS.Data;
+using KahaGameCore.Static;
 
 namespace ProjectBS.Combat
 {
@@ -64,7 +65,7 @@ namespace ProjectBS.Combat
                 string[] _skillIDs = m_actor.skills.Split(',');
                 for(int i = 0; i < _skillIDs.Length; i++)
                 {
-                    _skills.Add(GameDataLoader.Instance.GetSkill(_skillIDs[i]));
+                    _skills.Add(GameDataManager.GetGameData<SkillData>(_skillIDs[i].ToInt()));
                 }
                 GetPage<UI.CombatUIView>().RefreshCurrentSkillMenu(_skills);
             }

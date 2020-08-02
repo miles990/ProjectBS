@@ -27,10 +27,7 @@ namespace ProjectBS
 
         public Area area = Area.zh_tw;
 
-        private ContextConverter()
-        {
-            GameDataManager.LoadGameData<ContextData>("ContextData");
-        }
+        private ContextConverter() { }
 
         public string GetContext(int ID)
         {

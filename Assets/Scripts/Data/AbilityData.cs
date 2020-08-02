@@ -9,6 +9,7 @@ namespace ProjectBS.Data
         public string RankString { get; private set; }
         public int MinValue { get; private set; }
         public int MaxValue { get; private set; }
+        public int Weight { get; private set; }
     }
 }
 

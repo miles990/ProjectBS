@@ -233,8 +233,40 @@ namespace ProjectBS.Combat
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnStartToEndTurn,
-                onEnded = StartNewTurn
+                onEnded = OnStartToEndTurnEnded
             });
+        }
+
+        private void OnStartToEndTurnEnded()
+        {
+            for(int _unitIndex = 0; _unitIndex < m_units.Count; _unitIndex++)
+            {
+                for(int _buffIndex = 0; _buffIndex < m_units[_unitIndex].buffs.Count; _buffIndex++)
+                {
+                    if (m_units[_unitIndex].buffs[_buffIndex].remainingTime == -1)
+                    {
+                        continue;
+                    }
+
+                    m_units[_unitIndex].buffs[_buffIndex].remainingTime--;
+                    if(m_units[_unitIndex].buffs[_buffIndex].remainingTime <= 0)
+                    {
+                        for(int _adderIndex = 0; _adderIndex < m_units[_unitIndex].statusAdders.Count; _adderIndex++)
+                        {
+                            if(m_units[_unitIndex].statusAdders[_adderIndex].parentBuff == m_units[_unitIndex].buffs[_buffIndex])
+                            {
+                                m_units[_unitIndex].statusAdders.RemoveAt(_adderIndex);
+                                _adderIndex--;
+                            }
+                        }
+
+                        m_units[_unitIndex].buffs.RemoveAt(_buffIndex);
+                        _buffIndex--;
+                    }
+                }
+            }
+
+            StartNewTurn();
         }
     }
 }

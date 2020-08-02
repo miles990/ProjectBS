@@ -1,8 +1,8 @@
-﻿namespace UnityEngine
+﻿namespace KahaGameCore.Static
 {
     public static class Extensions
     {
-        public static Vector3 DirectionTo(this Transform transform, Vector3 target)
+        public static UnityEngine.Vector3 DirectionTo(this UnityEngine.Transform transform, UnityEngine.Vector3 target)
         {
             return (target - transform.position).normalized;
         }
@@ -14,6 +14,19 @@
             value = value.Replace("\t", "");
 
             return value;
+        }
+
+        public static int ToInt(this string value)
+        {
+            int _intValue = 0;
+            if(int.TryParse(value, out _intValue))
+            {
+                return _intValue;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

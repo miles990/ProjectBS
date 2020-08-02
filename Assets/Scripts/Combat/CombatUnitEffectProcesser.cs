@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using KahaGameCore.Static;
+using ProjectBS.Data;
 
 namespace ProjectBS.Combat
 {
@@ -136,7 +138,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            string _command = GameDataLoader.Instance.GetSkillEffect(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex]).Command;
+            string _command = GameDataManager.GetGameData<SkillEffectData>(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt()).Command;
 
             if (!m_equipmentEffectIDToEffectProcesser.ContainsKey(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex]))
             {
@@ -177,7 +179,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            string _command = GameDataLoader.Instance.GetSkill(m_currentSkillIDs[m_currentSkillIndex]).Command;
+            string _command = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt()).Command;
 
             if(!m_skillIDToEffectProcesser.ContainsKey(m_currentSkillIDs[m_currentSkillIndex]))
             {
@@ -212,7 +214,7 @@ namespace ProjectBS.Combat
             }
 
             CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].buffs[m_currentBuffIndex];
-            string _command = GameDataLoader.Instance.GetSkillEffect(_currentBuff.effectID.ToString()).Command;
+            string _command = GameDataManager.GetGameData<SkillEffectData>(_currentBuff.effectID).Command;
 
             if (!m_buffEffectIDToEffectProcesser.ContainsKey(m_units[m_currentUnitIndex].buffs[m_currentBuffIndex].effectID.ToString()))
             {

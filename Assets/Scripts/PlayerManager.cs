@@ -28,7 +28,6 @@ namespace ProjectBS
             if(Player == null)
             {
                 Player = CreateNewPlayer();
-                // GameDataManager.SaveData(new SaveData[] { Player });
             }
         }
 

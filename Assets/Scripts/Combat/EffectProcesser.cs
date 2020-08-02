@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using ProjectBS.Combat.EffectCommand;
 using UnityEngine;
+using KahaGameCore.Static;
 
 namespace ProjectBS.Combat
 {

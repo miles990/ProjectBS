@@ -26,11 +26,16 @@ namespace ProjectBS.Data
         public int CharacterNameID;
         public int CharacterSpriteID;
         public int Level;
+        public int Exp;
         public int HP;
+        public int HPAbilityID;
         public int SP;
         public int Attack;
+        public int AttackAbilityID;
         public int Defence;
+        public int DefenceAbilityID;
         public int Speed;
+        public int SpeedAbilityID;
         public string UpgradeAbilityIDs;
         public string Equipment_UDID_Head;
         public string Equipment_UDID_Body;
@@ -46,6 +51,8 @@ namespace ProjectBS.Data
     {
         public string UDID;
         public int EquipmentSourceID;
+        public int Level;
+        public int Exp;
         public int HP;
         public int SP;
         public int Attack;
