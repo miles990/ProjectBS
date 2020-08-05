@@ -65,6 +65,10 @@ namespace ProjectBS.Combat
                 string[] _skillIDs = m_actor.skills.Split(',');
                 for(int i = 0; i < _skillIDs.Length; i++)
                 {
+                    if(_skillIDs[i] == "-1")
+                    {
+                        continue;
+                    }
                     _skills.Add(GameDataManager.GetGameData<SkillData>(_skillIDs[i].ToInt()));
                 }
                 GetPage<UI.CombatUIView>().RefreshCurrentSkillMenu(_skills);

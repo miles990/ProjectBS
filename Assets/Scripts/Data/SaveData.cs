@@ -36,7 +36,6 @@ namespace ProjectBS.Data
         public int DefenceAbilityID;
         public int Speed;
         public int SpeedAbilityID;
-        public string UpgradeAbilityIDs;
         public string Equipment_UDID_Head;
         public string Equipment_UDID_Body;
         public string Equipment_UDID_Hand;
