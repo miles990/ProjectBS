@@ -65,7 +65,7 @@ namespace ProjectBS.Combat
                 string[] _skillIDs = m_actor.skills.Split(',');
                 for(int i = 0; i < _skillIDs.Length; i++)
                 {
-                    if(_skillIDs[i] == "-1")
+                    if(_skillIDs[i] == "0")
                     {
                         continue;
                     }

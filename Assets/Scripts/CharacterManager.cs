@@ -25,8 +25,15 @@ namespace ProjectBS
         private CharacterManager() 
         {
             AbilityData[] _allDatas = GameDataManager.GetAllGameData<AbilityData>();
+            m_hpAbiPool = new List<AbilityData>();
+            m_attackAbiPool = new List<AbilityData>();
+            m_defenceAbiPool = new List<AbilityData>();
+            m_speedAbiPool = new List<AbilityData>();
             for (int i = 0; i < _allDatas.Length; i++)
             {
+                if (_allDatas[i].ID == 0)
+                    continue;
+
                 switch (_allDatas[i].Type)
                 {
                     case Keyword.HP:
@@ -93,10 +100,10 @@ namespace ProjectBS
                 HP = Random.Range(_hp.MinValue, _hp.MaxValue),
                 HPAbilityID = _hp.ID,
                 Level = 1,
-                SkillSlot_0 = 0,
-                SkillSlot_1 = 1,
-                SKillSlot_2 = -1,
-                SKillSlot_3 = -1,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SKillSlot_2 = 0,
+                SKillSlot_3 = 0,
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
                 SpeedAbilityID = _speed.ID,

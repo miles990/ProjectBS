@@ -138,6 +138,12 @@ namespace ProjectBS.Combat
                 return;
             }
 
+            if (m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex] == "0")
+            {
+                GoNextEquipmentEffect();
+                return;
+            }
+
             string _command = GameDataManager.GetGameData<SkillEffectData>(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt()).Command;
 
             if (!m_equipmentEffectIDToEffectProcesser.ContainsKey(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex]))
@@ -174,6 +180,12 @@ namespace ProjectBS.Combat
             }
 
             if(string.IsNullOrEmpty(m_currentSkillIDs[m_currentSkillIndex]))
+            {
+                GoNextOwingSkill();
+                return;
+            }
+
+            if(m_currentSkillIDs[m_currentSkillIndex] == "0")
             {
                 GoNextOwingSkill();
                 return;

@@ -1,8 +1,11 @@
-[{"ID":0,"zh_tw":"普通攻擊","en_us":null,"ja_jp":null},
-{"ID":1,"zh_tw":"對一個敵人造成130%攻擊值的傷害。","en_us":null,"ja_jp":null},
-{"ID":2,"zh_tw":"＜普通攻擊＞卷軸碎片","en_us":null,"ja_jp":null},
+[{"ID":1,"zh_tw":"普通攻擊","en_us":null,"ja_jp":null},
+{"ID":2,"zh_tw":"對一個敵人造成130%攻擊值的傷害。","en_us":null,"ja_jp":null},
 {"ID":3,"zh_tw":"＜普通攻擊＞卷軸","en_us":null,"ja_jp":null},
 {"ID":4,"zh_tw":"可以讓角色學習技能＜普通攻擊＞技能的捲軸。","en_us":null,"ja_jp":null},
 {"ID":null,"zh_tw":"","en_us":null,"ja_jp":null},
-{"ID":5,"zh_tw":"防禦","en_us":null,"ja_jp":null},
-{"ID":6,"zh_tw":"防禦值增加50%。","en_us":null,"ja_jp":null}]
+{"ID":5,"zh_tw":"普通防禦","en_us":null,"ja_jp":null},
+{"ID":6,"zh_tw":"給予自己持續1回合的「防禦」。","en_us":null,"ja_jp":null},
+{"ID":7,"zh_tw":"防禦","en_us":null,"ja_jp":null},
+{"ID":8,"zh_tw":"防禦值增加50%。","en_us":null,"ja_jp":null},
+{"ID":9,"zh_tw":"＜普通防禦＞卷軸","en_us":null,"ja_jp":null},
+{"ID":10,"zh_tw":"可以讓角色學習技能＜普通防禦＞技能的捲軸。","en_us":null,"ja_jp":null}]

@@ -9,6 +9,5 @@ namespace ProjectBS.Data
         public int DescriptionContextID { get; private set; }
         public string Command { get; private set; }
         public int SkillScrollItemID { get; private set; }
-        public int SkillScrollItemRequireAmount { get; private set; }
     }
 }

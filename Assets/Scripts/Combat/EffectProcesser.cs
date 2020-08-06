@@ -224,7 +224,7 @@ namespace ProjectBS.Combat
                     }
                 case "GainBuff":
                     {
-                        return null;
+                        return new EffectCommand_GainBuff();
                     }
                 case "RemoveBuff":
                     {
