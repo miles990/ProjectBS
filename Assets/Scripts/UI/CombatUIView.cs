@@ -154,6 +154,24 @@ namespace ProjectBS.UI
             }
         }
 
+        public class DisplayDamageData
+        {
+            public string attackerName = "Unknown Character";
+            public string skillName = "Unknown Skill";
+            public string defenderName = "Unknown Character";
+            public int damageValue = 0;
+        }
+
+        public void DisplayDamage(DisplayDamageData data)
+        {
+            Debug.LogFormat("{0} 使用 {1} 攻擊 {2}，造成 {3} 傷害",
+                    data.attackerName,
+                    data.skillName,
+                    data.defenderName,
+                    data.damageValue
+                );
+        }
+
         private void DoSelect()
         {
             if(m_currentSelectData.needCount == -1)

@@ -161,6 +161,7 @@ namespace ProjectBS.Combat
                          target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                          timing = m_data.timing,
                          processer = this,
+                         referenceBuff = null,
                          onEnded = GoNextEquipmentEffect
                      });
             }
@@ -208,6 +209,7 @@ namespace ProjectBS.Combat
                                         target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                                         timing = m_data.timing,
                                         processer = this,
+                                        referenceBuff = null,
                                         onEnded = GoNextOwingSkill
                                     });
             }
@@ -243,6 +245,7 @@ namespace ProjectBS.Combat
                                    target = m_units[m_currentUnitIndex],
                                    timing = m_data.timing,
                                    processer = this,
+                                   referenceBuff = null,
                                    onEnded = GoNextBuff
                                });
             }

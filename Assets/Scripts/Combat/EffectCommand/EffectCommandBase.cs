@@ -4,10 +4,7 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public abstract class EffectCommandBase
     {
-        public CombatUnit caster = null;
-        public CombatUnit target = null;
-        public CombatUnitEffectProcesser processer = null;
-
+        public EffectProcesser.ProcessData processData = null;
         public abstract void Process(string[] vars, Action onCompleted);
     }
 }

@@ -41,6 +41,7 @@ namespace ProjectBS.Combat
             public CombatUnit caster = null;
             public CombatUnit target = null;
             public CombatUnitEffectProcesser processer = null;
+            public CombatUnit.Buff referenceBuff = null;
             public Action onEnded = null;
         }
 
@@ -103,9 +104,7 @@ namespace ProjectBS.Combat
                 List<EffectData> _effects = m_timingToEffectProcesser[processData.timing.ToString()];
                 for (int i = 0; i < _effects.Count; i++)
                 {
-                    _effects[i].command.caster = processData.caster;
-                    _effects[i].command.target = processData.target;
-                    _effects[i].command.processer = processData.processer;
+                    _effects[i].command.processData = processData;
                 }
 
                 new Processer<EffectData>(_effects.ToArray()).Start(processData.onEnded);

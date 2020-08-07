@@ -6,9 +6,6 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
-            CombatUnit _target = vars[0] == "Self" ? caster : target;
-
-
         }
     }
 }

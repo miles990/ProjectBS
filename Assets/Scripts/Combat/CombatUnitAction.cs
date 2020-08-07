@@ -86,6 +86,7 @@ namespace ProjectBS.Combat
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
                 processer = m_processer,
+                referenceBuff = null,
                 onEnded = OnSkillEnded
             });
         }

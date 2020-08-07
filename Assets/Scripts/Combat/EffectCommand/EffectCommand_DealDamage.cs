@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            caster.targetToDmg.Clear();
+            processData.caster.targetToDmg.Clear();
 
             m_valueString = vars[1];
             m_forceRoll = vars[2];
@@ -24,7 +24,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
-                    attacker = caster,
+                    attacker = processData.caster,
                     commandString = vars[0],
                     onSelected = OnTargetSelected
                 });
@@ -46,7 +46,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = m_targets[m_currentTargetIndex],
@@ -57,9 +57,9 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToAttack_Any_Ended()
         {
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
-                caster = caster,
+                caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
                 timing = EffectProcesser.TriggerTiming.OnStartToAttack_Self,
                 onEnded = OnStartToAttack_Self_Ended
@@ -78,23 +78,23 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 CombatUtility.Calculate(new CombatUtility.CalculateData
                 {
-                    caster = caster,
+                    caster = processData.caster,
                     target = m_targets[m_currentTargetIndex],
                     formula = m_valueString,
                     useRawValue = false
                 });
             }
 
-            float _flee = 0.5f - (float)(caster.GetSpeed() / (float)(caster.GetSpeed() + _attackTarget.GetSpeed()));
+            float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
             float _rawDmg = (float)((_attack * _roll) - (_attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
                 _dmg = 1;
 
-            caster.targetToDmg.Add(_attackTarget, _dmg);
+            processData.caster.targetToDmg.Add(_attackTarget, _dmg);
 
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = m_targets[m_currentTargetIndex],
@@ -105,9 +105,9 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Any_Ended()
         {
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
-                caster = caster,
+                caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
                 timing = EffectProcesser.TriggerTiming.OnDamageCalculated_Self,
                 onEnded = OnDamageCalculated_Self_Ended
@@ -116,10 +116,10 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Self_Ended()
         {
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = null,
-                target = caster,
+                target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Any,
                 onEnded = OnStartToTakeDamage_Any_Ended
             });
@@ -127,10 +127,10 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToTakeDamage_Any_Ended()
         {
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
-                target = caster,
+                target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Self,
                 onEnded = GoNextTarget
             });
@@ -157,18 +157,14 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            m_targets[m_currentTargetIndex].HP -= caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            UnityEngine.Debug.LogFormat("{0} 使用 {1} 攻擊 {2}，造成 {3} 傷害",
-                caster.name,
-                ContextConverter.Instance.GetContext(CombatManager.Instance.CurrentActionInfo.CastingSkill.NameContextID),
-                m_targets[m_currentTargetIndex].name,
-                caster.targetToDmg[m_targets[m_currentTargetIndex]]
-                );
+            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            // TODO: display damage
+
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = null,
-                target = caster,
+                target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnDamageTaken_Any,
                 onEnded = OnDamageTaken_Any_Ended
             });
@@ -176,10 +172,10 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageTaken_Any_Ended()
         {
-            processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
-                target = caster,
+                target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnDamageTaken_Self,
                 onEnded = ApplyDamageToNextTarget
             });
