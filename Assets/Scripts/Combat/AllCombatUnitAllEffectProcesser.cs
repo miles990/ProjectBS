@@ -5,7 +5,7 @@ using ProjectBS.Data;
 
 namespace ProjectBS.Combat
 {
-    public class CombatUnitEffectProcesser
+    public class AllCombatUnitAllEffectProcesser
     {
         private List<CombatUnit> m_units = null;
 
@@ -32,7 +32,7 @@ namespace ProjectBS.Combat
         private Dictionary<string, EffectProcesser> m_buffEffectIDToEffectProcesser = new Dictionary<string, EffectProcesser>();
         private Dictionary<EffectProcesser, EffectProcesser.ProcessData> m_processerToPrecessData = new Dictionary<EffectProcesser, EffectProcesser.ProcessData>();
 
-        public CombatUnitEffectProcesser(List<CombatUnit> units)
+        public AllCombatUnitAllEffectProcesser(List<CombatUnit> units)
         {
             m_units = units;
         }
@@ -55,7 +55,13 @@ namespace ProjectBS.Combat
 
             if(m_data.timing.ToString().Contains("_Self"))
             {
-                if(m_data.caster == null || m_units[m_currentUnitIndex] != m_data.caster)
+                if(m_data.caster == null)
+                {
+                    m_data.onEnded?.Invoke();
+                    return;
+                }
+
+                if (m_units[m_currentUnitIndex] != m_data.caster)
                 {
                     GoNextUnit();
                     return;
@@ -160,8 +166,9 @@ namespace ProjectBS.Combat
                          caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                          target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                          timing = m_data.timing,
-                         processer = this,
+                         allEffectProcesser = this,
                          referenceBuff = null,
+                         refenceSkill = null,
                          onEnded = GoNextEquipmentEffect
                      });
             }
@@ -192,7 +199,8 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            string _command = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt()).Command;
+            SkillData _skill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt());
+            string _command = _skill.Command;
 
             if(!m_skillIDToEffectProcesser.ContainsKey(m_currentSkillIDs[m_currentSkillIndex]))
             {
@@ -208,8 +216,9 @@ namespace ProjectBS.Combat
                                         caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                                         target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                                         timing = m_data.timing,
-                                        processer = this,
+                                        allEffectProcesser = this,
                                         referenceBuff = null,
+                                        refenceSkill = _skill,
                                         onEnded = GoNextOwingSkill
                                     });
             }
@@ -244,8 +253,9 @@ namespace ProjectBS.Combat
                                    caster = _currentBuff.from,
                                    target = m_units[m_currentUnitIndex],
                                    timing = m_data.timing,
-                                   processer = this,
-                                   referenceBuff = null,
+                                   allEffectProcesser = this,
+                                   referenceBuff = _currentBuff,
+                                   refenceSkill = null,
                                    onEnded = GoNextBuff
                                });
             }

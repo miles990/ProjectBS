@@ -46,7 +46,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = m_targets[m_currentTargetIndex],
@@ -57,7 +57,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToAttack_Any_Ended()
         {
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
@@ -86,7 +86,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
-            float _rawDmg = (float)((_attack * _roll) - (_attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
+            float _rawDmg = (float)((_attack + _attack * _roll) - (_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
@@ -94,7 +94,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             processData.caster.targetToDmg.Add(_attackTarget, _dmg);
 
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = m_targets[m_currentTargetIndex],
@@ -105,7 +105,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Any_Ended()
         {
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
@@ -116,7 +116,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Self_Ended()
         {
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = processData.caster,
@@ -127,7 +127,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToTakeDamage_Any_Ended()
         {
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
@@ -161,7 +161,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             // TODO: display damage
 
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = processData.caster,
@@ -172,7 +172,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageTaken_Any_Ended()
         {
-            processData.processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,

@@ -40,8 +40,9 @@ namespace ProjectBS.Combat
             public TriggerTiming timing = TriggerTiming.OnActived;
             public CombatUnit caster = null;
             public CombatUnit target = null;
-            public CombatUnitEffectProcesser processer = null;
+            public AllCombatUnitAllEffectProcesser allEffectProcesser = null;
             public CombatUnit.Buff referenceBuff = null;
+            public Data.SkillData refenceSkill = null;
             public Action onEnded = null;
         }
 
@@ -207,7 +208,7 @@ namespace ProjectBS.Combat
                     }
                 case "AddStatus":
                     {
-                        return null;
+                        return new EffectCommand_AddStatus();
                     }
                 case "DealDamage":
                     {

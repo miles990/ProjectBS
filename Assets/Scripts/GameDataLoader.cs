@@ -10,6 +10,7 @@ namespace ProjectBS
             GameDataManager.LoadGameData<ContextData>("ContextData");
             GameDataManager.LoadGameData<SkillData>("SkillData");
             GameDataManager.LoadGameData<AbilityData>("AbilityData");
+            GameDataManager.LoadGameData<SkillEffectData>("SkillEffectData");
         }
     }
 }

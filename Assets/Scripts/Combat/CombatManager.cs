@@ -25,7 +25,7 @@ namespace ProjectBS.Combat
 
         private int m_currentTurn = 0;
 
-        private CombatUnitEffectProcesser m_processer = null;
+        private AllCombatUnitAllEffectProcesser m_processer = null;
         private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
 
         private CombatUnit m_currentDyingUnit = null;
@@ -101,8 +101,8 @@ namespace ProjectBS.Combat
         {
             m_currentTurn = 0;
 
-            m_processer = new CombatUnitEffectProcesser(m_units);
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer = new AllCombatUnitAllEffectProcesser(m_units);
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -131,7 +131,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded -= OnTurnStartAnimationEnded;
 
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -160,7 +160,7 @@ namespace ProjectBS.Combat
                 if(m_units[i].HP <= 0)
                 {
                     m_currentDyingUnit = m_units[i];
-                    m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+                    m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
                     {
                         caster = null,
                         target = null,
@@ -210,7 +210,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Any_Ended()
         {
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_currentDyingUnit,
                 target = null,
@@ -228,7 +228,7 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,

@@ -11,10 +11,10 @@ namespace ProjectBS.Combat
         public SkillData CastingSkill { get; private set; } = null;
 
         private CombatUnit m_actor = null;
-        private CombatUnitEffectProcesser m_processer = null;
+        private AllCombatUnitAllEffectProcesser m_processer = null;
         private Action m_onEnded = null;
 
-        public CombatUnitAction(CombatUnit actor, CombatUnitEffectProcesser processer)
+        public CombatUnitAction(CombatUnit actor, AllCombatUnitAllEffectProcesser processer)
         {
             m_actor = actor;
             m_processer = processer;
@@ -31,7 +31,7 @@ namespace ProjectBS.Combat
         private void OnActionAnimationEnded()
         {
             GetPage<UI.CombatUIView>().OnActionAnimationEnded -= OnActionAnimationEnded;
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -42,7 +42,7 @@ namespace ProjectBS.Combat
 
         private void OnActionStarted_Any_Ended()
         {
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_actor,
                 target = null,
@@ -85,15 +85,16 @@ namespace ProjectBS.Combat
                 caster = m_actor,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
-                processer = m_processer,
+                allEffectProcesser = m_processer,
                 referenceBuff = null,
+                refenceSkill = skill,
                 onEnded = OnSkillEnded
             });
         }
 
         private void OnSkillEnded()
         {
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -104,7 +105,7 @@ namespace ProjectBS.Combat
 
         private void OnStartToEndActionAnyEffectEnded()
         {
-            m_processer.Start(new CombatUnitEffectProcesser.ProcesserData
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_actor,
                 target = null,

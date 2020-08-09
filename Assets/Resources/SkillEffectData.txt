@@ -1,0 +1,3 @@
+[{"ID":1,"NameContextID":7,"DescriptionContextID":8,"Command":"OnActived\n{
+     AddStatus(Target, Defence, Target.Defence * 0.5); 
+}","MaxStackCount":1}]

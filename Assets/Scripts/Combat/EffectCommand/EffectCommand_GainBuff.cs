@@ -9,7 +9,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             CombatUnit _target = null;
-            switch(vars[0])
+            switch(vars[0].Trim())
             {
                 case Keyword.Self:
                 case Keyword.Caster:
@@ -49,15 +49,16 @@ namespace ProjectBS.Combat.EffectCommand
 
                 _target.buffs.Add(_buff);
             }
-
+            
             new EffectProcesser(_skillEffectData.Command).Start(
                 new EffectProcesser.ProcessData
                 {
                     caster = processData.caster,
                     target = processData.target,
-                    processer = processData.processer,
+                    allEffectProcesser = processData.allEffectProcesser,
                     timing = EffectProcesser.TriggerTiming.OnActived,
                     referenceBuff = _buff,
+                    refenceSkill = null,
                     onEnded = onCompleted
                 });
         }
