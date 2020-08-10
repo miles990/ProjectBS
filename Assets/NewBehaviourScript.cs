@@ -16,7 +16,7 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 caster = new ProjectBS.Combat.CombatUnit { rawAttack = 100 },
                 target = null,
-                formula = "-Caster.Attack",
+                formula = "-Caster.Attack - 100",
                 useRawValue = true
             });
 

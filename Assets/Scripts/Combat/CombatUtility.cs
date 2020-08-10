@@ -344,13 +344,11 @@ namespace ProjectBS.Combat
                         }
                     }
 
-                    UnityEngine.Debug.Log(_varA);
                     if (!float.TryParse(_varA, out float _varAFloat))
                     {
                         _varAFloat = GetValueByParaString(data, _varA);
                     }
 
-                    UnityEngine.Debug.Log(_varB);
                     if (!float.TryParse(_varB, out float _varBFloat))
                     {
                         _varBFloat = GetValueByParaString(data, _varB);
