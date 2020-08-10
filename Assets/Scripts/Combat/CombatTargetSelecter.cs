@@ -40,7 +40,12 @@ namespace ProjectBS.Combat
                 case "Self":
                     {
                         data.onSelected?.Invoke(new List<CombatUnit> { data.attacker });
-                        break;
+                        return;
+                    }
+                case "LastAttackTargets":
+                    {
+                        data.onSelected?.Invoke(new List<CombatUnit>(data.attacker.targetToDmg.Keys));
+                        return;
                     }
                 case "SelectSameSide":
                     {

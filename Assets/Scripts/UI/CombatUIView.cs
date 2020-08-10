@@ -460,6 +460,18 @@ namespace ProjectBS.UI
             {
                 Button_SelectCharacter(8);
             }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                List<CombatUnit> units = new List<CombatUnit>(m_unitToIndex.Keys);
+                for(int i = 0; i < units.Count; i++)
+                {
+                    for(int j = 0; j < units[i].buffs.Count; j++)
+                    {
+                        Debug.Log(units[i].buffs[j].effectID);
+                    }
+                }
+            }
         }
     }
 }
