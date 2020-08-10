@@ -135,11 +135,32 @@ namespace ProjectBS.Combat
 
                     for (int _recordIndex = _mathStringIndex - 1; _recordIndex >= 0; _recordIndex--)
                     {
-                        if (_mathString[_recordIndex] == '+'
-                            || _mathString[_recordIndex] == '-')
+                        if (_mathString[_recordIndex] == '+')
                         {
                             _removeStartIndex = _recordIndex + 1;
                             break;
+                        }
+
+                        if (_mathString[_recordIndex] == '-')
+                        {
+                            if (_recordIndex == 0)
+                            {
+                                _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
+                                continue;
+                            }
+                            else
+                            {
+                                if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                                {
+                                    _removeStartIndex = _recordIndex + 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
+                                    continue;
+                                }
+                            }
                         }
 
                         _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
@@ -153,12 +174,25 @@ namespace ProjectBS.Combat
                     for (int _recordIndex = _mathStringIndex + 1; _recordIndex < _mathString.Count; _recordIndex++)
                     {
                         if (_mathString[_recordIndex] == '+'
-                            || _mathString[_recordIndex] == '-'
                             || _mathString[_recordIndex] == '/'
                             || _mathString[_recordIndex] == '*')
                         {
                             _removeEndIndex = _recordIndex - 1;
                             break;
+                        }
+
+                        if (_mathString[_recordIndex] == '-')
+                        {
+                            if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                            {
+                                _removeStartIndex = _recordIndex + 1;
+                                break;
+                            }
+                            else
+                            {
+                                _varB += _mathString[_recordIndex];
+                                continue;
+                            }
                         }
 
                         _varB += _mathString[_recordIndex];
@@ -198,6 +232,11 @@ namespace ProjectBS.Combat
             {
                 if (_mathString[_mathStringIndex] == '+' || _mathString[_mathStringIndex] == '-')
                 {
+                    if(_mathStringIndex == 0)
+                    {
+                        continue;
+                    }
+
                     string _varA = "";
                     string _varB = "";
                     int _removeStartIndex = 0;
@@ -205,11 +244,32 @@ namespace ProjectBS.Combat
 
                     for (int _recordIndex = _mathStringIndex - 1; _recordIndex >= 0; _recordIndex--)
                     {
-                        if (_mathString[_recordIndex] == '+'
-                            || _mathString[_recordIndex] == '-')
+                        if (_mathString[_recordIndex] == '+')
                         {
                             _removeStartIndex = _recordIndex + 1;
                             break;
+                        }
+
+                        if(_mathString[_recordIndex] == '-')
+                        {
+                            if (_recordIndex == 0)
+                            {
+                                _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
+                                continue;
+                            }
+                            else
+                            {
+                                if(int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                                {
+                                    _removeStartIndex = _recordIndex + 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
+                                    continue;
+                                }
+                            }
                         }
 
                         _varA = _varA.Insert(0, _mathString[_recordIndex].ToString());
@@ -222,11 +282,24 @@ namespace ProjectBS.Combat
 
                     for (int _recordIndex = _mathStringIndex + 1; _recordIndex < _mathString.Count; _recordIndex++)
                     {
-                        if (_mathString[_recordIndex] == '+'
-                            || _mathString[_recordIndex] == '-')
+                        if (_mathString[_recordIndex] == '+')
                         {
                             _removeEndIndex = _recordIndex - 1;
                             break;
+                        }
+
+                        if (_mathString[_recordIndex] == '-')
+                        {
+                            if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                            {
+                                _removeStartIndex = _recordIndex + 1;
+                                break;
+                            }
+                            else
+                            {
+                                _varB += _mathString[_recordIndex];
+                                continue;
+                            }
                         }
 
                         _varB += _mathString[_recordIndex];

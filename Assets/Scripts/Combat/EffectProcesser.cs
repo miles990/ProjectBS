@@ -210,6 +210,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_AddStatus();
                     }
+                case "ReduceStatus":
+                    {
+                        return new EffectCommand_AddStatus();
+                    }
                 case "DealDamage":
                     {
                         return new EffectCommand_DealDamage();
@@ -218,7 +222,11 @@ namespace ProjectBS.Combat
                     {
                         return null;
                     }
-                case "ForceEnd":
+                case "ReduceDamage":
+                    {
+                        return null;
+                    }
+                case "ForceEndAction":
                     {
                         return null;
                     }
