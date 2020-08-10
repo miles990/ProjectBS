@@ -47,12 +47,18 @@ namespace ProjectBS.Combat
                 _buffer[_buffer.Count - 1] += data.formula[i];
             }
 
-            return float.Parse(Arithmetic(data, _buffer[_buffer.Count - 1]));
+            string _resultString = Arithmetic(data, _buffer[_buffer.Count - 1]);
+            if (!float.TryParse(_resultString, out float _result))
+            {
+                _result = (float)GetValueByParaString(data, _resultString);
+            }
+
+            return _result;
         }
 
         public static int GetStatusValue(CombatUnit unit, string statusName, bool useRawValue)
         {
-            switch(statusName)
+            switch(statusName.Trim())
             {
                 case Keyword.MaxHP:
                     {
@@ -103,13 +109,22 @@ namespace ProjectBS.Combat
 
         private static int GetValueByParaString(CalculateData data, string paraString)
         {
+            bool _minus = false;
+            if(paraString.StartsWith("-"))
+            {
+                paraString = paraString.Remove(0, 1);
+                _minus = true;
+            }
+
             string[] _getValueData = paraString.Split('.');
+
             CombatUnit _getValueTarget;
-            if (_getValueData[0] == Keyword.Self)
+            if (_getValueData[0].Trim() == Keyword.Self
+                || _getValueData[0].Trim() == Keyword.Caster)
             {
                 _getValueTarget = data.caster;
             }
-            else if (_getValueData[0] == Keyword.Target)
+            else if (_getValueData[0].Trim() == Keyword.Target)
             {
                 _getValueTarget = data.target;
             }
@@ -118,7 +133,10 @@ namespace ProjectBS.Combat
                 return 0;
             }
 
-            return GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);
+            if(_minus)
+                return -GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);
+            else
+                return GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);
         }
 
         private static string Arithmetic(CalculateData data, string arithmeticString)
@@ -150,7 +168,11 @@ namespace ProjectBS.Combat
                             }
                             else
                             {
-                                if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                                if (_mathString[_recordIndex - 1] == '('
+                                    || _mathString[_recordIndex - 1] == ')'
+                                    || _mathString[_recordIndex - 1] == '+'
+                                    || _mathString[_recordIndex - 1] == '*'
+                                    || _mathString[_recordIndex - 1] == '/')
                                 {
                                     _removeStartIndex = _recordIndex + 1;
                                     break;
@@ -183,7 +205,11 @@ namespace ProjectBS.Combat
 
                         if (_mathString[_recordIndex] == '-')
                         {
-                            if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                            if (_mathString[_recordIndex - 1] == '('
+                                || _mathString[_recordIndex - 1] == ')'
+                                || _mathString[_recordIndex - 1] == '+'
+                                || _mathString[_recordIndex - 1] == '*'
+                                || _mathString[_recordIndex - 1] == '/')
                             {
                                 _removeStartIndex = _recordIndex + 1;
                                 break;
@@ -259,7 +285,11 @@ namespace ProjectBS.Combat
                             }
                             else
                             {
-                                if(int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                                if (_mathString[_recordIndex - 1] == '('
+                                    || _mathString[_recordIndex - 1] == ')'
+                                    || _mathString[_recordIndex - 1] == '+'
+                                    || _mathString[_recordIndex - 1] == '*'
+                                    || _mathString[_recordIndex - 1] == '/')
                                 {
                                     _removeStartIndex = _recordIndex + 1;
                                     break;
@@ -290,7 +320,11 @@ namespace ProjectBS.Combat
 
                         if (_mathString[_recordIndex] == '-')
                         {
-                            if (int.TryParse(_mathString[_recordIndex - 1].ToString(), out int _))
+                            if (_mathString[_recordIndex - 1] == '('
+                                || _mathString[_recordIndex - 1] == ')'
+                                || _mathString[_recordIndex - 1] == '+'
+                                || _mathString[_recordIndex - 1] == '*'
+                                || _mathString[_recordIndex - 1] == '/')
                             {
                                 _removeStartIndex = _recordIndex + 1;
                                 break;
@@ -310,11 +344,13 @@ namespace ProjectBS.Combat
                         }
                     }
 
+                    UnityEngine.Debug.Log(_varA);
                     if (!float.TryParse(_varA, out float _varAFloat))
                     {
                         _varAFloat = GetValueByParaString(data, _varA);
                     }
 
+                    UnityEngine.Debug.Log(_varB);
                     if (!float.TryParse(_varB, out float _varBFloat))
                     {
                         _varBFloat = GetValueByParaString(data, _varB);

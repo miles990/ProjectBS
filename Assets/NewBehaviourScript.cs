@@ -14,10 +14,10 @@ public class NewBehaviourScript : MonoBehaviour
         float _v = ProjectBS.Combat.CombatUtility.Calculate(
             new ProjectBS.Combat.CombatUtility.CalculateData
             {
-                caster = null,
+                caster = new ProjectBS.Combat.CombatUnit { rawAttack = 100 },
                 target = null,
-                formula = "-2 + 3 * 4 / (-1 * (5 - 3))",
-                useRawValue = false
+                formula = "-Caster.Attack",
+                useRawValue = true
             });
 
         Debug.Log(_v);
