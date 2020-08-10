@@ -8,8 +8,6 @@ namespace ProjectBS.Combat
 {
     public class CombatUnitAction : Manager
     {
-        public SkillData CastingSkill { get; private set; } = null;
-
         private CombatUnit m_actor = null;
         private AllCombatUnitAllEffectProcesser m_processer = null;
         private Action m_onEnded = null;
@@ -78,7 +76,7 @@ namespace ProjectBS.Combat
         private void OnSkillSelected(SkillData skill)
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
-            CastingSkill = skill;
+            m_actor.lastSkillID = skill.ID;
 
             new EffectProcesser(skill.Command).Start(new EffectProcesser.ProcessData
             {

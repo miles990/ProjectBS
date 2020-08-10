@@ -88,8 +88,8 @@ namespace ProjectBS
             {
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
                 AttackAbilityID = _attack.ID,
-                CharacterNameID = -1,
-                CharacterSpriteID = -1,
+                CharacterNameID = 0,
+                CharacterSpriteID = 0,
                 Defence = Random.Range(_defence.MinValue, _defence.MaxValue),
                 DefenceAbilityID = _defence.ID,
                 Equipment_UDID_Body = null,

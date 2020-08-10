@@ -137,7 +137,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void ShowAttackAnimation()
         {
-            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + CombatManager.Instance.CurrentActionInfo.CastingSkill.ID);
+            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + processData.caster.lastSkillID);
             KahaGameCore.Static.TimerManager.Schedule(1f, OnAnimationShown);
         }
 

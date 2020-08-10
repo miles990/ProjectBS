@@ -30,8 +30,6 @@ namespace ProjectBS.Combat
 
         private CombatUnit m_currentDyingUnit = null;
 
-        public CombatUnitAction CurrentActionInfo { get; private set; }
-
         public void StartCombat(PartyData player, BossData boss)
         {
             m_units.Clear();
@@ -147,10 +145,10 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            CurrentActionInfo = m_unitActions[0];
+            CombatUnitAction _currentAction = m_unitActions[0];
             m_unitActions.RemoveAt(0);
 
-            CurrentActionInfo.Start(OnActionEnded);
+            _currentAction.Start(OnActionEnded);
         }
 
         private void OnActionEnded()

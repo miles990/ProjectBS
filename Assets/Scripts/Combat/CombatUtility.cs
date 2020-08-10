@@ -96,9 +96,39 @@ namespace ProjectBS.Combat
                     {
                         return unit.SP;
                     }
-                case Keyword.Hand:
+                case Keyword.Hatred:
                     {
                         return unit.hatred;
+                    }
+                case Keyword.Head:
+                    {
+                        return unit.head == null ? 0 : unit.head.EquipmentSourceID;
+                    }
+                case Keyword.Body:
+                    {
+                        return unit.body == null ? 0 : unit.body.EquipmentSourceID;
+                    }
+                case Keyword.Hand:
+                    {
+                        return unit.hand == null ? 0 : unit.hand.EquipmentSourceID;
+                    }
+                case Keyword.Foot:
+                    {
+                        return unit.foot == null ? 0 : unit.foot.EquipmentSourceID;
+                    }
+                case Keyword.TotalDamage:
+                    {
+                        int _value = 0;
+                        List<int> _allDmg = new List<int>(unit.targetToDmg.Values);
+                        for(int i = 0; i < _allDmg.Count; i++)
+                        {
+                            _value += _allDmg[i];
+                        }
+                        return _value;
+                    }
+                case Keyword.LastSkill:
+                    {
+                        return unit.lastSkillID;
                     }
                 default:
                     {

@@ -12,7 +12,7 @@
         public const string Defence = "Defence";
         public const string Speed = "Speed";
         public const string Hatred = "Hatred";
-        public const string UsingSkillID = "UsingSkillID";
+        public const string LastSkill = "LastSkill";
         public const string SkillTarget = "SkillTarget";
         public const string Effect = "Effect";
         public const string ActionIndex = "ActionIndex";
@@ -20,5 +20,6 @@
         public const string Body = "Body";
         public const string Hand = "Hand";
         public const string Foot = "Foot";
+        public const string TotalDamage = "TotalDamage";
     }
 }
