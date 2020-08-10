@@ -1,5 +1,4 @@
 ﻿using System;
-using ProjectBS.Combat;
 using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand

@@ -204,7 +204,7 @@ namespace ProjectBS.Combat
             {
                 case "SetStatus":
                     {
-                        return null;
+                        return new EffectCommand_SetStatus();
                     }
                 case "AddStatus":
                     {

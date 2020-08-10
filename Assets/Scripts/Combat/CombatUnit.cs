@@ -29,9 +29,29 @@ namespace ProjectBS.Combat
         public string name = "";
         public UnityEngine.Sprite sprite = null;
         public Camp camp = Camp.Player;
-        public int HP = 100;
+        public int HP 
+        {
+            get { return m_hp; }
+            set 
+            {
+                m_hp = value;
+                if (m_hp > GetMaxHP())
+                    m_hp = GetMaxHP();
+            }
+        }
+        private int m_hp = 100;
         public int rawMaxHP = 100;
-        public int SP = 100;
+        public int SP 
+        {
+            get { return m_sp; }
+            set 
+            {
+                m_sp = value;
+                if (m_sp > 100)
+                    m_sp = 100;
+            }
+        }
+        private int m_sp = 100;
         public int rawAttack = 10;
         public int rawDefence = 10;
         public int rawSpeed = 1;

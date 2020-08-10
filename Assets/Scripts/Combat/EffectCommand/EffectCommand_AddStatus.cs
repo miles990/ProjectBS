@@ -23,12 +23,55 @@ namespace ProjectBS.Combat.EffectCommand
                     }
             }
 
-            _target.statusAdders.Add(new CombatUnit.StatusAdder
+            switch(vars[1])
             {
-                parentBuff = processData.referenceBuff,
-                statusType = vars[1],
-                valueString = vars[2]
-            });
+                case Keyword.Attack:
+                case Keyword.Defence:
+                case Keyword.MaxHP:
+                case Keyword.Speed:
+                    {
+                        _target.statusAdders.Add(new CombatUnit.StatusAdder
+                        {
+                            parentBuff = processData.referenceBuff,
+                            statusType = vars[1],
+                            valueString = vars[2]
+                        });
+                        break;
+                    }
+                default:
+                    {
+                        float _value = CombatUtility.Calculate(
+                            new CombatUtility.CalculateData
+                            {
+                                caster = processData.caster,
+                                target = processData.target,
+                                formula = vars[2],
+                                useRawValue = true
+                            });
+                        int _add = Convert.ToInt32(_value);
+
+                        switch (vars[1])
+                        {
+                            case Keyword.Hatred:
+                                {
+                                    processData.target.hatred += _add;
+                                    break;
+                                }
+                            case Keyword.HP:
+                                {
+                                    processData.target.HP += _add;
+                                    break;
+                                }
+                            case Keyword.SP:
+                                {
+                                    processData.target.SP += _add;
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
+            }
 
             onCompleted?.Invoke();
         }
