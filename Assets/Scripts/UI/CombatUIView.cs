@@ -9,11 +9,31 @@ namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
-        public enum SelectType
+        public enum SelectRange
         {
             SameSide,
             Opponent,
             All
+        }
+
+        public enum SelectType
+        {
+            Manual,
+            Random,
+            HighestMaxHP,
+            HighestHP,
+            HighestSP,
+            HighestAttack,
+            HighestDefence,
+            HighestSpeed,
+            HighestHatred,
+            LowestMaxHP,
+            LowestHP,
+            LowestSP,
+            LowestAttack,
+            LowestDefence,
+            LowestSpeed,
+            LowestHatred,
         }
 
         public override bool IsShowing => throw new NotImplementedException();
@@ -24,10 +44,11 @@ namespace ProjectBS.UI
 
         public class SelectTargetData
         {
-            public SelectType selectType = SelectType.All;
+            public SelectRange selectRange = SelectRange.All;
+            public SelectType selectType = SelectType.Random;
             public CombatUnit attacker = null;
             public int needCount = 0;
-            public bool random = false;
+            public bool inculdeAttacker = false;
             public Action<List<CombatUnit>> onSelected = null;
         }
 
@@ -174,26 +195,22 @@ namespace ProjectBS.UI
 
         private void DoSelect()
         {
-            if(m_currentSelectData.needCount == -1)
+            if (m_currentSelectData.needCount == -1)
             {
                 SelectAll();
             }
-            else if(m_currentSelectData.random)
+            else 
             {
-                RandomSelect();
-            }
-            else
-            {
-                WaitPlayerSelect();
+                // TODO: SELECT
             }
         }
 
         private void SelectAll()
         {
             List<int> _allKeys = new List<int>(m_indexToUnit.Keys);
-            switch (m_currentSelectData.selectType)
+            switch (m_currentSelectData.selectRange)
             {
-                case SelectType.All:
+                case SelectRange.All:
                     {
                         for(int i = 0; i < _allKeys.Count; i++)
                         {
@@ -201,7 +218,7 @@ namespace ProjectBS.UI
                         }
                         break;
                     }
-                case SelectType.Opponent:
+                case SelectRange.Opponent:
                     {
                         if(m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -225,7 +242,7 @@ namespace ProjectBS.UI
                         }
                         break;
                     }
-                case SelectType.SameSide:
+                case SelectRange.SameSide:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -259,15 +276,15 @@ namespace ProjectBS.UI
         {
             int _min = 0;
             int _max = 0;
-            switch (m_currentSelectData.selectType)
+            switch (m_currentSelectData.selectRange)
             {
-                case SelectType.All:
+                case SelectRange.All:
                     {
                         _min = 0;
                         _max = 9;
                         break;
                     }
-                case SelectType.Opponent:
+                case SelectRange.Opponent:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -281,7 +298,7 @@ namespace ProjectBS.UI
                         }
                         break;
                     }
-                case SelectType.SameSide:
+                case SelectRange.SameSide:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -333,15 +350,15 @@ namespace ProjectBS.UI
 
         private void WaitPlayerSelect()
         {
-            switch (m_currentSelectData.selectType)
+            switch (m_currentSelectData.selectRange)
             {
-                case SelectType.All:
+                case SelectRange.All:
                     {
                         EnableSelectBossButton(true);
                         EnableSelectPlayerButton(true);
                         break;
                     }
-                case SelectType.Opponent:
+                case SelectRange.Opponent:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -353,7 +370,7 @@ namespace ProjectBS.UI
                         }
                         break;
                     }
-                case SelectType.SameSide:
+                case SelectRange.SameSide:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {

@@ -19,6 +19,21 @@ namespace ProjectBS.Combat
         }
         private static CombatManager m_instance = null;
 
+        public struct CombatActionInfo
+        {
+            public CombatUnit actor;
+        }
+        public CombatActionInfo CurrentActionInfo 
+        {
+            get
+            {
+                return new CombatActionInfo
+                {
+                    actor = m_currentAction.Actor
+                };
+            }
+        }
+
         private CombatManager() { } 
 
         private List<CombatUnit> m_units = new List<CombatUnit>();
@@ -27,6 +42,7 @@ namespace ProjectBS.Combat
 
         private AllCombatUnitAllEffectProcesser m_processer = null;
         private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
+        private CombatUnitAction m_currentAction = null;
 
         private CombatUnit m_currentDyingUnit = null;
 
@@ -68,6 +84,11 @@ namespace ProjectBS.Combat
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
+        }
+
+        public void SetForceStopCurrentAction()
+        {
+            m_currentAction.SetForceStopOnStart();
         }
 
         private void AddUnit(OwningCharacterData character)
@@ -145,10 +166,9 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            CombatUnitAction _currentAction = m_unitActions[0];
+            m_currentAction = m_unitActions[0];
             m_unitActions.RemoveAt(0);
-
-            _currentAction.Start(OnActionEnded);
+            m_currentAction.Start(OnActionEnded);
         }
 
         private void OnActionEnded()

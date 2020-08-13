@@ -210,25 +210,17 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_AddStatus();
                     }
-                case "ReduceStatus":
-                    {
-                        return new EffectCommand_AddStatus();
-                    }
                 case "DealDamage":
                     {
                         return new EffectCommand_DealDamage();
                     }
                 case "AddDamage":
                     {
-                        return null;
-                    }
-                case "ReduceDamage":
-                    {
-                        return null;
+                        return new EffectCommand_AddDamage();
                     }
                 case "ForceEndAction":
                     {
-                        return null;
+                        return new EffectCommand_ForceEndAction();
                     }
                 case "GainBuff":
                     {
@@ -263,6 +255,10 @@ namespace ProjectBS.Combat
                         return null;
                     }
                 case "Chain":
+                    {
+                        return null;
+                    }
+                case "ReplaceSkill":
                     {
                         return null;
                     }

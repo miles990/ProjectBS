@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using KahaGameCore.Interface;
 using System;
 
@@ -32,136 +31,43 @@ namespace ProjectBS.Combat
 
         public void StartSelect(SelectTargetData data)
         {
-            string[] _targetSelection = data.commandString.Replace(")", "").Split('(');
-            UI.CombatUIView.SelectTargetData _uiSelectData = null;
+            string[] _commandParts = data.commandString.Split('(');
+            string _command = _commandParts[0];
+            string _var = "";
+            string[] _vars = null;
+            if (_commandParts.Length > 1)
+            {
+                _var = _commandParts[1].Replace(")", "");
+                _vars = _var.Split(',');
+            }
 
-            switch (_targetSelection[0])
+
+            UI.CombatUIView.SelectTargetData _selectData = null;
+            switch (_command)
             {
                 case "Self":
                     {
                         data.onSelected?.Invoke(new List<CombatUnit> { data.attacker });
                         return;
                     }
-                case "LastAttackTargets":
+                case "Select":
+                case "SelectOther":
                     {
-                        data.onSelected?.Invoke(new List<CombatUnit>(data.attacker.targetToDmg.Keys));
-                        return;
-                    }
-                case "SelectSameSide":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
+                        _selectData = new UI.CombatUIView.SelectTargetData
                         {
                             attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.SameSide,
+                            inculdeAttacker = true,
+                            needCount = int.Parse(_vars[2]),
                             onSelected = data.onSelected
                         };
                         break;
-                    }
-                case "SelectOpponent":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.Opponent,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "SelectAllSide":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.All,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "AllSameSide":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = -1,
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.SameSide,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "AllOpponent":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = -1,
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.Opponent,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "AllBattleField":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = -1,
-                            random = false,
-                            selectType = UI.CombatUIView.SelectType.All,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "RandomAll":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = true,
-                            selectType = UI.CombatUIView.SelectType.All,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "RandomSameSide":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = true,
-                            selectType = UI.CombatUIView.SelectType.SameSide,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                case "RandomOpponent":
-                    {
-                        _uiSelectData = new UI.CombatUIView.SelectTargetData
-                        {
-                            attacker = data.attacker,
-                            needCount = int.Parse(_targetSelection[1]),
-                            random = true,
-                            selectType = UI.CombatUIView.SelectType.Opponent,
-                            onSelected = data.onSelected
-                        };
-                        break;
-                    }
-                default:
-                    {
-                        throw new Exception("Invaild Command:" + _targetSelection[0]);
                     }
             }
 
-            GetPage<UI.CombatUIView>().StartSelectTarget(_uiSelectData);
+            _selectData.selectRange = (UI.CombatUIView.SelectRange)Enum.Parse(typeof(UI.CombatUIView.SelectRange), _vars[0]);
+            _selectData.selectType = (UI.CombatUIView.SelectType)Enum.Parse(typeof(UI.CombatUIView.SelectType), _vars[1]);
+
+            GetPage<UI.CombatUIView>().StartSelectTarget(_selectData);
         }
     }
 }
