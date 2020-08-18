@@ -201,7 +201,116 @@ namespace ProjectBS.UI
             }
             else 
             {
-                // TODO: SELECT
+                switch(m_currentSelectData.selectType)
+                {
+                    case SelectType.Manual:
+                        {
+                            WaitPlayerSelect();
+                            break;
+                        }
+                    case SelectType.Random:
+                        {
+                            RandomSelect();
+                            break;
+                        }
+                    case SelectType.HighestHP:
+                        {
+                            SelectByStatus(Keyword.HP, true);
+                            break;
+                        }
+                    case SelectType.HighestMaxHP:
+                        {
+                            SelectByStatus(Keyword.MaxHP, true);
+                            break;
+                        }
+                    case SelectType.HighestSP:
+                        {
+                            SelectByStatus(Keyword.SP, true);
+                            break;
+                        }
+                    case SelectType.HighestAttack:
+                        {
+                            SelectByStatus(Keyword.Attack, true);
+                            break;
+                        }
+                    case SelectType.HighestDefence:
+                        {
+                            SelectByStatus(Keyword.Defence, true);
+                            break;
+                        }
+                    case SelectType.HighestSpeed:
+                        {
+                            SelectByStatus(Keyword.Speed, true);
+                            break;
+                        }
+                    case SelectType.HighestHatred:
+                        {
+                            SelectByStatus(Keyword.Hatred, true);
+                            break;
+                        }
+                    case SelectType.LowestHP:
+                        {
+                            SelectByStatus(Keyword.HP, false);
+                            break;
+                        }
+                    case SelectType.LowestMaxHP:
+                        {
+                            SelectByStatus(Keyword.MaxHP, false);
+                            break;
+                        }
+                    case SelectType.LowestSP:
+                        {
+                            SelectByStatus(Keyword.SP, false);
+                            break;
+                        }
+                    case SelectType.LowestAttack:
+                        {
+                            SelectByStatus(Keyword.Attack, false);
+                            break;
+                        }
+                    case SelectType.LowestDefence:
+                        {
+                            SelectByStatus(Keyword.Defence, false);
+                            break;
+                        }
+                    case SelectType.LowestSpeed:
+                        {
+                            SelectByStatus(Keyword.Speed, false);
+                            break;
+                        }
+                    case SelectType.LowestHatred:
+                        {
+                            SelectByStatus(Keyword.Hatred, false);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void SelectByStatus(string statusType, bool getHighest)
+        {
+            GetIndexRange(out int _min, out int _max);
+
+            List<int> _allKeys = new List<int>(m_indexToUnit.Keys);
+
+            int _currentHighestIndex = _min;
+            for (int i = _min + 1; i < _max; i++)
+            {
+                if ((getHighest && CombatUtility.GetStatusValue(m_indexToUnit[i], statusType, false) > CombatUtility.GetStatusValue(m_indexToUnit[_currentHighestIndex], statusType, false))
+                    || (!getHighest && CombatUtility.GetStatusValue(m_indexToUnit[i], statusType, false) < CombatUtility.GetStatusValue(m_indexToUnit[_currentHighestIndex], statusType, false)))
+                {
+                    _currentHighestIndex = i;
+                }
+            }
+
+            m_currentTargets.Add(m_indexToUnit[_currentHighestIndex]);
+            if(m_currentTargets.Count == m_currentSelectData.needCount)
+            {
+                m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+            }
+            else
+            {
+                SelectByStatus(statusType, getHighest);
             }
         }
 
@@ -274,45 +383,7 @@ namespace ProjectBS.UI
 
         private void RandomSelect()
         {
-            int _min = 0;
-            int _max = 0;
-            switch (m_currentSelectData.selectRange)
-            {
-                case SelectRange.All:
-                    {
-                        _min = 0;
-                        _max = 9;
-                        break;
-                    }
-                case SelectRange.Opponent:
-                    {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            _min = 0;
-                            _max = 4;
-                        }
-                        else
-                        {
-                            _min = 4;
-                            _max = 9;
-                        }
-                        break;
-                    }
-                case SelectRange.SameSide:
-                    {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            _min = 4;
-                            _max = 9;
-                        }
-                        else
-                        {
-                            _min = 0;
-                            _max = 4;
-                        }
-                        break;
-                    }
-            }
+            GetIndexRange(out int _min, out int _max);
 
             List<int> _randomPool = new List<int>();
             for(int i = 0; i < (_max - _min); i++)
@@ -380,6 +451,53 @@ namespace ProjectBS.UI
                         {
                             EnableSelectPlayerButton(true);
                         }
+                        break;
+                    }
+            }
+        }
+
+        private void GetIndexRange(out int min, out int max)
+        {
+            switch (m_currentSelectData.selectRange)
+            {
+                case SelectRange.All:
+                    {
+                        min = 0;
+                        max = 9;
+                        break;
+                    }
+                case SelectRange.Opponent:
+                    {
+                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
+                        {
+                            min = 0;
+                            max = 4;
+                        }
+                        else
+                        {
+                            min = 4;
+                            max = 9;
+                        }
+                        break;
+                    }
+                case SelectRange.SameSide:
+                    {
+                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
+                        {
+                            min = 4;
+                            max = 9;
+                        }
+                        else
+                        {
+                            min = 0;
+                            max = 4;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        min = 0;
+                        max = 9;
                         break;
                     }
             }
