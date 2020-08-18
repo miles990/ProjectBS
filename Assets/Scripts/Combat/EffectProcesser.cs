@@ -32,7 +32,8 @@ namespace ProjectBS.Combat
             OnStartToEndAction_Self,
             OnStartToEndTurn,
             OnBattleEnded,
-            OnActived
+            OnActived,
+            OnDeactived
         }
 
         public class ProcessData
