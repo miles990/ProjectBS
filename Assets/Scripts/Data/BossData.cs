@@ -14,5 +14,8 @@ namespace ProjectBS.Data
         public int SP { get; private set; }
         public string EffectIDs { get; private set; }
         public string AI { get; private set; }
+        public string DropData { get; private set; }
+        public int MinExp { get; private set; }
+        public int MaxExp { get; private set; }
     }
 }

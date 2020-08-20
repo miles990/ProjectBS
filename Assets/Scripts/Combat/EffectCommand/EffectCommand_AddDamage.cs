@@ -7,17 +7,46 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
-            float _addValue = CombatUtility.Calculate(new CombatUtility.CalculateData
+            bool _isPersent = false;
+            string _valueString = vars[0];
+            if (vars[0].Contains("%"))
             {
-                caster = processData.caster,
-                target = processData.target,
-                formula = vars[0]
-            });
+                _isPersent = true;
+                _valueString = _valueString.Replace("%", "");
+            }
+            float _value = float.Parse(_valueString);
+            if(_isPersent)
+            {
+                _value *= 0.01f;
+            }
 
-            List<CombatUnit> _allTarget = new List<CombatUnit>(CombatManager.Instance.CurrentActionInfo.actor.targetToDmg.Keys);
-            for (int i = 0; i < _allTarget.Count; i++)
+            if(CombatManager.Instance.CurrentActionInfo.actor == processData.caster)
             {
-                CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[_allTarget[i]] += Convert.ToInt32(_addValue);
+                List<CombatUnit> _targets = new List<CombatUnit>(processData.caster.targetToDmg.Keys);
+                for(int i = 0; i < _targets.Count; i++)
+                {
+                    if(_isPersent)
+                    {
+                        float _dmg = (float)processData.caster.targetToDmg[_targets[i]];
+                        processData.caster.targetToDmg[_targets[i]] = Convert.ToInt32(_dmg * _value);
+                    }
+                    else
+                    {
+                        processData.caster.targetToDmg[_targets[i]] += Convert.ToInt32(_value);
+                    }
+                }
+            }
+            else
+            {
+                if (_isPersent)
+                {
+                    float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = Convert.ToInt32(_dmg * _value);
+                }
+                else
+                {
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += Convert.ToInt32(_value);
+                }    
             }
         }
     }

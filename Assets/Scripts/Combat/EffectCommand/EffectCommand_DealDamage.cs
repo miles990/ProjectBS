@@ -7,7 +7,8 @@ namespace ProjectBS.Combat.EffectCommand
     {
         private Action m_onCompleted = null;
         private string m_valueString = "";
-        private string m_forceRoll = "";
+        private string m_rollMin = "";
+        private string m_ingnoreDefence = "";
 
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
@@ -17,7 +18,8 @@ namespace ProjectBS.Combat.EffectCommand
             processData.caster.targetToDmg.Clear();
 
             m_valueString = vars[1];
-            m_forceRoll = vars[2];
+            m_rollMin = vars[2];
+            m_ingnoreDefence = vars[3];
             m_onCompleted = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(
@@ -69,13 +71,12 @@ namespace ProjectBS.Combat.EffectCommand
         {
             CombatUnit _attackTarget = m_targets[m_currentTargetIndex];
 
-            int _roll = int.Parse(m_forceRoll);
-            if (_roll == -1)
-                _roll = UnityEngine.Random.Range(0, 101);
+            int _roll = int.Parse(m_rollMin);
+            _roll = UnityEngine.Random.Range(_roll, 101);
 
-            if(!int.TryParse(m_valueString, out int _attack))
+            if(!float.TryParse(m_valueString, out float _attack))
             {
-                CombatUtility.Calculate(new CombatUtility.CalculateData
+                _attack = CombatUtility.Calculate(new CombatUtility.CalculateData
                 {
                     caster = processData.caster,
                     target = m_targets[m_currentTargetIndex],
@@ -84,8 +85,12 @@ namespace ProjectBS.Combat.EffectCommand
                 });
             }
 
+            float _finalAttackValue = (float)(_attack + _attack * _roll);
+            float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101));
+            float _ingnoreDefence = float.Parse(m_ingnoreDefence);
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
-            float _rawDmg = (float)((_attack + _attack * _roll) - (_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101))) * (1f - UnityEngine.Random.Range(0f, _flee));
+            float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));
+            float _rawDmg = (_finalAttackValue - (_finalDefenceValue * (1f - _ingnoreDefence))) * _fleeReduceDmgPersent;
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
