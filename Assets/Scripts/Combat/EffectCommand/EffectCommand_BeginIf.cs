@@ -105,7 +105,7 @@ namespace ProjectBS.Combat.EffectCommand
                         }
                     default:
                         {
-                            throw new Exception("[EffectCommand_BeginIf][Process] Invaild Command=" + vars[0]);
+                            throw new Exception("[EffectCommand_BeginIf][Process] Invaild Command=" + paraString);
                         }
                 }
             }
