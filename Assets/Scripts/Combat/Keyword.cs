@@ -21,5 +21,10 @@
         public const string Hand = "Hand";
         public const string Foot = "Foot";
         public const string TotalDamage = "TotalDamage";
+        public const string CombatField = "CombatField";
+        public const string PlayerUnitCount = "PlayerUnitCount";
+        public const string BossUnitCount = "BossUnitCount";
+        public const string TurnCount = "TurnCount";
+        public const string Random = "Random";
     }
 }

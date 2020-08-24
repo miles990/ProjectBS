@@ -56,6 +56,29 @@ namespace ProjectBS.Combat
             return _result;
         }
 
+        public static int GetCombatFieldStatus(string statusName)
+        {
+            switch(statusName)
+            {
+                case Keyword.BossUnitCount:
+                    {
+                        return CombatManager.Instance.GetCampCount(CombatUnit.Camp.Boss);
+                    }
+                case Keyword.PlayerUnitCount:
+                    {
+                        return CombatManager.Instance.GetCampCount(CombatUnit.Camp.Player);
+                    }
+                case Keyword.TurnCount:
+                    {
+                        return CombatManager.Instance.TurnCount;
+                    }
+                default:
+                    {
+                        throw new System.Exception("[CombatUtility][GetCombatFieldStatus] Invaild statusName=" + statusName);
+                    }
+            }
+        }
+
         public static int GetStatusValue(CombatUnit unit, string statusName, bool useRawValue)
         {
             switch(statusName.Trim())
@@ -132,7 +155,7 @@ namespace ProjectBS.Combat
                     }
                 default:
                     {
-                        return 0;
+                        throw new System.Exception("[CombatUtility][GetStatusValue] Invaild statusName=" + statusName);
                     }
             }
         }

@@ -73,8 +73,7 @@ namespace ProjectBS.Combat
 
             if (!string.IsNullOrEmpty(Actor.ai))
             {
-                UnityEngine.Debug.Log(Actor.ai);
-                OnSkillEnded();
+                // TODO
             }
             else
             {

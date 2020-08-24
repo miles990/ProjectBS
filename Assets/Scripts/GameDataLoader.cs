@@ -11,6 +11,7 @@ namespace ProjectBS
             GameDataManager.LoadGameData<SkillData>("SkillData");
             GameDataManager.LoadGameData<AbilityData>("AbilityData");
             GameDataManager.LoadGameData<SkillEffectData>("SkillEffectData");
+            GameDataManager.LoadGameData<BossData>("BossData");
         }
     }
 }

@@ -1,0 +1,3 @@
+[{"ID":1,"NameContextID":10001,"CharacterSpriteID":"暫時沒圖","Attack":2500,"Defence":2500,"Speed":2500,"HP":25000,"SP":100,"EffectIDs":"10001;10003","AI":"BeginIf_Effect(Self, 1, 10004);\nCastSkill(10007);
+EndIf();
+RandomCastSkill(10001);","DropData":null,"MinExp":1,"MaxExp":100}]

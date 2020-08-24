@@ -38,13 +38,37 @@ namespace ProjectBS.Combat
 
         private List<CombatUnit> m_units = new List<CombatUnit>();
 
-        private int m_currentTurn = 0;
+        public int TurnCount { get; private set; } = 0;
 
         private AllCombatUnitAllEffectProcesser m_processer = null;
         private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
         private CombatUnitAction m_currentAction = null;
 
         private CombatUnit m_currentDyingUnit = null;
+
+        public int GetCampCount(CombatUnit.Camp camp)
+        {
+            if(TurnCount == 0)
+            {
+                return 0;
+            }
+
+            int _count = 0;
+            for(int i = 0; i < m_units.Count; i++)
+            {
+                if(m_units[i].camp == camp)
+                {
+                    _count++;
+                }
+            }
+
+            return _count;
+        }
+
+        public int GetNotCampCount(CombatUnit.Camp camp)
+        {
+            return m_units.Count - GetCampCount(camp);
+        }
 
         public void StartCombat(PartyData player, BossData boss)
         {
@@ -118,7 +142,7 @@ namespace ProjectBS.Combat
 
         private void StartBattle()
         {
-            m_currentTurn = 0;
+            TurnCount = 0;
 
             m_processer = new AllCombatUnitAllEffectProcesser(m_units);
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
@@ -132,7 +156,7 @@ namespace ProjectBS.Combat
 
         private void StartNewTurn()
         {
-            m_currentTurn++;
+            TurnCount++;
 
             m_units.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
             m_unitActions.Clear();
@@ -143,7 +167,7 @@ namespace ProjectBS.Combat
             }
 
             GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded += OnTurnStartAnimationEnded;
-            GetPage<UI.CombatUIView>().ShowTurnStart(m_currentTurn);
+            GetPage<UI.CombatUIView>().ShowTurnStart(TurnCount);
         }
 
         private void OnTurnStartAnimationEnded()

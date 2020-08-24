@@ -44,6 +44,7 @@ namespace ProjectBS.Combat
             public AllCombatUnitAllEffectProcesser allEffectProcesser = null;
             public CombatUnit.Buff referenceBuff = null;
             public Data.SkillData refenceSkill = null;
+            public int skipIfCount = 0;
             public Action onEnded = null;
         }
 
@@ -54,7 +55,18 @@ namespace ProjectBS.Combat
 
             public void Process(Action onCompleted)
             {
-                command.Process(vars, onCompleted);
+                if (command.processData.skipIfCount > 0
+                    && !(command is EffectCommand_EndIf)
+                    && !(command is EffectCommand_BeginIf)
+                    && !(command is EffectCommand_BeginIf_Effect)
+                    && !(command is EffectCommand_BeginIf_Skill))
+                {
+                    onCompleted?.Invoke();
+                }
+                else
+                {
+                    command.Process(vars, onCompleted);
+                }
             }
         }
 
@@ -109,6 +121,7 @@ namespace ProjectBS.Combat
                     _effects[i].command.processData = processData;
                 }
 
+                processData.skipIfCount = 0;
                 new Processer<EffectData>(_effects.ToArray()).Start(processData.onEnded);
             }
         }

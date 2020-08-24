@@ -47,7 +47,7 @@ namespace ProjectBS
                     }
                 default:
                     {
-                        throw new System.Exception("Invaild Area=" + area.ToString());
+                        throw new System.Exception("[ContextConverter][GetContext] Invaild Area=" + area.ToString());
                     }
             }
         }
