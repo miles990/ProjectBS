@@ -7,6 +7,8 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             processData.skipIfCount--;
+            if (processData.skipIfCount < 0)
+                processData.skipIfCount = 0;
             onCompleted?.Invoke();
         }
     }
