@@ -34,6 +34,7 @@ namespace ProjectBS.UI
             LowestDefence,
             LowestSpeed,
             LowestHatred,
+            RandomByHatred
         }
 
         public override bool IsShowing => throw new NotImplementedException();
@@ -60,7 +61,7 @@ namespace ProjectBS.UI
         private Dictionary<int, bool> m_indexToEnableState = new Dictionary<int, bool>();
 
         private SelectTargetData m_currentSelectData = null;
-        private List<CombatUnit> m_currentTargets = new List<CombatUnit>();
+        private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
 
         public override void ForceShow(Manager manager, bool show)
         {
@@ -135,7 +136,7 @@ namespace ProjectBS.UI
             if (m_currentSelectData != null)
                 return;
 
-            m_currentTargets.Clear();
+            m_currentSelectedTargets.Clear();
             m_currentSelectData = data;
 
             DoSelect();
@@ -160,9 +161,9 @@ namespace ProjectBS.UI
             }
 
             Debug.Log("已選擇目標 " + m_indexToUnit[index].name);
-            m_currentTargets.Add(m_indexToUnit[index]);
+            m_currentSelectedTargets.Add(m_indexToUnit[index]);
 
-            if(m_currentTargets.Count < m_currentSelectData.needCount)
+            if(m_currentSelectedTargets.Count < m_currentSelectData.needCount)
             {
                 DoSelect();
             }
@@ -170,7 +171,7 @@ namespace ProjectBS.UI
             {
                 EnableSelectBossButton(false);
                 EnableSelectPlayerButton(false);
-                m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
                 m_currentSelectData = null;
             }
         }
@@ -283,7 +284,69 @@ namespace ProjectBS.UI
                             SelectByStatus(Keyword.Hatred, false);
                             break;
                         }
+                    case SelectType.RandomByHatred:
+                        {
+                            SelectByRandomByHatred();
+                            break;
+                        }
                 }
+            }
+        }
+
+        private void SelectByRandomByHatred()
+        {
+            List<CombatUnit> _allUnits = new List<CombatUnit>(m_unitToIndex.Keys);
+            List<CombatUnit> _rollPool = new List<CombatUnit>();
+            int _totalHatred = 0;
+
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                switch (m_currentSelectData.selectRange)
+                {
+                    case SelectRange.All:
+                        {
+                            _rollPool.Add(_allUnits[i]);
+                            _totalHatred += _allUnits[i].hatred;
+                            break;
+                        }
+                    case SelectRange.Opponent:
+                        {
+                            if (_allUnits[i].camp != m_currentSelectData.attacker.camp)
+                            {
+                                _rollPool.Add(_allUnits[i]);
+                                _totalHatred += _allUnits[i].hatred;
+                            }
+                            break;
+                        }
+                    case SelectRange.SameSide:
+                        {
+                            if (_allUnits[i].camp == m_currentSelectData.attacker.camp)
+                            {
+                                _rollPool.Add(_allUnits[i]);
+                                _totalHatred += _allUnits[i].hatred;
+                            }
+                            break;
+                        }
+                }
+            }
+
+            int _roll = UnityEngine.Random.Range(0, _totalHatred);
+            for (int i = 0; i < _rollPool.Count; i++)
+            {
+                _roll -= _rollPool[i].hatred;
+                if(_roll <= 0)
+                {
+                    m_currentSelectedTargets.Add(_rollPool[i]);
+                    break;
+                }
+            }
+            if (m_currentSelectedTargets.Count == m_currentSelectData.needCount)
+            {
+                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
+            }
+            else
+            {
+                SelectByRandomByHatred();
             }
         }
 
@@ -303,10 +366,10 @@ namespace ProjectBS.UI
                 }
             }
 
-            m_currentTargets.Add(m_indexToUnit[_currentHighestIndex]);
-            if(m_currentTargets.Count == m_currentSelectData.needCount)
+            m_currentSelectedTargets.Add(m_indexToUnit[_currentHighestIndex]);
+            if(m_currentSelectedTargets.Count == m_currentSelectData.needCount)
             {
-                m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
             }
             else
             {
@@ -323,7 +386,7 @@ namespace ProjectBS.UI
                     {
                         for(int i = 0; i < _allKeys.Count; i++)
                         {
-                            m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
+                            m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
                         }
                         break;
                     }
@@ -335,7 +398,7 @@ namespace ProjectBS.UI
                             {
                                 if(_allKeys[i] <= 3)
                                 {
-                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
+                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -345,7 +408,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] > 3)
                                 {
-                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
+                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -359,7 +422,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] > 3)
                                 {
-                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
+                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -369,7 +432,7 @@ namespace ProjectBS.UI
                             {
                                 if (_allKeys[i] <= 3)
                                 {
-                                    m_currentTargets.Add(m_indexToUnit[_allKeys[i]]);
+                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
                                 }
                             }
                         }
@@ -377,7 +440,7 @@ namespace ProjectBS.UI
                     }
             }
 
-            m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+            m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
             m_currentSelectData = null;
         }
 
@@ -397,11 +460,11 @@ namespace ProjectBS.UI
                 if(m_indexToUnit.ContainsKey(_randomPool[_roll])
                     && m_indexToUnit[_randomPool[_roll]] != m_currentSelectData.attacker)
                 {
-                    m_currentTargets.Add(m_indexToUnit[_randomPool[_roll]]);
+                    m_currentSelectedTargets.Add(m_indexToUnit[_randomPool[_roll]]);
 
-                    if(m_currentTargets.Count == m_currentSelectData.needCount)
+                    if(m_currentSelectedTargets.Count == m_currentSelectData.needCount)
                     {
-                        m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+                        m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
                         return;
                     }
                     else
@@ -415,7 +478,7 @@ namespace ProjectBS.UI
                 }
             }
 
-            m_currentSelectData.onSelected?.Invoke(m_currentTargets);
+            m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
             m_currentSelectData = null;
         }
 

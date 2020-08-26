@@ -250,19 +250,19 @@ namespace ProjectBS.Combat
                     }
                 case "BeginIf":
                     {
-                        return null;
+                        return new EffectCommand_BeginIf();
                     }
-                case "ElseIf":
+                case "BeginIf_Effect":
                     {
-                        return null;
+                        return new EffectCommand_BeginIf_Effect();
                     }
-                case "Else":
+                case "BeginIf_Skill":
                     {
-                        return null;
+                        return new EffectCommand_BeginIf_Skill();
                     }
                 case "EndIf":
                     {
-                        return null;
+                        return new EffectCommand_EndIf();
                     }
                 case "StoreDamage":
                     {
@@ -275,6 +275,14 @@ namespace ProjectBS.Combat
                 case "ReplaceSkill":
                     {
                         return null;
+                    }
+                case "CastSkill":
+                    {
+                        return new EffectCommand_CastSkill();
+                    }
+                case "RandomCastSkill":
+                    {
+                        return new EffectCommand_RandomCastSkill();
                     }
                 default:
                     {

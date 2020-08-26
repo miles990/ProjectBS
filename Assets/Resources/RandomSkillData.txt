@@ -1,0 +1,1 @@
+[{"ID":10001,"SkillID1":10001,"Weight1":50,"SkillID2":10002,"Weight2":20,"SkillID3":10005,"Weight3":20,"SkillID4":10006,"Weight4":10,"SkillID5":null,"Weight5":null}]
