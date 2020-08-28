@@ -1,3 +1,28 @@
 [{"ID":1,"NameContextID":7,"DescriptionContextID":8,"Command":"OnActived\n{
      AddStatus(Target, Defence, Target.Defence * 0.5); 
-}","MaxStackCount":1}]
+}","MaxStackCount":1},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":10001,"NameContextID":10002,"DescriptionContextID":10003,"Command":"OnDamageTaken_Self\n{
+     BeginIf(Self.HP <= 0);
+     SetStatus(Self, HP, 1);
+     RemoveBuff(Self, 10001, -1);
+     GainBuff(Self, 10002, 3);
+     EndIf();
+}","MaxStackCount":1},
+{"ID":10002,"NameContextID":10004,"DescriptionContextID":10005,"Command":"OnActived\n{
+     AddStatus(Self, HP, Self.MaxHP * 0.15);
+}
+
+OnDeactived
+{
+     AddStatus(Self, HP, Self.MaxHP * 0.1);
+     GainBuff(Self, 10001, -1);
+}","MaxStackCount":1},
+{"ID":10003,"NameContextID":10006,"DescriptionContextID":10007,"Command":"OnStartToTakeDamage_Self\n{
+     BeginIf_Effect(Self, 1, 10001);
+     AddDamage(-15%);
+     EndIf();
+}","MaxStackCount":1},
+{"ID":10004,"NameContextID":10022,"DescriptionContextID":10023,"Command":"","MaxStackCount":1}]

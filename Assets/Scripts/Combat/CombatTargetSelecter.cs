@@ -41,7 +41,6 @@ namespace ProjectBS.Combat
                 _vars = _var.Split(',');
             }
 
-
             UI.CombatUIView.SelectTargetData _selectData = null;
             switch (_command)
             {

@@ -79,23 +79,16 @@ namespace ProjectBS.Combat
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
             m_units.Add(new CombatUnit
             {
-                //ai = boss.AI,
-                ai = "Boss AI here",
+                ai = boss.AI,
                 rawAttack = boss.Attack,
                 camp = CombatUnit.Camp.Boss,
-                //rawDefence = boss.Defence,
-                rawDefence = 100,
-                //rawMaxHP = boss.HP,
-                rawMaxHP = 10000,
-                //HP = boss.HP,
-                HP = 10000,
-                //name = ContextConverter.Instance.GetContext(boss.NameContextID),
-                name = "Boss",
+                rawDefence = boss.Defence,
+                rawMaxHP = boss.HP,
+                HP = boss.HP,
+                name = ContextConverter.Instance.GetContext(boss.NameContextID),
                 skills = "",
-                //SP = boss.SP,
-                SP = 100,
-                //rawSpeed = boss.Speed,
-                rawSpeed = 100,
+                SP = boss.SP,
+                rawSpeed = boss.Speed,
                 hatred = 1,
                 //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
                 body = null,
@@ -113,6 +106,11 @@ namespace ProjectBS.Combat
         public void SetForceStopCurrentAction()
         {
             m_currentAction.SetForceStopOnStart();
+        }
+
+        public void ShowDamage(UI.CombatUIView.DisplayDamageData displayDamageData)
+        {
+            GetPage<UI.CombatUIView>().DisplayDamage(displayDamageData);
         }
 
         private void AddUnit(OwningCharacterData character)
@@ -158,7 +156,7 @@ namespace ProjectBS.Combat
         {
             TurnCount++;
 
-            m_units.Sort((x, y) => x.GetSpeed().CompareTo(y.GetSpeed()));
+            m_units.Sort((x, y) => y.GetSpeed().CompareTo(x.GetSpeed()));
             m_unitActions.Clear();
 
             for (int i = 0; i < m_units.Count; i++)
@@ -197,10 +195,12 @@ namespace ProjectBS.Combat
 
         private void OnActionEnded()
         {
+            UnityEngine.Debug.Log("OnActionEnded");
             for(int i = 0; i < m_units.Count; i++)
             {
                 if(m_units[i].HP <= 0)
                 {
+                    UnityEngine.Debug.Log("Has Unit Died");
                     m_currentDyingUnit = m_units[i];
                     m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
                     {
@@ -243,9 +243,11 @@ namespace ProjectBS.Combat
             {
                 if(_playerCount == 0)
                 {
+                    UnityEngine.Debug.Log("Player Lose");
                 }
                 else
                 {
+                    UnityEngine.Debug.Log("Player Win");
                 }
             }
         }

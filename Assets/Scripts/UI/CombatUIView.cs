@@ -78,15 +78,8 @@ namespace ProjectBS.UI
             int _currentPlayerIndex = 0;
             int _currentBossIndex = 4;
 
-            string _log = "";
             for (int i = 0; i < units.Count; i++)
             { 
-                _log += "Set Unit UI------------------------------\n";
-                _log += string.Format("units[{0}].camp={1}\n", i, units[i].camp.ToString());
-                _log += string.Format("units[{0}].name={1}={1}\n", i, units[i].name);
-                _log += string.Format("units[{0}].hp={1}\n", i, units[i].HP);
-                _log += string.Format("units[{0}].sp={1}\n", i, units[i].SP);
-
                 if (units[i].camp == CombatUnit.Camp.Player)
                 {
                     m_indexToUnit.Add(_currentPlayerIndex, units[i]);
@@ -102,13 +95,11 @@ namespace ProjectBS.UI
                     _currentBossIndex++;
                 }
             }
-
-            Debug.Log(_log);
         }
 
         public void ShowTurnStart(int turnCount)
         {
-            Debug.LogFormat("第 {0} 回合", turnCount);
+            Debug.LogFormat("第 {0} 回合 開始", turnCount);
             TimerManager.Schedule(1f, OnTurnStartAnimationEnded);
         }
 
@@ -127,7 +118,11 @@ namespace ProjectBS.UI
 
             for (int i = 0; i < m_currentShowingSkills.Count; i++)
             {
-                Debug.LogFormat("Skill {0}: {1}", i, ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID));
+                Debug.LogFormat("Skill {0}[Key={1}]: {2}\n{3}", 
+                    i, 
+                    i + 1,
+                    ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID),
+                    ContextConverter.Instance.GetContext(m_currentShowingSkills[i].DescriptionContextID));
             }
         }
 
@@ -144,6 +139,11 @@ namespace ProjectBS.UI
 
         public void Button_SelectSkill(int index)
         {
+            if (m_currentShowingSkills == null
+                || m_currentShowingSkills.Count <= index
+                || m_currentShowingSkills[index] == null)
+                return;
+
             Debug.Log("已選擇技能 " + ContextConverter.Instance.GetContext(m_currentShowingSkills[index].NameContextID));
             OnSkillSelected?.Invoke(m_currentShowingSkills[index]);
         }
@@ -566,6 +566,31 @@ namespace ProjectBS.UI
             }
         }
 
+        private string TEST_GetKeyBoardKey(int index)
+        {
+            switch(index)
+            {
+                case 0:
+                    return "Q";
+                case 1:
+                    return "W";
+                case 2:
+                    return "E";
+                case 3:
+                    return "R";
+                case 4:
+                    return "T";
+                case 5:
+                    return "Y";
+                case 6:
+                    return "U";
+                case 7:
+                    return "I";
+                default:
+                    return "";
+            }
+        }
+
         private void EnableSelectBossButton(bool enable)
         {
             for(int i = 4; i < 9; i++)
@@ -573,7 +598,7 @@ namespace ProjectBS.UI
                 if(m_indexToUnit.ContainsKey(i))
                 {
                     if(enable)
-                        Debug.Log("可選擇目標:" + m_indexToUnit[i].name);
+                        Debug.LogFormat("可選擇目標[Key={0}]:" + m_indexToUnit[i].name, TEST_GetKeyBoardKey(i));
                     m_indexToEnableState[i] = enable;
                 }
             }
@@ -586,7 +611,7 @@ namespace ProjectBS.UI
                 if (m_indexToUnit.ContainsKey(i))
                 {
                     if (enable)
-                        Debug.Log("可選擇目標:" + m_indexToUnit[i].name);
+                        Debug.LogFormat("可選擇目標[Key={0}]:" + m_indexToUnit[i].name, TEST_GetKeyBoardKey(i));
                     m_indexToEnableState[i] = enable;
                 }
             }

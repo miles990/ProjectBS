@@ -33,7 +33,8 @@ namespace ProjectBS.Combat
             OnStartToEndTurn,
             OnBattleEnded,
             OnActived,
-            OnDeactived
+            OnDeactived,
+            AI
         }
 
         public class ProcessData
@@ -169,7 +170,6 @@ namespace ProjectBS.Combat
             string _deserializeBuffer = "";
             int _leftCounter = 0;
             EffectData _newData = new EffectData();
-
             for (int i = 0; i < commandData.Length; i++)
             {
                 if (_leftCounter > 0)
@@ -179,7 +179,33 @@ namespace ProjectBS.Combat
                         _leftCounter--;
                         if (_leftCounter <= 0)
                         {
-                            _newData.vars = _deserializeBuffer.Split(',');
+                            int _varLeftCounter = 0;
+                            string _varBuffer = "";
+                            List<string> _varsTempList = new List<string>();
+                            for(int j = 0; j < _deserializeBuffer.Length; j++)
+                            {
+                                if (_deserializeBuffer[j] == ',' && _varLeftCounter == 0)
+                                {
+                                    _varsTempList.Add(_varBuffer);
+                                    _varBuffer = "";
+                                    continue;
+                                }
+                                _varBuffer += _deserializeBuffer[j];
+                                if(_deserializeBuffer[j] == ')')
+                                {
+                                    _varLeftCounter--;
+                                }
+                                if (_deserializeBuffer[j] == '(')
+                                {
+                                    _varLeftCounter++;
+                                }
+                                if(j == _deserializeBuffer.Length - 1)
+                                {
+                                    _varsTempList.Add(_varBuffer);
+                                }
+                            }
+
+                            _newData.vars = _varsTempList.ToArray();
                             return _newData;
                         }
                     }

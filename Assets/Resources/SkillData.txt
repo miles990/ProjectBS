@@ -1,6 +1,32 @@
 [{"ID":1,"NameContextID":1,"DescriptionContextID":2,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, -1);
+     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);
 }","SkillScrollItemID":1},
 {"ID":2,"NameContextID":5,"DescriptionContextID":6,"Command":"OnActived\n{
      GainBuff(Self, 1, 1);
-}","SkillScrollItemID":2}]
+}","SkillScrollItemID":2},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
+{"ID":10001,"NameContextID":10008,"DescriptionContextID":10009,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);
+}","SkillScrollItemID":0},
+{"ID":10002,"NameContextID":10010,"DescriptionContextID":10011,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);
+     CastSkill(10003);
+}","SkillScrollItemID":0},
+{"ID":10003,"NameContextID":10012,"DescriptionContextID":10013,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);
+     CastSkill(10004);
+}","SkillScrollItemID":0},
+{"ID":10004,"NameContextID":10014,"DescriptionContextID":10015,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);
+}","SkillScrollItemID":0},
+{"ID":10005,"NameContextID":10016,"DescriptionContextID":10017,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1, 0, 0);
+}","SkillScrollItemID":0},
+{"ID":10006,"NameContextID":10018,"DescriptionContextID":10019,"Command":"OnActived\n{
+     GainBuff(Self, 10004, 2);
+}","SkillScrollItemID":0},
+{"ID":10007,"NameContextID":10020,"DescriptionContextID":10021,"Command":"OnActived\n{
+     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);
+}","SkillScrollItemID":0}]

@@ -73,7 +73,18 @@ namespace ProjectBS.Combat
 
             if (!string.IsNullOrEmpty(Actor.ai))
             {
-                // TODO
+                new EffectProcesser(Actor.ai).Start(
+                    new EffectProcesser.ProcessData
+                    {
+                        caster = Actor,
+                        target = null,
+                        refenceSkill = null,
+                        referenceBuff = null,
+                        skipIfCount = 0,
+                        allEffectProcesser = m_processer,
+                        timing = EffectProcesser.TriggerTiming.AI,
+                        onEnded = OnSkillEnded
+                    });
             }
             else
             {

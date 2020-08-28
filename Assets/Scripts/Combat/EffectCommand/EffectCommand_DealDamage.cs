@@ -74,6 +74,8 @@ namespace ProjectBS.Combat.EffectCommand
             int _roll = int.Parse(m_rollMin);
             _roll = UnityEngine.Random.Range(_roll, 101);
 
+            float _rollPersent = 0.01f * (float)_roll;
+
             if(!float.TryParse(m_valueString, out float _attack))
             {
                 _attack = CombatUtility.Calculate(new CombatUtility.CalculateData
@@ -85,13 +87,25 @@ namespace ProjectBS.Combat.EffectCommand
                 });
             }
 
-            float _finalAttackValue = (float)(_attack + _attack * _roll);
-            float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0, 101));
+            //UnityEngine.Debug.Log("_attack=" + _attack);
+            //UnityEngine.Debug.Log("_rollPersent=" + _rollPersent);
+
+            float _finalAttackValue = (float)(_attack + _attack * _rollPersent);
+            float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0f, 1f));
             float _ingnoreDefence = float.Parse(m_ingnoreDefence);
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
             float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));
+
+            //UnityEngine.Debug.Log("_finalAttackValue=" + _finalAttackValue);
+            //UnityEngine.Debug.Log("_finalDefenceValue=" + _finalDefenceValue);
+            //UnityEngine.Debug.Log("_ingnoreDefence=" + _ingnoreDefence);
+            //UnityEngine.Debug.Log("_flee=" + _flee);
+            //UnityEngine.Debug.Log("_fleeReduceDmgPersent=" + _fleeReduceDmgPersent);
+
             float _rawDmg = (_finalAttackValue - (_finalDefenceValue * (1f - _ingnoreDefence))) * _fleeReduceDmgPersent;
+            //UnityEngine.Debug.Log("_rawDmg=" + _rawDmg);
             int _dmg = Convert.ToInt32(_rawDmg);
+            //UnityEngine.Debug.Log("_dmg=" + _dmg);
 
             if (_dmg < 1)
                 _dmg = 1;
@@ -155,6 +169,8 @@ namespace ProjectBS.Combat.EffectCommand
         private void ApplyDamageToNextTarget()
         {
             m_currentTargetIndex++;
+            UnityEngine.Debug.Log("m_currentTargetIndex=" + m_currentTargetIndex);
+            UnityEngine.Debug.Log("m_targets.Count=" + m_targets.Count);
             if (m_currentTargetIndex >= m_targets.Count)
             {
                 KahaGameCore.Static.TimerManager.Schedule(1f, m_onCompleted);
@@ -165,7 +181,13 @@ namespace ProjectBS.Combat.EffectCommand
             m_targets[m_currentTargetIndex].hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             processData.caster.hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
-            // TODO: display damage
+            CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
+            {
+                attackerName = processData.caster.name,
+                defenderName = m_targets[m_currentTargetIndex].name,
+                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]],
+                skillName = ContextConverter.Instance.GetContext(processData.refenceSkill.NameContextID)
+            });
 
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
