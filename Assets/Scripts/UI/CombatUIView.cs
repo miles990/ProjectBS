@@ -353,13 +353,18 @@ namespace ProjectBS.UI
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 List<CombatUnit> units = new List<CombatUnit>(m_unitToIndex.Keys);
+                Debug.Log("==========DISPLAY INFO==========");
                 for(int i = 0; i < units.Count; i++)
                 {
-                    for(int j = 0; j < units[i].buffs.Count; j++)
+                    Debug.LogFormat("{0}\nHP:{1}/{2}, Atk:{3}, Def:{4}, Spd={5}", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed());
+
+                    for (int j = 0; j < units[i].buffs.Count; j++)
                     {
-                        Debug.Log(units[i].buffs[j].effectID);
+                        Data.SkillEffectData _effect = GameDataManager.GetGameData<Data.SkillEffectData>(units[i].buffs[j].effectID);
+                        Debug.LogFormat("{0}x{1}[{2}]\n{3}", ContextConverter.Instance.GetContext(_effect.NameContextID), units[i].buffs[j].stackCount, units[i].buffs[j].remainingTime, ContextConverter.Instance.GetContext(_effect.DescriptionContextID));
                     }
                 }
+                Debug.Log("================================");
             }
         }
     }
