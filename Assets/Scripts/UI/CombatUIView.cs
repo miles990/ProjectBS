@@ -361,7 +361,7 @@ namespace ProjectBS.UI
                     for (int j = 0; j < units[i].buffs.Count; j++)
                     {
                         Data.SkillEffectData _effect = GameDataManager.GetGameData<Data.SkillEffectData>(units[i].buffs[j].effectID);
-                        Debug.LogFormat("{0}x{1}[{2}]\n{3}", ContextConverter.Instance.GetContext(_effect.NameContextID), units[i].buffs[j].stackCount, units[i].buffs[j].remainingTime, ContextConverter.Instance.GetContext(_effect.DescriptionContextID));
+                        Debug.LogFormat("{0}x{1}[持續回合:{2}]\n{3}", ContextConverter.Instance.GetContext(_effect.NameContextID), units[i].buffs[j].stackCount, units[i].buffs[j].remainingTime == -1 ? "永久" : units[i].buffs[j].remainingTime.ToString(), ContextConverter.Instance.GetContext(_effect.DescriptionContextID));
                     }
                 }
                 Debug.Log("================================");

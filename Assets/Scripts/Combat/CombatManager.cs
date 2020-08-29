@@ -78,7 +78,7 @@ namespace ProjectBS.Combat
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_2));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
-            m_units.Add(new CombatUnit
+            CombatUnit _boss = new CombatUnit
             {
                 ai = boss.AI,
                 rawAttack = boss.Attack,
@@ -98,7 +98,24 @@ namespace ProjectBS.Combat
                 head = null,
                 buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
-            });
+            };
+
+            if(!string.IsNullOrEmpty(boss.EffectIDs))
+            {
+                string[] _effectIDs = boss.EffectIDs.Split(';');
+                for(int i = 0; i < _effectIDs.Length; i++)
+                {
+                    _boss.buffs.Add(new CombatUnit.Buff
+                    {
+                        effectID = int.Parse(_effectIDs[i]),
+                        from = _boss,
+                        remainingTime = -1,
+                        stackCount = 1
+                    });
+                }
+            }
+
+            m_units.Add(_boss);
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
