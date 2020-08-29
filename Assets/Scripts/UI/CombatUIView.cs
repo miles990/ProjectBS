@@ -97,6 +97,11 @@ namespace ProjectBS.UI
             }
         }
 
+        public void ShowUnitDied(CombatUnit dyingUnit)
+        {
+            Debug.LogFormat("{0} 死亡", dyingUnit.name);
+        }
+
         public void ShowTurnStart(int turnCount)
         {
             Debug.LogFormat("第 {0} 回合 開始", turnCount);
@@ -107,6 +112,18 @@ namespace ProjectBS.UI
         {
             Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
             TimerManager.Schedule(1f, OnActionAnimationEnded);
+        }
+
+        public void ShowGameEnd(bool playerWin)
+        {
+            if (playerWin)
+            {
+                Debug.Log("Player Win");
+            }
+            else
+            {
+                Debug.Log("Player Lose");
+            }
         }
 
         public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)

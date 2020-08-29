@@ -195,12 +195,10 @@ namespace ProjectBS.Combat
 
         private void OnActionEnded()
         {
-            UnityEngine.Debug.Log("OnActionEnded");
             for(int i = 0; i < m_units.Count; i++)
             {
                 if(m_units[i].HP <= 0)
                 {
-                    UnityEngine.Debug.Log("Has Unit Died");
                     m_currentDyingUnit = m_units[i];
                     m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
                     {
@@ -241,14 +239,7 @@ namespace ProjectBS.Combat
             }
             else
             {
-                if(_playerCount == 0)
-                {
-                    UnityEngine.Debug.Log("Player Lose");
-                }
-                else
-                {
-                    UnityEngine.Debug.Log("Player Win");
-                }
+                GetPage<UI.CombatUIView>().ShowGameEnd(_playerCount != 0);
             }
         }
 
@@ -265,6 +256,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
+            GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit);
             m_units.Remove(m_currentDyingUnit);
             m_currentDyingUnit = null;
             OnActionEnded();

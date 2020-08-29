@@ -169,8 +169,6 @@ namespace ProjectBS.Combat.EffectCommand
         private void ApplyDamageToNextTarget()
         {
             m_currentTargetIndex++;
-            UnityEngine.Debug.Log("m_currentTargetIndex=" + m_currentTargetIndex);
-            UnityEngine.Debug.Log("m_targets.Count=" + m_targets.Count);
             if (m_currentTargetIndex >= m_targets.Count)
             {
                 KahaGameCore.Static.TimerManager.Schedule(1f, m_onCompleted);
