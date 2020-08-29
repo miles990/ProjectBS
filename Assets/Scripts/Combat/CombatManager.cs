@@ -36,6 +36,7 @@ namespace ProjectBS.Combat
 
         private CombatManager() { } 
 
+        public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
         private List<CombatUnit> m_units = new List<CombatUnit>();
 
         public int TurnCount { get; private set; } = 0;
@@ -258,7 +259,10 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit);
             m_units.Remove(m_currentDyingUnit);
+            m_unitActions.Remove(m_unitActions.Find(x => x.Actor == m_currentDyingUnit));
+
             m_currentDyingUnit = null;
+
             OnActionEnded();
         }
 

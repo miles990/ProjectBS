@@ -156,7 +156,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void ShowAttackAnimation()
         {
-            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + processData.caster.lastSkillID);
+            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + processData.refenceSkill.ID);
             KahaGameCore.Static.TimerManager.Schedule(1f, OnAnimationShown);
         }
 
@@ -177,6 +177,8 @@ namespace ProjectBS.Combat.EffectCommand
 
             m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             m_targets[m_currentTargetIndex].hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            if (m_targets[m_currentTargetIndex].hatred < 1)
+                m_targets[m_currentTargetIndex].hatred = 1;
             processData.caster.hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
             CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData

@@ -7,6 +7,34 @@ namespace ProjectBS.Combat
 {
     public class CombatTargetSelecter : Manager
     {
+        public enum SelectRange
+        {
+            SameSide,
+            Opponent,
+            All
+        }
+
+        public enum SelectType
+        {
+            Manual,
+            Random,
+            HighestMaxHP,
+            HighestHP,
+            HighestSP,
+            HighestAttack,
+            HighestDefence,
+            HighestSpeed,
+            HighestHatred,
+            LowestMaxHP,
+            LowestHP,
+            LowestSP,
+            LowestAttack,
+            LowestDefence,
+            LowestSpeed,
+            LowestHatred,
+            RandomByHatred
+        }
+
         public static CombatTargetSelecter Instance
         {
             get
@@ -29,6 +57,15 @@ namespace ProjectBS.Combat
             public Action<List<CombatUnit>> onSelected = null;
         }
 
+        private CombatUnit m_attacker = null;
+        private bool m_inculdeAttacker = false;
+        private int m_needCount = 0;
+        private List<CombatUnit> m_allUnit = new List<CombatUnit>();
+        private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
+        private SelectRange m_currentSelectRange = SelectRange.All;
+        private SelectType m_currentSelectType = SelectType.Random;
+        private Action<List<CombatUnit>> m_onSelected = null;
+
         public void StartSelect(SelectTargetData data)
         {
             string[] _commandParts = data.commandString.Split('(');
@@ -41,7 +78,6 @@ namespace ProjectBS.Combat
                 _vars = _var.Split(',');
             }
 
-            UI.CombatUIView.SelectTargetData _selectData = null;
             switch (_command)
             {
                 case "Self":
@@ -52,21 +88,313 @@ namespace ProjectBS.Combat
                 case "Select":
                 case "SelectOther":
                     {
-                        _selectData = new UI.CombatUIView.SelectTargetData
+                        m_currentSelectedTargets.Clear();
+                        m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
+                        m_currentSelectType = (SelectType)Enum.Parse(typeof(SelectType), _vars[1]);
+                        m_allUnit = CombatManager.Instance.AllUnit;
+                        m_needCount = int.Parse(_vars[2]);
+                        m_attacker = data.attacker;
+                        m_onSelected = data.onSelected;
+                        m_inculdeAttacker = _command == "Select";
+
+                        if (m_currentSelectType == SelectType.Manual)
                         {
-                            attacker = data.attacker,
-                            inculdeAttacker = true,
-                            needCount = int.Parse(_vars[2]),
-                            onSelected = data.onSelected
-                        };
+                            UI.CombatUIView.SelectTargetData _selectData = new UI.CombatUIView.SelectTargetData
+                            {
+                                attacker = m_attacker,
+                                inculdeAttacker = m_inculdeAttacker,
+                                needCount = m_needCount,
+                                onSelected = m_onSelected
+                            };
+                            GetPage<UI.CombatUIView>().StartSelectTarget(_selectData);
+                        }
+                        else
+                        {
+                            
+                            DoSelect();
+                        }
+                        break;
+                    }
+            }
+        }
+
+        private void DoSelect()
+        {
+            if (m_needCount == -1)
+            {
+                SelectAll();
+            }
+            else
+            {
+                switch (m_currentSelectType)
+                {
+                    case SelectType.Random:
+                        {
+                            RandomSelect();
+                            break;
+                        }
+                    case SelectType.HighestHP:
+                        {
+                            SelectByStatus(Keyword.HP, true);
+                            break;
+                        }
+                    case SelectType.HighestMaxHP:
+                        {
+                            SelectByStatus(Keyword.MaxHP, true);
+                            break;
+                        }
+                    case SelectType.HighestSP:
+                        {
+                            SelectByStatus(Keyword.SP, true);
+                            break;
+                        }
+                    case SelectType.HighestAttack:
+                        {
+                            SelectByStatus(Keyword.Attack, true);
+                            break;
+                        }
+                    case SelectType.HighestDefence:
+                        {
+                            SelectByStatus(Keyword.Defence, true);
+                            break;
+                        }
+                    case SelectType.HighestSpeed:
+                        {
+                            SelectByStatus(Keyword.Speed, true);
+                            break;
+                        }
+                    case SelectType.HighestHatred:
+                        {
+                            SelectByStatus(Keyword.Hatred, true);
+                            break;
+                        }
+                    case SelectType.LowestHP:
+                        {
+                            SelectByStatus(Keyword.HP, false);
+                            break;
+                        }
+                    case SelectType.LowestMaxHP:
+                        {
+                            SelectByStatus(Keyword.MaxHP, false);
+                            break;
+                        }
+                    case SelectType.LowestSP:
+                        {
+                            SelectByStatus(Keyword.SP, false);
+                            break;
+                        }
+                    case SelectType.LowestAttack:
+                        {
+                            SelectByStatus(Keyword.Attack, false);
+                            break;
+                        }
+                    case SelectType.LowestDefence:
+                        {
+                            SelectByStatus(Keyword.Defence, false);
+                            break;
+                        }
+                    case SelectType.LowestSpeed:
+                        {
+                            SelectByStatus(Keyword.Speed, false);
+                            break;
+                        }
+                    case SelectType.LowestHatred:
+                        {
+                            SelectByStatus(Keyword.Hatred, false);
+                            break;
+                        }
+                    case SelectType.RandomByHatred:
+                        {
+                            SelectByRandomByHatred();
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void SelectByRandomByHatred()
+        {
+            List<CombatUnit> _rollPool = new List<CombatUnit>();
+            int _totalHatred = 0;
+
+            for (int i = 0; i < m_allUnit.Count; i++)
+            {
+                switch (m_currentSelectRange)
+                {
+                    case SelectRange.All:
+                        {
+                            _rollPool.Add(m_allUnit[i]);
+                            _totalHatred += m_allUnit[i].hatred;
+                            break;
+                        }
+                    case SelectRange.Opponent:
+                        {
+                            if (m_allUnit[i].camp != m_attacker.camp)
+                            {
+                                _rollPool.Add(m_allUnit[i]);
+                                _totalHatred += m_allUnit[i].hatred;
+                            }
+                            break;
+                        }
+                    case SelectRange.SameSide:
+                        {
+                            if (m_allUnit[i].camp == m_attacker.camp)
+                            {
+                                _rollPool.Add(m_allUnit[i]);
+                                _totalHatred += m_allUnit[i].hatred;
+                            }
+                            break;
+                        }
+                }
+            }
+
+            int _roll = UnityEngine.Random.Range(1, _totalHatred + 1);
+            for (int i = 0; i < _rollPool.Count; i++)
+            {
+                _roll -= _rollPool[i].hatred;
+                if (_roll <= 0)
+                {
+                    m_currentSelectedTargets.Add(_rollPool[i]);
+                    break;
+                }
+            }
+
+            if (m_currentSelectedTargets.Count == m_needCount)
+            {
+                CompleteSelect();
+            }
+            else
+            {
+                SelectByRandomByHatred();
+            }
+        }
+
+        private void SelectByStatus(string statusType, bool getHighest)
+        {
+            CombatUnit _currentSelect = null;
+            for (int i = 0; i < m_allUnit.Count; i++)
+            {
+                if (m_currentSelectRange == SelectRange.Opponent
+                    && m_allUnit[i].camp == m_attacker.camp)
+                {
+                    continue;
+                }
+                if (m_currentSelectRange == SelectRange.SameSide
+                    && m_allUnit[i].camp != m_attacker.camp)
+                {
+                    continue;
+                }
+
+                if (_currentSelect == null)
+                {
+                    _currentSelect = m_allUnit[i];
+                    continue;
+                }
+
+                if ((getHighest && CombatUtility.GetStatusValue(m_allUnit[i], statusType, false) > CombatUtility.GetStatusValue(_currentSelect, statusType, false))
+                    || (!getHighest && CombatUtility.GetStatusValue(m_allUnit[i], statusType, false) < CombatUtility.GetStatusValue(_currentSelect, statusType, false)))
+                {
+                    _currentSelect = m_allUnit[i];
+                }
+            }
+
+            m_currentSelectedTargets.Add(_currentSelect);
+            if (m_currentSelectedTargets.Count == m_needCount)
+            {
+                CompleteSelect();
+            }
+            else
+            {
+                SelectByStatus(statusType, getHighest);
+            }
+        }
+
+        private void SelectAll()
+        {
+            switch (m_currentSelectRange)
+            {
+                case SelectRange.All:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            m_currentSelectedTargets.Add(m_allUnit[i]);
+                        }
+                        break;
+                    }
+                case SelectRange.Opponent:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            if(m_attacker.camp != m_allUnit[i].camp)
+                                m_currentSelectedTargets.Add(m_allUnit[i]);
+                        }
+                        break;
+                    }
+                case SelectRange.SameSide:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            if (m_attacker.camp == m_allUnit[i].camp)
+                                m_currentSelectedTargets.Add(m_allUnit[i]);
+                        }
                         break;
                     }
             }
 
-            _selectData.selectRange = (UI.CombatUIView.SelectRange)Enum.Parse(typeof(UI.CombatUIView.SelectRange), _vars[0]);
-            _selectData.selectType = (UI.CombatUIView.SelectType)Enum.Parse(typeof(UI.CombatUIView.SelectType), _vars[1]);
+            CompleteSelect();
+        }
 
-            GetPage<UI.CombatUIView>().StartSelectTarget(_selectData);
+        private void RandomSelect()
+        {
+            List<CombatUnit> _randomPool = new List<CombatUnit>();
+            switch (m_currentSelectRange)
+            {
+                case SelectRange.All:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            _randomPool.Add(m_allUnit[i]);
+                        }
+                        break;
+                    }
+                case SelectRange.Opponent:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            if (m_attacker.camp != m_allUnit[i].camp)
+                                _randomPool.Add(m_allUnit[i]);
+                        }
+                        break;
+                    }
+                case SelectRange.SameSide:
+                    {
+                        for (int i = 0; i < m_allUnit.Count; i++)
+                        {
+                            if (m_attacker.camp == m_allUnit[i].camp)
+                                _randomPool.Add(m_allUnit[i]);
+                        }
+                        break;
+                    }
+            }
+
+            while (_randomPool.Count > 0)
+            {
+                int _roll = UnityEngine.Random.Range(0, _randomPool.Count);
+                m_currentSelectedTargets.Add(_randomPool[_roll]);
+                _randomPool.RemoveAt(_roll);
+                if(m_currentSelectedTargets.Count == m_needCount)
+                {
+                    CompleteSelect();
+                    return;
+                }
+            }
+
+            CompleteSelect();
+        }
+
+        private void CompleteSelect()
+        {
+            m_onSelected?.Invoke(m_currentSelectedTargets);
         }
     }
 }

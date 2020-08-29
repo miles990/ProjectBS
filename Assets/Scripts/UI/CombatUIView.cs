@@ -9,34 +9,6 @@ namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
-        public enum SelectRange
-        {
-            SameSide,
-            Opponent,
-            All
-        }
-
-        public enum SelectType
-        {
-            Manual,
-            Random,
-            HighestMaxHP,
-            HighestHP,
-            HighestSP,
-            HighestAttack,
-            HighestDefence,
-            HighestSpeed,
-            HighestHatred,
-            LowestMaxHP,
-            LowestHP,
-            LowestSP,
-            LowestAttack,
-            LowestDefence,
-            LowestSpeed,
-            LowestHatred,
-            RandomByHatred
-        }
-
         public override bool IsShowing => throw new NotImplementedException();
 
         public event Action OnTurnStartAnimationEnded = null;
@@ -45,8 +17,7 @@ namespace ProjectBS.UI
 
         public class SelectTargetData
         {
-            public SelectRange selectRange = SelectRange.All;
-            public SelectType selectType = SelectType.Random;
+            public CombatTargetSelecter.SelectRange selectRange = CombatTargetSelecter.SelectRange.All;
             public CombatUnit attacker = null;
             public int needCount = 0;
             public bool inculdeAttacker = false;
@@ -62,6 +33,7 @@ namespace ProjectBS.UI
 
         private SelectTargetData m_currentSelectData = null;
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
+        private Action<List<CombatUnit>> m_onSelected = null;
 
         public override void ForceShow(Manager manager, bool show)
         {
@@ -150,8 +122,9 @@ namespace ProjectBS.UI
 
             m_currentSelectedTargets.Clear();
             m_currentSelectData = data;
+            m_onSelected = data.onSelected;
 
-            DoSelect();
+            WaitPlayerSelect();
         }
 
         public void Button_SelectSkill(int index)
@@ -182,14 +155,15 @@ namespace ProjectBS.UI
 
             if(m_currentSelectedTargets.Count < m_currentSelectData.needCount)
             {
-                DoSelect();
+                WaitPlayerSelect();
             }
             else
             {
                 EnableSelectBossButton(false);
                 EnableSelectPlayerButton(false);
-                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
+
                 m_currentSelectData = null;
+                m_onSelected?.Invoke(m_currentSelectedTargets);
             }
         }
 
@@ -211,305 +185,17 @@ namespace ProjectBS.UI
                 );
         }
 
-        private void DoSelect()
-        {
-            if (m_currentSelectData.needCount == -1)
-            {
-                SelectAll();
-            }
-            else 
-            {
-                switch(m_currentSelectData.selectType)
-                {
-                    case SelectType.Manual:
-                        {
-                            WaitPlayerSelect();
-                            break;
-                        }
-                    case SelectType.Random:
-                        {
-                            RandomSelect();
-                            break;
-                        }
-                    case SelectType.HighestHP:
-                        {
-                            SelectByStatus(Keyword.HP, true);
-                            break;
-                        }
-                    case SelectType.HighestMaxHP:
-                        {
-                            SelectByStatus(Keyword.MaxHP, true);
-                            break;
-                        }
-                    case SelectType.HighestSP:
-                        {
-                            SelectByStatus(Keyword.SP, true);
-                            break;
-                        }
-                    case SelectType.HighestAttack:
-                        {
-                            SelectByStatus(Keyword.Attack, true);
-                            break;
-                        }
-                    case SelectType.HighestDefence:
-                        {
-                            SelectByStatus(Keyword.Defence, true);
-                            break;
-                        }
-                    case SelectType.HighestSpeed:
-                        {
-                            SelectByStatus(Keyword.Speed, true);
-                            break;
-                        }
-                    case SelectType.HighestHatred:
-                        {
-                            SelectByStatus(Keyword.Hatred, true);
-                            break;
-                        }
-                    case SelectType.LowestHP:
-                        {
-                            SelectByStatus(Keyword.HP, false);
-                            break;
-                        }
-                    case SelectType.LowestMaxHP:
-                        {
-                            SelectByStatus(Keyword.MaxHP, false);
-                            break;
-                        }
-                    case SelectType.LowestSP:
-                        {
-                            SelectByStatus(Keyword.SP, false);
-                            break;
-                        }
-                    case SelectType.LowestAttack:
-                        {
-                            SelectByStatus(Keyword.Attack, false);
-                            break;
-                        }
-                    case SelectType.LowestDefence:
-                        {
-                            SelectByStatus(Keyword.Defence, false);
-                            break;
-                        }
-                    case SelectType.LowestSpeed:
-                        {
-                            SelectByStatus(Keyword.Speed, false);
-                            break;
-                        }
-                    case SelectType.LowestHatred:
-                        {
-                            SelectByStatus(Keyword.Hatred, false);
-                            break;
-                        }
-                    case SelectType.RandomByHatred:
-                        {
-                            SelectByRandomByHatred();
-                            break;
-                        }
-                }
-            }
-        }
-
-        private void SelectByRandomByHatred()
-        {
-            List<CombatUnit> _allUnits = new List<CombatUnit>(m_unitToIndex.Keys);
-            List<CombatUnit> _rollPool = new List<CombatUnit>();
-            int _totalHatred = 0;
-
-            for (int i = 0; i < _allUnits.Count; i++)
-            {
-                switch (m_currentSelectData.selectRange)
-                {
-                    case SelectRange.All:
-                        {
-                            _rollPool.Add(_allUnits[i]);
-                            _totalHatred += _allUnits[i].hatred;
-                            break;
-                        }
-                    case SelectRange.Opponent:
-                        {
-                            if (_allUnits[i].camp != m_currentSelectData.attacker.camp)
-                            {
-                                _rollPool.Add(_allUnits[i]);
-                                _totalHatred += _allUnits[i].hatred;
-                            }
-                            break;
-                        }
-                    case SelectRange.SameSide:
-                        {
-                            if (_allUnits[i].camp == m_currentSelectData.attacker.camp)
-                            {
-                                _rollPool.Add(_allUnits[i]);
-                                _totalHatred += _allUnits[i].hatred;
-                            }
-                            break;
-                        }
-                }
-            }
-
-            int _roll = UnityEngine.Random.Range(0, _totalHatred);
-            for (int i = 0; i < _rollPool.Count; i++)
-            {
-                _roll -= _rollPool[i].hatred;
-                if(_roll <= 0)
-                {
-                    m_currentSelectedTargets.Add(_rollPool[i]);
-                    break;
-                }
-            }
-            if (m_currentSelectedTargets.Count == m_currentSelectData.needCount)
-            {
-                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
-            }
-            else
-            {
-                SelectByRandomByHatred();
-            }
-        }
-
-        private void SelectByStatus(string statusType, bool getHighest)
-        {
-            GetIndexRange(out int _min, out int _max);
-
-            List<int> _allKeys = new List<int>(m_indexToUnit.Keys);
-
-            int _currentHighestIndex = _min;
-            for (int i = _min + 1; i < _max; i++)
-            {
-                if ((getHighest && CombatUtility.GetStatusValue(m_indexToUnit[i], statusType, false) > CombatUtility.GetStatusValue(m_indexToUnit[_currentHighestIndex], statusType, false))
-                    || (!getHighest && CombatUtility.GetStatusValue(m_indexToUnit[i], statusType, false) < CombatUtility.GetStatusValue(m_indexToUnit[_currentHighestIndex], statusType, false)))
-                {
-                    _currentHighestIndex = i;
-                }
-            }
-
-            m_currentSelectedTargets.Add(m_indexToUnit[_currentHighestIndex]);
-            if(m_currentSelectedTargets.Count == m_currentSelectData.needCount)
-            {
-                m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
-            }
-            else
-            {
-                SelectByStatus(statusType, getHighest);
-            }
-        }
-
-        private void SelectAll()
-        {
-            List<int> _allKeys = new List<int>(m_indexToUnit.Keys);
-            switch (m_currentSelectData.selectRange)
-            {
-                case SelectRange.All:
-                    {
-                        for(int i = 0; i < _allKeys.Count; i++)
-                        {
-                            m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
-                        }
-                        break;
-                    }
-                case SelectRange.Opponent:
-                    {
-                        if(m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            for (int i = 0; i < _allKeys.Count; i++)
-                            {
-                                if(_allKeys[i] <= 3)
-                                {
-                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < _allKeys.Count; i++)
-                            {
-                                if (_allKeys[i] > 3)
-                                {
-                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
-                                }
-                            }
-                        }
-                        break;
-                    }
-                case SelectRange.SameSide:
-                    {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            for (int i = 0; i < _allKeys.Count; i++)
-                            {
-                                if (_allKeys[i] > 3)
-                                {
-                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < _allKeys.Count; i++)
-                            {
-                                if (_allKeys[i] <= 3)
-                                {
-                                    m_currentSelectedTargets.Add(m_indexToUnit[_allKeys[i]]);
-                                }
-                            }
-                        }
-                        break;
-                    }
-            }
-
-            m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
-            m_currentSelectData = null;
-        }
-
-        private void RandomSelect()
-        {
-            GetIndexRange(out int _min, out int _max);
-
-            List<int> _randomPool = new List<int>();
-            for(int i = 0; i < (_max - _min); i++)
-            {
-                _randomPool.Add(_min + i);
-            }
-
-            while(_randomPool.Count > 0)
-            {
-                int _roll = UnityEngine.Random.Range(0, _randomPool.Count);
-                if(m_indexToUnit.ContainsKey(_randomPool[_roll])
-                    && m_indexToUnit[_randomPool[_roll]] != m_currentSelectData.attacker)
-                {
-                    m_currentSelectedTargets.Add(m_indexToUnit[_randomPool[_roll]]);
-
-                    if(m_currentSelectedTargets.Count == m_currentSelectData.needCount)
-                    {
-                        m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
-                        return;
-                    }
-                    else
-                    {
-                        _randomPool.RemoveAt(_roll);
-                    }
-                }
-                else
-                {
-                    _randomPool.RemoveAt(_roll);
-                }
-            }
-
-            m_currentSelectData.onSelected?.Invoke(m_currentSelectedTargets);
-            m_currentSelectData = null;
-        }
-
         private void WaitPlayerSelect()
         {
             switch (m_currentSelectData.selectRange)
             {
-                case SelectRange.All:
+                case CombatTargetSelecter.SelectRange.All:
                     {
                         EnableSelectBossButton(true);
                         EnableSelectPlayerButton(true);
                         break;
                     }
-                case SelectRange.Opponent:
+                case CombatTargetSelecter.SelectRange.Opponent:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -521,7 +207,7 @@ namespace ProjectBS.UI
                         }
                         break;
                     }
-                case SelectRange.SameSide:
+                case CombatTargetSelecter.SelectRange.SameSide:
                     {
                         if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
                         {
@@ -531,53 +217,6 @@ namespace ProjectBS.UI
                         {
                             EnableSelectPlayerButton(true);
                         }
-                        break;
-                    }
-            }
-        }
-
-        private void GetIndexRange(out int min, out int max)
-        {
-            switch (m_currentSelectData.selectRange)
-            {
-                case SelectRange.All:
-                    {
-                        min = 0;
-                        max = 9;
-                        break;
-                    }
-                case SelectRange.Opponent:
-                    {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            min = 0;
-                            max = 4;
-                        }
-                        else
-                        {
-                            min = 4;
-                            max = 9;
-                        }
-                        break;
-                    }
-                case SelectRange.SameSide:
-                    {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
-                        {
-                            min = 4;
-                            max = 9;
-                        }
-                        else
-                        {
-                            min = 0;
-                            max = 4;
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        min = 0;
-                        max = 9;
                         break;
                     }
             }
@@ -632,6 +271,12 @@ namespace ProjectBS.UI
                     m_indexToEnableState[i] = enable;
                 }
             }
+        }
+
+        private void CompleteSelect()
+        {
+            m_currentSelectData = null;
+            m_onSelected?.Invoke(m_currentSelectedTargets);
         }
 
         private void Update()

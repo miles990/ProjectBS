@@ -3,7 +3,6 @@ using KahaGameCore.Common;
 using System;
 using System.Collections.Generic;
 using ProjectBS.Combat.EffectCommand;
-using UnityEngine;
 using KahaGameCore.Static;
 
 namespace ProjectBS.Combat
@@ -312,7 +311,7 @@ namespace ProjectBS.Combat
                     }
                 default:
                     {
-                        return null;
+                        throw new Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);
                     }
             }
         }
