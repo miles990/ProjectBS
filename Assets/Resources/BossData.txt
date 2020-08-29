@@ -1,6 +1,7 @@
-[{"ID":1,"NameContextID":10001,"CharacterSpriteID":0,"Attack":2500,"Defence":2500,"Speed":2500,"HP":25000,"SP":100,"EffectIDs":"10001;10003","AI":"AI\n{
+[{"ID":1,"NameContextID":10001,"CharacterSpriteID":0,"Attack":6000,"Defence":4500,"Speed":4500,"HP":180000,"SP":100,"EffectIDs":"10001;10003","AI":"AI\n{
     BeginIf_Effect(Self, 1, 10004);
     CastSkill(10007);
+    Quit();
     EndIf();
     RandomCastSkill(10001);
 }","DropData":null,"MinExp":1,"MaxExp":100}]

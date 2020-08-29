@@ -333,6 +333,10 @@ namespace ProjectBS.Combat
                     onEnded = CheckNextBuffEnd
                 });
             }
+            else
+            {
+                CheckNextBuffEnd();
+            }
         }
     }
 }

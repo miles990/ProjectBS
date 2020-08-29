@@ -58,6 +58,12 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_2 = _newPlayer.Characters[2].UDID;
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
+            // TEST
+            CharacterManager.Instance.LevelUp(_newPlayer.Characters[0], 100);
+            CharacterManager.Instance.LevelUp(_newPlayer.Characters[1], 100);
+            CharacterManager.Instance.LevelUp(_newPlayer.Characters[2], 100);
+            CharacterManager.Instance.LevelUp(_newPlayer.Characters[3], 100);
+
             return _newPlayer;
         }
     }

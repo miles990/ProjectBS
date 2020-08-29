@@ -83,6 +83,7 @@ namespace ProjectBS.UI
         public void ShowActorActionStart(CombatUnit actor)
         {
             Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
+            Debug.LogFormat("HP:{0}/{1}, Atk:{2}, Def:{3}, Spd={4}", actor.HP, actor.GetMaxHP(), actor.GetAttack(), actor.GetDefence(), actor.GetSpeed());
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 
@@ -134,8 +135,11 @@ namespace ProjectBS.UI
                 || m_currentShowingSkills[index] == null)
                 return;
 
-            Debug.Log("已選擇技能 " + ContextConverter.Instance.GetContext(m_currentShowingSkills[index].NameContextID));
-            OnSkillSelected?.Invoke(m_currentShowingSkills[index]);
+            Data.SkillData _selectedSkill = m_currentShowingSkills[index];
+            m_currentShowingSkills = null;
+
+            Debug.Log("已選擇技能 " + ContextConverter.Instance.GetContext(_selectedSkill.NameContextID));
+            OnSkillSelected?.Invoke(_selectedSkill);
         }
 
         public void Button_SelectCharacter(int index)

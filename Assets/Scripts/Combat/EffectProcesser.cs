@@ -309,6 +309,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_RandomCastSkill();
                     }
+                case "Quit":
+                    {
+                        return new EffectCommand_Quit();
+                    }
                 default:
                     {
                         throw new Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);
