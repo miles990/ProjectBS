@@ -103,6 +103,7 @@ namespace ProjectBS.Combat
                             {
                                 attacker = m_attacker,
                                 inculdeAttacker = m_inculdeAttacker,
+                                selectRange = m_currentSelectRange,
                                 needCount = m_needCount,
                                 onSelected = m_onSelected
                             };
