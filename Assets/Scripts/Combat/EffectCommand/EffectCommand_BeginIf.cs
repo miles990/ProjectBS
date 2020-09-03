@@ -44,7 +44,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             bool _pass;
 
-            UnityEngine.Debug.Log("_varA=" + _varA + ", _varB=" + _varB);
+            UnityEngine.Debug.Log("BeginIf _varA=" + _varA + ", _varB=" + _varB);
 
             switch (_condtionMark)
             {

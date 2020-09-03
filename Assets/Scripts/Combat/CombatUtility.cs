@@ -153,6 +153,8 @@ namespace ProjectBS.Combat
                     {
                         return unit.lastSkillID;
                     }
+                case Keyword.LastTakenDamage:
+                case Keyword.LastDealedDamage:
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetStatusValue] Invaild statusName=" + statusName);

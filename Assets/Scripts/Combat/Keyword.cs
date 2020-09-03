@@ -26,5 +26,7 @@
         public const string BossUnitCount = "BossUnitCount";
         public const string TurnCount = "TurnCount";
         public const string Random = "Random";
+        public const string LastDealedDamage = "LastDealedDamage";
+        public const string LastTakenDamage = "LastTakenDamage";
     }
 }
