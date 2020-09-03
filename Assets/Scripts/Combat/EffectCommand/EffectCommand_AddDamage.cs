@@ -28,12 +28,17 @@ namespace ProjectBS.Combat.EffectCommand
                     if(_isPersent)
                     {
                         float _dmg = (float)processData.caster.targetToDmg[_targets[i]];
-                        processData.caster.targetToDmg[_targets[i]] = Convert.ToInt32(_dmg * _value);
+                        processData.caster.targetToDmg[_targets[i]] += Convert.ToInt32(_dmg * _value);
                     }
                     else
                     {
                         processData.caster.targetToDmg[_targets[i]] += Convert.ToInt32(_value);
                     }
+
+                    if (processData.caster.targetToDmg[_targets[i]] < 1)
+                        processData.caster.targetToDmg[_targets[i]] = 1;
+
+                    UnityEngine.Debug.Log("add to dealing dmg->" + processData.caster.targetToDmg[_targets[i]]);
                 }
             }
             else
@@ -41,13 +46,19 @@ namespace ProjectBS.Combat.EffectCommand
                 if (_isPersent)
                 {
                     float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = Convert.ToInt32(_dmg * _value);
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += Convert.ToInt32(_dmg * _value);
                 }
                 else
                 {
                     CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += Convert.ToInt32(_value);
-                }    
+                }
+                if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
+
+                UnityEngine.Debug.Log("add to taken dmg->" + CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster]);
             }
+
+            onCompleted?.Invoke();
         }
     }
 }

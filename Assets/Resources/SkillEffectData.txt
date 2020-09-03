@@ -4,6 +4,18 @@
 {"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
 {"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
 {"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":101,"NameContextID":105,"DescriptionContextID":106,"Command":"OnActived\n{
+     AddStatus(Target, Defence, Target.Defence * 0.15); 
+     AddStatus(Target, Attack, Target.Attack * 0.15); 
+}","MaxStackCount":1},
+{"ID":102,"NameContextID":115,"DescriptionContextID":116,"Command":"OnDamageCalculated_Self\n{
+     BeginIf(Self.LastSkill == 106);
+     AddDamage(50%);
+     EndIf();
+}","MaxStackCount":10},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
+{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","MaxStackCount":null},
 {"ID":10001,"NameContextID":10002,"DescriptionContextID":10003,"Command":"OnDamageTaken_Self\n{
      BeginIf(Self.HP <= 0);
      SetStatus(Self, HP, 1);

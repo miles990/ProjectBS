@@ -9,6 +9,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             SkillData _skill = GameDataManager.GetGameData<SkillData>(int.Parse(vars[0]));
+            processData.caster.lastSkillID = _skill.ID;
 
             new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
             {

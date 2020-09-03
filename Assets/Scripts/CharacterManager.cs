@@ -102,7 +102,7 @@ namespace ProjectBS
                 Level = 1,
                 SkillSlot_0 = 1,
                 SkillSlot_1 = 2,
-                SKillSlot_2 = 0,
+                SKillSlot_2 = 106,
                 SKillSlot_3 = 0,
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),

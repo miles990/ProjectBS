@@ -179,6 +179,7 @@ namespace ProjectBS.Combat
 
             for (int i = 0; i < m_units.Count; i++)
             {
+                m_units[i].actionIndex = i;
                 m_unitActions.Add(new CombatUnitAction(m_units[i], m_processer));
             }
 

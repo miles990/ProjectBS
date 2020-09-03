@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             string _condtion = vars[0].RemoveBlankCharacters();
-            string _condtionMark = "";
+            string _condtionMark;
             if(_condtion.Contains(">="))
             {
                 _condtionMark = ">=";
@@ -44,7 +44,9 @@ namespace ProjectBS.Combat.EffectCommand
 
             bool _pass;
 
-            switch(_condtionMark)
+            UnityEngine.Debug.Log("_varA=" + _varA + ", _varB=" + _varB);
+
+            switch (_condtionMark)
             {
                 case ">=":
                     {

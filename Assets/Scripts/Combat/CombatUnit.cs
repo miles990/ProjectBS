@@ -67,6 +67,9 @@ namespace ProjectBS.Combat
 
         public int lastSkillID = 0;
         public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
+        public int lastTakenDamage = 0;
+
+        public int actionIndex = 0;
 
         public int GetMaxHP()
         {
