@@ -267,7 +267,7 @@ namespace ProjectBS.Combat
                     }
                 case "RemoveBuff":
                     {
-                        return null;
+                        return new EffectCommand_RemoveBuff();
                     }
                 case "AddBuffTime":
                     {

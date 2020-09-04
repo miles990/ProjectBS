@@ -19,43 +19,50 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 _value *= 0.01f;
             }
-
+            UnityEngine.Debug.LogWarning("AddDamage _value=" + _value);
             if(CombatManager.Instance.CurrentActionInfo.actor == processData.caster)
             {
                 List<CombatUnit> _targets = new List<CombatUnit>(processData.caster.targetToDmg.Keys);
                 for(int i = 0; i < _targets.Count; i++)
                 {
-                    if(_isPersent)
+                    int _intDmg;
+                    if (_isPersent)
                     {
                         float _dmg = (float)processData.caster.targetToDmg[_targets[i]];
-                        processData.caster.targetToDmg[_targets[i]] += Convert.ToInt32(_dmg * _value);
+                        _intDmg = Convert.ToInt32(_dmg * _value);
+                        processData.caster.targetToDmg[_targets[i]] += _intDmg;
                     }
                     else
                     {
-                        processData.caster.targetToDmg[_targets[i]] += Convert.ToInt32(_value);
+                        _intDmg = Convert.ToInt32(_value);
+                        processData.caster.targetToDmg[_targets[i]] += _intDmg;
                     }
+
+                    UnityEngine.Debug.LogWarning("AddDamage add dealed dmg=" + _intDmg);
 
                     if (processData.caster.targetToDmg[_targets[i]] < 1)
                         processData.caster.targetToDmg[_targets[i]] = 1;
-
-                    UnityEngine.Debug.Log("add to dealing dmg->" + processData.caster.targetToDmg[_targets[i]]);
                 }
             }
             else
             {
+                int _intDmg;
                 if (_isPersent)
                 {
                     float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += Convert.ToInt32(_dmg * _value);
+                    _intDmg = Convert.ToInt32(_dmg * _value);
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
                 else
                 {
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += Convert.ToInt32(_value);
+                    _intDmg = Convert.ToInt32(_value);
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
+
+                UnityEngine.Debug.LogWarning("AddDamage add taken dmg=" + _intDmg);
+
                 if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
                     CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
-
-                UnityEngine.Debug.Log("add to taken dmg->" + CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster]);
             }
 
             onCompleted?.Invoke();

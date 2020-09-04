@@ -1,6 +1,10 @@
-[{"ID":1,"NameContextID":10001,"CharacterSpriteID":0,"Attack":1000,"Defence":0,"Speed":1000,"HP":40000,"SP":100,"EffectIDs":"10001;10003","AI":"AI\n{
+[{"ID":1,"NameContextID":10001,"CharacterSpriteID":0,"Attack":1000,"Defence":1000,"Speed":1000,"HP":40000,"SP":100,"EffectIDs":"10001;10003","AI":"AI\n{
     BeginIf_Effect(Self, 1, 10004);
     CastSkill(10007);
+    Quit();
+    EndIf();
+    BeginIf(Self.HP <= Self.MaxHP * 0.5)
+    RandomCastSkill(10002);
     Quit();
     EndIf();
     RandomCastSkill(10001);

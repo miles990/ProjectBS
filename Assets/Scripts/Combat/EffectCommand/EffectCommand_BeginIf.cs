@@ -44,7 +44,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             bool _pass;
 
-            UnityEngine.Debug.Log("BeginIf _varA=" + _varA + ", _varB=" + _varB);
+            UnityEngine.Debug.LogWarning("BeginIf _varA=" + _varA + ", _varB=" + _varB);
 
             switch (_condtionMark)
             {
@@ -78,7 +78,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 processData.skipIfCount++;
             }
-
+            UnityEngine.Debug.LogWarning("BeginIf pass="+ _pass);
             onCompleted?.Invoke();
         }
 
@@ -86,30 +86,15 @@ namespace ProjectBS.Combat.EffectCommand
         {
             if (!int.TryParse(paraString, out value))
             {
-                string[] _getValuePart = paraString.Split('.');
-                switch (_getValuePart[0])
-                {
-                    case Keyword.Self:
-                    case Keyword.Caster:
-                        {
-                            value = CombatUtility.GetStatusValue(processData.caster, _getValuePart[1], false);
-                            break;
-                        }
-                    case Keyword.Target:
-                        {
-                            value = CombatUtility.GetStatusValue(processData.target, _getValuePart[1], false);
-                            break;
-                        }
-                    case Keyword.CombatField:
-                        {
-                            value = CombatUtility.GetCombatFieldStatus(_getValuePart[1]);
-                            break;
-                        }
-                    default:
-                        {
-                            throw new Exception("[EffectCommand_BeginIf][Process] Invaild Command=" + paraString);
-                        }
-                }
+                float _value = CombatUtility.Calculate(
+                    new CombatUtility.CalculateData
+                    {
+                        caster = processData.caster,
+                        target = processData.target,
+                        formula = paraString,
+                        useRawValue = false
+                    });
+                value = Convert.ToInt32(_value);
             }
         }
     }

@@ -48,6 +48,7 @@ namespace ProjectBS.Combat
             }
 
             string _resultString = Arithmetic(data, _buffer[_buffer.Count - 1]);
+
             if (!float.TryParse(_resultString, out float _result))
             {
                 _result = (float)GetValueByParaString(data, _resultString);
@@ -185,7 +186,7 @@ namespace ProjectBS.Combat
             }
             else
             {
-                return 0;
+                return GetCombatFieldStatus(_getValueData[1]);
             }
 
             if(_minus)

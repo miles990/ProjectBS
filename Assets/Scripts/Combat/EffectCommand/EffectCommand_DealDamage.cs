@@ -87,8 +87,8 @@ namespace ProjectBS.Combat.EffectCommand
                 });
             }
 
-            UnityEngine.Debug.Log("_attack=" + _attack);
-            UnityEngine.Debug.Log("_rollPersent=" + _rollPersent);
+            UnityEngine.Debug.LogWarning("_attack=" + _attack);
+            UnityEngine.Debug.LogWarning("_rollPersent=" + _rollPersent);
 
             float _finalAttackValue = (float)(_attack + _attack * _rollPersent);
             float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0f, 1f));
@@ -96,20 +96,20 @@ namespace ProjectBS.Combat.EffectCommand
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
             float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));
 
-            UnityEngine.Debug.Log("_finalAttackValue=" + _finalAttackValue);
-            UnityEngine.Debug.Log("_finalDefenceValue=" + _finalDefenceValue);
-            UnityEngine.Debug.Log("_ingnoreDefence=" + _ingnoreDefence);
-            UnityEngine.Debug.Log("_flee=" + _flee);
-            UnityEngine.Debug.Log("_fleeReduceDmgPersent=" + _fleeReduceDmgPersent);
+            UnityEngine.Debug.LogWarning("_finalAttackValue=" + _finalAttackValue);
+            UnityEngine.Debug.LogWarning("_finalDefenceValue=" + _finalDefenceValue);
+            UnityEngine.Debug.LogWarning("_ingnoreDefence=" + _ingnoreDefence);
+            UnityEngine.Debug.LogWarning("_flee=" + _flee);
+            UnityEngine.Debug.LogWarning("_fleeReduceDmgPersent=" + _fleeReduceDmgPersent);
 
             float _rawDmg = (_finalAttackValue - (_finalDefenceValue * (1f - _ingnoreDefence))) * _fleeReduceDmgPersent;
-            UnityEngine.Debug.Log("_rawDmg=" + _rawDmg);
+            UnityEngine.Debug.LogWarning("_rawDmg=" + _rawDmg);
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
                 _dmg = 1;
 
-            UnityEngine.Debug.Log("calculated dmg=" + _dmg);
+            UnityEngine.Debug.LogWarning("calculated dmg=" + _dmg);
 
             processData.caster.targetToDmg.Add(_attackTarget, _dmg);
 
@@ -176,7 +176,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            UnityEngine.Debug.Log("Final Dmg=" + processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]);
+            UnityEngine.Debug.LogWarning("Final Dmg=" + processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]);
 
             m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
