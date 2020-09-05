@@ -355,7 +355,7 @@ namespace ProjectBS.UI
                 Debug.Log("==========DISPLAY INFO==========");
                 for(int i = 0; i < units.Count; i++)
                 {
-                    Debug.LogFormat("{0}\nHP:{1}/{2}, Atk:{3}, Def:{4}, Spd={5}", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed());
+                    Debug.LogFormat("{0}\nHP:{1}/{2}, Atk:{3}, Def:{4}, Spd={5}, Hatred={6}", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed(), units[i].hatred);
 
                     for (int j = 0; j < units[i].buffs.Count; j++)
                     {

@@ -31,7 +31,13 @@ namespace ProjectBS
 
         public string GetContext(int ID)
         {
-            switch(area)
+            ContextData _context = GameDataManager.GetGameData<ContextData>(ID);
+            if(_context == null)
+            {
+                throw new System.Exception("[ContextConverter][GetContext] Can't find context id=" + ID);
+            }
+
+            switch (area)
             {
                 case Area.zh_tw:
                     {

@@ -28,47 +28,52 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     caster = processData.caster,
                     target = processData.target,
-                   formula = vars[2],
-                   useRawValue = true
+                    formula = vars[2],
+                    useRawValue = true
                 });
             int _set = Convert.ToInt32(_value);
 
-            switch (vars[1])
+            switch (vars[1].Trim())
             {
                 case Keyword.Attack:
                     {
-                        processData.target.rawAttack = _set;
+                        _target.rawAttack = _set;
                         break;
                     }
                 case Keyword.Defence:
                     {
-                        processData.target.rawDefence = _set;
+                        _target.rawDefence = _set;
                         break;
                     }
                 case Keyword.MaxHP:
                     {
-                        processData.target.rawMaxHP = _set;
+                        _target.rawMaxHP = _set;
                         break;
                     }
                 case Keyword.Speed:
                     {
-                        processData.target.rawSpeed = _set;
+                        _target.rawSpeed = _set;
                         break;
                     }
                 case Keyword.Hatred:
                     {
-                        processData.target.hatred = _set;
+                        _target.hatred = _set;
+                        UnityEngine.Debug.LogWarningFormat("SetStatus {0} hatred={1}", _target, _target.hatred);
                         break;
                     }
                 case Keyword.HP:
                     {
-                        processData.target.HP = _set;
+                        _target.HP = _set;
                         break;
                     }
                 case Keyword.SP:
                     {
-                        processData.target.SP = _set;
+                        _target.SP = _set;
                         break;
+                    }
+                default:
+                    {
+                        throw new Exception("[EffectCommand_SetStatus][Process] Invaild status:" + vars[1]);
                     }
             }
 

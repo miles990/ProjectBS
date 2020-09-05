@@ -6,9 +6,9 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
-            CombatUnit _target = null;
+            CombatUnit _target;
 
-            switch (vars[0])
+            switch (vars[0].Trim())
             {
                 case Keyword.Self:
                 case Keyword.Caster:
@@ -21,9 +21,13 @@ namespace ProjectBS.Combat.EffectCommand
                         _target = processData.target;
                         break;
                     }
+                default:
+                    {
+                        throw new Exception("[EffectCommand_AddStatus][Process] Invaild target=" + vars[0]);
+                    }
             }
 
-            switch(vars[1])
+            switch(vars[1].Trim())
             {
                 case Keyword.Attack:
                 case Keyword.Defence:
@@ -49,6 +53,8 @@ namespace ProjectBS.Combat.EffectCommand
                                 useRawValue = true
                             });
                         int _add = Convert.ToInt32(_value);
+                        UnityEngine.Debug.LogWarning("Add status _add=" + _add);
+                        UnityEngine.Debug.LogWarning("Add status status=" + vars[1]);
 
                         switch (vars[1])
                         {
@@ -76,6 +82,10 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     _target.SP += _add;
                                     break;
+                                }
+                            default:
+                                {
+                                    throw new Exception("[EffectCommand_AddStatus][Process] Invaild status=" + vars[1]);
                                 }
                         }
 

@@ -18,7 +18,7 @@
     "ID": 101,
     "NameContextID": 101,
     "DescriptionContextID": 102,
-    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Haterd, 10000);\n}",
+    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, 10000);\n}",
     "SkillScrollItemID": 0
   },
   {
@@ -67,7 +67,7 @@
     "ID": 108,
     "NameContextID": 119,
     "DescriptionContextID": 120,
-    "Command": "OnAttacked_Self\n{\n     AddStatus(Self, Haterd, Self.Haterd);\n}",
+    "Command": "OnAttacked_Self\n{\n     AddStatus(Self, Hatred, Self.Hatred);\n}",
     "SkillScrollItemID": 0
   },
   {},
