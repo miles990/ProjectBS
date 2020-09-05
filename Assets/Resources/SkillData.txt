@@ -1,6 +1,7 @@
 [
   {
     "ID": 1,
+    "SP": 0,
     "NameContextID": 1,
     "DescriptionContextID": 2,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);\n}",
@@ -8,6 +9,7 @@
   },
   {
     "ID": 2,
+    "SP": 0,
     "NameContextID": 5,
     "DescriptionContextID": 6,
     "Command": "OnActived\n{\n     GainBuff(Self, 1, 1);\n}",
@@ -16,6 +18,7 @@
   {},
   {
     "ID": 101,
+    "SP": 0,
     "NameContextID": 101,
     "DescriptionContextID": 102,
     "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, 10000);\n}",
@@ -23,6 +26,7 @@
   },
   {
     "ID": 102,
+    "SP": 0,
     "NameContextID": 103,
     "DescriptionContextID": 104,
     "Command": "OnActived\n{\n     AddStatus(Self, Haterd, Self.Haterd);\n     GainBuff(Self, 101, 3);\n}",
@@ -30,6 +34,7 @@
   },
   {
     "ID": 103,
+    "SP": 0,
     "NameContextID": 107,
     "DescriptionContextID": 108,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Defence * 0.75, 0, 0);\n}",
@@ -37,6 +42,7 @@
   },
   {
     "ID": 104,
+    "SP": 0,
     "NameContextID": 109,
     "DescriptionContextID": 110,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 2.2, 0, 0);\n     AddStatus(Self, HP, -Self.LastDealedDamage * 0.15);\n}",
@@ -44,6 +50,7 @@
   },
   {
     "ID": 105,
+    "SP": 0,
     "NameContextID": 111,
     "DescriptionContextID": 112,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1, 0, 0);\n}",
@@ -51,6 +58,7 @@
   },
   {
     "ID": 106,
+    "SP": 0,
     "NameContextID": 113,
     "DescriptionContextID": 114,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.5, 0, 0);\n     GainBuff(Self, 102, -1);\n}",
@@ -58,6 +66,7 @@
   },
   {
     "ID": 107,
+    "SP": 0,
     "NameContextID": 117,
     "DescriptionContextID": 118,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     BeginIf(CombatField.Random <= 15);\n     GainBuff(LastSelected, 2, 1);\n     EndIf();\n}",
@@ -65,14 +74,23 @@
   },
   {
     "ID": 108,
+    "SP": 0,
     "NameContextID": 119,
     "DescriptionContextID": 120,
     "Command": "OnAttacked_Self\n{\n     AddStatus(Self, Hatred, Self.Hatred);\n}",
     "SkillScrollItemID": 0
   },
+  {
+    "ID": 109,
+    "SP": 0,
+    "NameContextID": 121,
+    "DescriptionContextID": 122,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Hatred * 1, 0, 0);\n}"
+  },
   {},
   {
     "ID": 10001,
+    "SP": 0,
     "NameContextID": 10008,
     "DescriptionContextID": 10009,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
@@ -80,6 +98,7 @@
   },
   {
     "ID": 10002,
+    "SP": 0,
     "NameContextID": 10010,
     "DescriptionContextID": 10011,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);\n     CastSkill(10003);\n}",
@@ -87,6 +106,7 @@
   },
   {
     "ID": 10003,
+    "SP": 0,
     "NameContextID": 10012,
     "DescriptionContextID": 10013,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);\n     CastSkill(10004);\n}",
@@ -94,6 +114,7 @@
   },
   {
     "ID": 10004,
+    "SP": 0,
     "NameContextID": 10014,
     "DescriptionContextID": 10015,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
@@ -101,6 +122,7 @@
   },
   {
     "ID": 10005,
+    "SP": 0,
     "NameContextID": 10016,
     "DescriptionContextID": 10017,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1.2, 0, 0);\n}",
@@ -108,6 +130,7 @@
   },
   {
     "ID": 10006,
+    "SP": 0,
     "NameContextID": 10018,
     "DescriptionContextID": 10019,
     "Command": "OnActived\n{\n     GainBuff(Self, 10004, 2);\n}",
@@ -115,6 +138,7 @@
   },
   {
     "ID": 10007,
+    "SP": 0,
     "NameContextID": 10020,
     "DescriptionContextID": 10021,
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n}",

@@ -141,6 +141,19 @@ namespace ProjectBS.UI
                 return;
 
             Data.SkillData _selectedSkill = m_currentShowingSkills[index];
+
+            if(!_selectedSkill.Command.Contains(EffectProcesser.TriggerTiming.OnActived.ToString()))
+            {
+                Debug.Log(ContextConverter.Instance.GetContext(m_currentShowingSkills[index].NameContextID) + " 不是主動技能");
+                return;
+            }
+
+            if(_selectedSkill.SP > CombatManager.Instance.CurrentActionInfo.actor.SP)
+            {
+                Debug.Log("SP不足");
+                return;
+            }
+
             m_currentShowingSkills = null;
 
             Debug.Log("已選擇技能 " + ContextConverter.Instance.GetContext(_selectedSkill.NameContextID));

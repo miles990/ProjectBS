@@ -109,6 +109,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
             Actor.lastSkillID = skill.ID;
+            Actor.SP -= skill.SP;
 
             new EffectProcesser(skill.Command).Start(new EffectProcesser.ProcessData
             {
