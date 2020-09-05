@@ -121,9 +121,14 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
         }
 
-        public void SetForceStopCurrentAction()
+        public void MarkForceStopCurrentActionOnStart()
         {
-            m_currentAction.SetForceStopOnStart();
+            m_currentAction.MarkForceStopOnStart();
+        }
+
+        public void ShowForceEndAction()
+        {
+            GetPage<UI.CombatUIView>().ShowForceEndAction(m_currentAction.Actor);
         }
 
         public void ShowDamage(UI.CombatUIView.DisplayDamageData displayDamageData)

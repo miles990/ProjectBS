@@ -73,6 +73,10 @@ namespace ProjectBS.Combat
                     {
                         return CombatManager.Instance.TurnCount;
                     }
+                case Keyword.Random:
+                    {
+                        return UnityEngine.Random.Range(0, 101);
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetCombatFieldStatus] Invaild statusName=" + statusName);
@@ -155,7 +159,18 @@ namespace ProjectBS.Combat
                         return unit.lastSkillID;
                     }
                 case Keyword.LastTakenDamage:
+                    {
+                        return unit.lastTakenDamage;
+                    }
                 case Keyword.LastDealedDamage:
+                    {
+                        int _total = 0;
+                        foreach(KeyValuePair<CombatUnit, int> kvp in unit.targetToDmg)
+                        {
+                            _total += kvp.Value;
+                        }
+                        return _total;
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetStatusValue] Invaild statusName=" + statusName);

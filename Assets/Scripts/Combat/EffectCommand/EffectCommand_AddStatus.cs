@@ -54,17 +54,27 @@ namespace ProjectBS.Combat.EffectCommand
                         {
                             case Keyword.Hatred:
                                 {
-                                    processData.target.hatred += _add;
+                                    _target.hatred += _add;
                                     break;
                                 }
                             case Keyword.HP:
                                 {
-                                    processData.target.HP += _add;
+                                    if(_add < 0)
+                                    {
+                                        CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
+                                        {
+                                            attackerName = _target.name,
+                                            damageValue = -_add,
+                                            defenderName = _target.name,
+                                            skillName = "效果傷害"
+                                        });
+                                    }
+                                    _target.HP += _add;
                                     break;
                                 }
                             case Keyword.SP:
                                 {
-                                    processData.target.SP += _add;
+                                    _target.SP += _add;
                                     break;
                                 }
                         }

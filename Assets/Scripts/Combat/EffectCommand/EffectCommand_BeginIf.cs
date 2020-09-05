@@ -78,7 +78,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 processData.skipIfCount++;
             }
-            UnityEngine.Debug.LogWarning("BeginIf pass="+ _pass);
+            UnityEngine.Debug.LogWarning("BeginIf final processData.skipIfCount=" + processData.skipIfCount);
             onCompleted?.Invoke();
         }
 

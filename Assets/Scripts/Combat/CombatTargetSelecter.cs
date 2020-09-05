@@ -95,6 +95,7 @@ namespace ProjectBS.Combat
                         m_needCount = int.Parse(_vars[2]);
                         m_attacker = data.attacker;
                         m_onSelected = data.onSelected;
+                        m_onSelected += OnManualSelected;
                         m_inculdeAttacker = _command == "Select";
 
                         if (m_currentSelectType == SelectType.Manual)
@@ -114,9 +115,24 @@ namespace ProjectBS.Combat
                             
                             DoSelect();
                         }
-                        break;
+                        return;
+                    }
+                case "LastSelected":
+                    {
+                        UnityEngine.Debug.Log(m_currentSelectedTargets.Count);
+                        data.onSelected?.Invoke(m_currentSelectedTargets);
+                        return;
+                    }
+                default:
+                    {
+                        throw new Exception("[CombatTargetSelecter][StartSelect] Invaild select command:" + _command);
                     }
             }
+        }
+
+        private void OnManualSelected(List<CombatUnit> targets)
+        {
+            m_currentSelectedTargets = targets;
         }
 
         private void DoSelect()

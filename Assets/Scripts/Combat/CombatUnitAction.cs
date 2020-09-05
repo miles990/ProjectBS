@@ -29,7 +29,7 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().ShowActorActionStart(Actor);
         }
 
-        public void SetForceStopOnStart()
+        public void MarkForceStopOnStart()
         {
             m_forceStop = true;
         }
@@ -67,12 +67,14 @@ namespace ProjectBS.Combat
         {
             if (m_forceStop)
             {
+                CombatManager.Instance.ShowForceEndAction();
                 m_onEnded?.Invoke();
                 return;
             }
 
             if (!string.IsNullOrEmpty(Actor.ai))
             {
+                UnityEngine.Debug.LogWarning(Actor.ai);
                 new EffectProcesser(Actor.ai).Start(
                     new EffectProcesser.ProcessData
                     {
@@ -138,8 +140,14 @@ namespace ProjectBS.Combat
                 caster = Actor,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnStartToEndAction_Self,
-                onEnded = m_onEnded
+                onEnded = OnStartToEndActionSelfEnded
             });
+        }
+
+        private void OnStartToEndActionSelfEnded()
+        {
+            UnityEngine.Debug.LogWarning("Action End:" + Actor.name);
+            m_onEnded?.Invoke();
         }
     }
 }

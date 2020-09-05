@@ -9,7 +9,7 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
-            CombatManager.Instance.SetForceStopCurrentAction();
+            CombatManager.Instance.MarkForceStopCurrentActionOnStart();
             onCompleted?.Invoke();
         }
     }

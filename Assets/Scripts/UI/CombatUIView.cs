@@ -69,6 +69,11 @@ namespace ProjectBS.UI
             }
         }
 
+        public void ShowForceEndAction(CombatUnit actor)
+        {
+            Debug.LogFormat("{0} 強制結束行動", actor.name);
+        }
+
         public void ShowUnitDied(CombatUnit dyingUnit)
         {
             Debug.LogFormat("{0} 死亡", dyingUnit.name);
@@ -83,7 +88,7 @@ namespace ProjectBS.UI
         public void ShowActorActionStart(CombatUnit actor)
         {
             Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
-            Debug.LogFormat("HP:{0}/{1}, Atk:{2}, Def:{3}, Spd={4}", actor.HP, actor.GetMaxHP(), actor.GetAttack(), actor.GetDefence(), actor.GetSpeed());
+            Debug.LogFormat("HP:{0}/{1}, Atk:{2}, Def:{3}, Spd={4}, Hatred={5}", actor.HP, actor.GetMaxHP(), actor.GetAttack(), actor.GetDefence(), actor.GetSpeed(), actor.hatred);
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 
@@ -275,12 +280,6 @@ namespace ProjectBS.UI
                     m_indexToEnableState[i] = enable;
                 }
             }
-        }
-
-        private void CompleteSelect()
-        {
-            m_currentSelectData = null;
-            m_onSelected?.Invoke(m_currentSelectedTargets);
         }
 
         private void Update()

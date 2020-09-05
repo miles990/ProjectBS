@@ -42,13 +42,13 @@ namespace ProjectBS.Combat.EffectCommand
                 bool _isOwning = targets[i].buffs.Find(x => x.effectID == _effectID) != null;
                 if (_isOwning != _checkIsOwning)
                 {
-                    UnityEngine.Debug.LogWarning("BeginIf_Effect pass=false");
                     processData.skipIfCount++;
+                    UnityEngine.Debug.LogWarning("BeginIf_Effect final processData.skipIfCount=" + processData.skipIfCount);
                     m_onCompleted?.Invoke();
                     return;
                 }
             }
-            UnityEngine.Debug.LogWarning("BeginIf_Effect pass=true");
+            UnityEngine.Debug.LogWarning("BeginIf_Effect final processData.skipIfCount=" + processData.skipIfCount);
             m_onCompleted?.Invoke();
         }
     }

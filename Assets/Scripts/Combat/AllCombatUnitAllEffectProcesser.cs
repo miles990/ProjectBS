@@ -182,6 +182,11 @@ namespace ProjectBS.Combat
             }
 
             SkillData _skill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt());
+            if(_skill == null)
+            {
+                throw new Exception("[AllCombatUnitAllEffectProcesser][GoNextOwingSkill] Can't find skill id=" + m_currentSkillIDs[m_currentSkillIndex]);
+            }
+            
             string _command = _skill.Command;
 
             new EffectProcesser(_command).Start(new EffectProcesser.ProcessData

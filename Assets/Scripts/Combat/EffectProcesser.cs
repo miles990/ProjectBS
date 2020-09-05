@@ -55,6 +55,7 @@ namespace ProjectBS.Combat
 
             public void Process(Action onCompleted)
             {
+                UnityEngine.Debug.LogWarning("EffectData command=" + command + ", command.processData.skipIfCount=" + command.processData.skipIfCount);
                 if (command.processData.skipIfCount > 0
                     && !(command is EffectCommand_EndIf)
                     && !(command is EffectCommand_BeginIf)

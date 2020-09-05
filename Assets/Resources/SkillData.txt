@@ -1,56 +1,137 @@
-[{"ID":1,"NameContextID":1,"DescriptionContextID":2,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);
-}","SkillScrollItemID":1},
-{"ID":2,"NameContextID":5,"DescriptionContextID":6,"Command":"OnActived\n{
-     GainBuff(Self, 1, 1);
-}","SkillScrollItemID":2},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":101,"NameContextID":101,"DescriptionContextID":102,"Command":"OnBattleStarted\n{
-     SetStatus(Self, Haterd, 10000);
-}","SkillScrollItemID":0},
-{"ID":102,"NameContextID":103,"DescriptionContextID":104,"Command":"OnActived\n{
-     AddStatus(Self, Haterd, Self.Haterd);
-     GainBuff(Self, 101, 3);
-}","SkillScrollItemID":0},
-{"ID":103,"NameContextID":107,"DescriptionContextID":108,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Manual, 1), Self.Defence * 0.75, 0, 0);
-}","SkillScrollItemID":0},
-{"ID":104,"NameContextID":109,"DescriptionContextID":110,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 2.2, 0, 0);
-     AddStatus(Self, HP, -Self.LastDealedDamage * 0.15);
-}","SkillScrollItemID":0},
-{"ID":105,"NameContextID":111,"DescriptionContextID":112,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1, 0, 0);
-}","SkillScrollItemID":0},
-{"ID":106,"NameContextID":113,"DescriptionContextID":114,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.5, 0, 0);
-     GainBuff(Self, 102, -1);
-}","SkillScrollItemID":0},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":null,"NameContextID":null,"DescriptionContextID":null,"Command":"","SkillScrollItemID":null},
-{"ID":10001,"NameContextID":10008,"DescriptionContextID":10009,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);
-}","SkillScrollItemID":0},
-{"ID":10002,"NameContextID":10010,"DescriptionContextID":10011,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);
-     CastSkill(10003);
-}","SkillScrollItemID":0},
-{"ID":10003,"NameContextID":10012,"DescriptionContextID":10013,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);
-     CastSkill(10004);
-}","SkillScrollItemID":0},
-{"ID":10004,"NameContextID":10014,"DescriptionContextID":10015,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);
-}","SkillScrollItemID":0},
-{"ID":10005,"NameContextID":10016,"DescriptionContextID":10017,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1.2, 0, 0);
-}","SkillScrollItemID":0},
-{"ID":10006,"NameContextID":10018,"DescriptionContextID":10019,"Command":"OnActived\n{
-     GainBuff(Self, 10004, 2);
-}","SkillScrollItemID":0},
-{"ID":10007,"NameContextID":10020,"DescriptionContextID":10021,"Command":"OnActived\n{
-     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);
-}","SkillScrollItemID":0}]
+[
+  {
+    "ID": 1,
+    "NameContextID": 1,
+    "DescriptionContextID": 2,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);\n}",
+    "SkillScrollItemID": 1
+  },
+  {
+    "ID": 2,
+    "NameContextID": 5,
+    "DescriptionContextID": 6,
+    "Command": "OnActived\n{\n     GainBuff(Self, 1, 1);\n}",
+    "SkillScrollItemID": 2
+  },
+  {},
+  {
+    "ID": 101,
+    "NameContextID": 101,
+    "DescriptionContextID": 102,
+    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Haterd, 10000);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 102,
+    "NameContextID": 103,
+    "DescriptionContextID": 104,
+    "Command": "OnActived\n{\n     AddStatus(Self, Haterd, Self.Haterd);\n     GainBuff(Self, 101, 3);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 103,
+    "NameContextID": 107,
+    "DescriptionContextID": 108,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Defence * 0.75, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 104,
+    "NameContextID": 109,
+    "DescriptionContextID": 110,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 2.2, 0, 0);\n     AddStatus(Self, HP, -Self.LastDealedDamage * 0.15);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 105,
+    "NameContextID": 111,
+    "DescriptionContextID": 112,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 106,
+    "NameContextID": 113,
+    "DescriptionContextID": 114,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.5, 0, 0);\n     GainBuff(Self, 102, -1);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 107,
+    "NameContextID": 117,
+    "DescriptionContextID": 118,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     BeginIf(CombatField.Random <= 15);\n     GainBuff(LastSelected, 2, 1);\n     EndIf();\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 108,
+    "NameContextID": 119,
+    "DescriptionContextID": 120,
+    "Command": "OnAttacked_Self\n{\n     AddStatus(Self, Haterd, Self.Haterd);\n}",
+    "SkillScrollItemID": 0
+  },
+  {},
+  {
+    "ID": 10001,
+    "NameContextID": 10008,
+    "DescriptionContextID": 10009,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10002,
+    "NameContextID": 10010,
+    "DescriptionContextID": 10011,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);\n     CastSkill(10003);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10003,
+    "NameContextID": 10012,
+    "DescriptionContextID": 10013,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);\n     CastSkill(10004);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10004,
+    "NameContextID": 10014,
+    "DescriptionContextID": 10015,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10005,
+    "NameContextID": 10016,
+    "DescriptionContextID": 10017,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1.2, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10006,
+    "NameContextID": 10018,
+    "DescriptionContextID": 10019,
+    "Command": "OnActived\n{\n     GainBuff(Self, 10004, 2);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 10007,
+    "NameContextID": 10020,
+    "DescriptionContextID": 10021,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n}",
+    "SkillScrollItemID": 0
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]
