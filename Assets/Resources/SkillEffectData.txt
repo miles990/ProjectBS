@@ -13,12 +13,19 @@
     "Command": "OnActionStarted_Self\n{\n    ForceEndAction();\n}",
     "MaxStackCount": 1
   },
+  {
+    "ID": 3,
+    "NameContextID": 13,
+    "DescriptionContextID": 14,
+    "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(1000, 10000));\n}",
+    "MaxStackCount": 10
+  },
   {},
   {
     "ID": 101,
     "NameContextID": 105,
     "DescriptionContextID": 106,
-    "Command": "OnActived\r\n{\r\n     AddStatus(Target, Defence, Target.Defence * 0.15); \n     AddStatus(Target, Attack, Target.Attack * 0.15); \r\n}",
+    "Command": "OnActived\n{\n     AddStatus(Target, Defence, Target.Defence * 0.15); \n     AddStatus(Target, Attack, Target.Attack * 0.15); \n}",
     "MaxStackCount": 1
   },
   {

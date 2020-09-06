@@ -26,6 +26,10 @@ namespace ProjectBS.Combat
         private string[] m_currentSkillIDs = null;
         private int m_currentSkillIndex = -1;
         private int m_currentBuffIndex = -1;
+        private EffectProcesser m_currentBuffProcesser = null;
+        private EffectProcesser.ProcessData m_currentBuffProcessData = null;
+        private int m_currentBuffStack = 0;
+        private int m_currentBuffRunningStack = -1;
 
         public AllCombatUnitAllEffectProcesser(List<CombatUnit> units)
         {
@@ -213,7 +217,8 @@ namespace ProjectBS.Combat
             CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].buffs[m_currentBuffIndex];
             string _command = GameDataManager.GetGameData<SkillEffectData>(_currentBuff.effectID).Command;
 
-            new EffectProcesser(_command).Start(new EffectProcesser.ProcessData
+            m_currentBuffProcesser = new EffectProcesser(_command);
+            m_currentBuffProcessData = new EffectProcesser.ProcessData
             {
                 caster = _currentBuff.from,
                 target = m_units[m_currentUnitIndex],
@@ -221,8 +226,23 @@ namespace ProjectBS.Combat
                 allEffectProcesser = this,
                 referenceBuff = _currentBuff,
                 refenceSkill = null,
-                onEnded = GoNextBuff
-            });
+                onEnded = GoNextBuffStack
+            };
+            m_currentBuffStack = _currentBuff.stackCount;
+            m_currentBuffRunningStack = 0;
+            GoNextBuffStack();
+        }
+
+        private void GoNextBuffStack()
+        {
+            m_currentBuffRunningStack++;
+            if(m_currentBuffRunningStack > m_currentBuffStack)
+            {
+                GoNextBuff();
+                return;
+            }
+
+            m_currentBuffProcesser.Start(m_currentBuffProcessData);
         }
     }
 }

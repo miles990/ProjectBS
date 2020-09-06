@@ -16,6 +16,7 @@ namespace ProjectBS.Combat
             public int effectID = 0;
             public int remainingTime = 1;
             public int stackCount = 1;
+            public CombatUnit owner = null;
             public CombatUnit from = null;
         }
 

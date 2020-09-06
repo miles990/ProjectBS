@@ -100,7 +100,7 @@ namespace ProjectBS
                 HP = Random.Range(_hp.MinValue, _hp.MaxValue),
                 HPAbilityID = _hp.ID,
                 Level = 1,
-                SkillSlot_0 = 101,
+                SkillSlot_0 = 110,
                 SkillSlot_1 = 104,
                 SKillSlot_2 = 108,
                 SKillSlot_3 = 107,

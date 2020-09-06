@@ -11,6 +11,17 @@ namespace ProjectBS.Combat.EffectCommand
             switch (vars[0])
             {
                 case Keyword.Self:
+                    {
+                        if (processData.referenceBuff != null)
+                        {
+                            _target = processData.referenceBuff.owner;
+                        }
+                        else
+                        {
+                            _target = processData.caster;
+                        }
+                        break;
+                    }
                 case Keyword.Caster:
                     {
                         _target = processData.caster;

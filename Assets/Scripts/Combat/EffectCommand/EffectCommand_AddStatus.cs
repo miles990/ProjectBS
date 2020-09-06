@@ -11,6 +11,17 @@ namespace ProjectBS.Combat.EffectCommand
             switch (vars[0].Trim())
             {
                 case Keyword.Self:
+                    {
+                        if(processData.referenceBuff != null)
+                        {
+                            _target = processData.referenceBuff.owner;
+                        }
+                        else
+                        {
+                            _target = processData.caster;
+                        }
+                        break;
+                    }
                 case Keyword.Caster:
                     {
                         _target = processData.caster;
@@ -44,6 +55,7 @@ namespace ProjectBS.Combat.EffectCommand
                     }
                 default:
                     {
+                        UnityEngine.Debug.LogWarning("Add status formula=" + vars[2]);
                         float _value = CombatUtility.Calculate(
                             new CombatUtility.CalculateData
                             {

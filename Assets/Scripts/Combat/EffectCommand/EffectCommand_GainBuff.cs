@@ -62,6 +62,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     effectID = m_effectID,
                     from = processData.caster,
+                    owner = m_targets[m_currentActiveTargetIndex],
                     remainingTime = m_buffTime,
                     stackCount = 1
                 };

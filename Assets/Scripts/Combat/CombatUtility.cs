@@ -34,6 +34,24 @@ namespace ProjectBS.Combat
 
                     if (_buffer.Count > 1)
                     {
+                        if(_blockResult.Contains(",")) // means this block is a value command
+                        {
+                            string _command = _buffer[_buffer.Count - 2];
+                            string _para = _buffer[_buffer.Count - 1];
+                            int _commandResult = GetValueByCommand(_command, _para);
+                            _buffer.Remove(_command);
+                            _buffer.Remove(_para);
+                            if(_buffer.Count > 1)
+                            {
+                                _buffer[_buffer.Count - 1] += _commandResult;
+                            }
+                            else
+                            {
+                                _buffer.Add(_commandResult.ToString());
+                            }
+                            continue;
+                        }
+
                         _buffer[_buffer.Count - 2] += int.Parse(_blockResult);
                         _buffer.RemoveAt(_buffer.Count - 1);
                         continue;
@@ -72,10 +90,6 @@ namespace ProjectBS.Combat
                 case Keyword.TurnCount:
                     {
                         return CombatManager.Instance.TurnCount;
-                    }
-                case Keyword.Random:
-                    {
-                        return UnityEngine.Random.Range(0, 101);
                     }
                 default:
                     {
@@ -178,6 +192,33 @@ namespace ProjectBS.Combat
             }
         }
 
+        private static int GetValueByCommand(string command, string paraString)
+        {
+            bool _minus = false;
+            if (command.StartsWith("-"))
+            {
+                command = command.Remove(0, 1);
+                _minus = true;
+            }
+            switch (command)
+            {
+                case Keyword.Random:
+                    {
+                        string[] _varParts = paraString.Split(',');
+                        int _min = int.Parse(_varParts[0]);
+                        int _max = int.Parse(_varParts[1]);
+                        if(_minus)
+                            return -UnityEngine.Random.Range(_min, _max);
+                        else
+                            return UnityEngine.Random.Range(_min, _max);
+                    }
+                default:
+                    {
+                        throw new System.Exception("[CombatUtility][GetValueByCommand] Invaild command=" + command);
+                    }
+            }
+        }
+
         private static int GetValueByParaString(CalculateData data, string paraString)
         {
             bool _minus = false;
@@ -188,23 +229,46 @@ namespace ProjectBS.Combat
             }
 
             string[] _getValueData = paraString.Split('.');
+            CombatUnit _getValueTarget = data.caster;
 
-            CombatUnit _getValueTarget;
-            if (_getValueData[0].Trim() == Keyword.Self
-                || _getValueData[0].Trim() == Keyword.Caster)
+            switch (_getValueData[0].Trim())
             {
-                _getValueTarget = data.caster;
-            }
-            else if (_getValueData[0].Trim() == Keyword.Target)
-            {
-                _getValueTarget = data.target;
-            }
-            else
-            {
-                return GetCombatFieldStatus(_getValueData[1]);
+                case Keyword.Self:
+                case Keyword.Caster:
+                    {
+                        _getValueTarget = data.caster;
+                        break;
+                    }
+                case Keyword.Target:
+                    {
+                        _getValueTarget = data.target;
+                        break;
+                    }
+                case Keyword.CombatField:
+                    {
+                        if (_minus)
+                            return -GetCombatFieldStatus(_getValueData[1]);
+                        else
+                            return GetCombatFieldStatus(_getValueData[1]);
+                    }
+                case Keyword.Random:
+                    {
+                        string _value = paraString.Replace(Keyword.Random, "");
+                        _value = paraString.Replace("(", "");
+                        _value = paraString.Replace(")", "");
+                        string[] _valueParts = _value.Split(',');
+                        int _min = int.Parse(_valueParts[0]);
+                        int _max = int.Parse(_valueParts[1]);
+
+                        return UnityEngine.Random.Range(_min, _max);
+                    }
+                default:
+                    {
+                        throw new System.Exception("[CombatUtility][GetValueByParaString] Invaild target=" + _getValueData[0]);
+                    }
             }
 
-            if(_minus)
+            if (_minus)
                 return -GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);
             else
                 return GetStatusValue(_getValueTarget, _getValueData[1], data.useRawValue);

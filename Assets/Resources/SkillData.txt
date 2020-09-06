@@ -69,7 +69,7 @@
     "SP": 0,
     "NameContextID": 117,
     "DescriptionContextID": 118,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     BeginIf(CombatField.Random <= 15);\n     GainBuff(LastSelected, 2, 1);\n     EndIf();\n}",
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     BeginIf(Random(1, 100) <= 15);\n     GainBuff(LastSelected, 2, 1);\n     EndIf();\n}",
     "SkillScrollItemID": 0
   },
   {
@@ -85,7 +85,16 @@
     "SP": 0,
     "NameContextID": 121,
     "DescriptionContextID": 122,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Hatred * 1, 0, 0);\n}"
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Hatred * 1, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 110,
+    "SP": 0,
+    "NameContextID": 123,
+    "DescriptionContextID": 124,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1, 0, 0);\n     GainBuff(LastSelected, 3, 3);\n}",
+    "SkillScrollItemID": 0
   },
   {},
   {
