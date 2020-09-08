@@ -130,10 +130,10 @@
   },
   {
     "ID": 115,
-    "SP": 30,
+    "SP": 90,
     "NameContextID": 134,
     "DescriptionContextID": 135,
-    "Command": "OnActived\n{\n     AddStatus(SelectOther(All, Manual, 1), HP, -Target.MaxHP * 0.03 * Buff(Target, 5, StackCount));\n}",
+    "Command": "OnActived\n{\n     AddStatus(SelectOther(All, Manual, 1), HP, -Target.MaxHP * 0.03 * Buff(Target, 5, StackCount));\n     RemoveBuff(LastSelected, 5, -1);\n}",
     "SkillScrollItemID": 0
   },
   {},

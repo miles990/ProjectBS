@@ -82,7 +82,8 @@ namespace ProjectBS.Combat
             {
                 case "Self":
                     {
-                        data.onSelected?.Invoke(new List<CombatUnit> { data.attacker });
+                        m_currentSelectedTargets = new List<CombatUnit> { data.attacker };
+                        data.onSelected?.Invoke(m_currentSelectedTargets);
                         return;
                     }
                 case "Select":
@@ -94,8 +95,8 @@ namespace ProjectBS.Combat
                         m_allUnit = CombatManager.Instance.AllUnit;
                         m_needCount = int.Parse(_vars[2]);
                         m_attacker = data.attacker;
-                        m_onSelected = data.onSelected;
-                        m_onSelected += OnManualSelected;
+                        m_onSelected = OnManualSelected;
+                        m_onSelected += data.onSelected;
                         m_inculdeAttacker = _command == "Select";
 
                         if (m_currentSelectType == SelectType.Manual)
@@ -119,7 +120,7 @@ namespace ProjectBS.Combat
                     }
                 case "LastSelected":
                     {
-                        UnityEngine.Debug.Log(m_currentSelectedTargets.Count);
+                        UnityEngine.Debug.LogWarning("LastSelected:" + m_currentSelectedTargets.Count);
                         data.onSelected?.Invoke(m_currentSelectedTargets);
                         return;
                     }
@@ -133,6 +134,7 @@ namespace ProjectBS.Combat
         private void OnManualSelected(List<CombatUnit> targets)
         {
             m_currentSelectedTargets = targets;
+            UnityEngine.Debug.LogWarning("OnManualSelected:" + m_currentSelectedTargets.Count);
         }
 
         private void DoSelect()
