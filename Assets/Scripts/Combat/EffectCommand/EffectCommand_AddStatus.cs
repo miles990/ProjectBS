@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
-                attacker = processData.caster,
+                attacker = processData.referenceBuff == null ? processData.caster : processData.referenceBuff.owner,
                 commandString = vars[0],
                 onSelected = OnSelected
             });

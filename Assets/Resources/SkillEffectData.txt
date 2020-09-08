@@ -31,7 +31,7 @@
     "ID": 5,
     "NameContextID": 17,
     "DescriptionContextID": 18,
-    "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP > Self.MaxHP * 0.01);\n     AddStatus(Self, HP, Self.MaxHP * 0.01);\n     EndIf();\n}",
+    "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP >= Self.MaxHP * 0.01 + 1);\n     AddStatus(Self, HP, -Self.MaxHP * 0.01);\n     EndIf();\n}",
     "MaxStackCount": 10
   },
   {},
