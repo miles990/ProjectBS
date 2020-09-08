@@ -109,6 +109,7 @@ namespace ProjectBS.Combat
                     {
                         effectID = int.Parse(_effectIDs[i]),
                         from = _boss,
+                        owner = _boss,
                         remainingTime = -1,
                         stackCount = 1
                     });

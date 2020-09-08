@@ -43,7 +43,6 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-
             float _value = CombatUtility.Calculate(
                 new CombatUtility.CalculateData
                 {
