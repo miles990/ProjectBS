@@ -90,10 +90,50 @@
   },
   {
     "ID": 110,
-    "SP": 0,
+    "SP": 10,
     "NameContextID": 123,
     "DescriptionContextID": 124,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1, 0, 0);\n     GainBuff(LastSelected, 3, 3);\n}",
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1, 0, 0);\n     BeginIf(Random(1,100) <= 35);\n     GainBuff(LastSelected, 3, 3);\n     EndIf();\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 111,
+    "SP": 10,
+    "NameContextID": 125,
+    "DescriptionContextID": 126,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1, 0, 0);\n     BeginIf(Random(1,100) <= 35);\n     GainBuff(LastSelected, 4, 2);\n     EndIf();\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 112,
+    "SP": 10,
+    "NameContextID": 127,
+    "DescriptionContextID": 128,
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * Random(200, 400) * 0.01, 0, 0);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 113,
+    "SP": 30,
+    "NameContextID": 129,
+    "DescriptionContextID": 130,
+    "Command": "OnActived\n{\n     GainBuff(SelectOther(Opponent, Manual, 1), 103, 3);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 114,
+    "SP": 30,
+    "NameContextID": 132,
+    "DescriptionContextID": 133,
+    "Command": "OnActived\n{\n     GainBuff(SelectOther(Opponent, Random, -1), 5, 5);\n}",
+    "SkillScrollItemID": 0
+  },
+  {
+    "ID": 115,
+    "SP": 30,
+    "NameContextID": 134,
+    "DescriptionContextID": 135,
+    "Command": "OnActived\n{\n     AddStatus(SelectOther(All, Manual, 1), HP, -Target.MaxHP * 0.03 * Buff(Target, 5, StackCount));\n}",
     "SkillScrollItemID": 0
   },
   {},

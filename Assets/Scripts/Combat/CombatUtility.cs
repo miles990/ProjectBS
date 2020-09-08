@@ -36,12 +36,31 @@ namespace ProjectBS.Combat
                     {
                         if(_blockResult.Contains(",")) // means this block is a value command
                         {
-                            string _command = _buffer[_buffer.Count - 2];
+                            string _commandBuffer = ""; // start get command
+                            for(int j = _buffer[_buffer.Count - 2].Length - 1; j >= 0; j--)
+                            {
+                                if(_buffer[_buffer.Count - 2][j] != '+'
+                                    && _buffer[_buffer.Count - 2][j] != '-'
+                                    && _buffer[_buffer.Count - 2][j] != '*'
+                                    && _buffer[_buffer.Count - 2][j] != '/'
+                                    && _buffer[_buffer.Count - 2][j] != '('
+                                    && _buffer[_buffer.Count - 2][j] != ')')
+                                {
+                                    _commandBuffer = _commandBuffer.Insert(0, _buffer[_buffer.Count - 2][j].ToString());
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
                             string _para = _buffer[_buffer.Count - 1];
-                            int _commandResult = GetValueByCommand(_command, _para);
-                            _buffer.Remove(_command);
-                            _buffer.Remove(_para);
-                            if(_buffer.Count > 1)
+                            int _commandResult = GetValueByCommand(data, _commandBuffer, _para);
+
+                            _buffer[_buffer.Count - 2] = _buffer[_buffer.Count - 2].Replace(_commandBuffer, "");
+                            _buffer.RemoveAt(_buffer.Count - 1);
+
+                            if (_buffer.Count > 0)
                             {
                                 _buffer[_buffer.Count - 1] += _commandResult;
                             }
@@ -192,7 +211,7 @@ namespace ProjectBS.Combat
             }
         }
 
-        private static int GetValueByCommand(string command, string paraString)
+        private static int GetValueByCommand(CalculateData data, string command, string paraString)
         {
             bool _minus = false;
             if (command.StartsWith("-"))
@@ -211,6 +230,53 @@ namespace ProjectBS.Combat
                             return -UnityEngine.Random.Range(_min, _max);
                         else
                             return UnityEngine.Random.Range(_min, _max);
+                    }
+                case Keyword.Buff:
+                    {
+                        string[] _varParts = paraString.Split(',');
+                        CombatUnit _getValueTarget = null;
+                        switch(_varParts[0])
+                        {
+                            case Keyword.Caster:
+                                {
+                                    _getValueTarget = data.caster;
+                                    break;
+                                }
+                            case Keyword.Target:
+                                {
+                                    _getValueTarget = data.target;
+                                    break;
+                                }
+                            default:
+                                {
+                                    throw new System.Exception("[CombatUtility][GetValueByCommand] Invaild target when getting buff info:" + _varParts[0]);
+                                }
+                        }
+
+                        int _effectID = int.Parse(_varParts[1]);
+                        CombatUnit.Buff _buff = _getValueTarget.buffs.Find(x => x.effectID == _effectID);
+                        if (_buff == null)
+                        {
+                            return 0;
+                        }
+                        else
+                        {
+                            switch(_varParts[2])
+                            {
+                                case Keyword.StackCount:
+                                    {
+                                        return _buff.stackCount;
+                                    }
+                                case Keyword.Time:
+                                    {
+                                        return _buff.remainingTime;
+                                    }
+                                default:
+                                    {
+                                        throw new System.Exception("[CombatUtility][GetValueByCommand] Invaild value type when getting buff info:" + _varParts[2]);
+                                    }
+                            }
+                        }
                     }
                 default:
                     {

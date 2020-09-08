@@ -28,5 +28,8 @@
         public const string Random = "Random";
         public const string LastDealedDamage = "LastDealedDamage";
         public const string LastTakenDamage = "LastTakenDamage";
+        public const string Buff = "Buff";
+        public const string StackCount = "StackCount";
+        public const string Time = "Time";
     }
 }

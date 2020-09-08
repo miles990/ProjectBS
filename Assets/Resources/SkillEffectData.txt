@@ -20,6 +20,20 @@
     "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(1000, 10000));\n}",
     "MaxStackCount": 10
   },
+  {
+    "ID": 4,
+    "NameContextID": 15,
+    "DescriptionContextID": 16,
+    "Command": "OnActionStarted_Self\n{\n    ForceEndAction();\n}\n\nOnStartToTakeDamage_Self\r\n{\n     AddDamage(25%);\n}",
+    "MaxStackCount": 1
+  },
+  {
+    "ID": 5,
+    "NameContextID": 17,
+    "DescriptionContextID": 18,
+    "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP > Self.MaxHP * 0.01);\n     AddStatus(Self, HP, Self.MaxHP * 0.01);\n     EndIf();\n}",
+    "MaxStackCount": 10
+  },
   {},
   {
     "ID": 101,
@@ -34,6 +48,13 @@
     "DescriptionContextID": 116,
     "Command": "OnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill == 106);\n     AddDamage(50%);\n     EndIf();\n}",
     "MaxStackCount": 10
+  },
+  {
+    "ID": 103,
+    "NameContextID": 129,
+    "DescriptionContextID": 131,
+    "Command": "OnActived\n{\n     AddStatus(Target, Defence, -Target.Defence * 0.5); \n     AddStatus(Target, Attack, -Target.Attack * 0.5);\n     AddStatus(Target, Speed, -Target.Speed * 0.5);\n}",
+    "MaxStackCount": 1
   },
   {},
   {
