@@ -1,94 +1,103 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_SetStatus : EffectCommandBase
     {
+        private Action m_onCompleted = null;
+        private string m_statusString = "";
+        private string m_valueString = "";
+
+        private List<CombatUnit> m_targets = null;
+        private int m_currentTargetIndex = -1;
+
         public override void Process(string[] vars, Action onCompleted)
         {
-            CombatUnit _target = null;
+            m_onCompleted = onCompleted;
+            m_statusString = vars[1].Trim();
+            m_valueString = vars[2].Trim();
 
-            switch (vars[0])
+            CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
-                case Keyword.Self:
-                    {
-                        if (processData.referenceBuff != null)
-                        {
-                            _target = processData.referenceBuff.owner;
-                        }
-                        else
-                        {
-                            _target = processData.caster;
-                        }
-                        break;
-                    }
-                case Keyword.Caster:
-                    {
-                        _target = processData.caster;
-                        break;
-                    }
-                case Keyword.Target:
-                    {
-                        _target = processData.target;
-                        break;
-                    }
+                attacker = processData.caster,
+                commandString = vars[0],
+                onSelected = OnSelected
+            });
+        }
+
+        private void OnSelected(List<CombatUnit> targets)
+        {
+            m_targets = targets;
+            m_currentTargetIndex = -1;
+
+            GoNextTarget();
+        }
+
+        private void GoNextTarget()
+        {
+            m_currentTargetIndex++;
+            if (m_currentTargetIndex >= m_targets.Count)
+            {
+                m_onCompleted?.Invoke();
+                return;
             }
+
 
             float _value = CombatUtility.Calculate(
                 new CombatUtility.CalculateData
                 {
                     caster = processData.caster,
                     target = processData.target,
-                    formula = vars[2],
+                    formula = m_valueString,
                     useRawValue = true
                 });
             int _set = Convert.ToInt32(_value);
 
-            switch (vars[1].Trim())
+            switch (m_statusString)
             {
                 case Keyword.Attack:
                     {
-                        _target.rawAttack = _set;
+                        m_targets[m_currentTargetIndex].rawAttack = _set;
                         break;
                     }
                 case Keyword.Defence:
                     {
-                        _target.rawDefence = _set;
+                        m_targets[m_currentTargetIndex].rawDefence = _set;
                         break;
                     }
                 case Keyword.MaxHP:
                     {
-                        _target.rawMaxHP = _set;
+                        m_targets[m_currentTargetIndex].rawMaxHP = _set;
                         break;
                     }
                 case Keyword.Speed:
                     {
-                        _target.rawSpeed = _set;
+                        m_targets[m_currentTargetIndex].rawSpeed = _set;
                         break;
                     }
                 case Keyword.Hatred:
                     {
-                        _target.hatred = _set;
-                        UnityEngine.Debug.LogWarningFormat("SetStatus {0} hatred={1}", _target, _target.hatred);
+                        m_targets[m_currentTargetIndex].hatred = _set;
                         break;
                     }
                 case Keyword.HP:
                     {
-                        _target.HP = _set;
+                        m_targets[m_currentTargetIndex].HP = _set;
                         break;
                     }
                 case Keyword.SP:
                     {
-                        _target.SP = _set;
+                        m_targets[m_currentTargetIndex].SP = _set;
                         break;
                     }
                 default:
                     {
-                        throw new Exception("[EffectCommand_SetStatus][Process] Invaild status:" + vars[1]);
+                        throw new Exception("[EffectCommand_SetStatus][Process] Invaild status:" + m_statusString);
                     }
             }
 
-            onCompleted?.Invoke();
+            GoNextTarget();
         }
     }
 }

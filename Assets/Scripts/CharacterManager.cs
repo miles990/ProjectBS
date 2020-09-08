@@ -103,7 +103,7 @@ namespace ProjectBS
                 SkillSlot_0 = 114,
                 SkillSlot_1 = 115,
                 SKillSlot_2 = 110,
-                SKillSlot_3 = 107,
+                SKillSlot_3 = 101,
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
                 SpeedAbilityID = _speed.ID,
