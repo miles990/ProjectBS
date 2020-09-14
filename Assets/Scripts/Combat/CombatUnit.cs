@@ -66,6 +66,11 @@ namespace ProjectBS.Combat
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
 
+        public bool skipAction = false;
+        public bool lockAddHP = false;
+        public bool lockAddSP = false;
+        public bool lockAddHatred = false;
+
         public int lastSkillID = 0;
         public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
         public int lastTakenDamage = 0;

@@ -71,6 +71,20 @@ namespace ProjectBS.Combat
             return m_units.Count - GetCampCount(camp);
         }
 
+        public List<CombatUnit> GetSameCampUnits(CombatUnit.Camp camp)
+        {
+            List<CombatUnit> _units = new List<CombatUnit>();
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                if (m_units[i].camp == camp)
+                {
+                    _units.Add(m_units[i]);
+                }
+            }
+
+            return _units;
+        }
+
         public void StartCombat(PartyData player, BossData boss)
         {
             m_units.Clear();
@@ -122,11 +136,6 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
         }
 
-        public void MarkForceStopCurrentActionOnStart()
-        {
-            m_currentAction.MarkForceStopOnStart();
-        }
-
         public void ShowForceEndAction()
         {
             GetPage<UI.CombatUIView>().ShowForceEndAction(m_currentAction.Actor);
@@ -135,6 +144,11 @@ namespace ProjectBS.Combat
         public void ShowDamage(UI.CombatUIView.DisplayDamageData displayDamageData)
         {
             GetPage<UI.CombatUIView>().DisplayDamage(displayDamageData);
+        }
+
+        public void ShowHeal(UI.CombatUIView.DisplayHealData displayHealData)
+        {
+            GetPage<UI.CombatUIView>().DisplayHeal(displayHealData);
         }
 
         private void AddUnit(OwningCharacterData character)
@@ -181,6 +195,18 @@ namespace ProjectBS.Combat
             TurnCount++;
 
             m_units.Sort((x, y) => y.GetSpeed().CompareTo(x.GetSpeed()));
+            for (int i = 0; i < m_units.Count - 1; i++)
+            {
+                if(m_units[i].GetSpeed() == m_units[i + 1].GetSpeed())
+                {
+                    if(UnityEngine.Random.Range(0, 101) <= 50)
+                    {
+                        CombatUnit _temp = m_units[i + 1];
+                        m_units[i + 1] = m_units[i];
+                        m_units[i] = _temp;
+                    }
+                }
+            }
             m_unitActions.Clear();
 
             for (int i = 0; i < m_units.Count; i++)
@@ -235,6 +261,8 @@ namespace ProjectBS.Combat
                     return;
                 }
             }
+
+            m_currentAction.Actor.skipAction = false; // reset skip action state on action ended 
 
             CheckGameEnd();
         }

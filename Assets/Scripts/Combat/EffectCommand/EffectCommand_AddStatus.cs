@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
-                attacker = processData.referenceBuff == null ? processData.caster : processData.referenceBuff.owner,
+                attacker = GetSelf(),
                 commandString = vars[0],
                 onSelected = OnSelected
             });
@@ -77,6 +77,11 @@ namespace ProjectBS.Combat.EffectCommand
                         {
                             case Keyword.Hatred:
                                 {
+                                    if (m_targets[m_currentTargetIndex].lockAddHatred && _add > 0)
+                                    {
+                                        break;
+                                    }
+
                                     m_targets[m_currentTargetIndex].hatred += _add;
                                     break;
                                 }
@@ -86,10 +91,21 @@ namespace ProjectBS.Combat.EffectCommand
                                     {
                                         CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
                                         {
-                                            attackerName = m_targets[m_currentTargetIndex].name,
+                                            takerName = m_targets[m_currentTargetIndex].name,
                                             damageValue = -_add,
-                                            defenderName = m_targets[m_currentTargetIndex].name,
-                                            skillName = "效果傷害"
+                                        });
+                                    }
+                                    else
+                                    {
+                                        if(m_targets[m_currentTargetIndex].lockAddHP)
+                                        {
+                                            break;
+                                        }
+
+                                        CombatManager.Instance.ShowHeal(new UI.CombatUIView.DisplayHealData
+                                        {
+                                            takerName = m_targets[m_currentTargetIndex].name,
+                                            healValue = _add
                                         });
                                     }
                                     m_targets[m_currentTargetIndex].HP += _add;
@@ -97,6 +113,11 @@ namespace ProjectBS.Combat.EffectCommand
                                 }
                             case Keyword.SP:
                                 {
+                                    if (m_targets[m_currentTargetIndex].lockAddSP && _add > 0)
+                                    {
+                                        break;
+                                    }
+
                                     m_targets[m_currentTargetIndex].SP += _add;
                                     break;
                                 }

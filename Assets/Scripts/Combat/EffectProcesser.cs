@@ -258,9 +258,9 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_AddDamage();
                     }
-                case "ForceEndAction":
+                case "SetForceEndAction":
                     {
-                        return new EffectCommand_ForceEndAction();
+                        return new EffectCommand_SetForceEndAction();
                     }
                 case "GainBuff":
                     {

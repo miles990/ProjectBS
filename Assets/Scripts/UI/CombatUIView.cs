@@ -191,19 +191,29 @@ namespace ProjectBS.UI
 
         public class DisplayDamageData
         {
-            public string attackerName = "Unknown Character";
-            public string skillName = "Unknown Skill";
-            public string defenderName = "Unknown Character";
+            public string takerName = "Unknown Character";
             public int damageValue = 0;
         }
 
         public void DisplayDamage(DisplayDamageData data)
         {
-            Debug.LogFormat("{0} 使用 {1} 攻擊 {2}，造成 {3} 傷害",
-                    data.attackerName,
-                    data.skillName,
-                    data.defenderName,
+            Debug.LogFormat("{0} 受到 {1} 點傷害",
+                    data.takerName,
                     data.damageValue
+                );
+        }
+
+        public class DisplayHealData
+        {
+            public string takerName = "Unknown Character";
+            public int healValue = 0;
+        }
+
+        public void DisplayHeal(DisplayHealData data)
+        {
+            Debug.LogFormat("{0} 恢復 {1} 點生命",
+                    data.takerName,
+                    data.healValue
                 );
         }
 

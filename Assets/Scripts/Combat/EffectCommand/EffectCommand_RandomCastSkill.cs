@@ -63,7 +63,7 @@ namespace ProjectBS.Combat.EffectCommand
                     UnityEngine.Debug.LogWarning("RandomCastSkill: cast skill=" + _skill.ID);
                     new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
                     {
-                        caster = processData.caster,
+                        caster = GetSelf(),
                         target = null,
                         timing = EffectProcesser.TriggerTiming.OnActived,
                         allEffectProcesser = processData.allEffectProcesser,

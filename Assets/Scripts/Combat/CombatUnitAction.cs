@@ -13,8 +13,6 @@ namespace ProjectBS.Combat
         private AllCombatUnitAllEffectProcesser m_processer = null;
         private Action m_onEnded = null;
 
-        private bool m_forceStop = false;
-
         public CombatUnitAction(CombatUnit actor, AllCombatUnitAllEffectProcesser processer)
         {
             Actor = actor;
@@ -27,11 +25,6 @@ namespace ProjectBS.Combat
 
             GetPage<UI.CombatUIView>().OnActionAnimationEnded += OnActionAnimationEnded;
             GetPage<UI.CombatUIView>().ShowActorActionStart(Actor);
-        }
-
-        public void MarkForceStopOnStart()
-        {
-            m_forceStop = true;
         }
 
         private void OnActionAnimationEnded()
@@ -48,8 +41,9 @@ namespace ProjectBS.Combat
 
         private void OnActionStarted_Any_Ended()
         {
-            if(m_forceStop)
+            if(Actor.skipAction)
             {
+                CombatManager.Instance.ShowForceEndAction();
                 m_onEnded?.Invoke();
                 return;
             }
@@ -65,7 +59,7 @@ namespace ProjectBS.Combat
 
         private void Act()
         {
-            if (m_forceStop)
+            if (Actor.skipAction)
             {
                 CombatManager.Instance.ShowForceEndAction();
                 m_onEnded?.Invoke();
