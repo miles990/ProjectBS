@@ -222,10 +222,8 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
             {
-                attackerName = processData.caster.name,
-                defenderName = m_targets[m_currentTargetIndex].name,
-                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]],
-                skillName = ContextConverter.Instance.GetContext(processData.refenceSkill.NameContextID)
+                takerName = m_targets[m_currentTargetIndex].name,
+                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]
             });
             UnityEngine.Debug.LogWarning("DealDamage OnDamageTaken_Any");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
