@@ -134,20 +134,36 @@ namespace ProjectBS
 
         public void LevelUp(OwningCharacterData character, int targetLevel)
         {
-            while(character.Level <= targetLevel)
+            while(character.Level < targetLevel)
             {
-                character.Level++;
-
-                AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);
-                AbilityData _attack = m_attackAbiPool.Find(x => x.ID == character.AttackAbilityID);
-                AbilityData _defence = m_defenceAbiPool.Find(x => x.ID == character.DefenceAbilityID);
-                AbilityData _speed = m_speedAbiPool.Find(x => x.ID == character.SpeedAbilityID);
-
-                character.HP += Random.Range(_hp.MinValue, _hp.MaxValue);
-                character.Attack += Random.Range(_attack.MinValue, _attack.MaxValue);
-                character.Defence += Random.Range(_defence.MinValue, _defence.MaxValue);
-                character.Speed += Random.Range(_speed.MinValue, _speed.MaxValue);
+                LevelUp(character);
             }
+        }
+
+        public void AddExp(OwningCharacterData character, int addExp)
+        {
+            character.Exp += addExp;
+            while(GameDataManager.GetGameData<ExpData>(character.Level).Require != -1 &&
+                  character.Exp - GameDataManager.GetGameData<ExpData>(character.Level).Require >= 0)
+            {
+                character.Exp -= GameDataManager.GetGameData<ExpData>(character.Level).Require;
+                LevelUp(character);
+            }
+        }
+
+        private void LevelUp(OwningCharacterData character)
+        {
+            character.Level++;
+
+            AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);
+            AbilityData _attack = m_attackAbiPool.Find(x => x.ID == character.AttackAbilityID);
+            AbilityData _defence = m_defenceAbiPool.Find(x => x.ID == character.DefenceAbilityID);
+            AbilityData _speed = m_speedAbiPool.Find(x => x.ID == character.SpeedAbilityID);
+
+            character.HP += Random.Range(_hp.MinValue, _hp.MaxValue);
+            character.Attack += Random.Range(_attack.MinValue, _attack.MaxValue);
+            character.Defence += Random.Range(_defence.MinValue, _defence.MaxValue);
+            character.Speed += Random.Range(_speed.MinValue, _speed.MaxValue);
         }
     }
 }
