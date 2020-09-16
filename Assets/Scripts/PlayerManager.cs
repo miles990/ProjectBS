@@ -58,35 +58,6 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_2 = _newPlayer.Characters[2].UDID;
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
-            CharacterManager.Instance.AddExp(_newPlayer.Characters[0], 495100);
-            UnityEngine.Debug.Log(_newPlayer.Characters[0].Level);
-
-            // TEST
-            //CharacterManager.Instance.LevelUp(_newPlayer.Characters[0], 100);
-            //CharacterManager.Instance.LevelUp(_newPlayer.Characters[1], 100);
-            //CharacterManager.Instance.LevelUp(_newPlayer.Characters[2], 100);
-            //CharacterManager.Instance.LevelUp(_newPlayer.Characters[3], 100);
-
-            //_newPlayer.Characters[0].HP = 10000;
-            //_newPlayer.Characters[0].Attack = 1000;
-            //_newPlayer.Characters[0].Defence = 1000;
-            //_newPlayer.Characters[0].Speed = 1000;
-
-            //_newPlayer.Characters[1].HP = 10000;
-            //_newPlayer.Characters[1].Attack = 1000;
-            //_newPlayer.Characters[1].Defence = 1000;
-            //_newPlayer.Characters[1].Speed = 1000;
-
-            //_newPlayer.Characters[2].HP = 10000;
-            //_newPlayer.Characters[2].Attack = 1000;
-            //_newPlayer.Characters[2].Defence = 1000;
-            //_newPlayer.Characters[2].Speed = 1000;
-
-            //_newPlayer.Characters[3].HP = 10000;
-            //_newPlayer.Characters[3].Attack = 1000;
-            //_newPlayer.Characters[3].Defence = 1000;
-            //_newPlayer.Characters[3].Speed = 1000;
-
 
             return _newPlayer;
         }

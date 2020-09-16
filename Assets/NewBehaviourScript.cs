@@ -9,8 +9,5 @@ public class NewBehaviourScript : MonoBehaviour
     {
         ProjectBS.GameDataLoader.StartLoad();
         ProjectBS.PlayerManager.Instance.Init();
-        ProjectBS.Combat.CombatManager.Instance.StartCombat
-            (ProjectBS.PlayerManager.Instance.Player.Party,
-             KahaGameCore.Static.GameDataManager.GetGameData<ProjectBS.Data.BossData>(1));
     }
 }
