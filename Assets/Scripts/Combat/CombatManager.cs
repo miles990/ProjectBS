@@ -151,6 +151,11 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().DisplayHeal(displayHealData);
         }
 
+        public void ShowGainBuff(UI.CombatUIView.DisplayGainBuffData displayGainBuffData)
+        {
+            GetPage<UI.CombatUIView>().DisplayGainBuff(displayGainBuffData);
+        }
+
         private void AddUnit(OwningCharacterData character)
         {
             m_units.Add(new CombatUnit
@@ -161,7 +166,7 @@ namespace ProjectBS.Combat
                 rawDefence = character.Defence,
                 rawMaxHP = character.HP,
                 HP = character.HP,
-                name = "character " + character.UDID,
+                name = ContextConverter.Instance.GetContext(character.CharacterNameID),
                 skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SKillSlot_2, character.SKillSlot_3),
                 SP = character.SP,
                 rawSpeed = character.Speed,

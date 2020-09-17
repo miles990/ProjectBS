@@ -7,23 +7,66 @@ using Random = UnityEngine.Random;
 
 namespace ProjectBS
 {
-    public class CharacterManager
+    public static class CharacterUtility
     {
-        public static CharacterManager Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    m_instance = new CharacterManager();
-                }
-                return m_instance;
-            }
-        }
-        private static CharacterManager m_instance = null;
+        private static bool m_inited = false;
 
-        private CharacterManager() 
+        private static List<AbilityData> m_hpAbiPool = null;
+        private static int m_hpTotalWeight = 1;
+        private static List<AbilityData> m_attackAbiPool = null;
+        private static int m_attackTotalWeight = 1;
+        private static List<AbilityData> m_defenceAbiPool = null;
+        private static int m_defenceTotalWeight = 1;
+        private static List<AbilityData> m_speedAbiPool = null;
+        private static int m_speedTotalWeight = 1;
+        private static CharacterNamePoolData[] m_nameIDPool = null;
+
+        public static OwningCharacterData CreateNewCharacter()
         {
+            InitAbilityData();
+
+            AbilityData _hp = RollFromList(m_hpTotalWeight, m_hpAbiPool);
+            AbilityData _attack = RollFromList(m_attackTotalWeight, m_attackAbiPool);
+            AbilityData _defence = RollFromList(m_defenceTotalWeight, m_defenceAbiPool);
+            AbilityData _speed = RollFromList(m_speedTotalWeight, m_speedAbiPool);
+
+            OwningCharacterData _newChar = new OwningCharacterData
+            {
+                Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
+                AttackAbilityID = _attack.ID,
+                CharacterNameID = m_nameIDPool[Random.Range(0, m_nameIDPool.Length - 1)].NameContextID,
+                CharacterSpriteID = 0,
+                Defence = Random.Range(_defence.MinValue, _defence.MaxValue),
+                DefenceAbilityID = _defence.ID,
+                Equipment_UDID_Body = null,
+                Equipment_UDID_Foot = null,
+                Equipment_UDID_Hand = null,
+                Equipment_UDID_Head = null,
+                Exp = 0,
+                HP = Random.Range(_hp.MinValue, _hp.MaxValue),
+                HPAbilityID = _hp.ID,
+                Level = 1,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SKillSlot_2 = 0,
+                SKillSlot_3 = 0,
+                SP = 100,
+                Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
+                SpeedAbilityID = _speed.ID,
+                UDID = System.Guid.NewGuid().ToString()
+            };
+
+            return _newChar;
+        }
+
+        private static void InitAbilityData()
+        {
+            if(m_inited)
+            {
+                return;
+            }
+
+            m_nameIDPool = GameDataManager.GetAllGameData<CharacterNamePoolData>();
             AbilityData[] _allDatas = GameDataManager.GetAllGameData<AbilityData>();
             m_hpAbiPool = new List<AbilityData>();
             m_attackAbiPool = new List<AbilityData>();
@@ -66,54 +109,11 @@ namespace ProjectBS
                         }
                 }
             }
+
+            m_inited = true;
         }
 
-        private List<AbilityData> m_hpAbiPool = null;
-        private int m_hpTotalWeight = 1;
-        private List<AbilityData> m_attackAbiPool = null;
-        private int m_attackTotalWeight = 1;
-        private List<AbilityData> m_defenceAbiPool = null;
-        private int m_defenceTotalWeight = 1;
-        private List<AbilityData> m_speedAbiPool = null;
-        private int m_speedTotalWeight = 1;
-
-        public OwningCharacterData CreateNewCharacter()
-        {
-            AbilityData _hp = RollFromList(m_hpTotalWeight, m_hpAbiPool);
-            AbilityData _attack = RollFromList(m_attackTotalWeight, m_attackAbiPool);
-            AbilityData _defence = RollFromList(m_defenceTotalWeight, m_defenceAbiPool);
-            AbilityData _speed = RollFromList(m_speedTotalWeight, m_speedAbiPool);
-
-            OwningCharacterData _newChar = new OwningCharacterData
-            {
-                Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
-                AttackAbilityID = _attack.ID,
-                CharacterNameID = 0,
-                CharacterSpriteID = 0,
-                Defence = Random.Range(_defence.MinValue, _defence.MaxValue),
-                DefenceAbilityID = _defence.ID,
-                Equipment_UDID_Body = null,
-                Equipment_UDID_Foot = null,
-                Equipment_UDID_Hand = null,
-                Equipment_UDID_Head = null,
-                Exp = 0,
-                HP = Random.Range(_hp.MinValue, _hp.MaxValue),
-                HPAbilityID = _hp.ID,
-                Level = 1,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SKillSlot_2 = 0,
-                SKillSlot_3 = 0,
-                SP = 100,
-                Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
-                SpeedAbilityID = _speed.ID,
-                UDID = System.Guid.NewGuid().ToString()
-            };
-
-            return _newChar;
-        }
-
-        private AbilityData RollFromList(int totalWeight, List<AbilityData> abilities)
+        private static AbilityData RollFromList(int totalWeight, List<AbilityData> abilities)
         {
             int _roll = Random.Range(0, totalWeight);
             for (int i = 0; i < abilities.Count; i++)
@@ -132,7 +132,7 @@ namespace ProjectBS
             return null;
         }
 
-        public void LevelUp(OwningCharacterData character, int targetLevel)
+        public static void LevelUp(OwningCharacterData character, int targetLevel)
         {
             while(character.Level < targetLevel)
             {
@@ -140,7 +140,7 @@ namespace ProjectBS
             }
         }
 
-        public void AddExp(OwningCharacterData character, int addExp)
+        public static void AddExp(OwningCharacterData character, int addExp)
         {
             character.Exp += addExp;
             while(GameDataManager.GetGameData<ExpData>(character.Level).Require != -1 &&
@@ -151,8 +151,10 @@ namespace ProjectBS
             }
         }
 
-        private void LevelUp(OwningCharacterData character)
+        private static void LevelUp(OwningCharacterData character)
         {
+            InitAbilityData();
+
             character.Level++;
 
             AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);

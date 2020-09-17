@@ -50,9 +50,21 @@ namespace ProjectBS.Combat.EffectCommand
                 case Keyword.MaxHP:
                 case Keyword.Speed:
                     {
+                        CombatUnit.Buff _buff = processData.referenceBuff;
+                        if(_buff == null)
+                        {
+                            _buff = new CombatUnit.Buff
+                            {
+                                effectID = 0,
+                                from = GetSelf(),
+                                owner = m_targets[m_currentTargetIndex],
+                                remainingTime = -1,
+                                stackCount = 1
+                            };
+                        }
                         m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                         {
-                            parentBuff = processData.referenceBuff,
+                            parentBuff = _buff,
                             statusType = m_statusString,
                             valueString = m_valueString
                         });
@@ -108,6 +120,7 @@ namespace ProjectBS.Combat.EffectCommand
                                             healValue = _add
                                         });
                                     }
+                                    GetSelf().hatred += _add;
                                     m_targets[m_currentTargetIndex].HP += _add;
                                     break;
                                 }

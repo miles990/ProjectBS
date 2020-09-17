@@ -3,14 +3,14 @@
     "ID": 1,
     "NameContextID": 7,
     "DescriptionContextID": 8,
-    "Command": "OnActived\n{\n     AddStatus(Target, Defence, Target.Defence * 0.5); \n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.3); \n}",
     "MaxStackCount": 1
   },
   {
     "ID": 2,
     "NameContextID": 11,
     "DescriptionContextID": 12,
-    "Command": "OnActionStarted_Self\n{\n    ForceEndAction();\n}",
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}",
     "MaxStackCount": 1
   },
   {
@@ -24,7 +24,7 @@
     "ID": 4,
     "NameContextID": 15,
     "DescriptionContextID": 16,
-    "Command": "OnActionStarted_Self\n{\n    ForceEndAction();\n}\n\nOnStartToTakeDamage_Self\r\n{\n     AddDamage(25%);\n}",
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}",
     "MaxStackCount": 1
   },
   {
@@ -33,6 +33,20 @@
     "DescriptionContextID": 18,
     "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP >= Self.MaxHP * 0.01 + 1);\n     AddStatus(Self, HP, -Self.MaxHP * 0.01);\n     EndIf();\n}",
     "MaxStackCount": 10
+  },
+  {
+    "ID": 6,
+    "NameContextID": 19,
+    "DescriptionContextID": 20,
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Target, Defence, Target.Defence * 0.3); \n}",
+    "MaxStackCount": 1
+  },
+  {
+    "ID": 7,
+    "NameContextID": 21,
+    "DescriptionContextID": 22,
+    "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.3); \n}",
+    "MaxStackCount": 1
   },
   {},
   {
@@ -83,13 +97,5 @@
     "NameContextID": 10022,
     "DescriptionContextID": 10023,
     "MaxStackCount": 1
-  },
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {}
+  }
 ]

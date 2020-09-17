@@ -28,6 +28,7 @@ namespace ProjectBS
             if(Player == null)
             {
                 Player = CreateNewPlayer();
+                GameDataManager.SaveData(new SaveData[] { Player });
             }
         }
 
@@ -48,10 +49,12 @@ namespace ProjectBS
                 Skills = new System.Collections.Generic.List<OwningSkillData>()
             };
 
-            _newPlayer.Characters.Add(CharacterManager.Instance.CreateNewCharacter());
-            _newPlayer.Characters.Add(CharacterManager.Instance.CreateNewCharacter());
-            _newPlayer.Characters.Add(CharacterManager.Instance.CreateNewCharacter());
-            _newPlayer.Characters.Add(CharacterManager.Instance.CreateNewCharacter());
+            for(int i = 0; i < 4; i++)
+            {
+                OwningCharacterData _newCharacter = CharacterUtility.CreateNewCharacter();
+                CharacterUtility.LevelUp(_newCharacter, 100);
+                _newPlayer.Characters.Add(_newCharacter);
+            }
 
             _newPlayer.Party.MemberUDID_0 = _newPlayer.Characters[0].UDID;
             _newPlayer.Party.MemberUDID_1 = _newPlayer.Characters[1].UDID;

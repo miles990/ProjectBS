@@ -9,7 +9,8 @@ namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
-        public override bool IsShowing => throw new NotImplementedException();
+        public override bool IsShowing { get { return m_isShowing; } }
+        private bool m_isShowing = false;
 
         public event Action OnTurnStartAnimationEnded = null;
         public event Action OnActionAnimationEnded = null;
@@ -42,6 +43,7 @@ namespace ProjectBS.UI
 
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
+            m_isShowing = show;
             onCompleted?.Invoke();
         }
 
@@ -217,6 +219,20 @@ namespace ProjectBS.UI
                 );
         }
 
+        public class DisplayGainBuffData
+        {
+            public string takerName = "Unknown Character";
+            public string buffName = "Unknown Buff";
+        }
+
+        public void DisplayGainBuff(DisplayGainBuffData data)
+        {
+            Debug.LogFormat("{0} 得到狀態: {1}",
+                data.takerName,
+                data.buffName
+            );
+        }
+
         private void WaitPlayerSelect()
         {
             switch (m_currentSelectData.selectRange)
@@ -307,6 +323,11 @@ namespace ProjectBS.UI
 
         private void Update()
         {
+            if(!m_isShowing)
+            {
+                return;
+            }
+
             if(Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Button_SelectSkill(0);
