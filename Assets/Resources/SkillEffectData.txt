@@ -48,6 +48,13 @@
     "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.3); \n}",
     "MaxStackCount": 1
   },
+  {
+    "ID": 8,
+    "NameContextID": 23,
+    "DescriptionContextID": 24,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defence, -Self.Defence * 0.5); \n}",
+    "MaxStackCount": 1
+  },
   {},
   {
     "ID": 101,
@@ -68,6 +75,13 @@
     "NameContextID": 129,
     "DescriptionContextID": 131,
     "Command": "OnActived\n{\n     AddStatus(Target, Defence, -Target.Defence * 0.5); \n     AddStatus(Target, Attack, -Target.Attack * 0.5);\n     AddStatus(Target, Speed, -Target.Speed * 0.5);\n}",
+    "MaxStackCount": 1
+  },
+  {
+    "ID": 104,
+    "NameContextID": 162,
+    "DescriptionContextID": 163,
+    "Command": "OnActived\n{\n     AddStatus(Self, HP, Self.MaxHP * 0.05); \n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(-20%);\n}",
     "MaxStackCount": 1
   },
   {},

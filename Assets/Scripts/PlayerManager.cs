@@ -43,7 +43,6 @@ namespace ProjectBS
             {
                 Characters = new System.Collections.Generic.List<OwningCharacterData>(),
                 Equipments = new System.Collections.Generic.List<OwningEquipmentData>(),
-                Items = new System.Collections.Generic.List<OwningItemData>(),
                 Party = new PartyData(),
                 PlayerName = "New Player",
                 Skills = new System.Collections.Generic.List<OwningSkillData>()

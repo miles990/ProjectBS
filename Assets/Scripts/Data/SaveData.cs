@@ -8,8 +8,8 @@ namespace ProjectBS.Data
         public PartyData Party;
         public List<OwningCharacterData> Characters;
         public List<OwningEquipmentData> Equipments;
-        public List<OwningItemData> Items;
         public List<OwningSkillData> Skills;
+        public int OwnExp;
     }
 
     public class PartyData
@@ -58,12 +58,6 @@ namespace ProjectBS.Data
         public int Defence;
         public int Speed;
         public string EffectIDs;
-    }
-
-    public class OwningItemData
-    {
-        public int ItemSourceID;
-        public int Amount;
     }
 
     public class OwningSkillData

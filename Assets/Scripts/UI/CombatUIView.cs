@@ -396,10 +396,19 @@ namespace ProjectBS.UI
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 List<CombatUnit> units = new List<CombatUnit>(m_unitToIndex.Keys);
+                int _totalHatred = 0;
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if(units[i].camp == CombatUnit.Camp.Player)
+                        _totalHatred += units[i].hatred;
+                }
                 Debug.Log("==========DISPLAY INFO==========");
                 for(int i = 0; i < units.Count; i++)
                 {
-                    Debug.LogFormat("{0}\nHP:{1}/{2}, Atk:{3}, Def:{4}, Spd={5}, Hatred={6}", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed(), units[i].hatred);
+                    if (units[i].camp == CombatUnit.Camp.Player)
+                        Debug.LogFormat("{0}\nHP:{1}/{2}, SP:{3}/100, Atk:{4}, Def:{5}, Spd={6}, Hatred={7}({8}%)", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].SP, units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed(), units[i].hatred, Convert.ToInt32(100f * ((float)units[i].hatred / (float)_totalHatred)));
+                    else
+                        Debug.LogFormat("{0}\nHP:{1}/{2}, SP:{3}/100, Atk:{4}, Def:{5}, Spd={6}", units[i].name, units[i].HP, units[i].GetMaxHP(), units[i].SP, units[i].GetAttack(), units[i].GetDefence(), units[i].GetSpeed());
 
                     for (int j = 0; j < units[i].buffs.Count; j++)
                     {
