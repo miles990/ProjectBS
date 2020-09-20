@@ -79,8 +79,8 @@ namespace ProjectBS.Combat.EffectCommand
             new EffectProcesser(_skillEffectData.Command).Start(
                 new EffectProcesser.ProcessData
                 {
-                    caster = processData.caster,
-                    target = m_targets[m_currentActiveTargetIndex],
+                    caster = m_targets[m_currentActiveTargetIndex],
+                    target = null,
                     allEffectProcesser = processData.allEffectProcesser,
                     timing = EffectProcesser.TriggerTiming.OnActived,
                     referenceBuff = _buff,

@@ -38,7 +38,7 @@
     "ID": 6,
     "NameContextID": 19,
     "DescriptionContextID": 20,
-    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Target, Defence, Target.Defence * 0.3); \n}",
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.3); \n}",
     "MaxStackCount": 1
   },
   {
@@ -60,7 +60,7 @@
     "ID": 101,
     "NameContextID": 105,
     "DescriptionContextID": 106,
-    "Command": "OnActived\n{\n     AddStatus(Target, Defence, Target.Defence * 0.15); \n     AddStatus(Target, Attack, Target.Attack * 0.15); \n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.15); \n     AddStatus(Self, Attack, Self.Attack * 0.15); \n}",
     "MaxStackCount": 1
   },
   {
@@ -74,7 +74,7 @@
     "ID": 103,
     "NameContextID": 129,
     "DescriptionContextID": 131,
-    "Command": "OnActived\n{\n     AddStatus(Target, Defence, -Target.Defence * 0.5); \n     AddStatus(Target, Attack, -Target.Attack * 0.5);\n     AddStatus(Target, Speed, -Target.Speed * 0.5);\n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defence, -Self.Defence * 0.5); \n     AddStatus(Self, Attack, -Self.Attack * 0.5);\n     AddStatus(Self, Speed, -Self.Speed * 0.5);\n}",
     "MaxStackCount": 1
   },
   {

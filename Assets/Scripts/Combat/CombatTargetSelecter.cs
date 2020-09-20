@@ -134,7 +134,14 @@ namespace ProjectBS.Combat
         private void OnManualSelected(List<CombatUnit> targets)
         {
             m_currentSelectedTargets = targets;
-            UnityEngine.Debug.LogWarning("OnManualSelected:" + m_currentSelectedTargets.Count);
+            string _debugLog = "OnSelected:";
+            for(int i = 0; i < m_currentSelectedTargets.Count; i++)
+            {
+                _debugLog += m_currentSelectedTargets[i].name;
+                if (i != m_currentSelectedTargets.Count - 1)
+                    _debugLog += ", ";
+            }
+            UnityEngine.Debug.LogWarning(_debugLog);
         }
 
         private void DoSelect()

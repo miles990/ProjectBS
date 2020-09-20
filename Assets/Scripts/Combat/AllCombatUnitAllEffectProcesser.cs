@@ -65,6 +65,8 @@ namespace ProjectBS.Combat
                     GoNextUnit();
                     return;
                 }
+
+                UnityEngine.Debug.LogWarningFormat(m_data.timing + " m_units[{0}]={1}, m_data.caster={2}", m_currentUnitIndex, m_units[m_currentUnitIndex].name, m_data.caster.name);
             }
 
             m_currentEquipment = -1;
@@ -220,8 +222,8 @@ namespace ProjectBS.Combat
             m_currentBuffProcesser = new EffectProcesser(_command);
             m_currentBuffProcessData = new EffectProcesser.ProcessData
             {
-                caster = _currentBuff.from,
-                target = m_units[m_currentUnitIndex],
+                caster = m_units[m_currentUnitIndex],
+                target = null,
                 timing = m_data.timing,
                 allEffectProcesser = this,
                 referenceBuff = _currentBuff,

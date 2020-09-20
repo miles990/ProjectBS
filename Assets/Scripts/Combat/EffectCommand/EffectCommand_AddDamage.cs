@@ -46,27 +46,24 @@ namespace ProjectBS.Combat.EffectCommand
             }
             else
             {
-                // means owner is current turn target
-                if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg.ContainsKey(processData.caster))
+                int _intDmg;
+                if (_isPersent)
                 {
-                    int _intDmg;
-                    if (_isPersent)
-                    {
-                        float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
-                        _intDmg = Convert.ToInt32(_dmg * _value);
-                        CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
-                    }
-                    else
-                    {
-                        _intDmg = Convert.ToInt32(_value);
-                        CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
-                    }
-
-                    UnityEngine.Debug.LogWarning("AddDamage add taken dmg=" + _intDmg);
-
-                    if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
-                        CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
+                    float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
+                    _intDmg = Convert.ToInt32(_dmg * _value);
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
+                else
+                {
+                    _intDmg = Convert.ToInt32(_value);
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
+                }
+
+                UnityEngine.Debug.LogWarning("AddDamage add taken dmg=" + _intDmg);
+
+                if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
+                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
+
             }
 
             onCompleted?.Invoke();

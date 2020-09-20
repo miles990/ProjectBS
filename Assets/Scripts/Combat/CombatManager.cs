@@ -85,52 +85,17 @@ namespace ProjectBS.Combat
             return _units;
         }
 
-        public void StartCombat(PartyData player, BossData boss)
+        public void StartCombat(PartyData player, List<BossData> bosses)
         {
             m_units.Clear();
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_0));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_2));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
-            CombatUnit _boss = new CombatUnit
+            for(int i = 0; i < bosses.Count; i++)
             {
-                ai = boss.AI,
-                rawAttack = boss.Attack,
-                camp = CombatUnit.Camp.Boss,
-                rawDefence = boss.Defence,
-                rawMaxHP = boss.HP,
-                HP = boss.HP,
-                name = ContextConverter.Instance.GetContext(boss.NameContextID),
-                skills = "",
-                SP = boss.SP,
-                rawSpeed = boss.Speed,
-                hatred = 1,
-                //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
-                body = null,
-                foot = null,
-                hand = null,
-                head = null,
-                buffs = new List<CombatUnit.Buff>(),
-                statusAdders = new List<CombatUnit.StatusAdder>()
-            };
-
-            if(!string.IsNullOrEmpty(boss.EffectIDs))
-            {
-                string[] _effectIDs = boss.EffectIDs.Split(';');
-                for(int i = 0; i < _effectIDs.Length; i++)
-                {
-                    _boss.buffs.Add(new CombatUnit.Buff
-                    {
-                        effectID = int.Parse(_effectIDs[i]),
-                        from = _boss,
-                        owner = _boss,
-                        remainingTime = -1,
-                        stackCount = 1
-                    });
-                }
+                AddBoss(bosses[i]);
             }
-
-            m_units.Add(_boss);
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
@@ -179,6 +144,49 @@ namespace ProjectBS.Combat
                 buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             });
+        }
+
+        private void AddBoss(BossData boss)
+        {
+            CombatUnit _boss = new CombatUnit
+            {
+                ai = boss.AI,
+                rawAttack = boss.Attack,
+                camp = CombatUnit.Camp.Boss,
+                rawDefence = boss.Defence,
+                rawMaxHP = boss.HP,
+                HP = boss.HP,
+                name = ContextConverter.Instance.GetContext(boss.NameContextID),
+                skills = "",
+                SP = boss.SP,
+                rawSpeed = boss.Speed,
+                hatred = 1,
+                //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
+                body = null,
+                foot = null,
+                hand = null,
+                head = null,
+                buffs = new List<CombatUnit.Buff>(),
+                statusAdders = new List<CombatUnit.StatusAdder>()
+            };
+
+            if (!string.IsNullOrEmpty(boss.EffectIDs))
+            {
+                string[] _effectIDs = boss.EffectIDs.Split(';');
+                for (int i = 0; i < _effectIDs.Length; i++)
+                {
+                    _boss.buffs.Add(new CombatUnit.Buff
+                    {
+                        effectID = int.Parse(_effectIDs[i]),
+                        from = _boss,
+                        owner = _boss,
+                        remainingTime = -1,
+                        stackCount = 1
+                    });
+                }
+            }
+
+            m_units.Add(_boss);
         }
 
         private void StartBattle()

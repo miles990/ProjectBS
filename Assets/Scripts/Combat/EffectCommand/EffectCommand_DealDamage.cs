@@ -77,9 +77,10 @@ namespace ProjectBS.Combat.EffectCommand
             int _roll = int.Parse(m_rollMin);
             _roll = UnityEngine.Random.Range(_roll, 101);
 
-            float _rollPersent = 0.01f * (float)_roll;
+            float _attackAddRollPersent = 0.01f * (float)_roll;
+            float _defenceAddRollPersent = UnityEngine.Random.Range(0f, 1f);
 
-            if(!float.TryParse(m_valueString, out float _attack))
+            if (!float.TryParse(m_valueString, out float _attack))
             {
                 _attack = CombatUtility.Calculate(new CombatUtility.CalculateData
                 {
@@ -91,10 +92,11 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             UnityEngine.Debug.LogWarning("_attack=" + _attack);
-            UnityEngine.Debug.LogWarning("_rollPersent=" + _rollPersent);
+            UnityEngine.Debug.LogWarning("_attackAddRollPersent=" + _attackAddRollPersent);
+            UnityEngine.Debug.LogWarning("_defenceAddRollPersent=" + _defenceAddRollPersent);
 
-            float _finalAttackValue = (float)(_attack + _attack * _rollPersent);
-            float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * UnityEngine.Random.Range(0f, 1f));
+            float _finalAttackValue = (float)(_attack + _attack * _attackAddRollPersent);
+            float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * _defenceAddRollPersent);
             float _ingnoreDefence = float.Parse(m_ingnoreDefence);
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
             float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));

@@ -120,6 +120,7 @@ namespace ProjectBS.Combat.EffectCommand
                                             healValue = _add
                                         });
                                     }
+                                    UnityEngine.Debug.LogWarning(GetSelf().name + " hatred+=" + _add);
                                     GetSelf().hatred += _add;
                                     m_targets[m_currentTargetIndex].HP += _add;
                                     break;
