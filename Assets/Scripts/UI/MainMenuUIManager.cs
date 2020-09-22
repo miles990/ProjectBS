@@ -1,0 +1,39 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using KahaGameCore.Interface;
+
+namespace ProjectBS.UI
+{
+    public class MainMenuUIManager : Manager
+    {
+        public enum UIPage
+        {
+            None,
+            EditPatyUI
+        }
+
+        private UIPage m_current = UIPage.None;
+        private Dictionary<UIPage, UIView> m_pageToUI = new Dictionary<UIPage, UIView>();
+
+        public MainMenuUIManager()
+        {
+            m_pageToUI.Add(UIPage.EditPatyUI, GetPage<EditPartyUIView>());
+        }
+
+        public void Show(UIPage page)
+        {
+            DeshowAll();
+            m_pageToUI[page].Show(this, true, null);
+        }
+
+        public void DeshowAll()
+        {
+            foreach(KeyValuePair<UIPage, UIView> keyValuePair in m_pageToUI)
+            {
+                keyValuePair.Value.Show(this, false, null);
+            }
+        }
+    }
+}
+

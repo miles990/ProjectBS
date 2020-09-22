@@ -6,19 +6,6 @@ namespace ProjectBS.Combat
 {
     public class CombatManager : Manager
     {
-        public static CombatManager Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    m_instance = new CombatManager();
-                }
-                return m_instance;
-            }
-        }
-        private static CombatManager m_instance = null;
-
         public struct CombatActionInfo
         {
             public CombatUnit actor;
@@ -34,7 +21,10 @@ namespace ProjectBS.Combat
             }
         }
 
-        private CombatManager() { } 
+        public CombatManager() 
+        {
+            CombatUtility.SetCombatManager(this);
+        } 
 
         public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
         private List<CombatUnit> m_units = new List<CombatUnit>();
@@ -46,6 +36,8 @@ namespace ProjectBS.Combat
         private CombatUnitAction m_currentAction = null;
 
         private CombatUnit m_currentDyingUnit = null;
+
+        private bool m_isCombating = false;
 
         public int GetCampCount(CombatUnit.Camp camp)
         {
@@ -87,6 +79,11 @@ namespace ProjectBS.Combat
 
         public void StartCombat(PartyData player, List<BossData> bosses)
         {
+            if(m_isCombating)
+            {
+                throw new System.Exception("[CombatManager][StartCombat] Is combating");
+            }
+
             m_units.Clear();
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_0));
             AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
@@ -99,26 +96,8 @@ namespace ProjectBS.Combat
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
-        }
 
-        public void ShowForceEndAction()
-        {
-            GetPage<UI.CombatUIView>().ShowForceEndAction(m_currentAction.Actor);
-        }
-
-        public void ShowDamage(UI.CombatUIView.DisplayDamageData displayDamageData)
-        {
-            GetPage<UI.CombatUIView>().DisplayDamage(displayDamageData);
-        }
-
-        public void ShowHeal(UI.CombatUIView.DisplayHealData displayHealData)
-        {
-            GetPage<UI.CombatUIView>().DisplayHeal(displayHealData);
-        }
-
-        public void ShowGainBuff(UI.CombatUIView.DisplayGainBuffData displayGainBuffData)
-        {
-            GetPage<UI.CombatUIView>().DisplayGainBuff(displayGainBuffData);
+            m_isCombating = true;
         }
 
         private void AddUnit(OwningCharacterData character)
@@ -305,6 +284,7 @@ namespace ProjectBS.Combat
             }
             else
             {
+                m_isCombating = false;
                 GetPage<UI.CombatUIView>().ShowGameEnd(_playerCount != 0);
             }
         }

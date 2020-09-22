@@ -70,7 +70,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_targets[m_currentActiveTargetIndex].buffs.Add(_buff);
             }
 
-            CombatManager.Instance.ShowGainBuff(new UI.CombatUIView.DisplayGainBuffData
+            GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayGainBuffData
             {
                 takerName = m_targets[m_currentActiveTargetIndex].name,
                 buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)

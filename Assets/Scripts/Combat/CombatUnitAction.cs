@@ -43,7 +43,7 @@ namespace ProjectBS.Combat
         {
             if(Actor.skipAction)
             {
-                CombatManager.Instance.ShowForceEndAction();
+                GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
                 m_onEnded?.Invoke();
                 return;
             }
@@ -61,7 +61,7 @@ namespace ProjectBS.Combat
         {
             if (Actor.skipAction)
             {
-                CombatManager.Instance.ShowForceEndAction();
+                GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
                 m_onEnded?.Invoke();
                 return;
             }

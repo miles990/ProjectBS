@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using KahaGameCore.Interface;
 using System;
 
@@ -53,6 +52,7 @@ namespace ProjectBS.Combat
         public class SelectTargetData
         {
             public CombatUnit attacker = null;
+            public List<CombatUnit> allUnit = null;
             public string commandString = "";
             public Action<List<CombatUnit>> onSelected = null;
         }
@@ -92,12 +92,15 @@ namespace ProjectBS.Combat
                         m_currentSelectedTargets.Clear();
                         m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
                         m_currentSelectType = (SelectType)Enum.Parse(typeof(SelectType), _vars[1]);
-                        m_allUnit = CombatManager.Instance.AllUnit;
+                        m_allUnit = data.allUnit;
                         m_needCount = int.Parse(_vars[2]);
                         m_attacker = data.attacker;
                         m_onSelected = OnManualSelected;
                         m_onSelected += data.onSelected;
                         m_inculdeAttacker = _command == "Select";
+
+                        if (_command == "SelectOther")
+                            m_allUnit.Remove(m_attacker);
 
                         if (m_currentSelectType == SelectType.Manual)
                         {

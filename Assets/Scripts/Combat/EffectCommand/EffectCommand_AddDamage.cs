@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
                 _value *= 0.01f;
             }
             UnityEngine.Debug.LogWarning("AddDamage _value=" + _value);
-            if(CombatManager.Instance.CurrentActionInfo.actor == processData.caster)
+            if(CombatUtility.CurrentComabtManager.CurrentActionInfo.actor == processData.caster)
             {
                 List<CombatUnit> _targets = new List<CombatUnit>(processData.caster.targetToDmg.Keys);
                 for(int i = 0; i < _targets.Count; i++)
@@ -49,20 +49,20 @@ namespace ProjectBS.Combat.EffectCommand
                 int _intDmg;
                 if (_isPersent)
                 {
-                    float _dmg = (float)CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster];
+                    float _dmg = (float)CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster];
                     _intDmg = Convert.ToInt32(_dmg * _value);
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
+                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
                 else
                 {
                     _intDmg = Convert.ToInt32(_value);
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
+                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
 
                 UnityEngine.Debug.LogWarning("AddDamage add taken dmg=" + _intDmg);
 
-                if (CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
-                    CombatManager.Instance.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
+                if (CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
+                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
 
             }
 

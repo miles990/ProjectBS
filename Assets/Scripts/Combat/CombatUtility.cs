@@ -4,6 +4,27 @@ namespace ProjectBS.Combat
 {
     public static class CombatUtility
     {
+        public static CombatManager CurrentComabtManager
+        {
+            get
+            {
+                if(m_currentCombatManager == null)
+                {
+                    throw new System.Exception("[CombatUtility][CurrentComabtManager get] CurrentComabtManager == null");
+                }
+                return m_currentCombatManager;
+            }
+        }
+        private static CombatManager m_currentCombatManager = null;
+        public static void SetCombatManager(CombatManager combatManager)
+        {
+            if(m_currentCombatManager != null)
+            {
+                throw new System.Exception("[CombatUtility][SetCombatManager] Is trying to overwrite CombatUtility.currentComabtManager");
+            }
+            m_currentCombatManager = combatManager;
+        }
+
         public class CalculateData
         {
             public CombatUnit caster = null;
@@ -100,15 +121,15 @@ namespace ProjectBS.Combat
             {
                 case Keyword.BossUnitCount:
                     {
-                        return CombatManager.Instance.GetCampCount(CombatUnit.Camp.Boss);
+                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Boss);
                     }
                 case Keyword.PlayerUnitCount:
                     {
-                        return CombatManager.Instance.GetCampCount(CombatUnit.Camp.Player);
+                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Player);
                     }
                 case Keyword.TurnCount:
                     {
-                        return CombatManager.Instance.TurnCount;
+                        return CurrentComabtManager.TurnCount;
                     }
                 default:
                     {

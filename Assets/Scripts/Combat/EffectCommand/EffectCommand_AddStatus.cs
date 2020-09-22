@@ -101,7 +101,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     if (_add < 0)
                                     {
-                                        CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
+                                        GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
                                             takerName = m_targets[m_currentTargetIndex].name,
                                             damageValue = -_add,
@@ -114,7 +114,7 @@ namespace ProjectBS.Combat.EffectCommand
                                             break;
                                         }
 
-                                        CombatManager.Instance.ShowHeal(new UI.CombatUIView.DisplayHealData
+                                        GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
                                         {
                                             takerName = m_targets[m_currentTargetIndex].name,
                                             healValue = _add

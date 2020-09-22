@@ -222,7 +222,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_targets[m_currentTargetIndex].hatred = 1;
             processData.caster.hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
-            CombatManager.Instance.ShowDamage(new UI.CombatUIView.DisplayDamageData
+            GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {
                 takerName = m_targets[m_currentTargetIndex].name,
                 damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]

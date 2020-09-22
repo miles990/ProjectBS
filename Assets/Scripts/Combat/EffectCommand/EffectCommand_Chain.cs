@@ -8,7 +8,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             CombatUnit _self = GetSelf();
-            List<CombatUnit> _pool = CombatManager.Instance.GetSameCampUnits(_self.camp);
+            List<CombatUnit> _pool = CombatUtility.CurrentComabtManager.GetSameCampUnits(_self.camp);
 
             for(int i = 0; i < _pool.Count; i++)
             {

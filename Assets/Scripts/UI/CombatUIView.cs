@@ -36,6 +36,8 @@ namespace ProjectBS.UI
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
         private Action<List<CombatUnit>> m_onSelected = null;
 
+        private CombatUnit m_currentActor = null;
+
         public override void ForceShow(Manager manager, bool show)
         {
             throw new NotImplementedException();
@@ -91,6 +93,7 @@ namespace ProjectBS.UI
         {
             Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
             Debug.LogFormat("HP:{0}/{1}, Atk:{2}, Def:{3}, Spd={4}, Hatred={5}", actor.HP, actor.GetMaxHP(), actor.GetAttack(), actor.GetDefence(), actor.GetSpeed(), actor.hatred);
+            m_currentActor = actor;
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 
@@ -150,7 +153,7 @@ namespace ProjectBS.UI
                 return;
             }
 
-            if(_selectedSkill.SP > CombatManager.Instance.CurrentActionInfo.actor.SP)
+            if(_selectedSkill.SP > m_currentActor.SP)
             {
                 Debug.Log("SP不足");
                 return;

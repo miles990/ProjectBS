@@ -3,6 +3,9 @@ using KahaGameCore.Static;
 
 namespace ProjectBS
 {
+    /// <summary>
+    /// Must be VARY careful while editing Player
+    /// </summary>
     public class PlayerManager
     {
         public static PlayerManager Instance
@@ -20,20 +23,45 @@ namespace ProjectBS
 
         private PlayerManager() { }
 
-        public SaveData Player { get; private set; }
+        public SaveData Player 
+        { 
+            get
+            {
+                if(!m_isInited)
+                {
+                    throw new System.Exception("[PlayerManager][Player get] Need to init Player first");
+                }
+                return m_player;
+            }
+        }
+        private SaveData m_player = null;
+
+        private bool m_isInited = false;
 
         public void Init()
         {
-            Player = GameDataManager.LoadJsonData<SaveData>();
-            if(Player == null)
+            if (m_isInited)
             {
-                Player = CreateNewPlayer();
+                throw new System.Exception("[PlayerManager][Init] Player is already inited");
+            }
+
+            m_player = GameDataManager.LoadJsonData<SaveData>();
+            if(m_player == null)
+            {
+                m_player = CreateNewPlayer();
                 GameDataManager.SaveData(new SaveData[] { Player });
             }
+
+            m_isInited = true;
         }
 
         public OwningEquipmentData GetEquipmentByUDID(string UDID)
         {
+            if (!m_isInited)
+            {
+                throw new System.Exception("[PlayerManager][GetEquipmentByUDID] Need to init Player first");
+            }
+
             return Player.Equipments.Find(x => x.UDID == UDID);
         }
 
