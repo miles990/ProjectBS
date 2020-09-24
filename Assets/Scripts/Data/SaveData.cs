@@ -42,8 +42,8 @@ namespace ProjectBS.Data
         public string Equipment_UDID_Foot;
         public int SkillSlot_0;
         public int SkillSlot_1;
-        public int SKillSlot_2;
-        public int SKillSlot_3;
+        public int SkillSlot_2;
+        public int SkillSlot_3;
     }
 
     public class OwningEquipmentData

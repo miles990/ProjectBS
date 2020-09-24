@@ -111,7 +111,7 @@ namespace ProjectBS.Combat
                 rawMaxHP = character.HP,
                 HP = character.HP,
                 name = ContextConverter.Instance.GetContext(character.CharacterNameID),
-                skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SKillSlot_2, character.SKillSlot_3),
+                skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SkillSlot_2, character.SkillSlot_3),
                 SP = character.SP,
                 rawSpeed = character.Speed,
                 hatred = 1,
