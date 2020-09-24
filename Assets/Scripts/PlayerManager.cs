@@ -49,10 +49,15 @@ namespace ProjectBS
             if(m_player == null)
             {
                 m_player = CreateNewPlayer();
-                GameDataManager.SaveData(new SaveData[] { m_player });
+                SavePlayer();
             }
 
             m_isInited = true;
+        }
+
+        public void SavePlayer()
+        {
+            GameDataManager.SaveData(new SaveData[] { m_player });
         }
 
         public OwningEquipmentData GetEquipmentByUDID(string UDID)
@@ -63,6 +68,71 @@ namespace ProjectBS
             }
 
             return Player.Equipments.Find(x => x.UDID == UDID);
+        }
+
+        public int GetPartyIndex(OwningCharacterData characterData)
+        {
+            if (Player.Party.MemberUDID_0 == characterData.UDID)
+            {
+                return 0;
+            }
+            else if (Player.Party.MemberUDID_1 == characterData.UDID)
+            {
+                return 1;
+            }
+            else if (Player.Party.MemberUDID_2 == characterData.UDID)
+            {
+                return 2;
+            }
+            else if (Player.Party.MemberUDID_3 == characterData.UDID)
+            {
+                return 3;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public void SetToParty(int index, OwningCharacterData characterData)
+        {
+            if(characterData == null)
+                throw new System.Exception("[PlayerManager][SetToParty] Target character is null");
+
+            switch (index)
+            {
+                case 0:
+                    Player.Party.MemberUDID_0 = characterData.UDID;
+                    break;
+                case 1:
+                    Player.Party.MemberUDID_1 = characterData.UDID;
+                    break;
+                case 2:
+                    Player.Party.MemberUDID_2 = characterData.UDID;
+                    break;
+                case 3:
+                    Player.Party.MemberUDID_3 = characterData.UDID;
+                    break;
+                default:
+                    throw new System.Exception("[PlayerManager][SetToParty] Invaild party index=" + index);
+            }
+        }
+
+        public OwningCharacterData GetCharacterByPartyIndex(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return Player.Characters.Find(x => x.UDID == Player.Party.MemberUDID_0);
+                case 1:
+                    return Player.Characters.Find(x => x.UDID == Player.Party.MemberUDID_1);
+                case 2:
+                    return Player.Characters.Find(x => x.UDID == Player.Party.MemberUDID_2);
+                case 3:
+                    return Player.Characters.Find(x => x.UDID == Player.Party.MemberUDID_3);
+                default:
+                    throw new System.Exception("[PlayerManager][GetCharacterByPartyIndex] Invaild party index=" + index);
+            }
         }
 
         private SaveData CreateNewPlayer()

@@ -172,6 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_root: {fileID: 1205116819}
+  m_nextPageButton: {fileID: 1801539228}
+  m_previousPageButton: {fileID: 744806485}
   m_characterButtons:
   - {fileID: 9145935053514889244}
   - {fileID: 202149908}
@@ -1400,9 +1402,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063613261}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1063613263}
+        m_MethodName: Button_EndEdit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1671,7 +1673,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 541428239}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_OnPartyButtonPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &541428239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2451,9 +2464,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063613261}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1063613263}
+        m_MethodName: Button_StartEditParty
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2579,7 +2592,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 744806486}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_SwitchPage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &744806486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,7 +2870,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: OK
+  m_Text: Save
 --- !u!222 &946321511
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3276,7 +3300,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1252286286}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_OnPartyButtonPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1252286286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3535,7 +3570,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Change
+  m_Text: Set To Party
 --- !u!222 &1309907964
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3852,7 +3887,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1622346673}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_OnPartyButtonPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1622346673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4432,7 +4478,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1785106153}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_OnPartyButtonPressed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1785106153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4550,7 +4607,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1801539229}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 15879343}
+        m_MethodName: Button_SwitchPage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1801539229
 MonoBehaviour:
   m_ObjectHideFlags: 0

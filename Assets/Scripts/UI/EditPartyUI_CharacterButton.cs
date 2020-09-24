@@ -9,12 +9,13 @@ namespace ProjectBS.UI
         public event Action<Data.OwningCharacterData> OnPressed = null;
 
         [SerializeField] private UnityEngine.UI.Text m_characterButtonText = null;
+        [SerializeField] private UnityEngine.UI.Text m_partyText = null;
 
-        private Data.OwningCharacterData m_characterData = null;
+        private Data.OwningCharacterData m_referencingCharacterData = null;
 
         public void SetUp(Data.OwningCharacterData characterData)
         {
-            m_characterData = characterData;
+            m_referencingCharacterData = characterData;
             m_characterButtonText.text = 
                 string.Format("{0}\nHP: {1}({2}) ATK: {3}({4}) DEF: {5}({6}) SPD: {7}({8})\nSKILL: {9}, {10}, {11}, {12}",
                 ContextConverter.Instance.GetContext(characterData.CharacterNameID),
@@ -30,11 +31,14 @@ namespace ProjectBS.UI
                 ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(characterData.SkillSlot_1).NameContextID),
                 ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(characterData.SkillSlot_2).NameContextID),
                 ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(characterData.SkillSlot_3).NameContextID));
+
+            int _partyIndex = PlayerManager.Instance.GetPartyIndex(characterData);
+            m_partyText.text = _partyIndex == -1 ? "" : (_partyIndex + 1).ToString();
         }
 
         public void Button_OnPressed()
         {
-            OnPressed?.Invoke(m_characterData);
+            OnPressed?.Invoke(m_referencingCharacterData);
         }
     }
 }
