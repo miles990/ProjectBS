@@ -49,7 +49,7 @@ namespace ProjectBS
             if(m_player == null)
             {
                 m_player = CreateNewPlayer();
-                GameDataManager.SaveData(new SaveData[] { Player });
+                GameDataManager.SaveData(new SaveData[] { m_player });
             }
 
             m_isInited = true;
