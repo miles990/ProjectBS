@@ -30,6 +30,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private Button[] m_skillButtons = null;
         [SerializeField] private Text[] m_skillTexts = null;
+        [SerializeField] private UI.CombatUI_InfoText m_infoPrefab = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
 
@@ -87,24 +88,23 @@ namespace ProjectBS.UI
 
         public void ShowForceEndAction(CombatUnit actor)
         {
-            Debug.LogFormat("{0} 強制結束行動", actor.name);
+            SetInfoText(actor, string.Format("{0} 強制結束行動", actor.name));
         }
 
         public void ShowUnitDied(CombatUnit dyingUnit)
         {
-            Debug.LogFormat("{0} 死亡", dyingUnit.name);
+            SetInfoText(dyingUnit, string.Format("{0} 死亡", dyingUnit.name));
         }
 
         public void ShowTurnStart(int turnCount)
         {
-            Debug.LogFormat("第 {0} 回合 開始", turnCount);
+            SetInfoText(null, string.Format("第 {0} 回合 開始", turnCount));
             TimerManager.Schedule(1f, OnTurnStartAnimationEnded);
         }
 
         public void ShowActorActionStart(CombatUnit actor)
         {
-            Debug.LogFormat("{0} 開始行動 UI character index={1}", actor.name, m_unitToIndex[actor]);
-            Debug.LogFormat("HP:{0}/{1}, Atk:{2}, Def:{3}, Spd={4}, Hatred={5}", actor.HP, actor.GetMaxHP(), actor.GetAttack(), actor.GetDefence(), actor.GetSpeed(), actor.hatred);
+            SetInfoText(actor, string.Format("開始行動"));
             m_currentActor = actor;
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
@@ -199,11 +199,7 @@ namespace ProjectBS.UI
 
         public void DisplayDamage(DisplayDamageData data)
         {
-            Debug.LogFormat("{0} 受到 {1} 點傷害",
-                    data.taker.name,
-                    data.damageValue
-                );
-
+            SetInfoText(data.taker, "-" + data.damageValue.ToString());
             m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
         }
 
@@ -215,11 +211,7 @@ namespace ProjectBS.UI
 
         public void DisplayHeal(DisplayHealData data)
         {
-            Debug.LogFormat("{0} 恢復 {1} 點生命",
-                    data.taker.name,
-                    data.healValue
-                );
-
+            SetInfoText(data.taker, "+" + data.healValue.ToString());
             m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
         }
 
@@ -231,10 +223,21 @@ namespace ProjectBS.UI
 
         public void DisplayGainBuff(DisplayGainBuffData data)
         {
-            Debug.LogFormat("{0} 得到狀態: {1}",
-                data.taker.name,
-                data.buffName
-            );
+            SetInfoText(data.taker, data.buffName);
+        }
+
+        private void SetInfoText(CombatUnit target, string info)
+        {
+            CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
+            _clone.transform.SetParent(transform);
+            if (target == null)
+                _clone.transform.localPosition = Vector3.zero;
+            else
+                _clone.transform.position = m_characterPanels[m_unitToIndex[target]].transform.position;
+            _clone.SetText(string.Format(info));
+            _clone.gameObject.SetActive(true);
+
+            Destroy(_clone.gameObject, 0.4f);
         }
 
         private void WaitPlayerSelect()
