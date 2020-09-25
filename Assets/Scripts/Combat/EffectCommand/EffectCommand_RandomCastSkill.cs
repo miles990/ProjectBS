@@ -16,7 +16,6 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             int _randomSKillID = int.Parse(vars[0]);
-            UnityEngine.Debug.LogWarning("RandomCastSkill: _randomSKillID=" + _randomSKillID);
 
             RandomSkillData _randomSKillData = GameDataManager.GetGameData<RandomSkillData>(_randomSKillID);
             List<RandomSkillSource> _randomPool = new List<RandomSkillSource>();
@@ -60,7 +59,7 @@ namespace ProjectBS.Combat.EffectCommand
                 if(_roll <= 0)
                 {
                     SkillData _skill = GameDataManager.GetGameData<SkillData>(_randomPool[i].skillID);
-                    UnityEngine.Debug.LogWarning("RandomCastSkill: cast skill=" + _skill.ID);
+
                     new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
                     {
                         caster = GetSelf(),

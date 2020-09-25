@@ -44,8 +44,6 @@ namespace ProjectBS.Combat.EffectCommand
 
             bool _pass;
 
-            UnityEngine.Debug.LogWarning("BeginIf _varA=" + _varA + ", _varB=" + _varB);
-
             switch (_condtionMark)
             {
                 case ">=":
@@ -78,7 +76,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 processData.skipIfCount++;
             }
-            UnityEngine.Debug.LogWarning("BeginIf final processData.skipIfCount=" + processData.skipIfCount);
+
             onCompleted?.Invoke();
         }
 

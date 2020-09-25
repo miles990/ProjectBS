@@ -68,7 +68,6 @@ namespace ProjectBS.Combat
 
             if (!string.IsNullOrEmpty(Actor.ai))
             {
-                UnityEngine.Debug.LogWarning(Actor.ai);
                 new EffectProcesser(Actor.ai).Start(
                     new EffectProcesser.ProcessData
                     {
@@ -141,7 +140,6 @@ namespace ProjectBS.Combat
 
         private void OnStartToEndActionSelfEnded()
         {
-            UnityEngine.Debug.LogWarning("Action End:" + Actor.name);
             m_onEnded?.Invoke();
         }
     }

@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            processData.caster.targetToDmg.Clear();
+            GetSelf().targetToDmg.Clear();
 
             m_valueString = vars[1];
             m_rollMin = vars[2];
@@ -25,7 +25,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
-                    attacker = processData.caster,
+                    attacker = GetSelf(),
                     commandString = vars[0],
                     onSelected = OnTargetSelected
                 });
@@ -47,7 +47,6 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            UnityEngine.Debug.LogWarning("DealDamage OnStartToAttack_Any");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -59,8 +58,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToAttack_Any_Ended()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnStartToAttack_Self");
-
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -91,33 +88,20 @@ namespace ProjectBS.Combat.EffectCommand
                 });
             }
 
-            UnityEngine.Debug.LogWarning("_attack=" + _attack);
-            UnityEngine.Debug.LogWarning("_attackAddRollPersent=" + _attackAddRollPersent);
-            UnityEngine.Debug.LogWarning("_defenceAddRollPersent=" + _defenceAddRollPersent);
-
             float _finalAttackValue = (float)(_attack + _attack * _attackAddRollPersent);
             float _finalDefenceValue = (float)(_attackTarget.GetDefence() + _attackTarget.GetDefence() * _defenceAddRollPersent);
             float _ingnoreDefence = float.Parse(m_ingnoreDefence);
             float _flee = 0.5f - (float)(processData.caster.GetSpeed() / (float)(processData.caster.GetSpeed() + _attackTarget.GetSpeed()));
             float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));
 
-            UnityEngine.Debug.LogWarning("_finalAttackValue=" + _finalAttackValue);
-            UnityEngine.Debug.LogWarning("_finalDefenceValue=" + _finalDefenceValue);
-            UnityEngine.Debug.LogWarning("_ingnoreDefence=" + _ingnoreDefence);
-            UnityEngine.Debug.LogWarning("_flee=" + _flee);
-            UnityEngine.Debug.LogWarning("_fleeReduceDmgPersent=" + _fleeReduceDmgPersent);
-
             float _rawDmg = (_finalAttackValue - (_finalDefenceValue * (1f - _ingnoreDefence))) * _fleeReduceDmgPersent;
-            UnityEngine.Debug.LogWarning("_rawDmg=" + _rawDmg);
+
             int _dmg = Convert.ToInt32(_rawDmg);
 
             if (_dmg < 1)
                 _dmg = 1;
 
-            UnityEngine.Debug.LogWarning("calculated dmg=" + _dmg);
-
             processData.caster.targetToDmg.Add(_attackTarget, _dmg);
-            UnityEngine.Debug.LogWarning("DealDamage OnDamageCalculated_Any");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -129,7 +113,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Any_Ended()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnDamageCalculated_Self");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -141,7 +124,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Self_Ended()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnStartToTakeDamage_Any");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -153,7 +135,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToTakeDamage_Any_Ended()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnStartToTakeDamage_Self");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -177,7 +158,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageApplied()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnAttacked_Any");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -189,7 +169,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnAttackedAnyEnded()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnAttacked_Self");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -213,8 +192,6 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            UnityEngine.Debug.LogWarning("Final Dmg=" + processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]);
-
             m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             m_targets[m_currentTargetIndex].hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
@@ -224,10 +201,10 @@ namespace ProjectBS.Combat.EffectCommand
 
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {
-                takerName = m_targets[m_currentTargetIndex].name,
+                taker = m_targets[m_currentTargetIndex],
                 damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]
             });
-            UnityEngine.Debug.LogWarning("DealDamage OnDamageTaken_Any");
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -239,7 +216,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageTaken_Any_Ended()
         {
-            UnityEngine.Debug.LogWarning("DealDamage OnDamageTaken_Self");
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],

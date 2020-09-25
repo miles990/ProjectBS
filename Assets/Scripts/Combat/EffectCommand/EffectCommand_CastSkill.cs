@@ -10,7 +10,6 @@ namespace ProjectBS.Combat.EffectCommand
         {
             SkillData _skill = GameDataManager.GetGameData<SkillData>(int.Parse(vars[0]));
             processData.caster.lastSkillID = _skill.ID;
-            UnityEngine.Debug.LogWarning("CastSkill: cast skill=" + _skill.ID);
             new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
             {
                 caster = GetSelf(),

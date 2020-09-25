@@ -13,7 +13,6 @@ namespace ProjectBS.UI
             EditPatyUI
         }
 
-        private UIPage m_current = UIPage.None;
         private Dictionary<UIPage, UIView> m_pageToUI = new Dictionary<UIPage, UIView>();
 
         public MainMenuUIManager()
@@ -24,7 +23,8 @@ namespace ProjectBS.UI
         public void Show(UIPage page)
         {
             DeshowAll();
-            m_pageToUI[page].Show(this, true, null);
+            if(page != UIPage.None)
+                m_pageToUI[page].Show(this, true, null);
         }
 
         public void DeshowAll()

@@ -65,8 +65,6 @@ namespace ProjectBS.Combat
                     GoNextUnit();
                     return;
                 }
-
-                UnityEngine.Debug.LogWarningFormat(m_data.timing + " m_units[{0}]={1}, m_data.caster={2}", m_currentUnitIndex, m_units[m_currentUnitIndex].name, m_data.caster.name);
             }
 
             m_currentEquipment = -1;
@@ -151,9 +149,8 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            string _command = GameDataManager.GetGameData<SkillEffectData>(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt()).Command;
-
-            new EffectProcesser(_command).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetSkillEffectProcesser(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt())
+            .Start(new EffectProcesser.ProcessData
             {
                 caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                 target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
@@ -187,22 +184,14 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            SkillData _skill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt());
-            if(_skill == null)
-            {
-                throw new Exception("[AllCombatUnitAllEffectProcesser][GoNextOwingSkill] Can't find skill id=" + m_currentSkillIDs[m_currentSkillIndex]);
-            }
-            
-            string _command = _skill.Command;
-
-            new EffectProcesser(_command).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetSkillProcesser(m_currentSkillIDs[m_currentSkillIndex].ToInt()).Start(new EffectProcesser.ProcessData
             {
                 caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                 target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                 timing = m_data.timing,
                 allEffectProcesser = this,
                 referenceBuff = null,
-                refenceSkill = _skill,
+                refenceSkill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt()),
                 onEnded = GoNextOwingSkill
             });
         }
@@ -217,9 +206,8 @@ namespace ProjectBS.Combat
             }
 
             CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].buffs[m_currentBuffIndex];
-            string _command = GameDataManager.GetGameData<SkillEffectData>(_currentBuff.effectID).Command;
 
-            m_currentBuffProcesser = new EffectProcesser(_command);
+            m_currentBuffProcesser = EffectProcessManager.GetSkillEffectProcesser(_currentBuff.effectID);
             m_currentBuffProcessData = new EffectProcesser.ProcessData
             {
                 caster = m_units[m_currentUnitIndex],

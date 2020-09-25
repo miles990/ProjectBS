@@ -19,7 +19,6 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 _value *= 0.01f;
             }
-            UnityEngine.Debug.LogWarning("AddDamage _value=" + _value);
             if(CombatUtility.CurrentComabtManager.CurrentActionInfo.actor == processData.caster)
             {
                 List<CombatUnit> _targets = new List<CombatUnit>(processData.caster.targetToDmg.Keys);
@@ -37,8 +36,6 @@ namespace ProjectBS.Combat.EffectCommand
                         _intDmg = Convert.ToInt32(_value);
                         processData.caster.targetToDmg[_targets[i]] += _intDmg;
                     }
-
-                    UnityEngine.Debug.LogWarning("AddDamage add dealed dmg=" + _intDmg);
 
                     if (processData.caster.targetToDmg[_targets[i]] < 1)
                         processData.caster.targetToDmg[_targets[i]] = 1;
@@ -58,8 +55,6 @@ namespace ProjectBS.Combat.EffectCommand
                     _intDmg = Convert.ToInt32(_value);
                     CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
                 }
-
-                UnityEngine.Debug.LogWarning("AddDamage add taken dmg=" + _intDmg);
 
                 if (CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
                     CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;

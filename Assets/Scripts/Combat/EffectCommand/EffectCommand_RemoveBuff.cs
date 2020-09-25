@@ -14,13 +14,9 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            UnityEngine.Debug.LogWarning("RemoveBuff SelectTargetData=" + vars[0]);
-
             m_effectID = int.Parse(vars[1]);
-            UnityEngine.Debug.LogWarning("RemoveBuff m_effectID=" + m_effectID);
 
             m_removeStackCount = int.Parse(vars[2]);
-            UnityEngine.Debug.LogWarning("RemoveBuff m_removeStackCount=" + m_removeStackCount);
 
             m_onCompleted = onCompleted;
 

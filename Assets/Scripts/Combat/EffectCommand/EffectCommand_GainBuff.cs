@@ -72,7 +72,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayGainBuffData
             {
-                takerName = m_targets[m_currentActiveTargetIndex].name,
+                taker = m_targets[m_currentActiveTargetIndex],
                 buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)
             });
 

@@ -74,6 +74,11 @@ namespace ProjectBS.UI
             }
         }
 
+        public void Button_StartCombat()
+        {
+            GameManager.StartCombat();
+        }
+
         private void OnEnable()
         {
             for (int i = 0; i < m_characterButtons.Length; i++)

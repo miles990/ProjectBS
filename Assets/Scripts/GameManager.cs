@@ -17,6 +17,7 @@ namespace ProjectBS
         private static State m_currentState = State.None;
 
         private static UI.MainMenuUIManager m_uiManager = null;
+        private static Combat.CombatManager m_combatManager = null;
 
         public static void StartGame()
         {
@@ -26,6 +27,19 @@ namespace ProjectBS
             }
 
             StartInitData();
+        }
+
+        public static void StartCombat()
+        {
+            if (m_currentState != State.MainMenu)
+                throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
+
+            m_uiManager.Show(UI.MainMenuUIManager.UIPage.None);
+
+            m_combatManager = new Combat.CombatManager();
+            m_combatManager.StartCombat(
+                PlayerManager.Instance.Player.Party,
+                new List<Data.BossData> { KahaGameCore.Static.GameDataManager.GetGameData<Data.BossData>(1) });
         }
 
         private static void StartInitData()
@@ -38,6 +52,8 @@ namespace ProjectBS
 
         private static void ShowMainMenu()
         {
+            m_currentState = State.MainMenu;
+
             m_uiManager = new UI.MainMenuUIManager();
             m_uiManager.Show(UI.MainMenuUIManager.UIPage.EditPatyUI);
         }

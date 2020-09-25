@@ -72,7 +72,6 @@ namespace ProjectBS.Combat.EffectCommand
                     }
                 default:
                     {
-                        UnityEngine.Debug.LogWarning("Add status formula=" + m_valueString);
                         float _value = CombatUtility.Calculate(
                             new CombatUtility.CalculateData
                             {
@@ -82,8 +81,6 @@ namespace ProjectBS.Combat.EffectCommand
                                 useRawValue = true
                             });
                         int _add = Convert.ToInt32(_value);
-                        UnityEngine.Debug.LogWarning("Add status _add=" + _add);
-                        UnityEngine.Debug.LogWarning("Add status status=" + m_statusString);
 
                         switch (m_statusString)
                         {
@@ -103,7 +100,7 @@ namespace ProjectBS.Combat.EffectCommand
                                     {
                                         GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
-                                            takerName = m_targets[m_currentTargetIndex].name,
+                                            taker = m_targets[m_currentTargetIndex],
                                             damageValue = -_add,
                                         });
                                     }
@@ -116,11 +113,11 @@ namespace ProjectBS.Combat.EffectCommand
 
                                         GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
                                         {
-                                            takerName = m_targets[m_currentTargetIndex].name,
+                                            taker = m_targets[m_currentTargetIndex],
                                             healValue = _add
                                         });
                                     }
-                                    UnityEngine.Debug.LogWarning(GetSelf().name + " hatred+=" + _add);
+
                                     GetSelf().hatred += _add;
                                     m_targets[m_currentTargetIndex].HP += _add;
                                     break;

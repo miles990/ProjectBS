@@ -17,11 +17,8 @@ namespace ProjectBS.Combat.EffectCommand
                 onCompleted?.Invoke();
                 return;
             }
-            UnityEngine.Debug.LogWarning("BeginIf_Effect SelectTargetData=" + vars[0]);
             m_checkIsOwning = vars[1];
-            UnityEngine.Debug.LogWarning("BeginIf_Effect m_checkIsOwning=" + m_checkIsOwning);
             m_effectID = vars[2];
-            UnityEngine.Debug.LogWarning("BeginIf_Effect m_effectID=" + m_effectID);
             m_onCompleted = onCompleted;
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
@@ -43,12 +40,10 @@ namespace ProjectBS.Combat.EffectCommand
                 if (_isOwning != _checkIsOwning)
                 {
                     processData.skipIfCount++;
-                    UnityEngine.Debug.LogWarning("BeginIf_Effect final processData.skipIfCount=" + processData.skipIfCount);
                     m_onCompleted?.Invoke();
                     return;
                 }
             }
-            UnityEngine.Debug.LogWarning("BeginIf_Effect final processData.skipIfCount=" + processData.skipIfCount);
             m_onCompleted?.Invoke();
         }
     }

@@ -52,7 +52,6 @@ namespace ProjectBS.Combat
         public class SelectTargetData
         {
             public CombatUnit attacker = null;
-            public List<CombatUnit> allUnit = null;
             public string commandString = "";
             public Action<List<CombatUnit>> onSelected = null;
         }
@@ -92,7 +91,7 @@ namespace ProjectBS.Combat
                         m_currentSelectedTargets.Clear();
                         m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
                         m_currentSelectType = (SelectType)Enum.Parse(typeof(SelectType), _vars[1]);
-                        m_allUnit = data.allUnit;
+                        m_allUnit = CombatUtility.CurrentComabtManager.AllUnit;
                         m_needCount = int.Parse(_vars[2]);
                         m_attacker = data.attacker;
                         m_onSelected = OnManualSelected;
@@ -123,7 +122,6 @@ namespace ProjectBS.Combat
                     }
                 case "LastSelected":
                     {
-                        UnityEngine.Debug.LogWarning("LastSelected:" + m_currentSelectedTargets.Count);
                         data.onSelected?.Invoke(m_currentSelectedTargets);
                         return;
                     }
@@ -144,7 +142,6 @@ namespace ProjectBS.Combat
                 if (i != m_currentSelectedTargets.Count - 1)
                     _debugLog += ", ";
             }
-            UnityEngine.Debug.LogWarning(_debugLog);
         }
 
         private void DoSelect()
