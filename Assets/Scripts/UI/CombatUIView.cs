@@ -88,17 +88,17 @@ namespace ProjectBS.UI
 
         public void ShowForceEndAction(CombatUnit actor)
         {
-            SetInfoText(actor, string.Format("{0} 強制結束行動", actor.name));
+            SetInfoText(actor, string.Format("強制結束", actor.name));
         }
 
         public void ShowUnitDied(CombatUnit dyingUnit)
         {
-            SetInfoText(dyingUnit, string.Format("{0} 死亡", dyingUnit.name));
+            SetInfoText(dyingUnit, string.Format("死亡", dyingUnit.name));
         }
 
         public void ShowTurnStart(int turnCount)
         {
-            SetInfoText(null, string.Format("第 {0} 回合 開始", turnCount));
+            SetInfoText(null, string.Format("第 {0} 回合", turnCount));
             TimerManager.Schedule(1f, OnTurnStartAnimationEnded);
         }
 
@@ -237,7 +237,7 @@ namespace ProjectBS.UI
             _clone.SetText(string.Format(info));
             _clone.gameObject.SetActive(true);
 
-            Destroy(_clone.gameObject, 0.4f);
+            Destroy(_clone.gameObject, 1f);
         }
 
         private void WaitPlayerSelect()
