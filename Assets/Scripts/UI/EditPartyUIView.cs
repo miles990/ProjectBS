@@ -140,16 +140,13 @@ namespace ProjectBS.UI
             m_characterInfoPanel.gameObject.SetActive(true);
         }
 
-        private void Update()
+        public void Button_Test_AddCharacter()
         {
-            if(Input.GetKeyDown(KeyCode.A))
-            {
-                Data.OwningCharacterData _newChar = CharacterUtility.CreateNewCharacter();
-                CharacterUtility.LevelUp(_newChar, 100);
-                PlayerManager.Instance.Player.Characters.Add(_newChar);
-                PlayerManager.Instance.SavePlayer();
-                SetCharacterButton();
-            }
+            Data.OwningCharacterData _newChar = CharacterUtility.CreateNewCharacter();
+            CharacterUtility.LevelUp(_newChar, 100);
+            PlayerManager.Instance.Player.Characters.Add(_newChar);
+            PlayerManager.Instance.SavePlayer();
+            SetCharacterButton();
         }
     }
 }
