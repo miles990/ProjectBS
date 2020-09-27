@@ -87,6 +87,14 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnBuffRemoved(Data.SkillEffectData _effect)
         {
+            for(int i = 0; i < m_targets[m_currentTargetIndex].statusAdders.Count; i++)
+            {
+                if(m_targets[m_currentTargetIndex].statusAdders[i].parentBuff == m_currentBuff)
+                {
+                    m_targets[m_currentTargetIndex].statusAdders.RemoveAt(i);
+                    i--;
+                }
+            }
             m_targets[m_currentTargetIndex].buffs.Remove(m_currentBuff);
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {

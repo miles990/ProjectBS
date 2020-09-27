@@ -36,8 +36,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void GoNextTarget()
         {
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
-
             m_currentTargetIndex++;
             if(m_currentTargetIndex >= m_targets.Count)
             {
@@ -72,6 +70,7 @@ namespace ProjectBS.Combat.EffectCommand
                             valueString = m_valueString
                         });
 
+                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                         GoNextTarget();
                         break;
                     }
@@ -98,6 +97,7 @@ namespace ProjectBS.Combat.EffectCommand
 
                                     m_targets[m_currentTargetIndex].hatred += _add;
 
+                                    GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();
                                     break;
                                 }
@@ -105,6 +105,8 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     if (_add < 0)
                                     {
+                                        m_targets[m_currentTargetIndex].HP += _add;
+                                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                                         GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
@@ -115,18 +117,18 @@ namespace ProjectBS.Combat.EffectCommand
                                     {
                                         if(m_targets[m_currentTargetIndex].lockAddHP)
                                         {
+                                            GoNextTarget();
                                             break;
                                         }
-
+                                        GetSelf().hatred += _add;
+                                        m_targets[m_currentTargetIndex].HP += _add;
+                                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                                         GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             healValue = _add
                                         }, GoNextTarget);
                                     }
-
-                                    GetSelf().hatred += _add;
-                                    m_targets[m_currentTargetIndex].HP += _add;
                                     break;
                                 }
                             case Keyword.SP:
@@ -137,7 +139,7 @@ namespace ProjectBS.Combat.EffectCommand
                                     }
 
                                     m_targets[m_currentTargetIndex].SP += _add;
-
+                                    GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();
                                     break;
                                 }

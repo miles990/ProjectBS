@@ -85,6 +85,12 @@ namespace ProjectBS.Combat
                         data.onSelected?.Invoke(m_currentSelectedTargets);
                         return;
                     }
+                case "CurrentActor":
+                    {
+                        m_currentSelectedTargets = new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor };
+                        data.onSelected?.Invoke(m_currentSelectedTargets);
+                        return;
+                    }
                 case "Select":
                 case "SelectOther":
                     {

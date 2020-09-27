@@ -122,6 +122,11 @@ namespace ProjectBS.UI
                 Debug.Log("Player Lose");
             }
 
+            m_skillPanel.SetActive(false);
+            for (int i = 0; i < m_characterPanels.Length; i++)
+            {
+                m_characterPanels[i].gameObject.SetActive(false);
+            }
             TimerManager.Schedule(3f, CombatUtility.CurrentComabtManager.EndComabat);
         }
 
@@ -134,8 +139,7 @@ namespace ProjectBS.UI
             m_currentShowingSkills = datas;
             for(int i = 0; i < m_currentShowingSkills.Count; i++)
             {
-                if (!m_currentShowingSkills[i].Command.Contains(EffectProcesser.TriggerTiming.OnActived.ToString())
-                    || m_currentShowingSkills[i].SP > m_currentActor.SP)
+                if (!m_currentShowingSkills[i].Command.Contains(EffectProcesser.TriggerTiming.OnActived.ToString()))
                 {
                     m_skillButtons[i].interactable = false;
                 }
@@ -208,6 +212,12 @@ namespace ProjectBS.UI
                     m_characterPanels[i].RefreshInfo();
                 }
             }
+        }
+
+        public void Button_SkipAction()
+        {
+            m_skillPanel.SetActive(false);
+            CombatUtility.CurrentComabtManager.ForceEndCurrentAction();
         }
 
         public class DisplayDamageData

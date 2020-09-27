@@ -105,6 +105,11 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().Show(this, false, GameManager.EndCombat);
         }
 
+        public void ForceEndCurrentAction()
+        {
+            m_currentAction.ForceEnd();
+        }
+
         private void AddUnit(OwningCharacterData character)
         {
             m_units.Add(new CombatUnit
@@ -350,6 +355,8 @@ namespace ProjectBS.Combat
 
         private void CheckNextBuffEnd()
         {
+            GetPage<UI.CombatUIView>().RefreshAllInfo();
+
             m_currentCheckBuffIndex++;
             if(m_currentCheckBuffIndex >= m_units[m_currentCheckBuffEndUnitIndex].buffs.Count)
             {
@@ -369,6 +376,16 @@ namespace ProjectBS.Combat
             {
                 CombatUnit.Buff _buff = m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex];
                 m_units[m_currentCheckBuffEndUnitIndex].buffs.RemoveAt(m_currentCheckBuffIndex);
+
+                for (int i = 0; i < m_units[m_currentCheckBuffEndUnitIndex].statusAdders.Count; i++)
+                {
+                    if (m_units[m_currentCheckBuffEndUnitIndex].statusAdders[i].parentBuff == _buff)
+                    {
+                        m_units[m_currentCheckBuffEndUnitIndex].statusAdders.RemoveAt(i);
+                        i--;
+                    }
+                }
+
                 m_currentCheckBuffIndex--;
 
                 SkillEffectData _effect = KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID);

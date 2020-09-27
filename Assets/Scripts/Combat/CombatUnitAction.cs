@@ -27,6 +27,12 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().ShowActorActionStart(Actor);
         }
 
+        public void ForceEnd()
+        {
+            GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
+            OnSkillEnded();
+        }
+
         private void OnActionAnimationEnded()
         {
             GetPage<UI.CombatUIView>().OnActionAnimationEnded -= OnActionAnimationEnded;
@@ -44,7 +50,7 @@ namespace ProjectBS.Combat
             if(Actor.skipAction)
             {
                 GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
-                m_onEnded?.Invoke();
+                OnSkillEnded();
                 return;
             }
 
@@ -62,7 +68,7 @@ namespace ProjectBS.Combat
             if (Actor.skipAction)
             {
                 GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
-                m_onEnded?.Invoke();
+                OnSkillEnded();
                 return;
             }
 
@@ -101,6 +107,13 @@ namespace ProjectBS.Combat
         private void OnSkillSelected(SkillData skill)
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
+
+            if(Actor.SP < skill.SP)
+            {
+                Act();
+                return;
+            }
+
             Actor.lastSkillID = skill.ID;
             Actor.SP -= skill.SP;
 

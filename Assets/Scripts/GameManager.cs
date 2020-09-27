@@ -32,6 +32,7 @@ namespace ProjectBS
             if (m_currentState != State.MainMenu)
                 throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
 
+            m_currentState = State.Combat;
             m_uiManager.Show(UI.MainMenuUIManager.UIPage.None);
 
             m_combatManager = new Combat.CombatManager();
@@ -45,6 +46,7 @@ namespace ProjectBS
             if (m_currentState != State.Combat)
                 throw new System.Exception("[GameManager][EndCombat] Can't end comabt since it didn't start");
 
+            m_currentState = State.MainMenu;
             m_uiManager.Show(UI.MainMenuUIManager.UIPage.EditPatyUI);
         }
 
