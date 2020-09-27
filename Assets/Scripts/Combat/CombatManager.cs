@@ -100,6 +100,11 @@ namespace ProjectBS.Combat
             m_isCombating = true;
         }
 
+        public void EndComabat()
+        {
+            GetPage<UI.CombatUIView>().Show(this, false, GameManager.EndCombat);
+        }
+
         private void AddUnit(OwningCharacterData character)
         {
             m_units.Add(new CombatUnit
@@ -375,13 +380,24 @@ namespace ProjectBS.Combat
                     allEffectProcesser = m_processer,
                     referenceBuff = _buff,
                     refenceSkill = null,
-                    onEnded = CheckNextBuffEnd
+                    onEnded = delegate { DisplayRemoveBuff(_buff); }
                 });
             }
             else
             {
                 CheckNextBuffEnd();
             }
+        }
+
+        private void DisplayRemoveBuff(CombatUnit.Buff _buff)
+        {
+            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayGainBuffData
+            {
+                buffName = ContextConverter.Instance.GetContext(KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID).NameContextID),
+                taker = m_units[m_currentCheckBuffEndUnitIndex]
+            });
+
+            CheckNextBuffEnd();
         }
     }
 }

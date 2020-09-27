@@ -62,6 +62,9 @@ namespace ProjectBS.Combat.EffectCommand
                                 stackCount = 1
                             };
                         }
+                        UnityEngine.Debug.Log("m_targets[m_currentTargetIndex]=" + m_targets[m_currentTargetIndex].name);
+                        UnityEngine.Debug.Log("m_statusString=" + m_statusString);
+                        UnityEngine.Debug.Log("m_valueString=" + m_valueString);
                         m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                         {
                             parentBuff = _buff,

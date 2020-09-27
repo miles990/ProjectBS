@@ -70,7 +70,8 @@ namespace ProjectBS.Combat.EffectCommand
         private void StartRemoveBuff()
         {
             Data.SkillEffectData _effect = KahaGameCore.Static.GameDataManager.GetGameData<Data.SkillEffectData>(m_currentBuff.effectID);
-            new EffectProcesser(_effect.Command).Start(new EffectProcesser.ProcessData
+
+            EffectProcessManager.GetSkillEffectProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
             {
                 caster = processData.caster,
                 target = null,
@@ -78,13 +79,18 @@ namespace ProjectBS.Combat.EffectCommand
                 allEffectProcesser = processData.allEffectProcesser,
                 referenceBuff = m_currentBuff,
                 refenceSkill = null,
-                onEnded = OnBuffRemoved
+                onEnded = delegate { OnBuffRemoved(_effect); }
             });
         }
 
-        private void OnBuffRemoved()
+        private void OnBuffRemoved(Data.SkillEffectData _effect)
         {
             m_targets[m_currentTargetIndex].buffs.Remove(m_currentBuff);
+            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayGainBuffData
+            {
+                buffName = ContextConverter.Instance.GetContext(_effect.NameContextID),
+                taker = m_targets[m_currentTargetIndex]
+            });
             GoNextTaget();
         }
     }

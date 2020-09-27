@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace ProjectBS
 {
@@ -40,6 +38,14 @@ namespace ProjectBS
             m_combatManager.StartCombat(
                 PlayerManager.Instance.Player.Party,
                 new List<Data.BossData> { KahaGameCore.Static.GameDataManager.GetGameData<Data.BossData>(1) });
+        }
+
+        public static void EndCombat()
+        {
+            if (m_currentState != State.Combat)
+                throw new System.Exception("[GameManager][EndCombat] Can't end comabt since it didn't start");
+
+            m_uiManager.Show(UI.MainMenuUIManager.UIPage.EditPatyUI);
         }
 
         private static void StartInitData()

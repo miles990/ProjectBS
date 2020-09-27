@@ -119,6 +119,8 @@ namespace ProjectBS.UI
             {
                 Debug.Log("Player Lose");
             }
+
+            TimerManager.Schedule(3f, CombatUtility.CurrentComabtManager.EndComabat);
         }
 
         public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)
@@ -134,6 +136,10 @@ namespace ProjectBS.UI
                     || m_currentShowingSkills[i].SP > m_currentActor.SP)
                 {
                     m_skillButtons[i].interactable = false;
+                }
+                else
+                {
+                    m_skillButtons[i].interactable = true;
                 }
                 m_skillTexts[i].text = ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID);
                 m_skillButtons[i].gameObject.SetActive(true);
@@ -223,7 +229,14 @@ namespace ProjectBS.UI
 
         public void DisplayGainBuff(DisplayGainBuffData data)
         {
-            SetInfoText(data.taker, data.buffName);
+            SetInfoText(data.taker, "+" + data.buffName);
+            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
+        }
+
+        public void DisplayRemoveBuff(DisplayGainBuffData data)
+        {
+            SetInfoText(data.taker, "-" + data.buffName);
+            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
         }
 
         private void SetInfoText(CombatUnit target, string info)

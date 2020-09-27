@@ -70,13 +70,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_targets[m_currentActiveTargetIndex].buffs.Add(_buff);
             }
 
-            GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayGainBuffData
-            {
-                taker = m_targets[m_currentActiveTargetIndex],
-                buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)
-            });
-
-            new EffectProcesser(_skillEffectData.Command).Start(
+            EffectProcessManager.GetSkillEffectProcesser(_skillEffectData.ID).Start(
                 new EffectProcesser.ProcessData
                 {
                     caster = m_targets[m_currentActiveTargetIndex],
@@ -85,8 +79,19 @@ namespace ProjectBS.Combat.EffectCommand
                     timing = EffectProcesser.TriggerTiming.OnActived,
                     referenceBuff = _buff,
                     refenceSkill = null,
-                    onEnded = SetNextTargetBuff
+                    onEnded = delegate { DisplayGainBuff(_skillEffectData); }
                 });
+        }
+
+        private void DisplayGainBuff(SkillEffectData _skillEffectData)
+        {
+            GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayGainBuffData
+            {
+                taker = m_targets[m_currentActiveTargetIndex],
+                buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)
+            });
+
+            SetNextTargetBuff();
         }
     }
 }
