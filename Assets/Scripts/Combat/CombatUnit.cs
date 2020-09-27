@@ -119,7 +119,6 @@ namespace ProjectBS.Combat
                     }
                     else
                     {
-                        UnityEngine.Debug.Log(_adderList[i].valueString);
                         float _result = CombatUtility.Calculate(new CombatUtility.CalculateData
                         {
                             caster = _adderList[i].parentBuff.from,
@@ -127,7 +126,7 @@ namespace ProjectBS.Combat
                             formula = _adderList[i].valueString,
                             useRawValue = true
                         });
-                        UnityEngine.Debug.Log("_result=" + _result);
+
                         _temp += System.Convert.ToInt32(_result);
                     }
                 }

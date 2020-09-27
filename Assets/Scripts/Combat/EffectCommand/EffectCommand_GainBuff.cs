@@ -38,6 +38,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void SetNextTargetBuff()
         {
+            GetPage<UI.CombatUIView>().RefreshAllInfo();
+
             m_currentActiveTargetIndex++;
             if(m_currentActiveTargetIndex >= m_targets.Count)
             {
@@ -85,13 +87,11 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void DisplayGainBuff(SkillEffectData _skillEffectData)
         {
-            GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayGainBuffData
+            GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayBuffData
             {
                 taker = m_targets[m_currentActiveTargetIndex],
                 buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)
-            });
-
-            SetNextTargetBuff();
+            }, SetNextTargetBuff);
         }
     }
 }

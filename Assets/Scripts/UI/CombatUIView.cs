@@ -10,6 +10,8 @@ namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
+        private const float DISPLAY_INFO_TIME = 1f;
+
         public override bool IsShowing { get { return m_isShowing; } }
         private bool m_isShowing = false;
 
@@ -197,16 +199,27 @@ namespace ProjectBS.UI
             }
         }
 
+        public void RefreshAllInfo()
+        {
+            for(int i = 0; i < m_characterPanels.Length; i++)
+            {
+                if(m_indexToUnit.ContainsKey(i))
+                {
+                    m_characterPanels[i].RefreshInfo();
+                }
+            }
+        }
+
         public class DisplayDamageData
         {
             public CombatUnit taker = null;
             public int damageValue = 0;
         }
 
-        public void DisplayDamage(DisplayDamageData data)
+        public void DisplayDamage(DisplayDamageData data, Action onDisplayEnded)
         {
             SetInfoText(data.taker, "-" + data.damageValue.ToString());
-            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
         public class DisplayHealData
@@ -215,28 +228,28 @@ namespace ProjectBS.UI
             public int healValue = 0;
         }
 
-        public void DisplayHeal(DisplayHealData data)
+        public void DisplayHeal(DisplayHealData data, Action onDisplayEnded)
         {
             SetInfoText(data.taker, "+" + data.healValue.ToString());
-            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
-        public class DisplayGainBuffData
+        public class DisplayBuffData
         {
             public CombatUnit taker = null;
             public string buffName = "Unknown Buff";
         }
 
-        public void DisplayGainBuff(DisplayGainBuffData data)
+        public void DisplayGainBuff(DisplayBuffData data, Action onDisplayEnded)
         {
             SetInfoText(data.taker, "+" + data.buffName);
-            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
-        public void DisplayRemoveBuff(DisplayGainBuffData data)
+        public void DisplayRemoveBuff(DisplayBuffData data, Action onDisplayEnded)
         {
             SetInfoText(data.taker, "-" + data.buffName);
-            m_characterPanels[m_unitToIndex[data.taker]].SetUp(data.taker);
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
         private void SetInfoText(CombatUnit target, string info)
@@ -250,7 +263,7 @@ namespace ProjectBS.UI
             _clone.SetText(string.Format(info));
             _clone.gameObject.SetActive(true);
 
-            Destroy(_clone.gameObject, 1f);
+            Destroy(_clone.gameObject, DISPLAY_INFO_TIME);
         }
 
         private void WaitPlayerSelect()

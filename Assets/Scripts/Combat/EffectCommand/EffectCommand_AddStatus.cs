@@ -36,6 +36,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void GoNextTarget()
         {
+            GetPage<UI.CombatUIView>().RefreshAllInfo();
+
             m_currentTargetIndex++;
             if(m_currentTargetIndex >= m_targets.Count)
             {
@@ -62,15 +64,15 @@ namespace ProjectBS.Combat.EffectCommand
                                 stackCount = 1
                             };
                         }
-                        UnityEngine.Debug.Log("m_targets[m_currentTargetIndex]=" + m_targets[m_currentTargetIndex].name);
-                        UnityEngine.Debug.Log("m_statusString=" + m_statusString);
-                        UnityEngine.Debug.Log("m_valueString=" + m_valueString);
+
                         m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                         {
                             parentBuff = _buff,
                             statusType = m_statusString,
                             valueString = m_valueString
                         });
+
+                        GoNextTarget();
                         break;
                     }
                 default:
@@ -95,6 +97,8 @@ namespace ProjectBS.Combat.EffectCommand
                                     }
 
                                     m_targets[m_currentTargetIndex].hatred += _add;
+
+                                    GoNextTarget();
                                     break;
                                 }
                             case Keyword.HP:
@@ -105,7 +109,7 @@ namespace ProjectBS.Combat.EffectCommand
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             damageValue = -_add,
-                                        });
+                                        }, GoNextTarget);
                                     }
                                     else
                                     {
@@ -118,7 +122,7 @@ namespace ProjectBS.Combat.EffectCommand
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             healValue = _add
-                                        });
+                                        }, GoNextTarget);
                                     }
 
                                     GetSelf().hatred += _add;
@@ -133,6 +137,8 @@ namespace ProjectBS.Combat.EffectCommand
                                     }
 
                                     m_targets[m_currentTargetIndex].SP += _add;
+
+                                    GoNextTarget();
                                     break;
                                 }
                             default:
@@ -144,8 +150,6 @@ namespace ProjectBS.Combat.EffectCommand
                         break;
                     }
             }
-
-            GoNextTarget();
         }
     }
 }

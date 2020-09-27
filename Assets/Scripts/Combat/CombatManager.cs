@@ -391,13 +391,11 @@ namespace ProjectBS.Combat
 
         private void DisplayRemoveBuff(CombatUnit.Buff _buff)
         {
-            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayGainBuffData
+            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID).NameContextID),
                 taker = m_units[m_currentCheckBuffEndUnitIndex]
-            });
-
-            CheckNextBuffEnd();
+            }, CheckNextBuffEnd);
         }
     }
 }

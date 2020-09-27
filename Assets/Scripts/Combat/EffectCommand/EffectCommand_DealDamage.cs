@@ -197,13 +197,15 @@ namespace ProjectBS.Combat.EffectCommand
             m_targets[m_currentTargetIndex].hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             if (m_targets[m_currentTargetIndex].hatred < 1)
                 m_targets[m_currentTargetIndex].hatred = 1;
+
             processData.caster.hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {
                 taker = m_targets[m_currentTargetIndex],
                 damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]
-            });
+            }, null);
+            GetPage<UI.CombatUIView>().RefreshAllInfo();
 
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {

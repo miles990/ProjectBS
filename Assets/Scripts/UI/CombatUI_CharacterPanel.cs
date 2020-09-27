@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using KahaGameCore.Static;
+using System.Collections.Generic;
 
 namespace ProjectBS.UI
 {
@@ -8,6 +9,9 @@ namespace ProjectBS.UI
     {
         [SerializeField] private Button m_button = null;
         [SerializeField] private Text m_infoText = null;
+        [SerializeField] private Text m_hatePersentText = null;
+
+        private Combat.CombatUnit m_currnetDisplayingUnit = null;
 
         public void SetEnable(bool enable)
         {
@@ -16,6 +20,8 @@ namespace ProjectBS.UI
 
         public void SetUp(Combat.CombatUnit unit)
         {
+            m_currnetDisplayingUnit = unit;
+
             string[] _skills = unit.skills.Split(',');
             string[] _skillName = new string[4];
             for(int i = 0; i < _skills.Length; i++)
@@ -39,6 +45,24 @@ namespace ProjectBS.UI
                 _skillName[1],
                 _skillName[2],
                 _skillName[3]);
+
+            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.CurrentComabtManager.AllUnit;
+            int _totalHaterd = 0;
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                if (_allUnits[i].camp == m_currnetDisplayingUnit.camp)
+                {
+                    _totalHaterd += _allUnits[i].hatred;
+                }
+            }
+
+            float _haterdPersent = (float)m_currnetDisplayingUnit.hatred / (float)_totalHaterd;
+            m_hatePersentText.text = System.Convert.ToInt32((_haterdPersent * 100f)) + "%";
+        }
+
+        public void RefreshInfo()
+        {
+            SetUp(m_currnetDisplayingUnit);
         }
     }
 }

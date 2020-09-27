@@ -38,6 +38,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void GoNextTaget()
         {
+            GetPage<UI.CombatUIView>().RefreshAllInfo();
+
             m_currentTargetIndex++;
             if(m_currentTargetIndex >= m_targets.Count)
             {
@@ -86,12 +88,11 @@ namespace ProjectBS.Combat.EffectCommand
         private void OnBuffRemoved(Data.SkillEffectData _effect)
         {
             m_targets[m_currentTargetIndex].buffs.Remove(m_currentBuff);
-            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayGainBuffData
+            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_effect.NameContextID),
                 taker = m_targets[m_currentTargetIndex]
-            });
-            GoNextTaget();
+            }, GoNextTaget);
         }
     }
 }
