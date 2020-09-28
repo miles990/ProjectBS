@@ -194,11 +194,9 @@ namespace ProjectBS.Combat.EffectCommand
 
             m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            m_targets[m_currentTargetIndex].hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            if (m_targets[m_currentTargetIndex].hatred < 1)
-                m_targets[m_currentTargetIndex].hatred = 1;
+            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
-            processData.caster.hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {

@@ -180,7 +180,7 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.Hatred:
                     {
-                        return unit.hatred;
+                        return unit.Hatred;
                     }
                 case Keyword.Head:
                     {
@@ -229,6 +229,28 @@ namespace ProjectBS.Combat
                     {
                         throw new System.Exception("[CombatUtility][GetStatusValue] Invaild statusName=" + statusName);
                     }
+            }
+        }
+
+        public static void RemoveEffect(CombatUnit unit, int effectID)
+        {
+            for (int i = 0; i < unit.statusAdders.Count; i++)
+            {
+                if (unit.statusAdders[i].parentBuff != null
+                    && unit.statusAdders[i].parentBuff.effectID == effectID)
+                {
+                    unit.statusAdders.RemoveAt(i);
+                    i--;
+                }
+            }
+            for (int i = 0; i < unit.statusAddLockers.Count; i++)
+            {
+                if (unit.statusAddLockers[i].parentBuff != null
+                    && unit.statusAddLockers[i].parentBuff.effectID == effectID)
+                {
+                    unit.statusAddLockers.RemoveAt(i);
+                    i--;
+                }
             }
         }
 

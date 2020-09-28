@@ -226,7 +226,7 @@
   },
   {
     "ID": 127,
-    "SP": 15,
+    "SP": 30,
     "NameContextID": 158,
     "DescriptionContextID": 159,
     "Command": "OnActived\n{\n     AddStatus(SelectOther(SameSide, Manual, 1), HP, Self.Defence * 0.25, 0, 0);\n}",
@@ -245,10 +245,28 @@
     "SP": 0,
     "NameContextID": 164,
     "DescriptionContextID": 165,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     GainBuff(LastSelected, 8, 2);\n}",
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.7, 0, 0);\n     BeginIf(Random(0, 100) <= 70);\n     GainBuff(LastSelected, 8, 2);\n     EndIf();\n}",
     "IsDrop": 1
   },
-  {},
+  {
+    "ID": 130,
+    "SP": 0,
+    "NameContextID": 166,
+    "DescriptionContextID": 167,
+    "Command": "OnStartToTakeDamage_Self\n{\n     AddStatus(CurrentActor, HP, Random(1, Self.Attack * 0.5));\n}",
+    "IsDrop": 1
+  },
+  {
+    "ID": 131,
+    "SP": 0,
+    "NameContextID": 168,
+    "DescriptionContextID": 169,
+    "Command": "OnStartToTakeDamage_Self\n{\n     AddDamage(-10%);\n     BegainIf(Random(1, 100) <= 3);\n     GainBuff(CurrentActor, 4, 2);\n     EndIf();\n}",
+    "IsDrop": 1
+  },
+  {
+    "Command": null
+  },
   {
     "ID": 10001,
     "SP": 0,

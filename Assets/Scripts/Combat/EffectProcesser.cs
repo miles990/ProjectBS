@@ -257,6 +257,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_AddDamage();
                     }
+                case "SetDamage":
+                    {
+                        return new EffectCommand_SetDamage();
+                    }
                 case "SetForceEndAction":
                     {
                         return new EffectCommand_SetForceEndAction();
@@ -312,6 +316,18 @@ namespace ProjectBS.Combat
                 case "Quit":
                     {
                         return new EffectCommand_Quit();
+                    }
+                case "LockAddStatus":
+                    {
+                        return new EffectCommand_LockAddStatus();
+                    }
+                case "ForceDie":
+                    {
+                        return new EffectCommand_ForceDie();
+                    }
+                case "Destroy":
+                    {
+                        return new EffectCommand_Destroy();
                     }
                 default:
                     {

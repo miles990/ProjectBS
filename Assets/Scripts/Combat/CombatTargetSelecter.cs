@@ -256,7 +256,7 @@ namespace ProjectBS.Combat
                     case SelectRange.All:
                         {
                             _rollPool.Add(m_allUnit[i]);
-                            _totalHatred += m_allUnit[i].hatred;
+                            _totalHatred += m_allUnit[i].Hatred;
                             break;
                         }
                     case SelectRange.Opponent:
@@ -264,7 +264,7 @@ namespace ProjectBS.Combat
                             if (m_allUnit[i].camp != m_attacker.camp)
                             {
                                 _rollPool.Add(m_allUnit[i]);
-                                _totalHatred += m_allUnit[i].hatred;
+                                _totalHatred += m_allUnit[i].Hatred;
                             }
                             break;
                         }
@@ -273,7 +273,7 @@ namespace ProjectBS.Combat
                             if (m_allUnit[i].camp == m_attacker.camp)
                             {
                                 _rollPool.Add(m_allUnit[i]);
-                                _totalHatred += m_allUnit[i].hatred;
+                                _totalHatred += m_allUnit[i].Hatred;
                             }
                             break;
                         }
@@ -283,7 +283,7 @@ namespace ProjectBS.Combat
             int _roll = UnityEngine.Random.Range(1, _totalHatred + 1);
             for (int i = 0; i < _rollPool.Count; i++)
             {
-                _roll -= _rollPool[i].hatred;
+                _roll -= _rollPool[i].Hatred;
                 if (_roll <= 0)
                 {
                     m_currentSelectedTargets.Add(_rollPool[i]);

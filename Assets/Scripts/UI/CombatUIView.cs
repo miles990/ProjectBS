@@ -44,8 +44,6 @@ namespace ProjectBS.UI
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
         private Action<List<CombatUnit>> m_onSelected = null;
 
-        private CombatUnit m_currentActor = null;
-
         public override void ForceShow(Manager manager, bool show)
         {
             throw new NotImplementedException();
@@ -95,7 +93,12 @@ namespace ProjectBS.UI
 
         public void ShowUnitDied(CombatUnit dyingUnit)
         {
-            SetInfoText(dyingUnit, string.Format("死亡", dyingUnit.name));
+            SetInfoText(dyingUnit, string.Format("死亡"));
+        }
+
+        public void ShowUnitDestoryed(CombatUnit unit)
+        {
+            SetInfoText(unit, string.Format("消滅"));
         }
 
         public void ShowTurnStart(int turnCount)
@@ -107,7 +110,6 @@ namespace ProjectBS.UI
         public void ShowActorActionStart(CombatUnit actor)
         {
             SetInfoText(actor, string.Format("開始行動"));
-            m_currentActor = actor;
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 

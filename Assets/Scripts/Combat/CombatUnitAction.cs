@@ -47,13 +47,6 @@ namespace ProjectBS.Combat
 
         private void OnActionStarted_Any_Ended()
         {
-            if(Actor.skipAction)
-            {
-                GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
-                OnSkillEnded();
-                return;
-            }
-
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = Actor,
@@ -65,9 +58,12 @@ namespace ProjectBS.Combat
 
         private void Act()
         {
-            if (Actor.skipAction)
+            if (Actor.skipAction || Actor.HP <= 0)
             {
-                GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
+                if (Actor.HP > 0)
+                {
+                    GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
+                }
                 OnSkillEnded();
                 return;
             }
@@ -108,7 +104,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
 
-            if(Actor.SP < skill.SP)
+            if(Actor.SP < skill.SP && !Actor.skipCheckSP)
             {
                 Act();
                 return;
@@ -117,7 +113,7 @@ namespace ProjectBS.Combat
             Actor.lastSkillID = skill.ID;
             Actor.SP -= skill.SP;
 
-            new EffectProcesser(skill.Command).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetSkillProcesser(skill.ID).Start(new EffectProcesser.ProcessData
             {
                 caster = Actor,
                 target = null,

@@ -27,6 +27,12 @@ namespace ProjectBS.Combat
             public Buff parentBuff = null;
         }
 
+        public class StatusAddLocker
+        {
+            public string statusType = "HP";
+            public Buff parentBuff = null;
+        }
+
         public string name = "";
         public UnityEngine.Sprite sprite = null;
         public Camp camp = Camp.Player;
@@ -35,6 +41,11 @@ namespace ProjectBS.Combat
             get { return m_hp; }
             set 
             {
+                if(value > m_hp && statusAddLockers.Find(x => x.statusType == "HP") != null)
+                {
+                    return;
+                }
+
                 m_hp = value;
                 if (m_hp > GetMaxHP())
                     m_hp = GetMaxHP();
@@ -47,6 +58,11 @@ namespace ProjectBS.Combat
             get { return m_sp; }
             set 
             {
+                if (value > m_sp && statusAddLockers.Find(x => x.statusType == "SP") != null)
+                {
+                    return;
+                }
+
                 m_sp = value;
                 if (m_sp > 100)
                     m_sp = 100;
@@ -56,7 +72,22 @@ namespace ProjectBS.Combat
         public int rawAttack = 10;
         public int rawDefence = 10;
         public int rawSpeed = 1;
-        public int hatred = 0;
+        public int Hatred 
+        {
+            get { return m_hatred; }
+            set
+            {
+                if (value > m_hatred && statusAddLockers.Find(x => x.statusType == "Hatred") != null)
+                {
+                    return;
+                }
+
+                m_hatred = value;
+                if (m_hatred < 1)
+                    m_hatred = 1;
+            }
+        }
+        private int m_hatred = 0;
         public OwningEquipmentData head = null;
         public OwningEquipmentData body = null;
         public OwningEquipmentData hand = null;
@@ -65,11 +96,10 @@ namespace ProjectBS.Combat
         public string ai = "";
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
+        public List<StatusAddLocker> statusAddLockers = new List<StatusAddLocker>();
 
         public bool skipAction = false;
-        public bool lockAddHP = false;
-        public bool lockAddSP = false;
-        public bool lockAddHatred = false;
+        public bool skipCheckSP = false;
 
         public int lastSkillID = 0;
         public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();

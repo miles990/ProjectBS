@@ -46,18 +46,26 @@ namespace ProjectBS.UI
                 _skillName[2],
                 _skillName[3]);
 
-            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.CurrentComabtManager.AllUnit;
-            int _totalHaterd = 0;
-            for (int i = 0; i < _allUnits.Count; i++)
+            if(m_currnetDisplayingUnit.HP > 0)
             {
-                if (_allUnits[i].camp == m_currnetDisplayingUnit.camp)
+                List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.CurrentComabtManager.AllUnit;
+                int _totalHaterd = 0;
+                for (int i = 0; i < _allUnits.Count; i++)
                 {
-                    _totalHaterd += _allUnits[i].hatred;
+                    if (_allUnits[i].camp == m_currnetDisplayingUnit.camp)
+                    {
+                        _totalHaterd += _allUnits[i].Hatred;
+                    }
                 }
-            }
 
-            float _haterdPersent = (float)m_currnetDisplayingUnit.hatred / (float)_totalHaterd;
-            m_hatePersentText.text = System.Convert.ToInt32((_haterdPersent * 100f)) + "%";
+                float _haterdPersent = (float)m_currnetDisplayingUnit.Hatred / (float)_totalHaterd;
+                m_hatePersentText.text = System.Convert.ToInt32((_haterdPersent * 100f)) + "%";
+                m_hatePersentText.gameObject.SetActive(true);
+            }
+            else
+            {
+                m_hatePersentText.gameObject.SetActive(false);
+            }
         }
 
         public void RefreshInfo()

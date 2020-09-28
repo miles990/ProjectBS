@@ -24,7 +24,7 @@
     "ID": 4,
     "NameContextID": 15,
     "DescriptionContextID": 16,
-    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}",
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}\n\nOnDamageTaken_Self\n{\n     RemoveBuff(Self, 4, -1);\n}",
     "MaxStackCount": 1
   },
   {

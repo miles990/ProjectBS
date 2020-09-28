@@ -36,6 +36,7 @@ namespace ProjectBS.Combat
         private CombatUnitAction m_currentAction = null;
 
         private CombatUnit m_currentDyingUnit = null;
+        private System.Action m_onDiedCommandEnded = null;
 
         private bool m_isCombating = false;
 
@@ -110,6 +111,30 @@ namespace ProjectBS.Combat
             m_currentAction.ForceEnd();
         }
 
+        public void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded)
+        {
+            if(!m_units.Contains(unit))
+            {
+                return;
+            }
+
+            m_currentDyingUnit = unit;
+            m_onDiedCommandEnded = onDiedCommandEnded;
+            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnDied_Any,
+                onEnded = OnDied_Any_Ended
+            });
+        }
+
+        public void ForceRemoveUnit(CombatUnit unit)
+        {
+            m_unitActions.Remove(m_unitActions.Find(x => x.Actor == unit));
+            m_units.Remove(unit);
+        }
+
         private void AddUnit(OwningCharacterData character)
         {
             m_units.Add(new CombatUnit
@@ -124,7 +149,7 @@ namespace ProjectBS.Combat
                 skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SkillSlot_2, character.SkillSlot_3),
                 SP = character.SP,
                 rawSpeed = character.Speed,
-                hatred = 1,
+                Hatred = 1,
                 //sprite = GameDataLoader.Instance.GetSprite(character.CharacterSpriteID),
                 body = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Body),
                 foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
@@ -149,7 +174,7 @@ namespace ProjectBS.Combat
                 skills = "",
                 SP = boss.SP,
                 rawSpeed = boss.Speed,
-                hatred = 1,
+                Hatred = 1,
                 //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
                 body = null,
                 foot = null,
@@ -252,20 +277,12 @@ namespace ProjectBS.Combat
             {
                 if(m_units[i].HP <= 0)
                 {
-                    m_currentDyingUnit = m_units[i];
-                    m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
-                    {
-                        caster = null,
-                        target = null,
-                        timing = EffectProcesser.TriggerTiming.OnDied_Any,
-                        onEnded = OnDied_Any_Ended
-                    });
+                    ForceUnitDie(m_units[i], OnActionEnded);
                     return;
                 }
             }
 
             m_currentAction.Actor.skipAction = false; // reset skip action state on action ended 
-
             CheckGameEnd();
         }
 
@@ -313,12 +330,10 @@ namespace ProjectBS.Combat
         private void OnDied_Self_Ended()
         {
             GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit);
-            m_units.Remove(m_currentDyingUnit);
-            m_unitActions.Remove(m_unitActions.Find(x => x.Actor == m_currentDyingUnit));
+            ForceRemoveUnit(m_currentDyingUnit);
 
             m_currentDyingUnit = null;
-
-            OnActionEnded();
+            m_onDiedCommandEnded?.Invoke();
         }
 
         private void EndTurn()
@@ -377,19 +392,11 @@ namespace ProjectBS.Combat
                 CombatUnit.Buff _buff = m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex];
                 m_units[m_currentCheckBuffEndUnitIndex].buffs.RemoveAt(m_currentCheckBuffIndex);
 
-                for (int i = 0; i < m_units[m_currentCheckBuffEndUnitIndex].statusAdders.Count; i++)
-                {
-                    if (m_units[m_currentCheckBuffEndUnitIndex].statusAdders[i].parentBuff == _buff)
-                    {
-                        m_units[m_currentCheckBuffEndUnitIndex].statusAdders.RemoveAt(i);
-                        i--;
-                    }
-                }
-
+                CombatUtility.RemoveEffect(m_units[m_currentCheckBuffEndUnitIndex], _buff.effectID);
                 m_currentCheckBuffIndex--;
 
                 SkillEffectData _effect = KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID);
-                new EffectProcesser(_effect.Command).Start(new EffectProcesser.ProcessData
+                EffectProcessManager.GetSkillEffectProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
                 {
                     caster = m_units[m_currentCheckBuffEndUnitIndex],
                     target = null,

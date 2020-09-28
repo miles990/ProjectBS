@@ -90,12 +90,7 @@ namespace ProjectBS.Combat.EffectCommand
                         {
                             case Keyword.Hatred:
                                 {
-                                    if (m_targets[m_currentTargetIndex].lockAddHatred && _add > 0)
-                                    {
-                                        break;
-                                    }
-
-                                    m_targets[m_currentTargetIndex].hatred += _add;
+                                    m_targets[m_currentTargetIndex].Hatred += _add;
 
                                     GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();
@@ -115,12 +110,7 @@ namespace ProjectBS.Combat.EffectCommand
                                     }
                                     else
                                     {
-                                        if(m_targets[m_currentTargetIndex].lockAddHP)
-                                        {
-                                            GoNextTarget();
-                                            break;
-                                        }
-                                        GetSelf().hatred += _add;
+                                        GetSelf().Hatred += _add;
                                         m_targets[m_currentTargetIndex].HP += _add;
                                         GetPage<UI.CombatUIView>().RefreshAllInfo();
                                         GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
@@ -133,11 +123,6 @@ namespace ProjectBS.Combat.EffectCommand
                                 }
                             case Keyword.SP:
                                 {
-                                    if (m_targets[m_currentTargetIndex].lockAddSP && _add > 0)
-                                    {
-                                        break;
-                                    }
-
                                     m_targets[m_currentTargetIndex].SP += _add;
                                     GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();

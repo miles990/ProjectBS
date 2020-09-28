@@ -77,7 +77,7 @@ namespace ProjectBS.Combat.EffectCommand
                     }
                 case Keyword.Hatred:
                     {
-                        m_targets[m_currentTargetIndex].hatred = _set;
+                        m_targets[m_currentTargetIndex].Hatred = _set;
                         break;
                     }
                 case Keyword.HP:
