@@ -321,6 +321,10 @@ namespace ProjectBS.UI
             {
                 if(m_indexToUnit.ContainsKey(i))
                 {
+                    if(!m_currentSelectData.inculdeAttacker && m_indexToUnit[i] == m_currentSelectData.attacker)
+                    {
+                        continue;
+                    }
                     m_characterPanels[i].SetEnable(enable);
                 }
             }
@@ -332,6 +336,10 @@ namespace ProjectBS.UI
             {
                 if (m_indexToUnit.ContainsKey(i))
                 {
+                    if (!m_currentSelectData.inculdeAttacker && m_indexToUnit[i] == m_currentSelectData.attacker)
+                    {
+                        continue;
+                    }
                     m_characterPanels[i].SetEnable(enable);
                 }
             }

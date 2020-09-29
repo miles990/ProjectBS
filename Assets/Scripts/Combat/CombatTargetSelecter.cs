@@ -104,9 +104,6 @@ namespace ProjectBS.Combat
                         m_onSelected += data.onSelected;
                         m_inculdeAttacker = _command == "Select";
 
-                        if (_command == "SelectOther")
-                            m_allUnit.Remove(m_attacker);
-
                         if (m_currentSelectType == SelectType.Manual)
                         {
                             UI.CombatUIView.SelectTargetData _selectData = new UI.CombatUIView.SelectTargetData
