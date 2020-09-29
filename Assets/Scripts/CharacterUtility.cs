@@ -15,8 +15,8 @@ namespace ProjectBS
         private static int m_hpTotalWeight = 1;
         private static List<AbilityData> m_attackAbiPool = null;
         private static int m_attackTotalWeight = 1;
-        private static List<AbilityData> m_defenceAbiPool = null;
-        private static int m_defenceTotalWeight = 1;
+        private static List<AbilityData> m_defenseAbiPool = null;
+        private static int m_defenseTotalWeight = 1;
         private static List<AbilityData> m_speedAbiPool = null;
         private static int m_speedTotalWeight = 1;
         private static CharacterNamePoolData[] m_nameIDPool = null;
@@ -27,7 +27,7 @@ namespace ProjectBS
 
             AbilityData _hp = RollFromList(m_hpTotalWeight, m_hpAbiPool);
             AbilityData _attack = RollFromList(m_attackTotalWeight, m_attackAbiPool);
-            AbilityData _defence = RollFromList(m_defenceTotalWeight, m_defenceAbiPool);
+            AbilityData _defense = RollFromList(m_defenseTotalWeight, m_defenseAbiPool);
             AbilityData _speed = RollFromList(m_speedTotalWeight, m_speedAbiPool);
 
             OwningCharacterData _newChar = new OwningCharacterData
@@ -36,8 +36,8 @@ namespace ProjectBS
                 AttackAbilityID = _attack.ID,
                 CharacterNameID = m_nameIDPool[Random.Range(0, m_nameIDPool.Length - 1)].NameContextID,
                 CharacterSpriteID = 0,
-                Defence = Random.Range(_defence.MinValue, _defence.MaxValue),
-                DefenceAbilityID = _defence.ID,
+                Defense = Random.Range(_defense.MinValue, _defense.MaxValue),
+                DefenseAbilityID = _defense.ID,
                 Equipment_UDID_Body = null,
                 Equipment_UDID_Foot = null,
                 Equipment_UDID_Hand = null,
@@ -70,7 +70,7 @@ namespace ProjectBS
             AbilityData[] _allDatas = GameDataManager.GetAllGameData<AbilityData>();
             m_hpAbiPool = new List<AbilityData>();
             m_attackAbiPool = new List<AbilityData>();
-            m_defenceAbiPool = new List<AbilityData>();
+            m_defenseAbiPool = new List<AbilityData>();
             m_speedAbiPool = new List<AbilityData>();
             for (int i = 0; i < _allDatas.Length; i++)
             {
@@ -91,10 +91,10 @@ namespace ProjectBS
                             m_attackTotalWeight += _allDatas[i].Weight;
                             break;
                         }
-                    case Keyword.Defence:
+                    case Keyword.Defense:
                         {
-                            m_defenceAbiPool.Add(_allDatas[i]);
-                            m_defenceTotalWeight += _allDatas[i].Weight;
+                            m_defenseAbiPool.Add(_allDatas[i]);
+                            m_defenseTotalWeight += _allDatas[i].Weight;
                             break;
                         }
                     case Keyword.Speed:
@@ -159,12 +159,12 @@ namespace ProjectBS
 
             AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);
             AbilityData _attack = m_attackAbiPool.Find(x => x.ID == character.AttackAbilityID);
-            AbilityData _defence = m_defenceAbiPool.Find(x => x.ID == character.DefenceAbilityID);
+            AbilityData _defense = m_defenseAbiPool.Find(x => x.ID == character.DefenseAbilityID);
             AbilityData _speed = m_speedAbiPool.Find(x => x.ID == character.SpeedAbilityID);
 
             character.HP += Random.Range(_hp.MinValue, _hp.MaxValue);
             character.Attack += Random.Range(_attack.MinValue, _attack.MaxValue);
-            character.Defence += Random.Range(_defence.MinValue, _defence.MaxValue);
+            character.Defense += Random.Range(_defense.MinValue, _defense.MaxValue);
             character.Speed += Random.Range(_speed.MinValue, _speed.MaxValue);
         }
     }

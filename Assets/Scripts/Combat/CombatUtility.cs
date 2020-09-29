@@ -160,12 +160,12 @@ namespace ProjectBS.Combat
                         else 
                             return unit.GetAttack();
                     }
-                case Keyword.Defence:
+                case Keyword.Defense:
                     {
                         if (useRawValue)
-                            return unit.rawDefence;
+                            return unit.rawDefense;
                         else
-                            return unit.GetDefence();
+                            return unit.GetDefense();
                     }
                 case Keyword.Speed:
                     {

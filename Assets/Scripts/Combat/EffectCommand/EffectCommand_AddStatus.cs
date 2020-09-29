@@ -46,7 +46,7 @@ namespace ProjectBS.Combat.EffectCommand
             switch (m_statusString)
             {
                 case Keyword.Attack:
-                case Keyword.Defence:
+                case Keyword.Defense:
                 case Keyword.MaxHP:
                 case Keyword.Speed:
                     {

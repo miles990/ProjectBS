@@ -70,7 +70,7 @@ namespace ProjectBS.Combat
         }
         private int m_sp = 100;
         public int rawAttack = 10;
-        public int rawDefence = 10;
+        public int rawDefense = 10;
         public int rawSpeed = 1;
         public int Hatred 
         {
@@ -117,9 +117,9 @@ namespace ProjectBS.Combat
             return GetResult(rawAttack, Keyword.Attack);
         }
 
-        public int GetDefence()
+        public int GetDefense()
         {
-            return GetResult(rawDefence, Keyword.Defence);
+            return GetResult(rawDefense, Keyword.Defense);
         }
 
         public int GetSpeed()
@@ -188,9 +188,9 @@ namespace ProjectBS.Combat
                         value += equipmentData.Attack;
                         break;
                     }
-                case Keyword.Defence:
+                case Keyword.Defense:
                     {
-                        value += equipmentData.Defence;
+                        value += equipmentData.Defense;
                         break;
                     }
                 case Keyword.Speed:

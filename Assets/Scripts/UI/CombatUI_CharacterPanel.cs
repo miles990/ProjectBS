@@ -39,7 +39,7 @@ namespace ProjectBS.UI
                 unit.SP,
                 100,
                 unit.GetAttack(),
-                unit.GetDefence(),
+                unit.GetDefense(),
                 unit.GetSpeed(),
                 _skillName[0],
                 _skillName[1],

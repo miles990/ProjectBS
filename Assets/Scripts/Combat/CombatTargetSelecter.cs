@@ -21,14 +21,14 @@ namespace ProjectBS.Combat
             HighestHP,
             HighestSP,
             HighestAttack,
-            HighestDefence,
+            HighestDefense,
             HighestSpeed,
             HighestHatred,
             LowestMaxHP,
             LowestHP,
             LowestSP,
             LowestAttack,
-            LowestDefence,
+            LowestDefense,
             LowestSpeed,
             LowestHatred,
             RandomByHatred
@@ -182,9 +182,9 @@ namespace ProjectBS.Combat
                             SelectByStatus(Keyword.Attack, true);
                             break;
                         }
-                    case SelectType.HighestDefence:
+                    case SelectType.HighestDefense:
                         {
-                            SelectByStatus(Keyword.Defence, true);
+                            SelectByStatus(Keyword.Defense, true);
                             break;
                         }
                     case SelectType.HighestSpeed:
@@ -217,9 +217,9 @@ namespace ProjectBS.Combat
                             SelectByStatus(Keyword.Attack, false);
                             break;
                         }
-                    case SelectType.LowestDefence:
+                    case SelectType.LowestDefense:
                         {
-                            SelectByStatus(Keyword.Defence, false);
+                            SelectByStatus(Keyword.Defense, false);
                             break;
                         }
                     case SelectType.LowestSpeed:

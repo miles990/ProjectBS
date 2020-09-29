@@ -32,8 +32,8 @@ namespace ProjectBS.Data
         public int SP;
         public int Attack;
         public int AttackAbilityID;
-        public int Defence;
-        public int DefenceAbilityID;
+        public int Defense;
+        public int DefenseAbilityID;
         public int Speed;
         public int SpeedAbilityID;
         public string Equipment_UDID_Head;
@@ -55,7 +55,7 @@ namespace ProjectBS.Data
         public int HP;
         public int SP;
         public int Attack;
-        public int Defence;
+        public int Defense;
         public int Speed;
         public string EffectIDs;
     }

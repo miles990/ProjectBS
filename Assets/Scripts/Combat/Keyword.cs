@@ -9,7 +9,7 @@
         public const string HP = "HP";
         public const string SP = "SP";
         public const string Attack = "Attack";
-        public const string Defence = "Defence";
+        public const string Defense = "Defense";
         public const string Speed = "Speed";
         public const string Hatred = "Hatred";
         public const string LastSkill = "LastSkill";

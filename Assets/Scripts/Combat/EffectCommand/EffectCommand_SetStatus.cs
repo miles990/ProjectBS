@@ -60,9 +60,9 @@ namespace ProjectBS.Combat.EffectCommand
                         m_targets[m_currentTargetIndex].rawAttack = _set;
                         break;
                     }
-                case Keyword.Defence:
+                case Keyword.Defense:
                     {
-                        m_targets[m_currentTargetIndex].rawDefence = _set;
+                        m_targets[m_currentTargetIndex].rawDefense = _set;
                         break;
                     }
                 case Keyword.MaxHP:
