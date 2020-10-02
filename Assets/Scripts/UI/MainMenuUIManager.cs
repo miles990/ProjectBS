@@ -17,7 +17,6 @@ namespace ProjectBS.UI
 
         public MainMenuUIManager()
         {
-            m_pageToUI.Add(UIPage.EditPatyUI, GetPage<EditPartyUIView>());
         }
 
         public void Show(UIPage page)
