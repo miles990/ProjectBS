@@ -290,7 +290,7 @@ namespace ProjectBS.UI
                     }
                 case CombatTargetSelecter.SelectRange.Opponent:
                     {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
+                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Enemy)
                         {
                             EnableSelectPlayerButton(true);
                         }
@@ -302,7 +302,7 @@ namespace ProjectBS.UI
                     }
                 case CombatTargetSelecter.SelectRange.SameSide:
                     {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Boss)
+                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Enemy)
                         {
                             EnableSelectBossButton(true);
                         }

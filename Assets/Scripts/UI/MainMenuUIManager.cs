@@ -21,12 +21,12 @@ namespace ProjectBS.UI
 
         public void Show(UIPage page)
         {
-            DeshowAll();
-            if(page != UIPage.None)
-                m_pageToUI[page].Show(this, true, null);
+            HideAll();
+            //if(page != UIPage.None)
+            //    m_pageToUI[page].Show(this, true, null);
         }
 
-        public void DeshowAll()
+        public void HideAll()
         {
             foreach(KeyValuePair<UIPage, UIView> keyValuePair in m_pageToUI)
             {

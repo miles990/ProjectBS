@@ -55,11 +55,8 @@ namespace ProjectBS.Combat
 
             public void Process(Action onCompleted)
             {
-                if (command.processData.skipIfCount > 0
-                    && !(command is EffectCommand_EndIf)
-                    && !(command is EffectCommand_BeginIf)
-                    && !(command is EffectCommand_BeginIf_Effect)
-                    && !(command is EffectCommand_BeginIf_Skill))
+                if (command.processData.skipIfCount > 0 
+                    && !EffectProcessManager.IsIfCommand(command.GetType()))
                 {
                     onCompleted?.Invoke();
                 }
@@ -219,7 +216,7 @@ namespace ProjectBS.Combat
 
                 if (commandData[i] == '(')
                 {
-                    _newData.command = GetEffectCommand(_deserializeBuffer);
+                    _newData.command = EffectProcessManager.GetEffectCommand(_deserializeBuffer);
                     if (_newData.command != null)
                     {
                         _leftCounter++;
@@ -235,105 +232,6 @@ namespace ProjectBS.Combat
             }
 
             return null;
-        }
-
-        private EffectCommandBase GetEffectCommand(string command)
-        {
-            switch (command.Trim())
-            {
-                case "SetStatus":
-                    {
-                        return new EffectCommand_SetStatus();
-                    }
-                case "AddStatus":
-                    {
-                        return new EffectCommand_AddStatus();
-                    }
-                case "DealDamage":
-                    {
-                        return new EffectCommand_DealDamage();
-                    }
-                case "AddDamage":
-                    {
-                        return new EffectCommand_AddDamage();
-                    }
-                case "SetDamage":
-                    {
-                        return new EffectCommand_SetDamage();
-                    }
-                case "SetForceEndAction":
-                    {
-                        return new EffectCommand_SetForceEndAction();
-                    }
-                case "GainBuff":
-                    {
-                        return new EffectCommand_GainBuff();
-                    }
-                case "RemoveBuff":
-                    {
-                        return new EffectCommand_RemoveBuff();
-                    }
-                case "AddBuffTime":
-                    {
-                        return null;
-                    }
-                case "BeginIf":
-                    {
-                        return new EffectCommand_BeginIf();
-                    }
-                case "BeginIf_Effect":
-                    {
-                        return new EffectCommand_BeginIf_Effect();
-                    }
-                case "BeginIf_Skill":
-                    {
-                        return new EffectCommand_BeginIf_Skill();
-                    }
-                case "EndIf":
-                    {
-                        return new EffectCommand_EndIf();
-                    }
-                case "StoreDamage":
-                    {
-                        return null;
-                    }
-                case "Chain":
-                    {
-                        return null;
-                    }
-                case "ReplaceSkill":
-                    {
-                        return null;
-                    }
-                case "CastSkill":
-                    {
-                        return new EffectCommand_CastSkill();
-                    }
-                case "RandomCastSkill":
-                    {
-                        return new EffectCommand_RandomCastSkill();
-                    }
-                case "Quit":
-                    {
-                        return new EffectCommand_Quit();
-                    }
-                case "LockAddStatus":
-                    {
-                        return new EffectCommand_LockAddStatus();
-                    }
-                case "ForceDie":
-                    {
-                        return new EffectCommand_ForceDie();
-                    }
-                case "Destroy":
-                    {
-                        return new EffectCommand_Destroy();
-                    }
-                default:
-                    {
-                        throw new Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);
-                    }
-            }
         }
     }
 }

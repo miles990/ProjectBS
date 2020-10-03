@@ -121,7 +121,7 @@ namespace ProjectBS.Combat
             {
                 case Keyword.BossUnitCount:
                     {
-                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Boss);
+                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Enemy);
                     }
                 case Keyword.PlayerUnitCount:
                     {

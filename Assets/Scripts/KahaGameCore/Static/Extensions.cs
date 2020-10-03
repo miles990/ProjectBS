@@ -18,8 +18,7 @@
 
         public static int ToInt(this string value)
         {
-            int _intValue = 0;
-            if(int.TryParse(value, out _intValue))
+            if (int.TryParse(value, out int _intValue))
             {
                 return _intValue;
             }

@@ -166,7 +166,7 @@ namespace ProjectBS.Combat
             {
                 ai = boss.AI,
                 rawAttack = boss.Attack,
-                camp = CombatUnit.Camp.Boss,
+                camp = CombatUnit.Camp.Enemy,
                 rawDefense = boss.Defense,
                 rawMaxHP = boss.HP,
                 HP = boss.HP,
@@ -292,7 +292,7 @@ namespace ProjectBS.Combat
             int _bossCount = 0;
             for (int i = 0; i < m_units.Count; i++)
             {
-                if (m_units[i].camp == CombatUnit.Camp.Boss)
+                if (m_units[i].camp == CombatUnit.Camp.Enemy)
                     _bossCount++;
                 else
                     _playerCount++;

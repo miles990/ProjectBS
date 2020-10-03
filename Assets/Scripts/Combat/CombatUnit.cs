@@ -8,7 +8,7 @@ namespace ProjectBS.Combat
         public enum Camp
         {
             Player,
-            Boss
+            Enemy
         }
 
         public class Buff
