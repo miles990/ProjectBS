@@ -6,6 +6,6 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        ProjectBS.GameManager.StartGame();
+        ProjectBS.GameManager.Instance.StartGame();
     }
 }

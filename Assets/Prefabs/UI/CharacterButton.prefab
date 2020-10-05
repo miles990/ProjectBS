@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 6190912888747839586}
   - component: {fileID: 6190912888747839584}
   - component: {fileID: 6190912888747839587}
+  - component: {fileID: 9209037524484115157}
   m_Layer: 5
   m_Name: CharacterButton
   m_TagString: Untagged
@@ -469,6 +470,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9209037524484115157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190912888747839597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b744a9244adeae45b46d39c89e8efe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameAndLevelText: {fileID: 6887480961728705824}
+  m_abilityText: {fileID: 325252642461300574}
+  m_equipmentText: {fileID: 5903772332426711702}
+  m_skillText: {fileID: 3879868313189480148}
+  m_partyHintRoot: {fileID: 2868497683768486297}
+  m_partyHintText: {fileID: 8153532418004280660}
 --- !u!1 &8930218279246039722
 GameObject:
   m_ObjectHideFlags: 0

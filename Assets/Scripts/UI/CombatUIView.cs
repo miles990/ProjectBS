@@ -12,8 +12,7 @@ namespace ProjectBS.UI
     {
         private const float DISPLAY_INFO_TIME = 1f;
 
-        public override bool IsShowing { get { return m_isShowing; } }
-        private bool m_isShowing = false;
+        public override bool IsShowing { get { return m_root.activeSelf; } }
 
         public event Action OnTurnStartAnimationEnded = null;
         public event Action OnActionAnimationEnded = null;
@@ -28,11 +27,12 @@ namespace ProjectBS.UI
             public Action<List<CombatUnit>> onSelected = null;
         }
 
+        [SerializeField] private GameObject m_root = null;
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private Button[] m_skillButtons = null;
         [SerializeField] private Text[] m_skillTexts = null;
-        [SerializeField] private UI.CombatUI_InfoText m_infoPrefab = null;
+        [SerializeField] private CombatUI_InfoText m_infoPrefab = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
 
@@ -51,7 +51,7 @@ namespace ProjectBS.UI
 
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
-            m_isShowing = show;
+            m_root.SetActive(show);
             onCompleted?.Invoke();
         }
 

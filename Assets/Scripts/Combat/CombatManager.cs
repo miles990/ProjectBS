@@ -103,7 +103,7 @@ namespace ProjectBS.Combat
 
         public void EndComabat()
         {
-            GetPage<UI.CombatUIView>().Show(this, false, GameManager.EndCombat);
+            GetPage<UI.CombatUIView>().Show(this, false, GameManager.Instance.EndCombat);
         }
 
         public void ForceEndCurrentAction()

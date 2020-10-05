@@ -2,8 +2,23 @@
 
 namespace ProjectBS
 {
-    public static class GameManager
+    public class GameManager : KahaGameCore.Interface.Manager
     {
+        public static GameManager Instance 
+        {
+            get
+            { 
+                if(m_instance == null)
+                {
+                    m_instance = new GameManager();
+                }
+
+                return m_instance;
+            }
+        }
+        private static GameManager m_instance = null;
+        private GameManager() { }
+
         private enum State
         {
             None,
@@ -12,12 +27,11 @@ namespace ProjectBS
             Combat
         }
 
-        private static State m_currentState = State.None;
+        private State m_currentState = State.None;
 
-        private static UI.MainMenuUIManager m_uiManager = null;
-        private static Combat.CombatManager m_combatManager = null;
+        private Combat.CombatManager m_combatManager = null;
 
-        public static void StartGame()
+        public void StartGame()
         {
             if(m_currentState != State.None)
             {
@@ -27,13 +41,13 @@ namespace ProjectBS
             StartInitData();
         }
 
-        public static void StartCombat()
+        public void StartCombat()
         {
             if (m_currentState != State.MainMenu)
                 throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
 
             m_currentState = State.Combat;
-            m_uiManager.Show(UI.MainMenuUIManager.UIPage.None);
+            GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
             m_combatManager = new Combat.CombatManager();
             m_combatManager.StartCombat(
@@ -41,16 +55,16 @@ namespace ProjectBS
                 new List<Data.BossData> { KahaGameCore.Static.GameDataManager.GetGameData<Data.BossData>(1) });
         }
 
-        public static void EndCombat()
+        public void EndCombat()
         {
             if (m_currentState != State.Combat)
                 throw new System.Exception("[GameManager][EndCombat] Can't end comabt since it didn't start");
 
             m_currentState = State.MainMenu;
-            m_uiManager.Show(UI.MainMenuUIManager.UIPage.EditPatyUI);
+            GetPage<UI.MainMenuUIView>().Show(this, true, null);
         }
 
-        private static void StartInitData()
+        private void StartInitData()
         {
             m_currentState = State.InitData;
             GameDataLoader.StartLoad();
@@ -58,12 +72,10 @@ namespace ProjectBS
             ShowMainMenu();
         }
 
-        private static void ShowMainMenu()
+        private void ShowMainMenu()
         {
             m_currentState = State.MainMenu;
-
-            m_uiManager = new UI.MainMenuUIManager();
-            m_uiManager.Show(UI.MainMenuUIManager.UIPage.EditPatyUI);
+            GetPage<UI.MainMenuUIView>().Show(this, true, null);
         }
     }
 }
