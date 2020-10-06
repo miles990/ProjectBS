@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2832933562558057674}
   - component: {fileID: 2832933562558057672}
   - component: {fileID: 2832933562558057675}
+  - component: {fileID: 187602415665850568}
   m_Layer: 5
   m_Name: EquipmentButton
   m_TagString: Untagged
@@ -77,6 +78,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &187602415665850568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2832933562558057669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40db6d1f6e2f0e249bc519240c4a587a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4735167127836470588
 GameObject:
   m_ObjectHideFlags: 0

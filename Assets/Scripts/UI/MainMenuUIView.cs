@@ -12,10 +12,10 @@ namespace ProjectBS.UI
         public override bool IsShowing { get { return m_root.activeSelf; } }
 
         [Serializable]
-        private struct PanelData
+        private class PanelData
         {
-            public Button downButton;
-            public MainMenuUI_PanelBase panel;
+            public Button downButton = null;
+            public MainMenuUI_PanelBase panel = null;
         }
 
         [SerializeField] private GameObject m_root = null; 

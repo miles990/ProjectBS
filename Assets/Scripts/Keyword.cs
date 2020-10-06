@@ -1,4 +1,4 @@
-﻿namespace ProjectBS.Combat
+﻿namespace ProjectBS
 {
     public static class Keyword
     {

@@ -5,17 +5,28 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterPanel : MainMenuUI_PanelBase
     {
-        [System.Serializable]
-        private struct PanelData
+        private enum PanelType
         {
-            public Button topButton;
-            public GameObject[] panelObjs;
+            Party,
+            AllCharacter,
+            Equipment,
+            Skill
+        }
+
+        [System.Serializable]
+        private class PanelData
+        {
+            public PanelType panelType = PanelType.Party;
+            public Button topButton = null;
+            public GameObject[] panelObjs = null;
         }
 
         [SerializeField] private GameObject m_characterPanelRoot = null;
         [SerializeField] private PanelData[] m_panelDatas = null;
-        [Header("Character Button")]
+        [Header("Buttons")]
         [SerializeField] private MainMenuUI_CharacterButton[] m_characterButtons = null;
+        [SerializeField] private MainMenuUI_EquipmentButton[] m_equipmentButtons = null;
+        [SerializeField] private MainMenuUI_SkillButton[] m_skillButtons = null;
 
         public override void Hide()
         {
@@ -35,6 +46,7 @@ namespace ProjectBS.UI
             {
                 if(m_panelDatas[i].topButton == button)
                 {
+                    UpdateAllButtonData(m_panelDatas[i].panelType);
                     m_panelDatas[i].topButton.interactable = false;
                     for (int j = 0; j < m_panelDatas[i].panelObjs.Length; j++)
                     {
@@ -42,6 +54,21 @@ namespace ProjectBS.UI
                     }
                     return;
                 }
+            }
+        }
+
+        private void UpdateAllButtonData(PanelType panelType)
+        {
+            switch(panelType)
+            {
+                case PanelType.Party:
+                    {
+                        for(int i = 0; i < m_characterButtons.Length; i++)
+                        {
+                            m_characterButtons[i].SetUp(PlayerManager.Instance.GetCharacterByPartyIndex(i));
+                        }
+                        break;
+                    }
             }
         }
 
