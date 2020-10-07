@@ -51,6 +51,11 @@ namespace ProjectBS.UI
             }
         }
 
+        public void Button_StartCombat()
+        {
+            GameManager.Instance.StartCombat();
+        }
+
         private void DisableAllPanel()
         {
             for (int i = 0; i < m_panelDatas.Length; i++)

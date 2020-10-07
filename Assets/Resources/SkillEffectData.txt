@@ -1,9 +1,15 @@
 [
   {
+    "ID": 0,
+    "NameContextID": 0,
+    "DescriptionContextID": 0,
+    "MaxStackCount": 0
+  },
+  {
     "ID": 1,
-    "NameContextID": 7,
-    "DescriptionContextID": 8,
-    "Command": "OnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.3); \n}",
+    "NameContextID": 5,
+    "DescriptionContextID": 6,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.3); \n}",
     "MaxStackCount": 1
   },
   {
@@ -11,6 +17,7 @@
     "NameContextID": 11,
     "DescriptionContextID": 12,
     "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}",
+    "Tag": "Debuff",
     "MaxStackCount": 1
   },
   {
@@ -18,6 +25,7 @@
     "NameContextID": 13,
     "DescriptionContextID": 14,
     "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(1000, 10000));\n}",
+    "Tag": "Debuff",
     "MaxStackCount": 10
   },
   {
@@ -25,6 +33,7 @@
     "NameContextID": 15,
     "DescriptionContextID": 16,
     "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}\n\nOnDamageTaken_Self\n{\n     RemoveBuff(Self, 4, -1);\n}",
+    "Tag": "Debuff",
     "MaxStackCount": 1
   },
   {
@@ -32,13 +41,15 @@
     "NameContextID": 17,
     "DescriptionContextID": 18,
     "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP >= Self.MaxHP * 0.01 + 1);\n     AddStatus(Self, HP, -Self.MaxHP * 0.01);\n     EndIf();\n}",
+    "Tag": "Debuff",
     "MaxStackCount": 10
   },
   {
     "ID": 6,
     "NameContextID": 19,
     "DescriptionContextID": 20,
-    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.3); \n}",
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.3); \n}",
+    "Tag": "Debuff",
     "MaxStackCount": 1
   },
   {
@@ -46,13 +57,22 @@
     "NameContextID": 21,
     "DescriptionContextID": 22,
     "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.3); \n}",
+    "Tag": "Debuff",
     "MaxStackCount": 1
   },
   {
     "ID": 8,
     "NameContextID": 23,
     "DescriptionContextID": 24,
-    "Command": "OnActived\n{\n     AddStatus(Self, Defence, -Self.Defence * 0.5); \n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, -Self.Defense * 0.5); \n}",
+    "Tag": "Debuff",
+    "MaxStackCount": 1
+  },
+  {
+    "ID": 9,
+    "NameContextID": 25,
+    "DescriptionContextID": 26,
+    "Command": "OnDeactived\n{\n     Destroy(Self);\n}",
     "MaxStackCount": 1
   },
   {},
@@ -60,21 +80,22 @@
     "ID": 101,
     "NameContextID": 105,
     "DescriptionContextID": 106,
-    "Command": "OnActived\n{\n     AddStatus(Self, Defence, Self.Defence * 0.15); \n     AddStatus(Self, Attack, Self.Attack * 0.15); \n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.15); \n     AddStatus(Self, Attack, Self.Attack * 0.15); \n}",
     "MaxStackCount": 1
   },
   {
     "ID": 102,
     "NameContextID": 115,
     "DescriptionContextID": 116,
-    "Command": "OnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill == 106);\n     AddDamage(50%);\n     EndIf();\n}",
+    "Command": "OnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill == 106);\n     AddDamage(1000);\n     AddDamage(50%);\n     EndIf();\n}",
     "MaxStackCount": 10
   },
   {
     "ID": 103,
     "NameContextID": 129,
     "DescriptionContextID": 131,
-    "Command": "OnActived\n{\n     AddStatus(Self, Defence, -Self.Defence * 0.5); \n     AddStatus(Self, Attack, -Self.Attack * 0.5);\n     AddStatus(Self, Speed, -Self.Speed * 0.5);\n}",
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, -Self.Defense * 0.5); \n     AddStatus(Self, Attack, -Self.Attack * 0.5);\n     AddStatus(Self, Speed, -Self.Speed * 0.5);\n}",
+    "Tag": "Debuff",
     "MaxStackCount": 1
   },
   {

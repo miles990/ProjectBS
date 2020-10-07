@@ -146,8 +146,22 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void ShowAttackAnimation()
         {
-            UnityEngine.Debug.Log("ShowAttackAnimation: Skill ID=" + processData.refenceSkill.ID);
-            KahaGameCore.Static.TimerManager.Schedule(1f, OnAnimationShown);
+            int _id = 0;
+            if(processData.refenceSkill != null)
+            {
+                _id = processData.refenceSkill.NameContextID;
+            }
+            else if(processData.referenceBuff != null)
+            {
+                _id = KahaGameCore.Static.GameDataManager.GetGameData<Data.SkillEffectData>(processData.referenceBuff.effectID).NameContextID;
+            }
+
+            GetPage<UI.CombatUIView>().ShowSkillAnimation(new UI.CombatUIView.SkillAnimationData
+            {
+                caster = processData.caster,
+                nameContextID = _id,
+                onEnded = OnAnimationShown
+            });
         }
 
         private void OnAnimationShown()

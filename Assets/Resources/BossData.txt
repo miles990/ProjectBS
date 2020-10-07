@@ -4,7 +4,7 @@
     "NameContextID": 10001,
     "CharacterSpriteID": 0,
     "Attack": 8000,
-    "Defence": 8000,
+    "Defense": 8000,
     "Speed": 4500,
     "HP": 180000,
     "SP": 100,

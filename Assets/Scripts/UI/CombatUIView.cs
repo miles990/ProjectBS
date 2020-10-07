@@ -113,6 +113,25 @@ namespace ProjectBS.UI
             TimerManager.Schedule(1f, OnActionAnimationEnded);
         }
 
+        public class SkillAnimationData
+        {
+            public CombatUnit caster = null;
+            public int nameContextID = 0;
+            public Action onEnded = null;
+        }
+
+        public void ShowSkillAnimation(SkillAnimationData skillAnimationData)
+        {
+            if(skillAnimationData.nameContextID == 0)
+            {
+                skillAnimationData.onEnded?.Invoke();
+                return;
+            }
+
+            SetInfoText(skillAnimationData.caster, ContextConverter.Instance.GetContext(skillAnimationData.nameContextID));
+            TimerManager.Schedule(DISPLAY_INFO_TIME, skillAnimationData.onEnded);
+        }
+
         public void ShowGameEnd(bool playerWin)
         {
             if (playerWin)

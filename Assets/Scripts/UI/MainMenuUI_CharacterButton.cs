@@ -1,11 +1,14 @@
 ﻿using KahaGameCore.Static;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterButton : MonoBehaviour
     {
+        public event Action<Data.OwningCharacterData> OnButtonPressed = null;
+
         private const string ABILITY_FORMAT = "HP: {0} ({1})\nAttack: {2} ({3})\nDefense: {4} ({5})\nSpeed: {6} ({7})";
 
         [SerializeField] private Text m_nameAndLevelText = null;
@@ -65,6 +68,11 @@ namespace ProjectBS.UI
             {
                 m_partyHintRoot.SetActive(false);
             }
+        }
+
+        public void Button_Pressed()
+        {
+            OnButtonPressed?.Invoke(m_refCharacter);
         }
     }
 }
