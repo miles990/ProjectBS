@@ -25,7 +25,7 @@ namespace ProjectBS.UI
 
         [SerializeField] private GameObject m_characterPanelRoot = null;
         [SerializeField] private PanelData[] m_panelDatas = null;
-        [SerializeField] private GameObject m_characterInfoPanel = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel m_characterInfoPanel = null;
         [SerializeField] private Text m_characterInfoText = null;
         [Header("Buttons")]
         [SerializeField] private Button m_nextPageButton = null;
@@ -46,7 +46,7 @@ namespace ProjectBS.UI
 
         private void OnCharacterButtonPressed(OwningCharacterData obj)
         {
-            throw new NotImplementedException();
+            m_characterInfoPanel.Enable(obj);
         }
 
         public override void Hide()

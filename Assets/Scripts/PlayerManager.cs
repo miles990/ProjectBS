@@ -149,7 +149,6 @@ namespace ProjectBS
             for(int i = 0; i < 4; i++)
             {
                 OwningCharacterData _newCharacter = CharacterUtility.CreateNewCharacter();
-                CharacterUtility.LevelUp(_newCharacter, 100);
                 _newPlayer.Characters.Add(_newCharacter);
             }
 
