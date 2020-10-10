@@ -15,7 +15,7 @@ namespace ProjectBS.UI
             Skill
         }
 
-        [System.Serializable]
+        [Serializable]
         private class PanelData
         {
             public PanelType panelType = PanelType.Party;
@@ -34,6 +34,7 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_EquipmentButton[] m_equipmentButtons = null;
         [SerializeField] private MainMenuUI_SkillButton[] m_skillButtons = null;
 
+        private PanelType m_currentPanelType = PanelType.Party;
         private int m_currentPage = 0;
 
         private void Start()
@@ -92,7 +93,8 @@ namespace ProjectBS.UI
 
         private void UpdateAllButtonData(PanelType panelType)
         {
-            switch(panelType)
+            m_currentPanelType = panelType;
+            switch (panelType)
             {
                 case PanelType.Party:
                     {
@@ -106,7 +108,19 @@ namespace ProjectBS.UI
                 case PanelType.AllCharacter:
                     {
                         m_currentPage = 0;
+                        RefreshCharacterPageButtonState();
+                        break;
+                    }
+                case PanelType.Equipment:
+                    {
+                        m_currentPage = 0;
                         RefreshPageButtonState();
+                        break;
+                    }
+                case PanelType.Skill:
+                    {
+                        m_currentPage = 0;
+                        RefreshSkillPageButtonState();
                         break;
                     }
             }
@@ -127,6 +141,49 @@ namespace ProjectBS.UI
 
         private void RefreshPageButtonState()
         {
+            switch (m_currentPanelType)
+            {
+                case PanelType.Party:
+                case PanelType.AllCharacter:
+                    {
+                        RefreshCharacterPageButtonState();
+                        break;
+                    }
+                case PanelType.Equipment:
+                    {
+                        RefrshEquipmentPageButtonState();
+                        break;
+                    }
+                case PanelType.Skill:
+                    {
+                        RefreshSkillPageButtonState();
+                        break;
+                    }
+                default:
+                    throw new Exception("[MainMenuUI_CharacterPanel][RefreshPageButtonState] Invaild m_currentPanelType=" + m_currentPanelType);
+            }
+        }
+
+        private void RefrshEquipmentPageButtonState()
+        {
+            m_previousButton.interactable = m_currentPage != 0;
+            m_nextPageButton.interactable = m_equipmentButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Equipments.Count;
+            for (int i = 0; i < m_equipmentButtons.Length; i++)
+            {
+                if (i + m_equipmentButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Equipments.Count)
+                {
+                    m_equipmentButtons[i].gameObject.SetActive(false);
+                }
+                else
+                {
+                    m_equipmentButtons[i].SetUp(PlayerManager.Instance.Player.Equipments[i + m_equipmentButtons.Length * m_currentPage]);
+                    m_equipmentButtons[i].gameObject.SetActive(true);
+                }
+            }
+        }
+
+        private void RefreshCharacterPageButtonState()
+        {
             m_previousButton.interactable = m_currentPage != 0;
             m_nextPageButton.interactable = m_characterButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Characters.Count;
             for (int i = 0; i < m_characterButtons.Length; i++)
@@ -139,6 +196,24 @@ namespace ProjectBS.UI
                 {
                     m_characterButtons[i].SetUp(PlayerManager.Instance.Player.Characters[i + m_characterButtons.Length * m_currentPage]);
                     m_characterButtons[i].gameObject.SetActive(true);
+                }
+            }
+        }
+
+        private void RefreshSkillPageButtonState()
+        {
+            m_previousButton.interactable = m_currentPage != 0;
+            m_nextPageButton.interactable = m_skillButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Skills.Count;
+            for (int i = 0; i < m_skillButtons.Length; i++)
+            {
+                if (i + m_skillButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Skills.Count)
+                {
+                    m_skillButtons[i].gameObject.SetActive(false);
+                }
+                else
+                {
+                    m_skillButtons[i].SetUp(PlayerManager.Instance.Player.Skills[i + m_skillButtons.Length * m_currentPage]);
+                    m_skillButtons[i].gameObject.SetActive(true);
                 }
             }
         }
