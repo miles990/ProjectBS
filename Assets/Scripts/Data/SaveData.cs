@@ -9,6 +9,7 @@ namespace ProjectBS.Data
         public List<OwningCharacterData> Characters;
         public List<OwningEquipmentData> Equipments;
         public List<OwningSkillData> Skills;
+        public int Stamina;
         public int OwnExp;
     }
 
@@ -70,6 +71,11 @@ namespace ProjectBS.Data
                         _value = HP;
                         break;
                     }
+                case Keyword.SP:
+                    {
+                        _value = SP;
+                        break;
+                    }
                 default:
                     throw new System.Exception("[OwningCharacterData][GetTotal] Invaild statusType=" + statusType);
             }
@@ -107,6 +113,10 @@ namespace ProjectBS.Data
                 case Keyword.HP:
                     {
                         return _equipment.HP;
+                    }
+                case Keyword.SP:
+                    {
+                        return _equipment.SP;
                     }
                 default:
                     throw new System.Exception("[OwningCharacterData][GetTotal] Invaild statusType=" + statusType);

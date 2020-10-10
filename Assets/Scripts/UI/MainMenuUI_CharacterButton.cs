@@ -9,7 +9,7 @@ namespace ProjectBS.UI
     {
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
 
-        private const string ABILITY_FORMAT = "HP: {0} ({1})\nAttack: {2} ({3})\nDefense: {4} ({5})\nSpeed: {6} ({7})";
+        private const string ABILITY_FORMAT = "HP: {0} ({1})\nSP:{2}\nAttack: {3} ({4})\nDefense: {5} ({6})\nSpeed: {7} ({8})";
 
         [SerializeField] private Text m_nameAndLevelText = null;
         [SerializeField] private Text m_abilityText = null;
@@ -32,6 +32,7 @@ namespace ProjectBS.UI
             m_abilityText.text = string.Format(ABILITY_FORMAT,
                                         m_refCharacter.GetTotal(Keyword.HP),
                                         GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).RankString,
+                                        m_refCharacter.SP,
                                         m_refCharacter.GetTotal(Keyword.Attack),
                                         GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).RankString,
                                         m_refCharacter.GetTotal(Keyword.Defense),

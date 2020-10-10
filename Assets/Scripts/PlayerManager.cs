@@ -1,5 +1,6 @@
 ﻿using ProjectBS.Data;
 using KahaGameCore.Static;
+using System.Collections.Generic;
 
 namespace ProjectBS
 {
@@ -68,6 +69,37 @@ namespace ProjectBS
             }
 
             return Player.Equipments.Find(x => x.UDID == UDID);
+        }
+
+        public List<OwningEquipmentData> GetEquipmentsByType(string type)
+        {
+            List<OwningEquipmentData> _equipments = new List<OwningEquipmentData>();
+            for (int i = 0; i < m_player.Equipments.Count; i++)
+            {
+                RawEquipmentData _source = GameDataManager.GetGameData<RawEquipmentData>(m_player.Equipments[i].EquipmentSourceID);
+                if (_source.EquipmentType == type)
+                {
+                    _equipments.Add(m_player.Equipments[i]);
+                }
+            }
+
+            return _equipments;
+        }
+
+        public OwningCharacterData GetEquipedCharacter(string UDID)
+        {
+            for(int i = 0; i < m_player.Characters.Count; i++)
+            {
+                if(m_player.Characters[i].Equipment_UDID_Body == UDID
+                    || m_player.Characters[i].Equipment_UDID_Foot == UDID
+                    || m_player.Characters[i].Equipment_UDID_Hand == UDID
+                    || m_player.Characters[i].Equipment_UDID_Head == UDID)
+                {
+                    return m_player.Characters[i];
+                }
+            }
+
+            return null;
         }
 
         public int GetPartyIndex(OwningCharacterData characterData)

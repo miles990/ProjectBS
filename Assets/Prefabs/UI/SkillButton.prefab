@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 7161159609390119765}
   - component: {fileID: 7059281831503622512}
   m_Layer: 5
-  m_Name: NameAndLevelText
+  m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,10 +216,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 6452500751251307724}
   - component: {fileID: 4242711442271712014}
   m_Layer: 5
-  m_Name: AbilityText
+  m_Name: DescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,9 +304,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Skill DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill
+  m_Text: "Skill \u3112 DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill
     DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill
-    DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill '
+    DescriptionSkill DescriptionSkill DescriptionSkill DescriptionSkill "
 --- !u!1 &7748494171694781501
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,3 +396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03418d43837bb654c97f28bc2c3b5445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_nameText: {fileID: 7059281831503622512}
+  m_descriptionText: {fileID: 4242711442271712014}
+  m_amoumtText: {fileID: 5712128473107554564}

@@ -1,4 +1,5 @@
 ﻿using KahaGameCore.Static;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,13 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterInfoPanel : MonoBehaviour
     {
-        private const string HP_FORMAT = "HP: {0}({1})\nSP: 100";
+        private enum State
+        {
+            None,
+            ChangingEquipment
+        }
+
+        private const string HP_FORMAT = "HP: {0}({1})\nSP: {2}";
         private const string ABILITY_FORMAT = "Attack: {0} ({1})\nDefense: {2} ({3})\nSpeed: {4} ({5})";
 
         [Header("Equipmet")]
@@ -23,14 +30,115 @@ namespace ProjectBS.UI
         [SerializeField] private Text m_skill1Text = null;
         [SerializeField] private Text m_skill2Text = null;
         [SerializeField] private Text m_skill3Text = null;
+        [Header("Change Equipment Panel")]
+        [SerializeField] private GameObject m_changeEquipmentPanelRoot = null;
+        [SerializeField] private Text[] m_changeEquipmentPanel_equipmentList = null;
+        [SerializeField] private Button m_changeEquipmentPanel_nextPageButton = null;
+        [SerializeField] private Button m_changeEquipmentPanel_previousPageButton = null;
+        [SerializeField] private Text m_changeEquipmentPanel_beforeText = null;
+        [SerializeField] private Text m_changeEquipmentPanel_afterText = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
+
+        private State m_currentState = State.None;
+        private int m_currentPage = 0;
+        private string m_currentEquipmentType = Keyword.Head;
+        private Data.OwningEquipmentData m_currrentSelectEquipment = null;
 
         public void Enable(Data.OwningCharacterData characterData)
         {
             m_refCharacter = characterData;
             RefreshInfo();
+            m_changeEquipmentPanelRoot.SetActive(false);
+            m_currentState = State.None;
             gameObject.SetActive(true);
+        }
+
+        public void Button_StartChangeEquipment(string equipmentType)
+        {
+            m_currentPage = 0;
+            m_currentState = State.ChangingEquipment;
+            RefreshChangeEquipmentPanel(equipmentType);
+            m_changeEquipmentPanelRoot.SetActive(true);
+        }
+
+        public void Button_ChangeEquipment_GoNextPage()
+        {
+            m_currentPage++;
+            RefreshChangeEquipmentPanel(m_currentEquipmentType);
+        }
+
+        public void Button_ChangeEquipment_GoPreviousPage()
+        {
+            m_currentPage--;
+            m_currentPage = m_currentPage < 0 ? 0 : m_currentPage;
+            RefreshChangeEquipmentPanel(m_currentEquipmentType);
+        }
+
+        public void Button_Back()
+        {
+            switch(m_currentState)
+            {
+                case State.None:
+                    {
+                        gameObject.SetActive(false);
+                        break;
+                    }
+                case State.ChangingEquipment:
+                    {
+                        m_changeEquipmentPanelRoot.SetActive(false);
+                        m_currentState = State.None;
+                        break;
+                    }
+            }
+        }
+
+        private void RefreshChangeEquipmentPanel(string equipmentType)
+        {
+            m_currentEquipmentType = equipmentType;
+
+            List<Data.OwningEquipmentData> _equipments = PlayerManager.Instance.GetEquipmentsByType(m_currentEquipmentType);
+            m_changeEquipmentPanel_previousPageButton.interactable = m_currentPage != 0;
+            m_changeEquipmentPanel_nextPageButton.interactable = m_changeEquipmentPanel_equipmentList.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Equipments.Count;
+            for (int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
+            {
+                if (i + m_changeEquipmentPanel_equipmentList.Length * m_currentPage >= _equipments.Count)
+                {
+                    m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(false);
+                }
+                else
+                {
+                    m_changeEquipmentPanel_equipmentList[i].text = string.Format("{0}\nHP{1}\nAttack{2}\nDefense{3}\nSpeed{4}",
+                                                             ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.RawEquipmentData>(_equipments[i].EquipmentSourceID).NameContextID),
+                                                             _equipments[i].HP >= 0 ? "+" + _equipments[i].HP : _equipments[i].HP.ToString(),
+                                                             _equipments[i].Attack >= 0 ? "+" + _equipments[i].Attack : _equipments[i].Attack.ToString(),
+                                                             _equipments[i].Defense >= 0 ? "+" + _equipments[i].Defense : _equipments[i].Defense.ToString(),
+                                                             _equipments[i].Speed >= 0 ? "+" + _equipments[i].Speed : _equipments[i].Speed.ToString());
+
+                    m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(true);
+                }
+            }
+
+            m_changeEquipmentPanel_beforeText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
+                                                        m_refCharacter.GetTotal(Keyword.HP),
+                                                        m_refCharacter.GetTotal(Keyword.SP),
+                                                        m_refCharacter.GetTotal(Keyword.Attack),
+                                                        m_refCharacter.GetTotal(Keyword.Defense),
+                                                        m_refCharacter.GetTotal(Keyword.Speed));
+
+            if(m_currrentSelectEquipment == null)
+            {
+                m_changeEquipmentPanel_afterText.text = m_changeEquipmentPanel_beforeText.text;
+            }
+            else
+            {
+                m_changeEquipmentPanel_afterText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
+                                            m_refCharacter.HP + m_currrentSelectEquipment.HP,
+                                            m_refCharacter.SP + m_currrentSelectEquipment.SP,
+                                            m_refCharacter.Attack + m_currrentSelectEquipment.Attack,
+                                            m_refCharacter.Defense + m_currrentSelectEquipment.Defense,
+                                            m_refCharacter.Speed + m_currrentSelectEquipment.Speed);
+            }
         }
 
         private void RefreshInfo()
@@ -65,7 +173,8 @@ namespace ProjectBS.UI
 
             m_hpspText.text = string.Format(HP_FORMAT,
                                 m_refCharacter.GetTotal(Keyword.HP),
-                                GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).RankString);
+                                GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).RankString,
+                                m_refCharacter.SP);
         }
     }
 }

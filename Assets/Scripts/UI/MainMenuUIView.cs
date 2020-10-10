@@ -24,6 +24,17 @@ namespace ProjectBS.UI
         [Header("Panels")]
         [SerializeField] private PanelData[] m_panelDatas = null;
 
+        private void Update()
+        {
+            if(m_root.activeSelf)
+            {
+                m_playerInfoText.text = string.Format(PLAYER_INFO_FORMAT,
+                    PlayerManager.Instance.Player.PlayerName,
+                    PlayerManager.Instance.Player.Stamina,
+                    PlayerManager.Instance.Player.OwnExp);
+            }
+        }
+
         public override void ForceShow(Manager manager, bool show)
         {
             throw new NotImplementedException();
