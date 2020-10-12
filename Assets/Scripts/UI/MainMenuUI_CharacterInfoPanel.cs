@@ -39,6 +39,7 @@ namespace ProjectBS.UI
         [SerializeField] private Text m_changeEquipmentPanel_afterText = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
+        private Dictionary<Text, Data.OwningEquipmentData> m_changeEquipmentPanelEquipmentListToEquipment = new Dictionary<Text, Data.OwningEquipmentData>();
 
         private State m_currentState = State.None;
         private int m_currentPage = 0;
@@ -58,6 +59,7 @@ namespace ProjectBS.UI
         {
             m_currentPage = 0;
             m_currentState = State.ChangingEquipment;
+            m_currrentSelectEquipment = null;
             RefreshChangeEquipmentPanel(equipmentType);
             m_changeEquipmentPanelRoot.SetActive(true);
         }
@@ -72,6 +74,16 @@ namespace ProjectBS.UI
         {
             m_currentPage--;
             m_currentPage = m_currentPage < 0 ? 0 : m_currentPage;
+            RefreshChangeEquipmentPanel(m_currentEquipmentType);
+        }
+
+        public void Button_ChangeEquipment_Select(Text key)
+        {
+            if(m_changeEquipmentPanelEquipmentListToEquipment.ContainsKey(key))
+            {
+                m_currrentSelectEquipment = m_changeEquipmentPanelEquipmentListToEquipment[key];
+            }
+
             RefreshChangeEquipmentPanel(m_currentEquipmentType);
         }
 
@@ -114,6 +126,15 @@ namespace ProjectBS.UI
                                                              _equipments[i].Attack >= 0 ? "+" + _equipments[i].Attack : _equipments[i].Attack.ToString(),
                                                              _equipments[i].Defense >= 0 ? "+" + _equipments[i].Defense : _equipments[i].Defense.ToString(),
                                                              _equipments[i].Speed >= 0 ? "+" + _equipments[i].Speed : _equipments[i].Speed.ToString());
+
+                    if (m_changeEquipmentPanelEquipmentListToEquipment.ContainsKey(m_changeEquipmentPanel_equipmentList[i]))
+                    {
+                        m_changeEquipmentPanelEquipmentListToEquipment[m_changeEquipmentPanel_equipmentList[i]] = _equipments[i];
+                    }
+                    else
+                    {
+                        m_changeEquipmentPanelEquipmentListToEquipment.Add(m_changeEquipmentPanel_equipmentList[i], _equipments[i]);
+                    }
 
                     m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(true);
                 }

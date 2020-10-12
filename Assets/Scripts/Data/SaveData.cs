@@ -136,6 +136,12 @@ namespace ProjectBS.Data
         public int Defense;
         public int Speed;
         public string EffectIDs;
+
+        public string GetEquipmentType()
+        {
+            RawEquipmentData _source = KahaGameCore.Static.GameDataManager.GetGameData<RawEquipmentData>(EquipmentSourceID);
+            return _source.EquipmentType;
+        }
     }
 
     public class OwningSkillData

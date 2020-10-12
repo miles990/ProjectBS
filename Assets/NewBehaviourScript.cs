@@ -14,7 +14,31 @@ public class NewBehaviourScript : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             ProjectBS.PlayerManager.Instance.Player.Characters.Add(ProjectBS.CharacterUtility.CreateNewCharacter());
-            Debug.Log(ProjectBS.PlayerManager.Instance.Player.Characters.Count);
+            Debug.Log("Added Character");
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            ProjectBS.PlayerManager.Instance.Player.Equipments.Add(ProjectBS.EquipmentUtility.CreateNewEquipment(1));
+            Debug.Log("Added Equipment 1");
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ProjectBS.PlayerManager.Instance.Player.Equipments.Add(ProjectBS.EquipmentUtility.CreateNewEquipment(2));
+            Debug.Log("Added Equipment 2");
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ProjectBS.PlayerManager.Instance.Player.Equipments.Add(ProjectBS.EquipmentUtility.CreateNewEquipment(3));
+            Debug.Log("Added Equipment 3");
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ProjectBS.PlayerManager.Instance.Player.Equipments.Add(ProjectBS.EquipmentUtility.CreateNewEquipment(4));
+            Debug.Log("Added Equipment 4");
         }
     }
 }

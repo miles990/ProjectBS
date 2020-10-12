@@ -1,7 +1,6 @@
 ﻿using ProjectBS.Data;
 using System.Collections.Generic;
 using KahaGameCore.Static;
-using ProjectBS.Combat;
 
 using Random = UnityEngine.Random;
 

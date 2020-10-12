@@ -15,6 +15,7 @@ namespace ProjectBS
             GameDataManager.LoadGameData<ExpData>("ExpData");
             GameDataManager.LoadGameData<CharacterNamePoolData>("CharacterNamePoolData");
             GameDataManager.LoadGameData<RandomSkillData>("RandomSkillData");
+            GameDataManager.LoadGameData<RawEquipmentData>("RawEquipmentData");
         }
     }
 }
