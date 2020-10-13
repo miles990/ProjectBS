@@ -4061,6 +4061,12 @@ MonoBehaviour:
   - {fileID: 212309629}
   - {fileID: 2120851094}
   - {fileID: 805330038}
+  m_changeEquipmentPanel_equipmentListImgae:
+  - {fileID: 393708616}
+  - {fileID: 2118604213}
+  - {fileID: 1598050366}
+  - {fileID: 423685639}
+  - {fileID: 310188442}
   m_changeEquipmentPanel_nextPageButton: {fileID: 64483457}
   m_changeEquipmentPanel_previousPageButton: {fileID: 764573753}
   m_changeEquipmentPanel_beforeText: {fileID: 1543725242}

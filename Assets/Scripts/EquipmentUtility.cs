@@ -67,7 +67,7 @@ namespace ProjectBS
                 string[] _abi = _ranAbiParts[i].Split(':');
                 string[] _abiRandomValue = _abi[1].Split('~');
                 int _value = Random.Range(int.Parse(_abiRandomValue[0]), int.Parse(_abiRandomValue[1]) + 1);
-                Debug.Log(_abi[0]);
+
                 switch (_abi[0].Trim())
                 {
                     case Keyword.Attack:

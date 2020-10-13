@@ -33,6 +33,7 @@ namespace ProjectBS.UI
         [Header("Change Equipment Panel")]
         [SerializeField] private GameObject m_changeEquipmentPanelRoot = null;
         [SerializeField] private Text[] m_changeEquipmentPanel_equipmentList = null;
+        [SerializeField] private Image[] m_changeEquipmentPanel_equipmentListImgae = null;
         [SerializeField] private Button m_changeEquipmentPanel_nextPageButton = null;
         [SerializeField] private Button m_changeEquipmentPanel_previousPageButton = null;
         [SerializeField] private Text m_changeEquipmentPanel_beforeText = null;
@@ -136,16 +137,23 @@ namespace ProjectBS.UI
                         m_changeEquipmentPanelEquipmentListToEquipment.Add(m_changeEquipmentPanel_equipmentList[i], _equipments[i]);
                     }
 
+                    m_changeEquipmentPanel_equipmentListImgae[i].color = _equipments[i] == m_currrentSelectEquipment ? Color.gray : Color.white;
                     m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(true);
                 }
             }
 
+            int _beforeHP = m_refCharacter.GetTotal(Keyword.HP);
+            int _beforeSP = m_refCharacter.GetTotal(Keyword.SP);
+            int _beforeAtk = m_refCharacter.GetTotal(Keyword.Attack);
+            int _beforeDef = m_refCharacter.GetTotal(Keyword.Defense);
+            int _beforeSpd = m_refCharacter.GetTotal(Keyword.Speed);
+
             m_changeEquipmentPanel_beforeText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-                                                        m_refCharacter.GetTotal(Keyword.HP),
-                                                        m_refCharacter.GetTotal(Keyword.SP),
-                                                        m_refCharacter.GetTotal(Keyword.Attack),
-                                                        m_refCharacter.GetTotal(Keyword.Defense),
-                                                        m_refCharacter.GetTotal(Keyword.Speed));
+                                                        _beforeHP.ToString(),
+                                                        _beforeSP.ToString(),
+                                                        _beforeAtk.ToString(),
+                                                        _beforeDef.ToString(),
+                                                        _beforeSpd.ToString());
 
             if(m_currrentSelectEquipment == null)
             {
@@ -153,13 +161,32 @@ namespace ProjectBS.UI
             }
             else
             {
+                int _afterHP = m_refCharacter.HP + m_currrentSelectEquipment.HP;
+                int _afterSP = m_refCharacter.SP + m_currrentSelectEquipment.SP;
+                int _afterAtk = m_refCharacter.Attack + m_currrentSelectEquipment.Attack;
+                int _afterDef = m_refCharacter.Defense + m_currrentSelectEquipment.Defense;
+                int _afterSpd = m_refCharacter.Speed + m_currrentSelectEquipment.Speed;
+
                 m_changeEquipmentPanel_afterText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-                                            m_refCharacter.HP + m_currrentSelectEquipment.HP,
-                                            m_refCharacter.SP + m_currrentSelectEquipment.SP,
-                                            m_refCharacter.Attack + m_currrentSelectEquipment.Attack,
-                                            m_refCharacter.Defense + m_currrentSelectEquipment.Defense,
-                                            m_refCharacter.Speed + m_currrentSelectEquipment.Speed);
+                                            GetChangeStatusString(_beforeHP, _afterHP),
+                                            GetChangeStatusString(_beforeSP, _afterSP),
+                                            GetChangeStatusString(_beforeAtk, _afterAtk),
+                                            GetChangeStatusString(_beforeDef, _afterDef),
+                                            GetChangeStatusString(_beforeSpd, _afterSpd));
             }
+        }
+
+        private string GetChangeStatusString(int before, int after)
+        {
+            string _string;
+            if (after > before)
+                _string = "<Color=blue>" + after + "</color>";
+            else if (after < before)
+                _string = "<Color=ref>" + after + "</color>";
+            else
+                _string = after.ToString();
+
+            return _string;
         }
 
         private void RefreshInfo()
