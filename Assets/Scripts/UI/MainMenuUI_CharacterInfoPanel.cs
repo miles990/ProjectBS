@@ -16,6 +16,8 @@ namespace ProjectBS.UI
         private const string HP_FORMAT = "HP: {0}({1})\nSP: {2}";
         private const string ABILITY_FORMAT = "Attack: {0} ({1})\nDefense: {2} ({3})\nSpeed: {4} ({5})";
 
+        public event System.Action OnEditEnded = null;
+
         [Header("Equipmet")]
         [SerializeField] private Text m_headEquipmentText = null;
         [SerializeField] private Text m_bodyEquipmentText = null;
@@ -88,18 +90,29 @@ namespace ProjectBS.UI
             RefreshChangeEquipmentPanel(m_currentEquipmentType);
         }
 
+        public void Button_ChangeEquipment_Change()
+        {
+            if(m_currrentSelectEquipment != null)
+            {
+                PlayerManager.Instance.EquipmentTo(m_refCharacter, m_currrentSelectEquipment.UDID);
+            }
+            Button_Back();
+        }
+
         public void Button_Back()
         {
             switch(m_currentState)
             {
                 case State.None:
                     {
+                        OnEditEnded?.Invoke();
                         gameObject.SetActive(false);
                         break;
                     }
                 case State.ChangingEquipment:
                     {
                         m_changeEquipmentPanelRoot.SetActive(false);
+                        RefreshInfo();
                         m_currentState = State.None;
                         break;
                     }
@@ -196,13 +209,13 @@ namespace ProjectBS.UI
             Data.OwningEquipmentData _body = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body);
             int _bodyNameID = _body != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_body.EquipmentSourceID).NameContextID : 0;
             Data.OwningEquipmentData _hand = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand);
-            int _handNameID = _head != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_hand.EquipmentSourceID).NameContextID : 0;
+            int _handNameID = _hand != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_hand.EquipmentSourceID).NameContextID : 0;
             Data.OwningEquipmentData _foot = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot);
             int _footNameID = _foot != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_foot.EquipmentSourceID).NameContextID : 0;
 
             m_headEquipmentText.text = ContextConverter.Instance.GetContext(_headNameID);
             m_bodyEquipmentText.text = ContextConverter.Instance.GetContext(_bodyNameID);
-            m_handEquipmentText.text = ContextConverter.Instance.GetContext(_headNameID);
+            m_handEquipmentText.text = ContextConverter.Instance.GetContext(_handNameID);
             m_footEquipmentText.text = ContextConverter.Instance.GetContext(_footNameID);
 
             m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_0).NameContextID);

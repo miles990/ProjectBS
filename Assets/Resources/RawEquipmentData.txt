@@ -8,21 +8,21 @@
     "ID": 1,
     "NameContextID": 200001,
     "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
-    "EquipmentType": "Head",
+    "EquipmentType": "Hand",
     "DescriptionContextID": 200002
   },
   {
     "ID": 2,
     "NameContextID": 200003,
     "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
-    "EquipmentType": "Body",
+    "EquipmentType": "Head",
     "DescriptionContextID": 200004
   },
   {
     "ID": 3,
     "NameContextID": 200005,
     "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
-    "EquipmentType": "Hand",
+    "EquipmentType": "Body",
     "DescriptionContextID": 200006
   },
   {

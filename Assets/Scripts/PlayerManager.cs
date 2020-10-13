@@ -102,6 +102,73 @@ namespace ProjectBS
             return null;
         }
 
+        public void EquipmentTo(OwningCharacterData characterData, string UDID)
+        {
+            string _equipmentType = GetEquipmentByUDID(UDID).GetEquipmentType();
+            switch(_equipmentType)
+            {
+                case Keyword.Body:
+                    {
+                        characterData.Equipment_UDID_Body = UDID;
+                        break;
+                    }
+                case Keyword.Foot:
+                    {
+                        characterData.Equipment_UDID_Foot = UDID;
+                        break;
+                    }
+                case Keyword.Hand:
+                    {
+                        characterData.Equipment_UDID_Hand = UDID;
+                        break;
+                    }
+                case Keyword.Head:
+                    {
+                        characterData.Equipment_UDID_Head = UDID;
+                        break;
+                    }
+                default:
+                    throw new System.Exception("[PlayerManager][EquipmentTo] Invaild EquipmentType=" + _equipmentType);
+            }
+        }
+
+        public bool RemoveEquipmentFromAllCharacter(string equipmentUDID)
+        {
+            OwningCharacterData _equipingCharacter = GetEquipedCharacter(equipmentUDID);
+            if(_equipingCharacter == null)
+            {
+                return false;
+            }
+            else
+            {
+                if(_equipingCharacter.Equipment_UDID_Body == equipmentUDID)
+                {
+                    _equipingCharacter.Equipment_UDID_Body = "";
+                    return true;
+                }
+
+                if (_equipingCharacter.Equipment_UDID_Foot == equipmentUDID)
+                {
+                    _equipingCharacter.Equipment_UDID_Foot = "";
+                    return true;
+                }
+
+                if (_equipingCharacter.Equipment_UDID_Hand == equipmentUDID)
+                {
+                    _equipingCharacter.Equipment_UDID_Hand = "";
+                    return true;
+                }
+
+                if (_equipingCharacter.Equipment_UDID_Head == equipmentUDID)
+                {
+                    _equipingCharacter.Equipment_UDID_Head = "";
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public int GetPartyIndex(OwningCharacterData characterData)
         {
             if (Player.Party.MemberUDID_0 == characterData.UDID)
