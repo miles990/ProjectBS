@@ -10,7 +10,8 @@ namespace ProjectBS.UI
         private enum State
         {
             None,
-            ChangingEquipment
+            ChangingEquipment,
+            SetToParty
         }
 
         private const string HP_FORMAT = "HP: {0}({1})\nSP: {2}";
@@ -40,6 +41,9 @@ namespace ProjectBS.UI
         [SerializeField] private Button m_changeEquipmentPanel_previousPageButton = null;
         [SerializeField] private Text m_changeEquipmentPanel_beforeText = null;
         [SerializeField] private Text m_changeEquipmentPanel_afterText = null;
+        [Header("Set To Party Panel")]
+        [SerializeField] private GameObject m_setToPartyPanelRoot = null;
+        [SerializeField] private MainMenuUI_CharacterButton[] m_partyButtons = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
         private Dictionary<Text, Data.OwningEquipmentData> m_changeEquipmentPanelEquipmentListToEquipment = new Dictionary<Text, Data.OwningEquipmentData>();
@@ -52,9 +56,7 @@ namespace ProjectBS.UI
         public void Enable(Data.OwningCharacterData characterData)
         {
             m_refCharacter = characterData;
-            RefreshInfo();
-            m_changeEquipmentPanelRoot.SetActive(false);
-            m_currentState = State.None;
+            DisableAllSubPanel();
             gameObject.SetActive(true);
         }
 
@@ -96,7 +98,8 @@ namespace ProjectBS.UI
             {
                 PlayerManager.Instance.EquipmentTo(m_refCharacter, m_currrentSelectEquipment.UDID);
             }
-            Button_Back();
+            PlayerManager.Instance.SavePlayer();
+            DisableAllSubPanel();
         }
 
         public void Button_Back()
@@ -110,13 +113,61 @@ namespace ProjectBS.UI
                         break;
                     }
                 case State.ChangingEquipment:
+                case State.SetToParty:
                     {
-                        m_changeEquipmentPanelRoot.SetActive(false);
-                        RefreshInfo();
-                        m_currentState = State.None;
+                        DisableAllSubPanel();
                         break;
                     }
+                default:
+                    throw new System.Exception("[MainMenuUI_CharacterInfoPanel][Button_Back] Invaild state=" + m_currentState.ToString());
             }
+        }
+
+        public void Button_Save()
+        {
+            PlayerManager.Instance.SavePlayer();
+            Button_Back();
+        }
+
+        public void Button_StartSetToParty()
+        {
+            m_currentState = State.SetToParty;
+            for(int i = 0; i < m_partyButtons.Length; i++)
+            {
+                Data.OwningCharacterData _character = PlayerManager.Instance.GetCharacterByPartyIndex(i);
+                m_partyButtons[i].SetUp(_character);
+                m_partyButtons[i].OnButtonPressed += OnPartyCharacterButtonSelected;
+            }
+            m_setToPartyPanelRoot.SetActive(true);
+        }
+
+        private void OnPartyCharacterButtonSelected(Data.OwningCharacterData characterData)
+        {
+            for (int i = 0; i < m_partyButtons.Length; i++)
+            {
+                m_partyButtons[i].OnButtonPressed -= OnPartyCharacterButtonSelected;
+            }
+            int _currentCharacterPartyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
+            int _selectPartyIndex = PlayerManager.Instance.GetPartyIndex(characterData);
+            if(_currentCharacterPartyIndex == -1)
+            {
+                PlayerManager.Instance.SetToParty(_selectPartyIndex, m_refCharacter);
+            }
+            else
+            {
+                PlayerManager.Instance.SetToParty(_selectPartyIndex, m_refCharacter);
+                PlayerManager.Instance.SetToParty(_currentCharacterPartyIndex, characterData);
+            }
+            PlayerManager.Instance.SavePlayer();
+            DisableAllSubPanel();
+        }
+
+        private void DisableAllSubPanel()
+        {
+            m_currentState = State.None;
+            m_changeEquipmentPanelRoot.SetActive(false);
+            m_setToPartyPanelRoot.SetActive(false);
+            RefreshInfo();
         }
 
         private void RefreshChangeEquipmentPanel(string equipmentType)

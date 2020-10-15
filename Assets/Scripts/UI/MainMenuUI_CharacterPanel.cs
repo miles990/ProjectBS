@@ -184,18 +184,29 @@ namespace ProjectBS.UI
 
         private void RefreshCharacterPageButtonState()
         {
-            m_previousButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_characterButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Characters.Count;
-            for (int i = 0; i < m_characterButtons.Length; i++)
+            if(m_currentPanelType == PanelType.Party)
             {
-                if (i + m_characterButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Characters.Count)
+                for (int i = 0; i < m_characterButtons.Length; i++)
                 {
-                    m_characterButtons[i].gameObject.SetActive(false);
-                }
-                else
-                {
-                    m_characterButtons[i].SetUp(PlayerManager.Instance.Player.Characters[i + m_characterButtons.Length * m_currentPage]);
+                    m_characterButtons[i].SetUp(PlayerManager.Instance.GetCharacterByPartyIndex(i));
                     m_characterButtons[i].gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                m_previousButton.interactable = m_currentPage != 0;
+                m_nextPageButton.interactable = m_characterButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Characters.Count;
+                for (int i = 0; i < m_characterButtons.Length; i++)
+                {
+                    if (i + m_characterButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Characters.Count)
+                    {
+                        m_characterButtons[i].gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        m_characterButtons[i].SetUp(PlayerManager.Instance.Player.Characters[i + m_characterButtons.Length * m_currentPage]);
+                        m_characterButtons[i].gameObject.SetActive(true);
+                    }
                 }
             }
         }
