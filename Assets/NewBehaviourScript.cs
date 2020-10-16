@@ -40,5 +40,11 @@ public class NewBehaviourScript : MonoBehaviour
             ProjectBS.PlayerManager.Instance.Player.Equipments.Add(ProjectBS.EquipmentUtility.CreateNewEquipment(4));
             Debug.Log("Added Equipment 4");
         }
+
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            ProjectBS.PlayerManager.Instance.AddSkill(1);
+            Debug.Log("Added Skill 1");
+        }
     }
 }

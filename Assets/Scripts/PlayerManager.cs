@@ -234,6 +234,19 @@ namespace ProjectBS
             }
         }
 
+        public void AddSkill(int skillID)
+        {
+            OwningSkillData _owningData = m_player.Skills.Find(x => x.SkillSourceID == skillID);
+            if (_owningData != null)
+            {
+                _owningData.Amount++;
+            }
+            else
+            {
+                m_player.Skills.Add(new OwningSkillData { SkillSourceID = skillID, Amount = 1 });
+            }
+        }
+
         private SaveData CreateNewPlayer()
         {
             SaveData _newPlayer = new SaveData

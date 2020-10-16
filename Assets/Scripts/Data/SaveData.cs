@@ -46,6 +46,23 @@ namespace ProjectBS.Data
         public int SkillSlot_2;
         public int SkillSlot_3;
 
+        public string GetEquipmentUDID(string equipmentType)
+        {
+            switch(equipmentType)
+            {
+                case Keyword.Body:
+                    return Equipment_UDID_Body;
+                case Keyword.Foot:
+                    return Equipment_UDID_Foot;
+                case Keyword.Hand:
+                    return Equipment_UDID_Hand;
+                case Keyword.Head:
+                    return Equipment_UDID_Head;
+                default:
+                    throw new System.Exception("[OwningCharacterData][GetEquipmentUDID] Invaild equipmentType=" + equipmentType);
+            }
+        }
+
         public int GetTotal(string statusType)
         {
             int _value;
@@ -86,6 +103,44 @@ namespace ProjectBS.Data
             _value += GetEquipmentValue(Equipment_UDID_Head, statusType);
 
             return _value;
+        }
+
+        public int GetSkill(int slotIndex)
+        {
+            switch(slotIndex)
+            {
+                case 0:
+                    return SkillSlot_0;
+                case 1:
+                    return SkillSlot_1;
+                case 2:
+                    return SkillSlot_2;
+                case 3:
+                    return SkillSlot_3;
+                default:
+                    throw new System.Exception("[OwningCharacterData][GetSkill] Invaild Index=" + slotIndex);
+            }
+        }
+
+        public void SetSkill(int slotIndex, int skillID)
+        {
+            switch (slotIndex)
+            {
+                case 0:
+                    SkillSlot_0 = skillID;
+                    break;
+                case 1:
+                    SkillSlot_1 = skillID;
+                    break;
+                case 2:
+                    SkillSlot_2 = skillID;
+                    break;
+                case 3:
+                    SkillSlot_3 = skillID;
+                    break;
+                default:
+                    throw new System.Exception("[OwningCharacterData][GetSkill] Invaild Index=" + slotIndex);
+            }
         }
 
         private int GetEquipmentValue(string UDID, string statusType)

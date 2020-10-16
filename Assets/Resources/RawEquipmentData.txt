@@ -7,28 +7,28 @@
   {
     "ID": 1,
     "NameContextID": 200001,
-    "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
+    "AbilityPool": "Attack:1~25;\nDefense:1~25;\nSpeed:1~25;\nHP:10~250;",
     "EquipmentType": "Hand",
     "DescriptionContextID": 200002
   },
   {
     "ID": 2,
     "NameContextID": 200003,
-    "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
+    "AbilityPool": "Attack:1~25;\nDefense:1~25;\nSpeed:1~25;\nHP:10~250;",
     "EquipmentType": "Head",
     "DescriptionContextID": 200004
   },
   {
     "ID": 3,
     "NameContextID": 200005,
-    "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
+    "AbilityPool": "Attack:1~25;\nDefense:1~25;\nSpeed:1~25;\nHP:10~250;",
     "EquipmentType": "Body",
     "DescriptionContextID": 200006
   },
   {
     "ID": 4,
     "NameContextID": 200007,
-    "AbilityPool": "Attack:17~25;\nDefense:17~25;\nSpeed:17~25;\nHP:170~250;",
+    "AbilityPool": "Attack:1~25;\nDefense:1~25;\nSpeed:1~25;\nHP:10~250;",
     "EquipmentType": "Foot",
     "DescriptionContextID": 200008
   },
