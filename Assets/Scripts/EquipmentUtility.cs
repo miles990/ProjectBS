@@ -96,7 +96,7 @@ namespace ProjectBS
                             break;
                         }
                     default:
-                        throw new System.Exception("[EquipmentUtility][]");
+                        throw new System.Exception("[EquipmentUtility][SetAility] Invaild abi key=" + _abi[0].Trim());
                 }
             }
         }

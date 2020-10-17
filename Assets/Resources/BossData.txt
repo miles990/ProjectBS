@@ -1,16 +1,31 @@
 [
   {
     "ID": 1,
+    "NameContextID": 10024,
+    "CharacterSpriteID": 0,
+    "Attack": 50,
+    "Defense": 50,
+    "Speed": 50,
+    "HP": 2000,
+    "SP": 100,
+    "AI": "AI\r\n{\n    RandomCastSkill(10003);\r\n}",
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 50,
+    "MaxExp": 100
+  },
+  {
+    "ID": 5,
     "NameContextID": 10001,
     "CharacterSpriteID": 0,
     "Attack": 8000,
-    "Defense": 8000,
-    "Speed": 4500,
-    "HP": 180000,
+    "Defense": 6000,
+    "Speed": 7000,
+    "HP": 480000,
     "SP": 100,
     "EffectIDs": "10001;10003",
     "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}",
-    "MinExp": 1,
-    "MaxExp": 100
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 247550,
+    "MaxExp": 495100
   }
 ]

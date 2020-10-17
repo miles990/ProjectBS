@@ -1,0 +1,23 @@
+[
+  {
+    "ID": 0,
+    "Index": -1,
+    "MainBossID": 0,
+    "BossIDs": 0,
+    "DescriptionContextID": 0
+  },
+  {
+    "ID": 1,
+    "Index": 0,
+    "MainBossID": 1,
+    "BossIDs": 1,
+    "DescriptionContextID": 300001
+  },
+  {
+    "ID": 5,
+    "Index": -1,
+    "MainBossID": 5,
+    "BossIDs": 5,
+    "DescriptionContextID": 300005
+  }
+]

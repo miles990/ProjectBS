@@ -1,7 +1,6 @@
 ﻿using System;
 using KahaGameCore.Interface;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace ProjectBS.UI
@@ -60,11 +59,6 @@ namespace ProjectBS.UI
                     return;
                 }
             }
-        }
-
-        public void Button_StartCombat()
-        {
-            GameManager.Instance.StartCombat();
         }
 
         private void DisableAllPanel()

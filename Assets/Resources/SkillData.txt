@@ -300,14 +300,14 @@
     "Tag": "Support"
   },
   {
-    "Command": null
+    "Command": ""
   },
   {
     "ID": 10001,
     "SP": 0,
     "NameContextID": 10008,
     "DescriptionContextID": 10009,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
     "IsDrop": 0
   },
   {
@@ -315,7 +315,7 @@
     "SP": 0,
     "NameContextID": 10010,
     "DescriptionContextID": 10011,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);\n     CastSkill(10003);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 0.5, 0, 0);\n     CastSkill(10003);\n}",
     "IsDrop": 0
   },
   {
@@ -323,7 +323,7 @@
     "SP": 0,
     "NameContextID": 10012,
     "DescriptionContextID": 10013,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);\n     CastSkill(10004);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 1, 0, 0);\n     CastSkill(10004);\n}",
     "IsDrop": 0
   },
   {
@@ -331,7 +331,7 @@
     "SP": 0,
     "NameContextID": 10014,
     "DescriptionContextID": 10015,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 1.5, 0, 0);\n}",
     "IsDrop": 0
   },
   {
@@ -339,7 +339,7 @@
     "SP": 0,
     "NameContextID": 10016,
     "DescriptionContextID": 10017,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Random, -1), Self.Attack * 1.2, 0, 0);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, Random, -1), Self.Attack * 1.2, 0, 0);\n}",
     "IsDrop": 0
   },
   {
@@ -355,7 +355,36 @@
     "SP": 0,
     "NameContextID": 10020,
     "DescriptionContextID": 10021,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n}",
     "IsDrop": 0
-  }
+  },
+  {
+    "ID": 10008,
+    "SP": 0,
+    "NameContextID": 10025,
+    "DescriptionContextID": 10026,
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 0.75, 0, 0);\n}",
+    "IsDrop": 0
+  },
+  {
+    "ID": 10009,
+    "SP": 0,
+    "NameContextID": 10027,
+    "DescriptionContextID": 10028,
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, Random, 2), Self.Attack * 0.75, 0, 0);\n}",
+    "IsDrop": 0
+  },
+  {
+    "ID": 10010,
+    "SP": 0,
+    "NameContextID": 10029,
+    "DescriptionContextID": 10030,
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, Random, 1), Self.Attack * 0.25, 0, 0);\n     DealDamage(Select(Opponent, Random, 1), Self.Attack * 0.25, 0, 0);\n     DealDamage(Select(Opponent, Random, 1), Self.Attack * 0.25, 0, 0);\n}",
+    "IsDrop": 0
+  },
+  {},
+  {},
+  {},
+  {},
+  {}
 ]

@@ -16,6 +16,7 @@ namespace ProjectBS
             GameDataManager.LoadGameData<CharacterNamePoolData>("CharacterNamePoolData");
             GameDataManager.LoadGameData<RandomSkillData>("RandomSkillData");
             GameDataManager.LoadGameData<RawEquipmentData>("RawEquipmentData");
+            GameDataManager.LoadGameData<BossStageData>("BossStageData");
         }
     }
 }

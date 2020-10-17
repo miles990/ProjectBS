@@ -86,7 +86,8 @@ namespace ProjectBS.Combat
             {
                 case 0:
                     {
-                        if (m_units[m_currentUnitIndex].head == null)
+                        if (m_units[m_currentUnitIndex].head == null
+                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].head.EffectIDs))
                         {
                             GoNextEquipment();
                             return;
@@ -97,7 +98,8 @@ namespace ProjectBS.Combat
                     }
                 case 1:
                     {
-                        if (m_units[m_currentUnitIndex].body == null)
+                        if (m_units[m_currentUnitIndex].body == null
+                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].body.EffectIDs))
                         {
                             GoNextEquipment();
                             return;
@@ -108,7 +110,8 @@ namespace ProjectBS.Combat
                     }
                 case 2:
                     {
-                        if (m_units[m_currentUnitIndex].hand == null)
+                        if (m_units[m_currentUnitIndex].hand == null
+                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].hand.EffectIDs))
                         {
                             GoNextEquipment();
                             return;
@@ -119,7 +122,8 @@ namespace ProjectBS.Combat
                     }
                 case 3:
                     {
-                        if (m_units[m_currentUnitIndex].foot == null)
+                        if (m_units[m_currentUnitIndex].foot == null
+                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].foot.EffectIDs))
                         {
                             GoNextEquipment();
                             return;

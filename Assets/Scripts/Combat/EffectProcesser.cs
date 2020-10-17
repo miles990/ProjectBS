@@ -75,12 +75,10 @@ namespace ProjectBS.Combat
                 return;
 
             rawCommandString = rawCommandString.RemoveBlankCharacters();
-
             string[] _timings = Enum.GetNames(typeof(TriggerTiming));
             for (int _timingStringIndex = 0; _timingStringIndex < _timings.Length; _timingStringIndex++)
             {
                 string _rawCommandString = DeserializeCommandRawDatas(_timings[_timingStringIndex], rawCommandString);
-
                 if (_rawCommandString == null)
                     continue;
                 
@@ -102,7 +100,7 @@ namespace ProjectBS.Combat
 
         public void Start(ProcessData processData)
         {
-            if(processData == null)
+            if (processData == null)
             {
                 return;
             }
@@ -140,8 +138,9 @@ namespace ProjectBS.Combat
                     continue;
                 }
 
+
                 if (rawData[i] == '{'
-                    && _deserializeBuffer == timing)
+                    && _deserializeBuffer.Trim() == timing.Trim())
                 {
                     _startRecordCommands = true;
                     _deserializeBuffer = "";

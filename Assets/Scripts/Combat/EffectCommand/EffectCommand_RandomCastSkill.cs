@@ -52,24 +52,14 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             int _roll = UnityEngine.Random.Range(0, _totalWeight);
-
-            for(int i = 0; i < _randomPool.Count; i++)
+            for (int i = 0; i < _randomPool.Count; i++)
             {
                 _roll -= _randomPool[i].weight;
                 if(_roll <= 0)
                 {
-                    SkillData _skill = GameDataManager.GetGameData<SkillData>(_randomPool[i].skillID);
-
-                    new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
-                    {
-                        caster = GetSelf(),
-                        target = null,
-                        timing = EffectProcesser.TriggerTiming.OnActived,
-                        allEffectProcesser = processData.allEffectProcesser,
-                        referenceBuff = null,
-                        refenceSkill = _skill,
-                        onEnded = onCompleted
-                    });
+                    EffectCommand_CastSkill _cast = new EffectCommand_CastSkill();
+                    _cast.processData = processData;
+                    _cast.Process(new string[] { _randomPool[i].skillID.ToString() }, onCompleted);
                     break;
                 }
             }

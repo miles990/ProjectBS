@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using KahaGameCore.Static;
+using System.Collections.Generic;
 
 namespace ProjectBS
 {
@@ -41,7 +42,7 @@ namespace ProjectBS
             StartInitData();
         }
 
-        public void StartCombat()
+        public void StartCombat(Data.BossStageData bossStageData)
         {
             if (m_currentState != State.MainMenu)
                 throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
@@ -49,10 +50,20 @@ namespace ProjectBS
             m_currentState = State.Combat;
             GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
+            string[] _bossIDs = bossStageData.BossIDs.Split('$');
+            List<Data.BossData> _bosses = new List<Data.BossData>();
+            for(int i = 0; i < _bossIDs.Length; i++)
+            {
+                if(string.IsNullOrEmpty(_bossIDs[i]))
+                {
+                    continue;
+                }
+                _bosses.Add(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i])));
+            }
+
             m_combatManager = new Combat.CombatManager();
             m_combatManager.StartCombat(
-                PlayerManager.Instance.Player.Party,
-                new List<Data.BossData> { KahaGameCore.Static.GameDataManager.GetGameData<Data.BossData>(1) });
+                PlayerManager.Instance.Player.Party, _bosses);
         }
 
         public void EndCombat()

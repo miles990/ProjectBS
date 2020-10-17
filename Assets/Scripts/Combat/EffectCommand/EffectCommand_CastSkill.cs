@@ -9,8 +9,12 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             SkillData _skill = GameDataManager.GetGameData<SkillData>(int.Parse(vars[0]));
+            if(_skill == null)
+            {
+                throw new Exception("[EffectCommand_CastSkill][Process] Invaild Skill ID=" + int.Parse(vars[0]));
+            }
             processData.caster.lastSkillID = _skill.ID;
-            new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetSkillProcesser(processData.caster.lastSkillID).Start(new EffectProcesser.ProcessData
             {
                 caster = GetSelf(),
                 target = null,
