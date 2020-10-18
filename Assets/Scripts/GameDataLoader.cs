@@ -5,6 +5,8 @@ namespace ProjectBS
 {
     public static class GameDataLoader
     {
+        public static GameProperties GameProperties { get; private set; }
+
         public static void StartLoad() 
         {
             GameDataManager.LoadGameData<ContextData>("ContextData");
@@ -17,6 +19,7 @@ namespace ProjectBS
             GameDataManager.LoadGameData<RandomSkillData>("RandomSkillData");
             GameDataManager.LoadGameData<RawEquipmentData>("RawEquipmentData");
             GameDataManager.LoadGameData<BossStageData>("BossStageData");
+            GameProperties = UnityEngine.Resources.Load<GameProperties>("GameProperties");
         }
     }
 }

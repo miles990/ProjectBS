@@ -31,6 +31,7 @@ namespace ProjectBS
         private State m_currentState = State.None;
 
         private Combat.CombatManager m_combatManager = null;
+        private Data.BossStageData m_currentPlayingStage = null;
 
         public void StartGame()
         {
@@ -47,7 +48,20 @@ namespace ProjectBS
             if (m_currentState != State.MainMenu)
                 throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
 
+            if (PlayerManager.Instance.Player.Stamina < bossStageData.Stamina)
+            {
+                return;
+            }
+
+            m_currentPlayingStage = bossStageData;
             m_currentState = State.Combat;
+
+            if (PlayerManager.Instance.Player.ClearedBossStage.Contains(bossStageData.ID))
+            {
+                EndCombat();
+                return;
+            }
+
             GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
             string[] _bossIDs = bossStageData.BossIDs.Split('$');
@@ -73,6 +87,21 @@ namespace ProjectBS
 
             m_currentState = State.MainMenu;
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
+
+            DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
+            PlayerManager.Instance.Player.OwnExp += _drop.exp;
+            PlayerManager.Instance.Player.Equipments.AddRange(_drop.equipments);
+            PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
+            PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
+            for(int i = 0; i < _drop.skillIDs.Count; i++)
+            {
+                PlayerManager.Instance.AddSkill(_drop.skillIDs[i]);
+            }
+
+            m_currentPlayingStage = null;
+            m_combatManager = null;
+
+            PlayerManager.Instance.SavePlayer();
         }
 
         private void StartInitData()

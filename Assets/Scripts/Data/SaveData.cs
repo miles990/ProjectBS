@@ -9,6 +9,7 @@ namespace ProjectBS.Data
         public List<OwningCharacterData> Characters;
         public List<OwningEquipmentData> Equipments;
         public List<OwningSkillData> Skills;
+        public List<int> ClearedBossStage;
         public int Stamina;
         public int OwnExp;
     }
