@@ -147,8 +147,11 @@ namespace ProjectBS.UI
 
         public void Button_ChangeSkill_Change()
         {
-            m_refCharacter.SetSkill(m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
-            PlayerManager.Instance.SavePlayer();
+            if(m_currentSelectSkill != null)
+            {
+                m_refCharacter.SetSkill(m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
+                PlayerManager.Instance.SavePlayer();
+            }
             DisableAllSubPanel();
         }
 
@@ -172,6 +175,26 @@ namespace ProjectBS.UI
                 default:
                     throw new System.Exception("[MainMenuUI_CharacterInfoPanel][Button_Back] Invaild state=" + m_currentState.ToString());
             }
+        }
+
+        public void Button_Depart()
+        {
+            if(PlayerManager.Instance.Player.Characters.Count <= 4)
+            {
+                GameManager.Instance.MessageManager.ShowCommonMessage("角色不可少於4人", "Warning", null);
+                return;
+            }
+
+            PlayerManager.Instance.Player.Characters.Remove(m_refCharacter);
+            PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<Data.ExpData>(m_refCharacter.Level).Owning / 2;
+            Button_Save();
+        }
+
+        public void Button_LevelUp()
+        {
+            CharacterUtility.TryAddOneLevel(m_refCharacter);
+            RefreshInfo();
+            PlayerManager.Instance.SavePlayer();
         }
 
         public void Button_Save()
@@ -400,7 +423,7 @@ namespace ProjectBS.UI
             m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_2).NameContextID);
             m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_3).NameContextID);
 
-            m_levelText.text = "Level" + m_refCharacter.Level;
+            m_levelText.text = "Level" + m_refCharacter.Level + "\n\nExp\n" + m_refCharacter.Exp + "/" + GameDataManager.GetGameData<Data.ExpData>(m_refCharacter.Level).Require;
             m_statusText.text = string.Format(ABILITY_FORMAT,
                             m_refCharacter.GetTotal(Keyword.Attack),
                             GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).RankString,

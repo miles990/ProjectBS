@@ -131,11 +131,28 @@ namespace ProjectBS
             return null;
         }
 
-        public static void LevelUp(OwningCharacterData character, int targetLevel)
+        public static void SetLevel(OwningCharacterData character, int targetLevel)
         {
             while(character.Level < targetLevel)
             {
-                LevelUp(character);
+                ForceLevelUp(character);
+                character.Exp = GameDataManager.GetGameData<ExpData>(character.Level).Owning;
+            }
+        }
+
+        public static void TryAddOneLevel(OwningCharacterData character)
+        {
+            ExpData _expData = GameDataManager.GetGameData<ExpData>(character.Level);
+            int _needExp = _expData.Require - character.Exp;
+            if (PlayerManager.Instance.Player.OwnExp >= _needExp)
+            {
+                PlayerManager.Instance.Player.OwnExp -= _needExp;
+                AddExp(character, _needExp);
+            }
+            else
+            {
+                character.Exp += PlayerManager.Instance.Player.OwnExp;
+                PlayerManager.Instance.Player.OwnExp = 0;
             }
         }
 
@@ -146,11 +163,11 @@ namespace ProjectBS
                   character.Exp - GameDataManager.GetGameData<ExpData>(character.Level).Require >= 0)
             {
                 character.Exp -= GameDataManager.GetGameData<ExpData>(character.Level).Require;
-                LevelUp(character);
+                ForceLevelUp(character);
             }
         }
 
-        private static void LevelUp(OwningCharacterData character)
+        private static void ForceLevelUp(OwningCharacterData character)
         {
             InitAbilityData();
 

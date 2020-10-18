@@ -28,11 +28,12 @@ namespace ProjectBS
             Combat
         }
 
+        public KahaGameCore.Common.ConfirmWindowManager MessageManager { get; private set; }
+
         private State m_currentState = State.None;
 
         private Combat.CombatManager m_combatManager = null;
         private Data.BossStageData m_currentPlayingStage = null;
-        private KahaGameCore.Common.ConfirmWindowManager m_messageManager = null;
 
         public void StartGame()
         {
@@ -125,7 +126,7 @@ namespace ProjectBS
 
             PlayerManager.Instance.SavePlayer();
 
-            m_messageManager.ShowCommonMessage(_resultString, "Victory", null);
+            MessageManager.ShowCommonMessage(_resultString, "Victory", null);
         }
 
         private void StartInitData()
@@ -139,7 +140,7 @@ namespace ProjectBS
         private void ShowMainMenu()
         {
             m_currentState = State.MainMenu;
-            m_messageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
+            MessageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
         }
     }

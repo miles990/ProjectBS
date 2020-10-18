@@ -6,7 +6,7 @@
     "Attack": 100,
     "Defense": 25,
     "Speed": 50,
-    "HP": 2000,
+    "HP": 500,
     "SP": 100,
     "AI": "AI\n{\n    RandomCastSkill(10003);\n}",
     "DropData": "1:25$2:25$3:25$4:25",

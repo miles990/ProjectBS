@@ -34,6 +34,22 @@ namespace ProjectBS
             }
         }
 
+        public static void TryAddOneLevel(OwningEquipmentData equipment)
+        {
+            ExpData _expData = GameDataManager.GetGameData<ExpData>(equipment.Level);
+            int _needExp = _expData.Require - equipment.Exp;
+            if (PlayerManager.Instance.Player.OwnExp >= _needExp)
+            {
+                PlayerManager.Instance.Player.OwnExp -= _needExp;
+                AddExp(equipment, _needExp);
+            }
+            else
+            {
+                equipment.Exp += PlayerManager.Instance.Player.OwnExp;
+                PlayerManager.Instance.Player.OwnExp = 0;
+            }
+        }
+
         public static void AddExp(OwningEquipmentData owningEquipmentData, int addExp)
         {
             owningEquipmentData.Exp += addExp;
