@@ -32,6 +32,7 @@ namespace ProjectBS
 
         private Combat.CombatManager m_combatManager = null;
         private Data.BossStageData m_currentPlayingStage = null;
+        private KahaGameCore.Common.ConfirmWindowManager m_messageManager = null;
 
         public void StartGame()
         {
@@ -89,19 +90,42 @@ namespace ProjectBS
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
 
             DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
+
+            // TODO: should set UI here, use _resultString for testing now
+            string _resultString = "Add Exp: " + _drop.exp + "\n\nAdd Equipments:\n";
+
             PlayerManager.Instance.Player.OwnExp += _drop.exp;
-            PlayerManager.Instance.Player.Equipments.AddRange(_drop.equipments);
+            for(int i = 0; i < _drop.equipments.Count; i++)
+            {
+                Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(_drop.equipments[i].EquipmentSourceID);
+                _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
+                PlayerManager.Instance.Player.Equipments.Add(_drop.equipments[i]);
+
+                if (i != _drop.equipments.Count - 1)
+                    _resultString += ", ";
+                else
+                    _resultString += "\n\nAdd Skills:\n";
+            }
+
             PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
             PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
             for(int i = 0; i < _drop.skillIDs.Count; i++)
             {
+                Data.SkillData _source = GameDataManager.GetGameData<Data.SkillData>(_drop.skillIDs[i]);
+                _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
+
                 PlayerManager.Instance.AddSkill(_drop.skillIDs[i]);
+
+                if (i != _drop.skillIDs.Count - 1)
+                    _resultString += ", ";
             }
 
             m_currentPlayingStage = null;
             m_combatManager = null;
 
             PlayerManager.Instance.SavePlayer();
+
+            m_messageManager.ShowCommonMessage(_resultString, "Victory", null);
         }
 
         private void StartInitData()
@@ -115,6 +139,7 @@ namespace ProjectBS
         private void ShowMainMenu()
         {
             m_currentState = State.MainMenu;
+            m_messageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
         }
     }
