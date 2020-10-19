@@ -94,7 +94,7 @@ namespace ProjectBS.UI
         {
             m_targetSkillSlotIndex = index;
             m_currentPage = 0;
-            m_currentState = State.ChangingEquipment;
+            m_currentState = State.ChangingSkill;
             m_currentSelectSkill = null;
             RefreshChangeSkillPanel();
             m_changeSkillPanelRoot.SetActive(true);

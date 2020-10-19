@@ -104,6 +104,7 @@ namespace ProjectBS
 
         public void EquipmentTo(OwningCharacterData characterData, string UDID)
         {
+            RemoveEquipmentFromAllCharacter(UDID);
             string _equipmentType = GetEquipmentByUDID(UDID).GetEquipmentType();
             switch(_equipmentType)
             {

@@ -17,7 +17,7 @@
   },
   {
     "ID": 5,
-    "Index": -1,
+    "Index": 1,
     "MainBossID": 5,
     "Stamina": 0,
     "BossIDs": 5,

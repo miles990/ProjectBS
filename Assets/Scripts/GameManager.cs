@@ -60,7 +60,7 @@ namespace ProjectBS
 
             if (PlayerManager.Instance.Player.ClearedBossStage.Contains(bossStageData.ID))
             {
-                EndCombat();
+                EndCombat(true);
                 return;
             }
 
@@ -77,12 +77,12 @@ namespace ProjectBS
                 _bosses.Add(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i])));
             }
 
-            m_combatManager = new Combat.CombatManager();
+            if(m_combatManager == null) m_combatManager = new Combat.CombatManager();
             m_combatManager.StartCombat(
                 PlayerManager.Instance.Player.Party, _bosses);
         }
 
-        public void EndCombat()
+        public void EndCombat(bool isWin)
         {
             if (m_currentState != State.Combat)
                 throw new System.Exception("[GameManager][EndCombat] Can't end comabt since it didn't start");
@@ -90,43 +90,48 @@ namespace ProjectBS
             m_currentState = State.MainMenu;
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
 
-            DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
-
-            // TODO: should set UI here, use _resultString for testing now
-            string _resultString = "Add Exp: " + _drop.exp + "\n\nAdd Equipments:\n";
-
-            PlayerManager.Instance.Player.OwnExp += _drop.exp;
-            for(int i = 0; i < _drop.equipments.Count; i++)
+            if(isWin)
             {
-                Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(_drop.equipments[i].EquipmentSourceID);
-                _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
-                PlayerManager.Instance.Player.Equipments.Add(_drop.equipments[i]);
+                DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
 
-                if (i != _drop.equipments.Count - 1)
-                    _resultString += ", ";
-                else
-                    _resultString += "\n\nAdd Skills:\n";
+                // TODO: should set UI here, use _resultString for testing now
+                string _resultString = "Add Exp: " + _drop.exp + "\n\nAdd Equipments:\n";
+
+                PlayerManager.Instance.Player.OwnExp += _drop.exp;
+                for (int i = 0; i < _drop.equipments.Count; i++)
+                {
+                    Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(_drop.equipments[i].EquipmentSourceID);
+                    _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
+                    PlayerManager.Instance.Player.Equipments.Add(_drop.equipments[i]);
+
+                    if (i != _drop.equipments.Count - 1)
+                        _resultString += ", ";
+                    else
+                        _resultString += "\n\nAdd Skills:\n";
+                }
+
+                PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
+                PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
+                for (int i = 0; i < _drop.skillIDs.Count; i++)
+                {
+                    Data.SkillData _source = GameDataManager.GetGameData<Data.SkillData>(_drop.skillIDs[i]);
+                    _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
+
+                    PlayerManager.Instance.AddSkill(_drop.skillIDs[i]);
+
+                    if (i != _drop.skillIDs.Count - 1)
+                        _resultString += ", ";
+                }
+                MessageManager.ShowCommonMessage(_resultString, "Victory", null);
             }
-
-            PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
-            PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
-            for(int i = 0; i < _drop.skillIDs.Count; i++)
+            else
             {
-                Data.SkillData _source = GameDataManager.GetGameData<Data.SkillData>(_drop.skillIDs[i]);
-                _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
-
-                PlayerManager.Instance.AddSkill(_drop.skillIDs[i]);
-
-                if (i != _drop.skillIDs.Count - 1)
-                    _resultString += ", ";
+                MessageManager.ShowCommonMessage("", "Lose.....", null);
             }
 
             m_currentPlayingStage = null;
-            m_combatManager = null;
 
             PlayerManager.Instance.SavePlayer();
-
-            MessageManager.ShowCommonMessage(_resultString, "Victory", null);
         }
 
         private void StartInitData()

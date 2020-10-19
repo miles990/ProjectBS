@@ -288,7 +288,7 @@
     "NameContextID": 170,
     "DescriptionContextID": 171,
     "Command": "OnBattleStarted\n{\n     LockAddStatus(Self, SP);\n     LockAddStatus(Self, HP);\n     GainBuff(Self, 9, 3);\n}\n\nOnStartToTakeDamage_Self\n{\n     SetDamage(0);\n}",
-    "IsDrop": 1
+    "IsDrop": 0
   },
   {
     "ID": 133,

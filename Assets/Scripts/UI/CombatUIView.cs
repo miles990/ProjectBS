@@ -69,16 +69,47 @@ namespace ProjectBS.UI
             { 
                 if (units[i].camp == CombatUnit.Camp.Player)
                 {
-                    m_indexToUnit.Add(_currentPlayerIndex, units[i]);
-                    m_unitToIndex.Add(units[i], _currentPlayerIndex);
+                    if(m_indexToUnit.ContainsKey(_currentPlayerIndex))
+                    {
+                        m_indexToUnit[_currentPlayerIndex] = units[i];
+                    }
+                    else
+                    {
+                        m_indexToUnit.Add(_currentPlayerIndex, units[i]);
+                    }
+
+                    if(m_unitToIndex.ContainsKey(units[i]))
+                    {
+                        m_unitToIndex[units[i]] = _currentPlayerIndex;
+                    }
+                    else
+                    {
+                        m_unitToIndex.Add(units[i], _currentPlayerIndex);
+                    }
                     m_characterPanels[_currentPlayerIndex].SetUp(units[i]);
                     m_characterPanels[_currentPlayerIndex].gameObject.SetActive(true);
                     _currentPlayerIndex++;
                 }
                 else
                 {
-                    m_indexToUnit.Add(_currentBossIndex, units[i]);
-                    m_unitToIndex.Add(units[i], _currentBossIndex);
+                    if (m_indexToUnit.ContainsKey(_currentBossIndex))
+                    {
+                        m_indexToUnit[_currentBossIndex] = units[i];
+                    }
+                    else
+                    {
+                        m_indexToUnit.Add(_currentBossIndex, units[i]);
+                    }
+
+                    if (m_unitToIndex.ContainsKey(units[i]))
+                    {
+                        m_unitToIndex[units[i]] = _currentBossIndex;
+                    }
+                    else
+                    {
+                        m_unitToIndex.Add(units[i], _currentBossIndex);
+                    }
+
                     m_characterPanels[_currentBossIndex].SetUp(units[i]);
                     m_characterPanels[_currentBossIndex].gameObject.SetActive(true);
                     _currentBossIndex++;
@@ -134,21 +165,16 @@ namespace ProjectBS.UI
 
         public void ShowGameEnd(bool playerWin)
         {
-            if (playerWin)
-            {
-                Debug.Log("Player Win");
-            }
-            else
-            {
-                Debug.Log("Player Lose");
-            }
-
             m_skillPanel.SetActive(false);
             for (int i = 0; i < m_characterPanels.Length; i++)
             {
                 m_characterPanels[i].gameObject.SetActive(false);
             }
-            TimerManager.Schedule(3f, CombatUtility.CurrentComabtManager.EndComabat);
+            TimerManager.Schedule(1.5f, 
+                delegate
+                {
+                    CombatUtility.CurrentComabtManager.EndComabat(playerWin);
+                });
         }
 
         public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)

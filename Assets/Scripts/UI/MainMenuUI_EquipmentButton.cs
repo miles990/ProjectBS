@@ -21,7 +21,9 @@ namespace ProjectBS.UI
             m_refEquipment = equipmentData;
             Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(equipmentData.EquipmentSourceID);
 
-            m_nameAndLevelText.text = ContextConverter.Instance.GetContext(_source.NameContextID) + "\nLevel " + equipmentData.Level;
+            m_nameAndLevelText.text = ContextConverter.Instance.GetContext(_source.NameContextID) 
+                + "\nLevel " + equipmentData.Level 
+                + "\nExp " + equipmentData.Exp + "/" + GameDataManager.GetGameData<Data.ExpData>(equipmentData.Level).Require;
             m_abilityText.text = string.Format(ABILITY_FORMAT,
                                                equipmentData.HP >= 0 ? "+" + equipmentData.HP : equipmentData.HP.ToString(),
                                                equipmentData.Attack >= 0 ? "+" + equipmentData.Attack : equipmentData.Attack.ToString(),

@@ -101,9 +101,13 @@ namespace ProjectBS.Combat
             m_isCombating = true;
         }
 
-        public void EndComabat()
+        public void EndComabat(bool isWin)
         {
-            GetPage<UI.CombatUIView>().Show(this, false, GameManager.Instance.EndCombat);
+            GetPage<UI.CombatUIView>().Show(this, false, 
+                delegate
+                {
+                    GameManager.Instance.EndCombat(isWin);
+                });
         }
 
         public void ForceEndCurrentAction()
