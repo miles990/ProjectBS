@@ -26,6 +26,29 @@ namespace ProjectBS
             return _newEquipment;
         }
 
+        public static void Depart(string UDID)
+        {
+            OwningEquipmentData _target = PlayerManager.Instance.GetEquipmentByUDID(UDID);
+            PlayerManager.Instance.Player.Equipments.Remove(_target);
+            PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID);
+            PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<ExpData>(_target.Level).Owning / 2;
+        }
+
+        public static void Lock(string UDID, bool lockItem)
+        {
+            if(lockItem)
+            {
+                if (PlayerManager.Instance.Player.LockedEquipmentUDIDs.Contains(UDID))
+                    return;
+
+                PlayerManager.Instance.Player.LockedEquipmentUDIDs.Add(UDID);
+            }
+            else
+            {
+                PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID);
+            }
+        }
+
         public static void SetLevel(OwningEquipmentData owningEquipmentData, int targetLevel)
         {
             while (owningEquipmentData.Level < targetLevel)

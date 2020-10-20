@@ -179,14 +179,7 @@ namespace ProjectBS.UI
 
         public void Button_Depart()
         {
-            if(PlayerManager.Instance.Player.Characters.Count <= 4)
-            {
-                GameManager.Instance.MessageManager.ShowCommonMessage("角色不可少於4人", "Warning", null);
-                return;
-            }
-
-            PlayerManager.Instance.Player.Characters.Remove(m_refCharacter);
-            PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<Data.ExpData>(m_refCharacter.Level).Owning / 2;
+            CharacterUtility.Depart(m_refCharacter.UDID);
             Button_Save();
         }
 

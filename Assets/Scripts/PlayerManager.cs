@@ -61,6 +61,16 @@ namespace ProjectBS
             GameDataManager.SaveData(new SaveData[] { m_player });
         }
 
+        public OwningCharacterData GetCharacterByUDID(string UDID)
+        {
+            if (!m_isInited)
+            {
+                throw new System.Exception("[PlayerManager][GetEquipmentByUDID] Need to init Player first");
+            }
+
+            return Player.Characters.Find(x => x.UDID == UDID);
+        }
+
         public OwningEquipmentData GetEquipmentByUDID(string UDID)
         {
             if (!m_isInited)
@@ -250,17 +260,7 @@ namespace ProjectBS
 
         private SaveData CreateNewPlayer()
         {
-            SaveData _newPlayer = new SaveData
-            {
-                Characters = new List<OwningCharacterData>(),
-                Equipments = new List<OwningEquipmentData>(),
-                Party = new PartyData(),
-                PlayerName = "New Player",
-                Stamina = 100,
-                OwnExp = 0,
-                ClearedBossStage = new List<int>(),
-                Skills = new List<OwningSkillData>()
-            };
+            SaveData _newPlayer = new SaveData();
 
             for(int i = 0; i < 4; i++)
             {
