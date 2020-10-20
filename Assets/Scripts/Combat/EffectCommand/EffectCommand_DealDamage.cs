@@ -101,7 +101,14 @@ namespace ProjectBS.Combat.EffectCommand
             if (_dmg < 1)
                 _dmg = 1;
 
-            processData.caster.targetToDmg.Add(_attackTarget, _dmg);
+            if(processData.caster.targetToDmg.ContainsKey(_attackTarget))
+            {
+                processData.caster.targetToDmg[_attackTarget] = _dmg;
+            }
+            else
+            {
+                processData.caster.targetToDmg.Add(_attackTarget, _dmg);
+            }
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
