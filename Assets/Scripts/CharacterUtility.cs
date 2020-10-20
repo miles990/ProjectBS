@@ -33,7 +33,7 @@ namespace ProjectBS
             {
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
                 AttackAbilityID = _attack.ID,
-                CharacterNameID = m_nameIDPool[Random.Range(0, m_nameIDPool.Length - 1)].NameContextID,
+                CharacterNameID = GetRandomName(),
                 CharacterSpriteID = 0,
                 Defense = Random.Range(_defense.MinValue, _defense.MaxValue),
                 DefenseAbilityID = _defense.ID,
@@ -56,6 +56,13 @@ namespace ProjectBS
             };
 
             return _newChar;
+        }
+
+        public static int GetRandomName()
+        {
+            InitAbilityData();
+
+            return m_nameIDPool[Random.Range(0, m_nameIDPool.Length - 1)].NameContextID;
         }
 
         private static void InitAbilityData()

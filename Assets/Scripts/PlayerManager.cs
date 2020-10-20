@@ -96,14 +96,14 @@ namespace ProjectBS
             return _equipments;
         }
 
-        public OwningCharacterData GetEquipedCharacter(string UDID)
+        public OwningCharacterData GetEquipedCharacter(string equipmentUDID)
         {
             for(int i = 0; i < m_player.Characters.Count; i++)
             {
-                if(m_player.Characters[i].Equipment_UDID_Body == UDID
-                    || m_player.Characters[i].Equipment_UDID_Foot == UDID
-                    || m_player.Characters[i].Equipment_UDID_Hand == UDID
-                    || m_player.Characters[i].Equipment_UDID_Head == UDID)
+                if(m_player.Characters[i].Equipment_UDID_Body == equipmentUDID
+                    || m_player.Characters[i].Equipment_UDID_Foot == equipmentUDID
+                    || m_player.Characters[i].Equipment_UDID_Hand == equipmentUDID
+                    || m_player.Characters[i].Equipment_UDID_Head == equipmentUDID)
                 {
                     return m_player.Characters[i];
                 }
@@ -262,11 +262,85 @@ namespace ProjectBS
         {
             SaveData _newPlayer = new SaveData();
 
-            for(int i = 0; i < 4; i++)
+            // tank
+            _newPlayer.Characters.Add(new OwningCharacterData
             {
-                OwningCharacterData _newCharacter = CharacterUtility.CreateNewCharacter();
-                _newPlayer.Characters.Add(_newCharacter);
-            }
+                AttackAbilityID = 15,
+                CharacterNameID = CharacterUtility.GetRandomName(),
+                CharacterSpriteID = 0,
+                DefenseAbilityID = 24,
+                HPAbilityID = 4,
+                Exp = 0,
+                Level = 0,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SkillSlot_2 = 101,
+                SkillSlot_3 = 108,
+                SpeedAbilityID = 36,
+                SP = 100,
+                UDID = System.Guid.NewGuid().ToString()
+            });
+            CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
+
+            // healer
+            _newPlayer.Characters.Add(new OwningCharacterData
+            {
+                AttackAbilityID = 16,
+                CharacterNameID = CharacterUtility.GetRandomName(),
+                CharacterSpriteID = 0,
+                DefenseAbilityID = 24,
+                HPAbilityID = 4,
+                Exp = 0,
+                Level = 0,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SkillSlot_2 = 127,
+                SkillSlot_3 = 119,
+                SpeedAbilityID = 35,
+                SP = 100,
+                UDID = System.Guid.NewGuid().ToString()
+            });
+            CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
+
+            // DPS 0
+            _newPlayer.Characters.Add(new OwningCharacterData
+            {
+                AttackAbilityID = 14,
+                CharacterNameID = CharacterUtility.GetRandomName(),
+                CharacterSpriteID = 0,
+                DefenseAbilityID = 26,
+                HPAbilityID = 5,
+                Exp = 0,
+                Level = 0,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SkillSlot_2 = 129,
+                SkillSlot_3 = 106,
+                SpeedAbilityID = 34,
+                SP = 100,
+                UDID = System.Guid.NewGuid().ToString()
+            });
+            CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
+
+            // DPS 1
+            _newPlayer.Characters.Add(new OwningCharacterData
+            {
+                AttackAbilityID = 14,
+                CharacterNameID = CharacterUtility.GetRandomName(),
+                CharacterSpriteID = 0,
+                DefenseAbilityID = 24,
+                HPAbilityID = 6,
+                Exp = 0,
+                Level = 0,
+                SkillSlot_0 = 1,
+                SkillSlot_1 = 2,
+                SkillSlot_2 = 104,
+                SkillSlot_3 = 125,
+                SpeedAbilityID = 35,
+                SP = 100,
+                UDID = System.Guid.NewGuid().ToString()
+            });
+            CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             _newPlayer.Party.MemberUDID_0 = _newPlayer.Characters[0].UDID;
             _newPlayer.Party.MemberUDID_1 = _newPlayer.Characters[1].UDID;

@@ -273,8 +273,9 @@ namespace ProjectBS.UI
                 }
                 else
                 {
+                    bool _isEquiped = PlayerManager.Instance.GetEquipedCharacter(_equipments[i].UDID) != null;
                     m_changeEquipmentPanel_equipmentList[i].text = string.Format("{0}\nHP{1}\nAttack{2}\nDefense{3}\nSpeed{4}",
-                                                             ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.RawEquipmentData>(_equipments[_currentDisplayEquipmentIndex].EquipmentSourceID).NameContextID),
+                                                             ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.RawEquipmentData>(_equipments[_currentDisplayEquipmentIndex].EquipmentSourceID).NameContextID) + (_isEquiped ? " (E)" : ""),
                                                              _equipments[_currentDisplayEquipmentIndex].HP >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].HP : _equipments[_currentDisplayEquipmentIndex].HP.ToString(),
                                                              _equipments[_currentDisplayEquipmentIndex].Attack >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].Attack : _equipments[_currentDisplayEquipmentIndex].Attack.ToString(),
                                                              _equipments[_currentDisplayEquipmentIndex].Defense >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].Defense : _equipments[_currentDisplayEquipmentIndex].Defense.ToString(),

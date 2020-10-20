@@ -5,7 +5,7 @@ namespace ProjectBS.Data
     public class SaveData
     {
         public string PlayerName = "New Player";
-        public PartyData Party = null;
+        public PartyData Party = new PartyData();
         public List<OwningCharacterData> Characters = new List<OwningCharacterData>();
         public List<OwningEquipmentData> Equipments = new List<OwningEquipmentData>();
         public List<string> LockedEquipmentUDIDs = new List<string>();
