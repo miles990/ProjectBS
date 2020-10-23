@@ -279,7 +279,7 @@
     "SP": 0,
     "NameContextID": 168,
     "DescriptionContextID": 169,
-    "Command": "OnStartToTakeDamage_Self\n{\n     AddDamage(-10%);\n     BegainIf(Random(1, 100) <= 3);\n     GainBuff(CurrentActor, 4, 2);\n     EndIf();\n}",
+    "Command": "OnStartToTakeDamage_Self\n{\n     AddDamage(-10%);\n     BeginIf(Random(1, 100) <= 3);\n     GainBuff(CurrentActor, 4, 2);\n     EndIf();\n}",
     "IsDrop": 1
   },
   {

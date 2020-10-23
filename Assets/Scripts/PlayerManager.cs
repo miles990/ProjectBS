@@ -112,6 +112,27 @@ namespace ProjectBS
             return null;
         }
 
+        public void SetSkill(OwningCharacterData character, int targetSlotIndex, int skillID)
+        {
+            OwningSkillData _owingSkillData = m_player.Skills.Find(x => x.SkillSourceID == skillID);
+            if (_owingSkillData != null)
+            {
+                if(character == null)
+                    throw new System.Exception("[PlayerManager][SetSkill] Target character is null");
+
+                character.SetSkill(targetSlotIndex, skillID);
+
+                _owingSkillData.Amount--;
+                if (_owingSkillData.Amount <= 0)
+                {
+                    m_player.Skills.Remove(_owingSkillData);
+                }
+                SavePlayer();
+            }
+            else
+                throw new System.Exception("[PlayerManager][SetSkill] Is not having Skill " + skillID + " but still trying to set it");
+        }
+
         public void EquipmentTo(OwningCharacterData characterData, string UDID)
         {
             RemoveEquipmentFromAllCharacter(UDID);

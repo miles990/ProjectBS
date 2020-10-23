@@ -13,6 +13,9 @@ namespace ProjectBS
 
         public float DropSkillChance { get { return m_dropSkillChance; } }
         [SerializeField] private float m_dropSkillChance = 50f;
+
+        public float PressDownShowInfoTime { get { return m_pressDownShowInfoTime; } }
+        [SerializeField] private float m_pressDownShowInfoTime = 1f;
     }
 }
 

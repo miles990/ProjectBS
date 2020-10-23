@@ -16,11 +16,51 @@
     "DescriptionContextID": 300001
   },
   {
-    "ID": 5,
+    "ID": 2,
     "Index": 1,
+    "MainBossID": 2,
+    "Stamina": 0,
+    "BossIDs": 2,
+    "DescriptionContextID": 300002
+  },
+  {
+    "ID": 3,
+    "Index": 2,
+    "MainBossID": 3,
+    "Stamina": 0,
+    "BossIDs": 3,
+    "DescriptionContextID": 300003
+  },
+  {
+    "ID": 4,
+    "Index": 3,
+    "MainBossID": 4,
+    "Stamina": 0,
+    "BossIDs": 4,
+    "DescriptionContextID": 300004
+  },
+  {
+    "ID": 5,
+    "Index": 4,
     "MainBossID": 5,
     "Stamina": 0,
     "BossIDs": 5,
     "DescriptionContextID": 300005
+  },
+  {
+    "ID": 6,
+    "Index": 5,
+    "MainBossID": 6,
+    "Stamina": 0,
+    "BossIDs": 6,
+    "DescriptionContextID": 300006
+  },
+  {
+    "ID": 7,
+    "Index": 6,
+    "MainBossID": 7,
+    "Stamina": 0,
+    "BossIDs": 7,
+    "DescriptionContextID": 300007
   }
 ]

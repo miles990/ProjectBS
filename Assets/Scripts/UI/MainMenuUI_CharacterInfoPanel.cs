@@ -149,8 +149,7 @@ namespace ProjectBS.UI
         {
             if(m_currentSelectSkill != null)
             {
-                m_refCharacter.SetSkill(m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
-                PlayerManager.Instance.SavePlayer();
+                PlayerManager.Instance.SetSkill(m_refCharacter, m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
             }
             DisableAllSubPanel();
         }

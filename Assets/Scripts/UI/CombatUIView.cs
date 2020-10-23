@@ -30,8 +30,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_root = null;
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
-        [SerializeField] private Button[] m_skillButtons = null;
-        [SerializeField] private Text[] m_skillTexts = null;
+        [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
         [SerializeField] private CombatUI_InfoText m_infoPrefab = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
@@ -43,6 +42,15 @@ namespace ProjectBS.UI
         private SelectTargetData m_currentSelectData = null;
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
         private Action<List<CombatUnit>> m_onSelected = null;
+
+        private void Start()
+        {
+            for(int i = 0; i < m_skillButtons.Length; i++)
+            {
+                m_skillButtons[i].OnSelected += Button_SelectSkill;
+                m_skillButtons[i].OnShownDetailCommanded += Button_ShowSkillInfo;
+            }
+        }
 
         public override void ForceShow(Manager manager, bool show)
         {
@@ -188,13 +196,13 @@ namespace ProjectBS.UI
             {
                 if (!m_currentShowingSkills[i].Command.Contains(EffectProcesser.TriggerTiming.OnActived.ToString()))
                 {
-                    m_skillButtons[i].interactable = false;
+                    m_skillButtons[i].EnableButton(false);
                 }
                 else
                 {
-                    m_skillButtons[i].interactable = true;
+                    m_skillButtons[i].EnableButton(true);
                 }
-                m_skillTexts[i].text = ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID);
+                m_skillButtons[i].SetUp(ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID));
                 m_skillButtons[i].gameObject.SetActive(true);
             }
             m_skillPanel.SetActive(true);
@@ -225,6 +233,20 @@ namespace ProjectBS.UI
             m_skillPanel.SetActive(false);
 
             OnSkillSelected?.Invoke(_selectedSkill);
+        }
+
+        public void Button_ShowSkillInfo(int index)
+        {
+            if (m_currentShowingSkills == null
+            || m_currentShowingSkills.Count <= index
+            || m_currentShowingSkills[index] == null)
+                return;
+
+            Data.SkillData _selectedSkill = m_currentShowingSkills[index];
+
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                ContextConverter.Instance.GetContext(_selectedSkill.DescriptionContextID),
+                ContextConverter.Instance.GetContext(_selectedSkill.NameContextID), null);
         }
 
         public void Button_SelectCharacter(int index)

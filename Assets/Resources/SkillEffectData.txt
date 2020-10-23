@@ -87,7 +87,7 @@
     "ID": 102,
     "NameContextID": 115,
     "DescriptionContextID": 116,
-    "Command": "OnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill == 106);\n     AddDamage(1000);\n     AddDamage(50%);\n     EndIf();\n}",
+    "Command": "OnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill == 106);\n     AddDamage(100);\n     AddDamage(50%);\n     EndIf();\n}",
     "MaxStackCount": 10
   },
   {
