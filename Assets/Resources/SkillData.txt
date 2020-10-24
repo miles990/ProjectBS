@@ -29,7 +29,7 @@
     "SP": 0,
     "NameContextID": 101,
     "DescriptionContextID": 102,
-    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, Self.Defense * 2);\n}",
+    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, Self.Defense);\n}",
     "IsDrop": 1
   },
   {
@@ -96,7 +96,7 @@
     "SP": 0,
     "NameContextID": 121,
     "DescriptionContextID": 122,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Hatred * 2, 0, 0);\n     AddStatus(Self, Hatred, -Self.LastDealedDamage);\n}",
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Hatred * 0.75, 0, 0);\n     AddStatus(Self, Hatred, -Self.LastDealedDamage);\n}",
     "IsDrop": 1
   },
   {
@@ -224,7 +224,7 @@
     "SP": 0,
     "NameContextID": 150,
     "DescriptionContextID": 151,
-    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);\n}\n\nOnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill != 123);\n     Quit();\n     EndIf();\n\n     BeginIf_Effect(Self, 1, 7);\n     AddDamage(100%);\n     RemoveBuff(Self, 7, -1);\n     EndIf();\n}",
+    "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 1.3, 0, 0);\n}\n\nOnDamageCalculated_Self\n{\n     BeginIf(Self.LastSkill != 123);\n     Quit();\n     EndIf();\n\n     BeginIf_Effect(Self, 1, 7);\n     AddDamage(100%);\n     EndIf();\n}\n\nOnAttacked_Self\n{\n     BeginIf(Self.LastSkill != 123);\n     Quit();\n     EndIf();\n\n     BeginIf_Effect(Self, 1, 7);\n     RemoveBuff(Self, 7, -1);\r\n     EndIf();\n}",
     "IsDrop": 1
   },
   {
@@ -287,7 +287,7 @@
     "SP": 0,
     "NameContextID": 166,
     "DescriptionContextID": 167,
-    "Command": "OnStartToTakeDamage_Self\n{\n     AddStatus(CurrentActor, HP, -Random(1, Self.Attack * 0.5));\n}",
+    "Command": "OnDamageTaken_Self\n{\n     AddStatus(CurrentActor, HP, -Random(1, Self.Attack * 0.5));\n}",
     "IsDrop": 1
   },
   {
@@ -296,7 +296,7 @@
     "NameContextID": 168,
     "DescriptionContextID": 169,
     "ReferenceContextIDs": "15;16",
-    "Command": "OnStartToTakeDamage_Self\n{\n     AddDamage(-10%);\n     BeginIf(Random(1, 100) <= 3);\n     GainBuff(CurrentActor, 4, 2);\n     EndIf();\n}",
+    "Command": "OnDamageTaken_Self\n{\n     AddDamage(-10%);\n     BeginIf(Random(1, 100) <= 3);\n     GainBuff(CurrentActor, 4, 2);\n     EndIf();\n}",
     "IsDrop": 1
   },
   {
@@ -372,7 +372,7 @@
     "SP": 0,
     "NameContextID": 10020,
     "DescriptionContextID": 10021,
-    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n}",
+    "Command": "OnActived\n{\n     DealDamage(Select(Opponent, RandomByHatred, 1), Self.Attack * 3, 0, 1);\n     RemoveBuff(Self, 10004, -1);\n}",
     "IsDrop": 0
   },
   {
