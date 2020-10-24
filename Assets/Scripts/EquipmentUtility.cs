@@ -92,7 +92,7 @@ namespace ProjectBS
 
         private static void SetAility(OwningEquipmentData owningEquipmentData)
         {
-            RawEquipmentData _source = GameDataManager.GetGameData<RawEquipmentData>(owningEquipmentData.EquipmentSourceID);
+            RawEquipmentData _source = owningEquipmentData.GetSourceData();
 
             List<string> _abilityPool = new List<string>(_source.AbilityPool.RemoveBlankCharacters().Split(';'));
             _abilityPool.Remove("");

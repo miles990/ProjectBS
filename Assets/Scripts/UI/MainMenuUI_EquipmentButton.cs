@@ -24,7 +24,7 @@ namespace ProjectBS.UI
             m_initing = true;
 
             m_refEquipment = equipmentData;
-            Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(equipmentData.EquipmentSourceID);
+            Data.RawEquipmentData _source = equipmentData.GetSourceData();
 
             m_nameAndLevelText.text = ContextConverter.Instance.GetContext(_source.NameContextID) 
                 + "\nLevel " + equipmentData.Level 

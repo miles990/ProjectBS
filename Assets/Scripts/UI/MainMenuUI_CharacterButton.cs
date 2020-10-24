@@ -41,13 +41,13 @@ namespace ProjectBS.UI
                                         GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).RankString);
 
             Data.OwningEquipmentData _head = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head);
-            int _headNameID = _head != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_head.EquipmentSourceID).NameContextID : 0;
+            int _headNameID = _head != null ? _head.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _body = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body);
-            int _bodyNameID = _body != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_body.EquipmentSourceID).NameContextID : 0;
+            int _bodyNameID = _body != null ? _body.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _hand = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand);
-            int _handNameID = _hand != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_hand.EquipmentSourceID).NameContextID : 0;
+            int _handNameID = _hand != null ? _hand.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _foot = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot);
-            int _footNameID = _foot != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_foot.EquipmentSourceID).NameContextID : 0;
+            int _footNameID = _foot != null ? _foot.GetSourceData().NameContextID : 0;
 
             m_equipmentText.text = ContextConverter.Instance.GetContext(_headNameID) + "\n" +
                                    ContextConverter.Instance.GetContext(_bodyNameID) + "\n" +

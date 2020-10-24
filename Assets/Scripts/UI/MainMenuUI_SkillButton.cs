@@ -1,6 +1,5 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
-using KahaGameCore.Static;
 
 namespace ProjectBS.UI
 {
@@ -12,7 +11,7 @@ namespace ProjectBS.UI
 
         public void SetUp(Data.OwningSkillData skillData)
         {
-            Data.SkillData _source = GameDataManager.GetGameData<Data.SkillData>(skillData.SkillSourceID);
+            Data.SkillData _source = skillData.GetSourceData();
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
             m_descriptionText.text = ContextConverter.Instance.GetContext(_source.DescriptionContextID);
             m_amoumtText.text = "x" + skillData.Amount;

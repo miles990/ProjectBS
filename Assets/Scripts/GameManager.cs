@@ -100,7 +100,7 @@ namespace ProjectBS
                 PlayerManager.Instance.Player.OwnExp += _drop.exp;
                 for (int i = 0; i < _drop.equipments.Count; i++)
                 {
-                    Data.RawEquipmentData _source = GameDataManager.GetGameData<Data.RawEquipmentData>(_drop.equipments[i].EquipmentSourceID);
+                    Data.RawEquipmentData _source = _drop.equipments[i].GetSourceData();
                     _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
                     PlayerManager.Instance.Player.Equipments.Add(_drop.equipments[i]);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using KahaGameCore.Static;
+using System.Collections.Generic;
 
 namespace ProjectBS.Data
 {
@@ -65,6 +66,33 @@ namespace ProjectBS.Data
             }
         }
 
+        public string GetAbilityRankString(string statusType)
+        {
+            switch (statusType)
+            {
+                case Keyword.Attack:
+                    {
+                        return GameDataManager.GetGameData<AbilityData>(AttackAbilityID).RankString;
+                    }
+                case Keyword.Defense:
+                    {
+                        return GameDataManager.GetGameData<AbilityData>(DefenseAbilityID).RankString;
+                    }
+                case Keyword.Speed:
+                    {
+                        return GameDataManager.GetGameData<AbilityData>(SpeedAbilityID).RankString;
+
+                    }
+                case Keyword.HP:
+                    {
+                        return GameDataManager.GetGameData<AbilityData>(HPAbilityID).RankString;
+
+                    }
+                default:
+                    throw new System.Exception("[OwningCharacterData][GetAbilityRankString] Invaild statusType=" + statusType);
+            }
+        }
+
         public int GetTotal(string statusType)
         {
             int _value;
@@ -107,18 +135,23 @@ namespace ProjectBS.Data
             return _value;
         }
 
-        public int GetSkill(int slotIndex)
+        public int GetRequireExp()
+        {
+            return GameDataManager.GetGameData<ExpData>(Level).Require;
+        }
+
+        public SkillData GetSkill(int slotIndex)
         {
             switch(slotIndex)
             {
                 case 0:
-                    return SkillSlot_0;
+                    return GameDataManager.GetGameData<SkillData>(SkillSlot_0);
                 case 1:
-                    return SkillSlot_1;
+                    return GameDataManager.GetGameData<SkillData>(SkillSlot_1);
                 case 2:
-                    return SkillSlot_2;
+                    return GameDataManager.GetGameData<SkillData>(SkillSlot_2);
                 case 3:
-                    return SkillSlot_3;
+                    return GameDataManager.GetGameData<SkillData>(SkillSlot_3);
                 default:
                     throw new System.Exception("[OwningCharacterData][GetSkill] Invaild Index=" + slotIndex);
             }
@@ -196,8 +229,13 @@ namespace ProjectBS.Data
 
         public string GetEquipmentType()
         {
-            RawEquipmentData _source = KahaGameCore.Static.GameDataManager.GetGameData<RawEquipmentData>(EquipmentSourceID);
+            RawEquipmentData _source = GameDataManager.GetGameData<RawEquipmentData>(EquipmentSourceID);
             return _source.EquipmentType;
+        }
+
+        public RawEquipmentData GetSourceData()
+        {
+            return GameDataManager.GetGameData<RawEquipmentData>(EquipmentSourceID);
         }
     }
 
@@ -205,5 +243,10 @@ namespace ProjectBS.Data
     {
         public int SkillSourceID = 0;
         public int Amount = 0;
+
+        public SkillData GetSourceData()
+        {
+            return GameDataManager.GetGameData<SkillData>(SkillSourceID);
+        }
     }
 }

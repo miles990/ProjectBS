@@ -1,5 +1,4 @@
-﻿using KahaGameCore.Static;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,8 +35,7 @@ namespace ProjectBS.UI
         [SerializeField] private Text m_skill3Text = null;
         [Header("Change Equipment Panel")]
         [SerializeField] private GameObject m_changeEquipmentPanelRoot = null;
-        [SerializeField] private Text[] m_changeEquipmentPanel_equipmentList = null;
-        [SerializeField] private Image[] m_changeEquipmentPanel_equipmentListImgae = null;
+        [SerializeField] private MainMenuUI_ChangeWeaponPanel_EquipmentButton[] m_changeEquipmentPanel_equipmentList = null;
         [SerializeField] private Text m_changeEquipmentPanel_beforeText = null;
         [SerializeField] private Text m_changeEquipmentPanel_afterText = null;
         [Header("Set To Party Panel")]
@@ -53,7 +51,6 @@ namespace ProjectBS.UI
         [SerializeField] private Button m_previousPageButton = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
-        private Dictionary<Text, Data.OwningEquipmentData> m_changeEquipmentPanelEquipmentListToEquipment = new Dictionary<Text, Data.OwningEquipmentData>();
         private Dictionary<Text, Data.OwningSkillData> m_changeSkillPanelSkillListToSkill = new Dictionary<Text, Data.OwningSkillData>();
 
         private State m_currentState = State.None;
@@ -63,6 +60,15 @@ namespace ProjectBS.UI
         private Data.OwningEquipmentData m_currrentSelectEquipment = null;
         private Data.OwningSkillData m_currentSelectSkill = null;
         private int m_targetSkillSlotIndex = 0;
+
+        private void Start()
+        {
+            for(int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
+            {
+                m_changeEquipmentPanel_equipmentList[i].OnSelected += Button_ChangeEquipment_Select;
+                m_changeEquipmentPanel_equipmentList[i].OnShownDetailCommanded += Button_ChangeEquipment_ShowDetail;
+            }
+        }
 
         public void Enable(Data.OwningCharacterData characterData)
         {
@@ -115,14 +121,18 @@ namespace ProjectBS.UI
             RefreshSelectPanel();
         }
 
-        public void Button_ChangeEquipment_Select(Text key)
+        public void Button_ChangeEquipment_Select(Data.OwningEquipmentData data)
         {
-            if(m_changeEquipmentPanelEquipmentListToEquipment.ContainsKey(key))
-            {
-                m_currrentSelectEquipment = m_changeEquipmentPanelEquipmentListToEquipment[key];
-            }
-
+            m_currrentSelectEquipment = data;
             RefreshChangeEquipmentPanel(m_currentEquipmentType);
+        }
+
+        public void Button_ChangeEquipment_ShowDetail(Data.OwningEquipmentData data)
+        {
+            Data.RawEquipmentData _source = data.GetSourceData();
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                ContextConverter.Instance.GetContext(_source.DescriptionContextID),
+                ContextConverter.Instance.GetContext(_source.NameContextID), null);
         }
 
         public void Button_ChangeSkill_Select(Text key)
@@ -268,29 +278,13 @@ namespace ProjectBS.UI
 
                 if (_currentDisplayEquipmentIndex >= _equipments.Count)
                 {
-                    m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(false);
+                    m_changeEquipmentPanel_equipmentList[i].gameObject.SetActive(false);
                 }
                 else
                 {
-                    bool _isEquiped = PlayerManager.Instance.GetEquipedCharacter(_equipments[i].UDID) != null;
-                    m_changeEquipmentPanel_equipmentList[i].text = string.Format("{0}\nHP{1}\nAttack{2}\nDefense{3}\nSpeed{4}",
-                                                             ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.RawEquipmentData>(_equipments[_currentDisplayEquipmentIndex].EquipmentSourceID).NameContextID) + (_isEquiped ? " (E)" : ""),
-                                                             _equipments[_currentDisplayEquipmentIndex].HP >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].HP : _equipments[_currentDisplayEquipmentIndex].HP.ToString(),
-                                                             _equipments[_currentDisplayEquipmentIndex].Attack >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].Attack : _equipments[_currentDisplayEquipmentIndex].Attack.ToString(),
-                                                             _equipments[_currentDisplayEquipmentIndex].Defense >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].Defense : _equipments[_currentDisplayEquipmentIndex].Defense.ToString(),
-                                                             _equipments[_currentDisplayEquipmentIndex].Speed >= 0 ? "+" + _equipments[_currentDisplayEquipmentIndex].Speed : _equipments[_currentDisplayEquipmentIndex].Speed.ToString());
-
-                    if (m_changeEquipmentPanelEquipmentListToEquipment.ContainsKey(m_changeEquipmentPanel_equipmentList[i]))
-                    {
-                        m_changeEquipmentPanelEquipmentListToEquipment[m_changeEquipmentPanel_equipmentList[i]] = _equipments[_currentDisplayEquipmentIndex];
-                    }
-                    else
-                    {
-                        m_changeEquipmentPanelEquipmentListToEquipment.Add(m_changeEquipmentPanel_equipmentList[i], _equipments[_currentDisplayEquipmentIndex]);
-                    }
-
-                    m_changeEquipmentPanel_equipmentListImgae[i].color = _equipments[_currentDisplayEquipmentIndex] == m_currrentSelectEquipment ? Color.gray : Color.white;
-                    m_changeEquipmentPanel_equipmentList[i].transform.parent.gameObject.SetActive(true);
+                    m_changeEquipmentPanel_equipmentList[i].SetUp(_equipments[_currentDisplayEquipmentIndex]);
+                    m_changeEquipmentPanel_equipmentList[i].EnableButton(_equipments[_currentDisplayEquipmentIndex] != m_currrentSelectEquipment);
+                    m_changeEquipmentPanel_equipmentList[i].gameObject.SetActive(true);
                 }
             }
 
@@ -342,7 +336,7 @@ namespace ProjectBS.UI
                 }
                 else
                 {
-                    Data.SkillData _skillData = GameDataManager.GetGameData<Data.SkillData>(PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex].SkillSourceID);
+                    Data.SkillData _skillData = PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex].GetSourceData();
 
                     m_changeSkillPanel_skillList[i].text = string.Format("{0} (x{1})\n{2}",
                         ContextConverter.Instance.GetContext(_skillData.NameContextID),
@@ -362,7 +356,7 @@ namespace ProjectBS.UI
                 }
             }
 
-            Data.SkillData _beforeSkillData = GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.GetSkill(m_targetSkillSlotIndex));
+            Data.SkillData _beforeSkillData = m_refCharacter.GetSkill(m_targetSkillSlotIndex);
             
             m_changeSkillPanel_beforeText.text = string.Format("{0}\n{1}",
             ContextConverter.Instance.GetContext(_beforeSkillData.NameContextID),
@@ -374,7 +368,7 @@ namespace ProjectBS.UI
             }
             else
             {
-                Data.SkillData _selectingSkill = GameDataManager.GetGameData<Data.SkillData>(m_currentSelectSkill.SkillSourceID);
+                Data.SkillData _selectingSkill = m_currentSelectSkill.GetSourceData();
 
                 m_changeSkillPanel_afterText.text = string.Format("{0}\n{1}",
                     ContextConverter.Instance.GetContext(_selectingSkill.NameContextID),
@@ -398,37 +392,37 @@ namespace ProjectBS.UI
         private void RefreshInfo()
         {
             Data.OwningEquipmentData _head = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head);
-            int _headNameID = _head != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_head.EquipmentSourceID).NameContextID : 0;
+            int _headNameID = _head != null ? _head.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _body = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body);
-            int _bodyNameID = _body != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_body.EquipmentSourceID).NameContextID : 0;
+            int _bodyNameID = _body != null ? _body.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _hand = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand);
-            int _handNameID = _hand != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_hand.EquipmentSourceID).NameContextID : 0;
+            int _handNameID = _hand != null ? _hand.GetSourceData().NameContextID : 0;
             Data.OwningEquipmentData _foot = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot);
-            int _footNameID = _foot != null ? GameDataManager.GetGameData<Data.RawEquipmentData>(_foot.EquipmentSourceID).NameContextID : 0;
+            int _footNameID = _foot != null ? _foot.GetSourceData().NameContextID : 0;
 
             m_headEquipmentText.text = ContextConverter.Instance.GetContext(_headNameID);
             m_bodyEquipmentText.text = ContextConverter.Instance.GetContext(_bodyNameID);
             m_handEquipmentText.text = ContextConverter.Instance.GetContext(_handNameID);
             m_footEquipmentText.text = ContextConverter.Instance.GetContext(_footNameID);
 
-            m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_0).NameContextID);
-            m_skill1Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_1).NameContextID);
-            m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_2).NameContextID);
-            m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_3).NameContextID);
+            m_skill0Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(0).NameContextID);
+            m_skill1Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(1).NameContextID);
+            m_skill2Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(2).NameContextID);
+            m_skill3Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(3).NameContextID);
 
-            m_levelText.text = "Level" + m_refCharacter.Level + "\n\nExp\n" + m_refCharacter.Exp + "/" + GameDataManager.GetGameData<Data.ExpData>(m_refCharacter.Level).Require;
+            m_levelText.text = "Level" + m_refCharacter.Level + "\n\nExp\n" + m_refCharacter.Exp + "/" + m_refCharacter.GetRequireExp();
             m_statusText.text = string.Format(ABILITY_FORMAT,
                             m_refCharacter.GetTotal(Keyword.Attack),
-                            GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).RankString,
+                            m_refCharacter.GetAbilityRankString(Keyword.Attack),
                             m_refCharacter.GetTotal(Keyword.Defense),
-                            GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).RankString,
+                            m_refCharacter.GetAbilityRankString(Keyword.Defense),
                             m_refCharacter.GetTotal(Keyword.Speed),
-                            GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).RankString);
+                            m_refCharacter.GetAbilityRankString(Keyword.Speed),
 
             m_hpspText.text = string.Format(HP_FORMAT,
                                 m_refCharacter.GetTotal(Keyword.HP),
-                                GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).RankString,
-                                m_refCharacter.SP);
+                                m_refCharacter.GetAbilityRankString(Keyword.HP),
+                                m_refCharacter.SP));
         }
     }
 }
