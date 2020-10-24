@@ -31,7 +31,7 @@ namespace ProjectBS.Combat
 
         public int TurnCount { get; private set; } = 0;
 
-        private AllCombatUnitAllEffectProcesser m_processer = null;
+        public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; private set; }
         private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
         private CombatUnitAction m_currentAction = null;
 
@@ -124,7 +124,7 @@ namespace ProjectBS.Combat
 
             m_currentDyingUnit = unit;
             m_onDiedCommandEnded = onDiedCommandEnded;
-            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -211,8 +211,8 @@ namespace ProjectBS.Combat
         {
             TurnCount = 0;
 
-            m_processer = new AllCombatUnitAllEffectProcesser(m_units);
-            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(m_units);
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -243,7 +243,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < m_units.Count; i++)
             {
                 m_units[i].actionIndex = i;
-                m_unitActions.Add(new CombatUnitAction(m_units[i], m_processer));
+                m_unitActions.Add(new CombatUnitAction(m_units[i], AllUnitAllEffectProcesser));
             }
 
             GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded += OnTurnStartAnimationEnded;
@@ -254,7 +254,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded -= OnTurnStartAnimationEnded;
 
-            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -287,6 +287,7 @@ namespace ProjectBS.Combat
             }
 
             m_currentAction.Actor.skipAction = false; // reset skip action state on action ended 
+            m_currentAction.Actor.skipCheckSP = false; // same
             CheckGameEnd();
         }
 
@@ -322,7 +323,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Any_Ended()
         {
-            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_currentDyingUnit,
                 target = null,
@@ -342,7 +343,7 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
-            m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -394,22 +395,10 @@ namespace ProjectBS.Combat
             if (m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex].remainingTime <= 0)
             {
                 CombatUnit.Buff _buff = m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex];
-                m_units[m_currentCheckBuffEndUnitIndex].buffs.RemoveAt(m_currentCheckBuffIndex);
-
-                CombatUtility.RemoveEffect(m_units[m_currentCheckBuffEndUnitIndex], _buff.effectID);
-                m_currentCheckBuffIndex--;
-
-                SkillEffectData _effect = KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID);
-                EffectProcessManager.GetSkillEffectProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
+                if(!m_units[m_currentCheckBuffEndUnitIndex].RemoveBuff(_buff, -1, delegate { DisplayRemoveBuff(_buff); }))
                 {
-                    caster = m_units[m_currentCheckBuffEndUnitIndex],
-                    target = null,
-                    timing = EffectProcesser.TriggerTiming.OnDeactived,
-                    allEffectProcesser = m_processer,
-                    referenceBuff = _buff,
-                    refenceSkill = null,
-                    onEnded = delegate { DisplayRemoveBuff(_buff); }
-                });
+                    CheckNextBuffEnd();
+                }
             }
             else
             {
@@ -421,7 +410,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(_buff.effectID).NameContextID),
+                buffName = ContextConverter.Instance.GetContext(_buff.GetSkillEffectData().NameContextID),
                 taker = m_units[m_currentCheckBuffEndUnitIndex]
             }, CheckNextBuffEnd);
         }

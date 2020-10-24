@@ -160,7 +160,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
             else if(processData.referenceBuff != null)
             {
-                _id = KahaGameCore.Static.GameDataManager.GetGameData<Data.SkillEffectData>(processData.referenceBuff.effectID).NameContextID;
+                _id = processData.referenceBuff.GetSkillEffectData().NameContextID;
             }
 
             GetPage<UI.CombatUIView>().ShowSkillAnimation(new UI.CombatUIView.SkillAnimationData

@@ -134,6 +134,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_Destroy();
                     }
+                case "SetSkipCheckSP":
+                    {
+                        return new EffectCommand_SetSkipCheckSP();
+                    }
                 default:
                     {
                         throw new System.Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);

@@ -11,6 +11,7 @@ namespace ProjectBS.Data
         public string ReferenceContextIDs { get; private set; }
         public string Command { get; private set; }
         public int IsDrop { get; private set; }
+        public int Tag { get; private set; }
 
         public string GetAllDescriptionContext()
         {

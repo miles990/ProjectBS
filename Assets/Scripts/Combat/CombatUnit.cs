@@ -18,6 +18,11 @@ namespace ProjectBS.Combat
             public int stackCount = 1;
             public CombatUnit owner = null;
             public CombatUnit from = null;
+
+            public SkillEffectData GetSkillEffectData()
+            {
+                return KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(effectID);
+            }
         }
 
         public class StatusAdder
@@ -125,6 +130,49 @@ namespace ProjectBS.Combat
         public int GetSpeed()
         {
             return GetResult(rawSpeed, Keyword.Speed);
+        }
+
+        public bool RemoveBuff(Buff buff, int stackCount, System.Action onRemoved)
+        {
+            if (stackCount == -1)
+            {
+                StartRemoveBuff(buff, onRemoved);
+                return true;
+            }
+            else
+            {
+                buff.stackCount -= stackCount;
+                if (buff.stackCount <= 0)
+                {
+                    StartRemoveBuff(buff, onRemoved);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void StartRemoveBuff(Buff buff, System.Action onRemoved)
+        {
+            SkillEffectData _effect = buff.GetSkillEffectData();
+
+            EffectProcessManager.GetSkillEffectProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
+            {
+                caster = this,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnDeactived,
+                allEffectProcesser = CombatUtility.CurrentComabtManager.AllUnitAllEffectProcesser,
+                referenceBuff = buff,
+                refenceSkill = null,
+                onEnded = delegate { OnBuffRemoved(buff, _effect, onRemoved); }
+            });
+        }
+
+        private void OnBuffRemoved(Buff buff, SkillEffectData _effect, System.Action onRemoved)
+        {
+            CombatUtility.RemoveEffect(this, _effect.ID);
+            buffs.Remove(buff);
+            onRemoved?.Invoke();
         }
 
         private int GetResult(int rawValue, string statusType)
