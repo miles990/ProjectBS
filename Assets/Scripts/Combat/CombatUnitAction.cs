@@ -63,8 +63,10 @@ namespace ProjectBS.Combat
                 if (Actor.HP > 0)
                 {
                     GetPage<UI.CombatUIView>().ShowForceEndAction(Actor);
+                    TimerManager.Schedule(UI.CombatUIView.DISPLAY_INFO_TIME, OnSkillEnded);
                 }
-                OnSkillEnded();
+                else
+                    OnSkillEnded();
                 return;
             }
 

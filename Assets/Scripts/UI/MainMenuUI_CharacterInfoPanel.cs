@@ -360,7 +360,7 @@ namespace ProjectBS.UI
             
             m_changeSkillPanel_beforeText.text = string.Format("{0}\n{1}",
             ContextConverter.Instance.GetContext(_beforeSkillData.NameContextID),
-            ContextConverter.Instance.GetContext(_beforeSkillData.DescriptionContextID));
+            _beforeSkillData.GetAllDescriptionContext());
 
             if (m_currentSelectSkill == null)
             {

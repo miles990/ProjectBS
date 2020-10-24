@@ -12,8 +12,9 @@ namespace ProjectBS.UI
         public void SetUp(Data.OwningSkillData skillData)
         {
             Data.SkillData _source = skillData.GetSourceData();
+
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
-            m_descriptionText.text = ContextConverter.Instance.GetContext(_source.DescriptionContextID);
+            m_descriptionText.text = _source.GetAllDescriptionContext();
             m_amoumtText.text = "x" + skillData.Amount;
         }
     }

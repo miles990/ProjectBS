@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KahaGameCore.Static;
 
 namespace ProjectBS.Combat
 {
@@ -51,7 +52,7 @@ namespace ProjectBS.Combat
 
                 if (data.formula[i] == ')' || i == data.formula.Length - 1)
                 {
-                    string _blockResult = (Arithmetic(data, _buffer[_buffer.Count - 1]));
+                    string _blockResult = _buffer[_buffer.Count - 1];
 
                     if (_buffer.Count > 1)
                     {
@@ -267,9 +268,9 @@ namespace ProjectBS.Combat
                 case Keyword.Random:
                     {
                         string[] _varParts = paraString.Split(',');
-                        int _min = int.Parse(_varParts[0]);
-                        int _max = int.Parse(_varParts[1]);
-                        if(_minus)
+                        int _min = System.Convert.ToInt32(float.Parse(Arithmetic(data, _varParts[0])));
+                        int _max = System.Convert.ToInt32(float.Parse(Arithmetic(data, _varParts[1])));
+                        if (_minus)
                             return -UnityEngine.Random.Range(_min, _max);
                         else
                             return UnityEngine.Random.Range(_min, _max);
@@ -362,7 +363,7 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.Random:
                     {
-                        string _value = paraString.Replace(Keyword.Random, "");
+                        string _value = paraString.RemoveBlankCharacters().Replace(Keyword.Random, "");
                         _value = paraString.Replace("(", "");
                         _value = paraString.Replace(")", "");
                         string[] _valueParts = _value.Split(',');

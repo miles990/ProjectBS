@@ -18,10 +18,10 @@ namespace ProjectBS
             DropInfo _dropInfo = new DropInfo();
             
             Data.BossData _mainBoss = GameDataManager.GetGameData<Data.BossData>(bossStage.MainBossID);
-            _dropInfo.exp = Random.Range(_mainBoss.MinExp, _mainBoss.MaxExp + 1);
+            _dropInfo.exp = Random.Range(bossStage.MinExp, bossStage.MaxExp + 1);
            
             int _randomDropCount = Random.Range(10, 21);
-            string[] _dropPool = _mainBoss.DropData.Split('$');
+            string[] _dropPool = bossStage.DropData.Split('$');
             for (int i = 0; i < _randomDropCount; i++)
             {
                 if (Random.Range(0f, 100f) <= GameDataLoader.GameProperties.DropSkillChance)

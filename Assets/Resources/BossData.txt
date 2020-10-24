@@ -8,10 +8,7 @@
     "Speed": 50,
     "HP": 2000,
     "SP": 100,
-    "AI": "AI\n{\n    RandomCastSkill(10003);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 100,
-    "MaxExp": 200
+    "AI": "AI\n{\n    RandomCastSkill(10003);\n}"
   },
   {
     "ID": 2,
@@ -22,10 +19,7 @@
     "Speed": 250,
     "HP": 10000,
     "SP": 100,
-    "AI": "AI\n{\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 1100,
-    "MaxExp": 2200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   },
   {
     "ID": 3,
@@ -36,10 +30,7 @@
     "Speed": 500,
     "HP": 20000,
     "SP": 100,
-    "AI": "AI\n{\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 4600,
-    "MaxExp": 9200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   },
   {
     "ID": 4,
@@ -50,10 +41,7 @@
     "Speed": 1200,
     "HP": 48000,
     "SP": 100,
-    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 19100,
-    "MaxExp": 38200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   },
   {
     "ID": 5,
@@ -65,10 +53,7 @@
     "HP": 112000,
     "SP": 100,
     "EffectIDs": "10001;10003",
-    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 78100,
-    "MaxExp": 156200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   },
   {
     "ID": 6,
@@ -80,10 +65,7 @@
     "HP": 224000,
     "SP": 100,
     "EffectIDs": "10001;10003",
-    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 316100,
-    "MaxExp": 632200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   },
   {
     "ID": 7,
@@ -95,9 +77,6 @@
     "HP": 320000,
     "SP": 100,
     "EffectIDs": "10001;10003",
-    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}",
-    "DropData": "1:25$2:25$3:25$4:25",
-    "MinExp": 495100,
-    "MaxExp": 990200
+    "AI": "AI\n{\n    BeginIf_Effect(Self, 1, 10004);\n    CastSkill(10007);\n    Quit();\n    EndIf();\n    BeginIf(Self.HP <= Self.MaxHP * 0.5);\n    RandomCastSkill(10002);\n    Quit();\n    EndIf();\n    RandomCastSkill(10001);\n}"
   }
 ]

@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using KahaGameCore.Static;
-using UnityEngine.UI;
 
 namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
-        private const float DISPLAY_INFO_TIME = 1f;
+        public const float DISPLAY_INFO_TIME = 1f;
 
         public override bool IsShowing { get { return m_root.activeSelf; } }
 
@@ -245,7 +244,7 @@ namespace ProjectBS.UI
             Data.SkillData _selectedSkill = m_currentShowingSkills[index];
 
             GameManager.Instance.MessageManager.ShowCommonMessage(
-                ContextConverter.Instance.GetContext(_selectedSkill.DescriptionContextID),
+                _selectedSkill.GetAllDescriptionContext(),
                 ContextConverter.Instance.GetContext(_selectedSkill.NameContextID), null);
         }
 

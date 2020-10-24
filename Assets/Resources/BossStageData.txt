@@ -13,7 +13,10 @@
     "MainBossID": 1,
     "Stamina": 0,
     "BossIDs": 1,
-    "DescriptionContextID": 300001
+    "DescriptionContextID": 300001,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 500,
+    "MaxExp": 1000
   },
   {
     "ID": 2,
@@ -21,7 +24,10 @@
     "MainBossID": 2,
     "Stamina": 0,
     "BossIDs": 2,
-    "DescriptionContextID": 300002
+    "DescriptionContextID": 300002,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 5500,
+    "MaxExp": 11000
   },
   {
     "ID": 3,
@@ -29,7 +35,10 @@
     "MainBossID": 3,
     "Stamina": 0,
     "BossIDs": 3,
-    "DescriptionContextID": 300003
+    "DescriptionContextID": 300003,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 23000,
+    "MaxExp": 46000
   },
   {
     "ID": 4,
@@ -37,7 +46,10 @@
     "MainBossID": 4,
     "Stamina": 0,
     "BossIDs": 4,
-    "DescriptionContextID": 300004
+    "DescriptionContextID": 300004,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 95500,
+    "MaxExp": 191000
   },
   {
     "ID": 5,
@@ -45,7 +57,10 @@
     "MainBossID": 5,
     "Stamina": 0,
     "BossIDs": 5,
-    "DescriptionContextID": 300005
+    "DescriptionContextID": 300005,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 390500,
+    "MaxExp": 781000
   },
   {
     "ID": 6,
@@ -53,7 +68,10 @@
     "MainBossID": 6,
     "Stamina": 0,
     "BossIDs": 6,
-    "DescriptionContextID": 300006
+    "DescriptionContextID": 300006,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 1580500,
+    "MaxExp": 3161000
   },
   {
     "ID": 7,
@@ -61,6 +79,9 @@
     "MainBossID": 7,
     "Stamina": 0,
     "BossIDs": 7,
-    "DescriptionContextID": 300007
+    "DescriptionContextID": 300007,
+    "DropData": "1:25$2:25$3:25$4:25",
+    "MinExp": 2475500,
+    "MaxExp": 4951000
   }
 ]

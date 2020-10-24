@@ -17,15 +17,15 @@
     "NameContextID": 11,
     "DescriptionContextID": 12,
     "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
     "ID": 3,
     "NameContextID": 13,
     "DescriptionContextID": 14,
-    "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(1000, 10000));\n}",
-    "Tag": "Debuff",
+    "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(500, 2000));\n}",
+    "Tag": 400003,
     "MaxStackCount": 10
   },
   {
@@ -33,7 +33,7 @@
     "NameContextID": 15,
     "DescriptionContextID": 16,
     "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}\n\nOnDamageTaken_Self\n{\n     RemoveBuff(Self, 4, -1);\n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
@@ -41,7 +41,7 @@
     "NameContextID": 17,
     "DescriptionContextID": 18,
     "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP >= Self.MaxHP * 0.01 + 1);\n     AddStatus(Self, HP, -Self.MaxHP * 0.01);\n     EndIf();\n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 10
   },
   {
@@ -49,7 +49,7 @@
     "NameContextID": 19,
     "DescriptionContextID": 20,
     "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnActionStarted_Self\n{\n    SetForceEndAction();\n}\n\nOnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.3); \n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
@@ -57,7 +57,7 @@
     "NameContextID": 21,
     "DescriptionContextID": 22,
     "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.3); \n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
@@ -65,7 +65,7 @@
     "NameContextID": 23,
     "DescriptionContextID": 24,
     "Command": "OnActived\n{\n     AddStatus(Self, Defense, -Self.Defense * 0.5); \n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
@@ -95,7 +95,7 @@
     "NameContextID": 129,
     "DescriptionContextID": 131,
     "Command": "OnActived\n{\n     AddStatus(Self, Defense, -Self.Defense * 0.5); \n     AddStatus(Self, Attack, -Self.Attack * 0.5);\n     AddStatus(Self, Speed, -Self.Speed * 0.5);\n}",
-    "Tag": "Debuff",
+    "Tag": 400003,
     "MaxStackCount": 1
   },
   {
