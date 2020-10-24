@@ -886,6 +886,7 @@ GameObject:
   - component: {fileID: 124315495}
   - component: {fileID: 124315494}
   - component: {fileID: 124315493}
+  - component: {fileID: 124315496}
   m_Layer: 5
   m_Name: BodyEquipButton
   m_TagString: Untagged
@@ -1003,6 +1004,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124315491}
   m_CullTransparentMesh: 0
+--- !u!114 &124315496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124315491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057c2be01c6e1f845be9febe2a82a7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1487558283}
 --- !u!1 &132138308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,6 +1708,7 @@ GameObject:
   - component: {fileID: 248979655}
   - component: {fileID: 248979654}
   - component: {fileID: 248979653}
+  - component: {fileID: 248979656}
   m_Layer: 5
   m_Name: Skill3Button
   m_TagString: Untagged
@@ -1811,6 +1826,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248979651}
   m_CullTransparentMesh: 0
+--- !u!114 &248979656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248979651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb80bc9e6170914385fa3eb89c90d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1471023015}
 --- !u!1 &257637000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,6 +2370,7 @@ GameObject:
   - component: {fileID: 311689188}
   - component: {fileID: 311689187}
   - component: {fileID: 311689186}
+  - component: {fileID: 311689189}
   m_Layer: 5
   m_Name: FootEquipButton
   m_TagString: Untagged
@@ -2459,6 +2488,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311689184}
   m_CullTransparentMesh: 0
+--- !u!114 &311689189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311689184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057c2be01c6e1f845be9febe2a82a7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 387476417}
 --- !u!1 &371174732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,7 +2519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &371174733
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4326,6 +4368,7 @@ GameObject:
   - component: {fileID: 540047135}
   - component: {fileID: 540047134}
   - component: {fileID: 540047133}
+  - component: {fileID: 540047136}
   m_Layer: 5
   m_Name: Skill0Button
   m_TagString: Untagged
@@ -4443,6 +4486,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540047131}
   m_CullTransparentMesh: 0
+--- !u!114 &540047136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540047131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb80bc9e6170914385fa3eb89c90d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 241175349}
 --- !u!1 &540523840
 GameObject:
   m_ObjectHideFlags: 0
@@ -5408,17 +5464,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b61bf8ba6b9709d4e909898255a8446c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_headEquipmentText: {fileID: 1562271325}
-  m_bodyEquipmentText: {fileID: 1487558283}
-  m_footEquipmentText: {fileID: 387476417}
-  m_handEquipmentText: {fileID: 1988213428}
+  m_headEquipment: {fileID: 1550600016}
+  m_bodyEquipment: {fileID: 124315496}
+  m_footEquipment: {fileID: 311689189}
+  m_handEquipment: {fileID: 725088882}
   m_levelText: {fileID: 541754502}
   m_hpspText: {fileID: 384995799}
   m_statusText: {fileID: 1586521403}
-  m_skill0Text: {fileID: 241175349}
-  m_skill1Text: {fileID: 1406726209}
-  m_skill2Text: {fileID: 1543703691}
-  m_skill3Text: {fileID: 1471023015}
+  m_skill0: {fileID: 540047136}
+  m_skill1: {fileID: 1394051468}
+  m_skill2: {fileID: 1366396998}
+  m_skill3: {fileID: 248979656}
   m_changeEquipmentPanelRoot: {fileID: 2025424746}
   m_changeEquipmentPanel_equipmentList:
   - {fileID: 393708618}
@@ -5962,6 +6018,7 @@ GameObject:
   - component: {fileID: 725088881}
   - component: {fileID: 725088880}
   - component: {fileID: 725088879}
+  - component: {fileID: 725088882}
   m_Layer: 5
   m_Name: HandEquipButton
   m_TagString: Untagged
@@ -6079,6 +6136,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725088877}
   m_CullTransparentMesh: 0
+--- !u!114 &725088882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725088877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057c2be01c6e1f845be9febe2a82a7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1988213428}
 --- !u!1 &725972632
 GameObject:
   m_ObjectHideFlags: 0
@@ -6738,7 +6808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &830891192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11025,6 +11095,7 @@ GameObject:
   - component: {fileID: 1366396997}
   - component: {fileID: 1366396996}
   - component: {fileID: 1366396995}
+  - component: {fileID: 1366396998}
   m_Layer: 5
   m_Name: Skill2Button
   m_TagString: Untagged
@@ -11142,6 +11213,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366396993}
   m_CullTransparentMesh: 0
+--- !u!114 &1366396998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366396993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb80bc9e6170914385fa3eb89c90d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1543703691}
 --- !u!1 &1384037815
 GameObject:
   m_ObjectHideFlags: 0
@@ -11231,6 +11315,7 @@ GameObject:
   - component: {fileID: 1394051467}
   - component: {fileID: 1394051466}
   - component: {fileID: 1394051465}
+  - component: {fileID: 1394051468}
   m_Layer: 5
   m_Name: Skill1Button
   m_TagString: Untagged
@@ -11348,6 +11433,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394051463}
   m_CullTransparentMesh: 0
+--- !u!114 &1394051468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394051463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb80bc9e6170914385fa3eb89c90d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1406726209}
 --- !u!1 &1406726207
 GameObject:
   m_ObjectHideFlags: 0
@@ -12665,6 +12763,7 @@ GameObject:
   - component: {fileID: 1550600015}
   - component: {fileID: 1550600014}
   - component: {fileID: 1550600013}
+  - component: {fileID: 1550600016}
   m_Layer: 5
   m_Name: HeadEquipButton
   m_TagString: Untagged
@@ -12782,6 +12881,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550600011}
   m_CullTransparentMesh: 0
+--- !u!114 &1550600016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550600011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057c2be01c6e1f845be9febe2a82a7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nameText: {fileID: 1562271325}
 --- !u!1 &1562271323
 GameObject:
   m_ObjectHideFlags: 0
@@ -16328,7 +16440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2025424747
 RectTransform:
   m_ObjectHideFlags: 0

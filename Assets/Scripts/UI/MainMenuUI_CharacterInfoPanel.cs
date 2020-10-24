@@ -20,19 +20,19 @@ namespace ProjectBS.UI
         public event System.Action OnEditEnded = null;
 
         [Header("Equipmet")]
-        [SerializeField] private Text m_headEquipmentText = null;
-        [SerializeField] private Text m_bodyEquipmentText = null;
-        [SerializeField] private Text m_footEquipmentText = null;
-        [SerializeField] private Text m_handEquipmentText = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_headEquipment = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_bodyEquipment = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_footEquipment = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_handEquipment = null;
         [Header("Status")]
         [SerializeField] private Text m_levelText = null;
         [SerializeField] private Text m_hpspText = null;
         [SerializeField] private Text m_statusText = null;
         [Header("Skill")]
-        [SerializeField] private Text m_skill0Text = null;
-        [SerializeField] private Text m_skill1Text = null;
-        [SerializeField] private Text m_skill2Text = null;
-        [SerializeField] private Text m_skill3Text = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill0 = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill1 = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill2 = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill3 = null;
         [Header("Change Equipment Panel")]
         [SerializeField] private GameObject m_changeEquipmentPanelRoot = null;
         [SerializeField] private MainMenuUI_ChangeWeaponPanel_EquipmentButton[] m_changeEquipmentPanel_equipmentList = null;
@@ -391,24 +391,15 @@ namespace ProjectBS.UI
 
         private void RefreshInfo()
         {
-            Data.OwningEquipmentData _head = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head);
-            int _headNameID = _head != null ? _head.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _body = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body);
-            int _bodyNameID = _body != null ? _body.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _hand = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand);
-            int _handNameID = _hand != null ? _hand.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _foot = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot);
-            int _footNameID = _foot != null ? _foot.GetSourceData().NameContextID : 0;
+            m_headEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head));
+            m_bodyEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body));
+            m_handEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand));
+            m_footEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot));
 
-            m_headEquipmentText.text = ContextConverter.Instance.GetContext(_headNameID);
-            m_bodyEquipmentText.text = ContextConverter.Instance.GetContext(_bodyNameID);
-            m_handEquipmentText.text = ContextConverter.Instance.GetContext(_handNameID);
-            m_footEquipmentText.text = ContextConverter.Instance.GetContext(_footNameID);
-
-            m_skill0Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(0).NameContextID);
-            m_skill1Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(1).NameContextID);
-            m_skill2Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(2).NameContextID);
-            m_skill3Text.text = ContextConverter.Instance.GetContext(m_refCharacter.GetSkill(3).NameContextID);
+            m_skill0.SetUp(m_refCharacter.GetSkill(0));
+            m_skill1.SetUp(m_refCharacter.GetSkill(1));
+            m_skill2.SetUp(m_refCharacter.GetSkill(2));
+            m_skill3.SetUp(m_refCharacter.GetSkill(3));
 
             m_levelText.text = "Level" + m_refCharacter.Level + "\n\nExp\n" + m_refCharacter.Exp + "/" + m_refCharacter.GetRequireExp();
             m_statusText.text = string.Format(ABILITY_FORMAT,

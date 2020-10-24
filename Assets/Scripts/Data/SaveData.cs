@@ -237,6 +237,11 @@ namespace ProjectBS.Data
         {
             return GameDataManager.GetGameData<RawEquipmentData>(EquipmentSourceID);
         }
+
+        public int GetRequireExp()
+        {
+            return GameDataManager.GetGameData<ExpData>(Level).Require;
+        }
     }
 
     public class OwningSkillData
