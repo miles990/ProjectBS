@@ -43,7 +43,7 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyButtons = null;
         [Header("Change Skill Panel")]
         [SerializeField] private GameObject m_changeSkillPanelRoot = null;
-        [SerializeField] private Text[] m_changeSkillPanel_skillList = null;
+        [SerializeField] private MainMenuUI_ChangeSkillPanel_SkilltButton[] m_changeSkillPanel_skillList = null;
         [SerializeField] private Text m_changeSkillPanel_beforeText = null;
         [SerializeField] private Text m_changeSkillPanel_afterText = null;
         [Header("General")]
@@ -51,7 +51,6 @@ namespace ProjectBS.UI
         [SerializeField] private Button m_previousPageButton = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
-        private Dictionary<Text, Data.OwningSkillData> m_changeSkillPanelSkillListToSkill = new Dictionary<Text, Data.OwningSkillData>();
 
         private State m_currentState = State.None;
         private int m_currentPage = 0;
@@ -66,7 +65,10 @@ namespace ProjectBS.UI
             for(int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
             {
                 m_changeEquipmentPanel_equipmentList[i].OnSelected += Button_ChangeEquipment_Select;
-                m_changeEquipmentPanel_equipmentList[i].OnShownDetailCommanded += Button_ChangeEquipment_ShowDetail;
+            }
+            for (int i = 0; i < m_changeSkillPanel_skillList.Length; i++)
+            {
+                m_changeSkillPanel_skillList[i].OnSelected += Button_ChangeSkill_Select;
             }
         }
 
@@ -127,21 +129,9 @@ namespace ProjectBS.UI
             RefreshChangeEquipmentPanel(m_currentEquipmentType);
         }
 
-        public void Button_ChangeEquipment_ShowDetail(Data.OwningEquipmentData data)
+        public void Button_ChangeSkill_Select(Data.OwningSkillData data)
         {
-            Data.RawEquipmentData _source = data.GetSourceData();
-            GameManager.Instance.MessageManager.ShowCommonMessage(
-                ContextConverter.Instance.GetContext(_source.DescriptionContextID),
-                ContextConverter.Instance.GetContext(_source.NameContextID), null);
-        }
-
-        public void Button_ChangeSkill_Select(Text key)
-        {
-            if(m_changeSkillPanelSkillListToSkill.ContainsKey(key))
-            {
-                m_currentSelectSkill = m_changeSkillPanelSkillListToSkill[key];
-            }
-
+            m_currentSelectSkill = data;
             RefreshChangeSkillPanel();
         }
 
@@ -332,27 +322,12 @@ namespace ProjectBS.UI
 
                 if (i + m_changeSkillPanel_skillList.Length * m_currentPage >= PlayerManager.Instance.Player.Skills.Count)
                 {
-                    m_changeSkillPanel_skillList[i].transform.parent.gameObject.SetActive(false);
+                    m_changeSkillPanel_skillList[i].transform.gameObject.SetActive(false);
                 }
                 else
                 {
-                    Data.SkillData _skillData = PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex].GetSourceData();
-
-                    m_changeSkillPanel_skillList[i].text = string.Format("{0} (x{1})\n{2}",
-                        ContextConverter.Instance.GetContext(_skillData.NameContextID),
-                        PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex].Amount,
-                        ContextConverter.Instance.GetContext(_skillData.DescriptionContextID));
-
-                    if (m_changeSkillPanelSkillListToSkill.ContainsKey(m_changeSkillPanel_skillList[i]))
-                    {
-                        m_changeSkillPanelSkillListToSkill[m_changeSkillPanel_skillList[i]] = PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex];
-                    }
-                    else
-                    {
-                        m_changeSkillPanelSkillListToSkill.Add(m_changeSkillPanel_skillList[i], PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex]);
-                    }
-
-                    m_changeSkillPanel_skillList[i].transform.parent.gameObject.SetActive(true);
+                    m_changeSkillPanel_skillList[i].SetUp(PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex]);
+                    m_changeSkillPanel_skillList[i].transform.gameObject.SetActive(true);
                 }
             }
 
