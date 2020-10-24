@@ -201,7 +201,7 @@ namespace ProjectBS.UI
                 {
                     m_skillButtons[i].EnableButton(true);
                 }
-                m_skillButtons[i].SetUp(ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID));
+                m_skillButtons[i].SetUp(ContextConverter.Instance.GetContext(m_currentShowingSkills[i].NameContextID), m_currentShowingSkills[i].SP);
                 m_skillButtons[i].gameObject.SetActive(true);
             }
             m_skillPanel.SetActive(true);

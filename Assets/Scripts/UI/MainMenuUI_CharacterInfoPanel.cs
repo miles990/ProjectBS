@@ -333,9 +333,10 @@ namespace ProjectBS.UI
 
             Data.SkillData _beforeSkillData = m_refCharacter.GetSkill(m_targetSkillSlotIndex);
             
-            m_changeSkillPanel_beforeText.text = string.Format("{0}\n{1}",
+            m_changeSkillPanel_beforeText.text = string.Format("{0}\n(Cost SP:{1})\n{2}",
             ContextConverter.Instance.GetContext(_beforeSkillData.NameContextID),
-            _beforeSkillData.GetAllDescriptionContext());
+            _beforeSkillData.SP,
+            ContextConverter.Instance.GetContext(_beforeSkillData.DescriptionContextID));
 
             if (m_currentSelectSkill == null)
             {
@@ -345,8 +346,9 @@ namespace ProjectBS.UI
             {
                 Data.SkillData _selectingSkill = m_currentSelectSkill.GetSourceData();
 
-                m_changeSkillPanel_afterText.text = string.Format("{0}\n{1}",
+                m_changeSkillPanel_afterText.text = string.Format("{0}\n(Cost SP:{1})\n{2}",
                     ContextConverter.Instance.GetContext(_selectingSkill.NameContextID),
+                    _selectingSkill.SP,
                     ContextConverter.Instance.GetContext(_selectingSkill.DescriptionContextID));
             }
         }

@@ -19,9 +19,9 @@ namespace ProjectBS.Combat
         private float m_showInfoTimer = 0f;
         private bool m_isEnable = false;
 
-        public void SetUp(string skillName)
+        public void SetUp(string skillName, int sp)
         {
-            m_skillText.text = skillName;
+            m_skillText.text = skillName + "\nSP: " + sp;
         }
 
         public void EnableButton(bool enable)

@@ -29,7 +29,7 @@
     "SP": 0,
     "NameContextID": 101,
     "DescriptionContextID": 102,
-    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, Self.Attack * 2);\n}",
+    "Command": "OnBattleStarted\n{\n     SetStatus(Self, Hatred, Self.Defense * 2);\n}",
     "IsDrop": 1
   },
   {
@@ -70,6 +70,7 @@
     "SP": 0,
     "NameContextID": 113,
     "DescriptionContextID": 114,
+    "ReferenceContextIDs": "115;116",
     "Command": "OnActived\n{\n     DealDamage(SelectOther(Opponent, Manual, 1), Self.Attack * 0.5, 0, 0);\n     GainBuff(Self, 102, -1);\n}",
     "IsDrop": 1
   },
@@ -181,7 +182,7 @@
     "SP": 0,
     "NameContextID": 140,
     "DescriptionContextID": 141,
-    "Command": "OnActived\n{\n     AddStatus(SelectOther(SameSide, Manual, 1), SP, 10);\n     AddStatus(Self, HP, Self.MaxHP * 0.1);\n}",
+    "Command": "OnActived\n{\n     AddStatus(SelectOther(SameSide, Manual, 1), SP, 10);\n     AddStatus(Self, HP, -Self.MaxHP * 0.1);\n}",
     "IsDrop": 1
   },
   {

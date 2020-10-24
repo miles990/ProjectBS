@@ -17,9 +17,10 @@ namespace ProjectBS.UI
         public void SetUp(Data.OwningSkillData data)
         {
             m_referenceSkill = data;
-            m_nameText.text = string.Format("{0} (x{1})\n{2}",
+            m_nameText.text = string.Format("{0} (x{1})\n(Cost SP: {2})\n{3}",
                         ContextConverter.Instance.GetContext(m_referenceSkill.GetSourceData().NameContextID),
                         m_referenceSkill.Amount,
+                        m_referenceSkill.GetSourceData().SP,
                         ContextConverter.Instance.GetContext(m_referenceSkill.GetSourceData().DescriptionContextID)); ;
         }
 
@@ -48,7 +49,7 @@ namespace ProjectBS.UI
                     string _name = ContextConverter.Instance.GetContext(m_referenceSkill.GetSourceData().NameContextID);
 
                     GameManager.Instance.MessageManager.ShowCommonMessage(
-                        m_referenceSkill.GetSourceData().GetAllDescriptionContext(),
+                        "Cost SP:" + m_referenceSkill.GetSourceData().SP + "\n\n" + m_referenceSkill.GetSourceData().GetAllDescriptionContext(),
                         _name, null);
                 }
             }
