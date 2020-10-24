@@ -201,21 +201,21 @@ namespace ProjectBS
             }
         }
 
-        public int GetPartyIndex(OwningCharacterData characterData)
+        public int GetPartyIndex(string UDID)
         {
-            if (Player.Party.MemberUDID_0 == characterData.UDID)
+            if (Player.Party.MemberUDID_0 == UDID)
             {
                 return 0;
             }
-            else if (Player.Party.MemberUDID_1 == characterData.UDID)
+            else if (Player.Party.MemberUDID_1 == UDID)
             {
                 return 1;
             }
-            else if (Player.Party.MemberUDID_2 == characterData.UDID)
+            else if (Player.Party.MemberUDID_2 == UDID)
             {
                 return 2;
             }
-            else if (Player.Party.MemberUDID_3 == characterData.UDID)
+            else if (Player.Party.MemberUDID_3 == UDID)
             {
                 return 3;
             }
@@ -223,6 +223,11 @@ namespace ProjectBS
             {
                 return -1;
             }
+        }
+
+        public int GetPartyIndex(OwningCharacterData characterData)
+        {
+            return GetPartyIndex(characterData.UDID);
         }
 
         public void SetToParty(int index, OwningCharacterData characterData)

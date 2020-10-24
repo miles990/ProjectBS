@@ -171,6 +171,12 @@ namespace ProjectBS
                 return;
             }
 
+            if (PlayerManager.Instance.GetPartyIndex(UDID) != -1)
+            {
+                GameManager.Instance.MessageManager.ShowCommonMessage("不可分解已編組角色", "Warning", null);
+                return;
+            }
+
             OwningCharacterData _target = PlayerManager.Instance.GetCharacterByUDID(UDID);
             PlayerManager.Instance.Player.Characters.Remove(_target);
             PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<ExpData>(_target.Level).Owning / 2;

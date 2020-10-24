@@ -61,6 +61,17 @@ namespace ProjectBS.UI
             }
         }
 
+        public void Test_Mall()
+        {
+            DisableAllPanel();
+            for (int i = 0; i < 11; i++)
+            {
+                PlayerManager.Instance.Player.Characters.Add(CharacterUtility.CreateNewCharacter());
+            }
+            GameManager.Instance.MessageManager.ShowCommonMessage("新增了11隻角色，快去確認看看!", "", null);
+            PlayerManager.Instance.SavePlayer();
+        }
+
         private void DisableAllPanel()
         {
             for (int i = 0; i < m_panelDatas.Length; i++)
