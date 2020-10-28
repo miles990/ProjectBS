@@ -40,7 +40,7 @@ namespace ProjectBS.UI
 
         private void RefreshBossButtons()
         {
-            List<Data.BossStageData> _allStage = new List<Data.BossStageData>(GameDataManager.GetAllGameData<Data.BossStageData>());
+            List<Data.BossStageData> _allStage = new List<Data.BossStageData>(KahaGameCore.Static.GameDataManager.GetAllGameData<Data.BossStageData>());
             for(int i = 0; i < _allStage.Count; i++)
             {
                 if(_allStage[i].Index == -1)

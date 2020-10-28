@@ -1,21 +1,11 @@
-﻿using UnityEngine;
-
-namespace ProjectBS
+﻿namespace ProjectBS
 {
-    [CreateAssetMenu(menuName = "Data/Game Properties")]
-    public class GameProperties : ScriptableObject
+    public class GameProperties 
     {
-        public int MaxDropCount { get { return m_maxDropCount; } }
-        [SerializeField] private int m_maxDropCount = 20;
-
-        public int MinDropCount { get { return m_minDropCount; } }
-        [SerializeField] private int m_minDropCount = 10;
-
-        public float DropSkillChance { get { return m_dropSkillChance; } }
-        [SerializeField] private float m_dropSkillChance = 50f;
-
-        public float PressDownShowInfoTime { get { return m_pressDownShowInfoTime; } }
-        [SerializeField] private float m_pressDownShowInfoTime = 1f;
+        public int MaxDropCount { get; private set; }
+        public int MinDropCount { get; private set; }
+        public float DropSkillChance { get; private set; }
+        public float PressDownShowInfoTime { get; private set; }
     }
 }
 

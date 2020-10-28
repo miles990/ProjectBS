@@ -32,7 +32,7 @@ namespace ProjectBS.Combat
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            m_showInfoTimer = GameDataLoader.GameProperties.PressDownShowInfoTime;
+            m_showInfoTimer = GameDataManager.GameProperties.PressDownShowInfoTime;
         }
 
         public void OnPointerUp(PointerEventData eventData)

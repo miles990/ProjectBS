@@ -21,7 +21,7 @@ namespace ProjectBS.Combat
 
             public SkillEffectData GetSkillEffectData()
             {
-                return KahaGameCore.Static.GameDataManager.GetGameData<SkillEffectData>(effectID);
+                return GameDataManager.GetGameData<SkillEffectData>(effectID);
             }
         }
 

@@ -16,7 +16,7 @@ namespace ProjectBS
         public static DropInfo Drop(Data.BossStageData bossStage)
         {
             DropInfo _dropInfo = new DropInfo();
-            
+
             Data.BossData _mainBoss = GameDataManager.GetGameData<Data.BossData>(bossStage.MainBossID);
             _dropInfo.exp = Random.Range(bossStage.MinExp, bossStage.MaxExp + 1);
            
@@ -24,7 +24,7 @@ namespace ProjectBS
             string[] _dropPool = bossStage.DropData.Split('$');
             for (int i = 0; i < _randomDropCount; i++)
             {
-                if (Random.Range(0f, 100f) <= GameDataLoader.GameProperties.DropSkillChance)
+                if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropSkillChance)
                 {
                     _dropInfo.skillIDs.Add(RollSkill());
                 }
@@ -59,7 +59,7 @@ namespace ProjectBS
 
         private static int RollSkill()
         {
-            Data.SkillData[] _allSkill = GameDataManager.GetAllGameData<Data.SkillData>();
+            Data.SkillData[] _allSkill = KahaGameCore.Static.GameDataManager.GetAllGameData<Data.SkillData>();
             Data.SkillData _random = _allSkill[Random.Range(0, _allSkill.Length)];
 
             int _count = 0;

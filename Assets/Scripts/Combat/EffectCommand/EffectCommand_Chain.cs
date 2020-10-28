@@ -29,7 +29,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             int _roll = UnityEngine.Random.Range(0, _pool.Count);
-            Data.SkillData _skill = KahaGameCore.Static.GameDataManager.GetGameData<Data.SkillData>(int.Parse(vars[0]));
+            Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(int.Parse(vars[0]));
             new EffectProcesser(_skill.Command).
                 Start(new EffectProcesser.ProcessData
                 {

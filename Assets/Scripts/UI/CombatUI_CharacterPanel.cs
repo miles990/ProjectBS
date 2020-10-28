@@ -78,7 +78,7 @@ namespace ProjectBS.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            m_showInfoTimer = GameDataLoader.GameProperties.PressDownShowInfoTime;
+            m_showInfoTimer = GameDataManager.GameProperties.PressDownShowInfoTime;
         }
 
         public void OnPointerExit(PointerEventData eventData)

@@ -137,7 +137,11 @@ namespace ProjectBS
         private void StartInitData()
         {
             m_currentState = State.InitData;
-            GameDataLoader.StartLoad();
+            GameDataManager.StartLoad(OnAllDataLoaded);
+        }
+
+        private void OnAllDataLoaded()
+        {
             PlayerManager.Instance.Init();
             ShowMainMenu();
         }

@@ -46,7 +46,7 @@ namespace ProjectBS
                 throw new System.Exception("[PlayerManager][Init] Player is already inited");
             }
 
-            m_player = GameDataManager.LoadJsonData<SaveData>();
+            m_player = KahaGameCore.Static.GameDataManager.LoadJsonData<SaveData>();
             if(m_player == null)
             {
                 m_player = CreateNewPlayer();
@@ -58,7 +58,7 @@ namespace ProjectBS
 
         public void SavePlayer()
         {
-            GameDataManager.SaveData(new SaveData[] { m_player });
+            KahaGameCore.Static.GameDataManager.SaveData(new SaveData[] { m_player });
         }
 
         public OwningCharacterData GetCharacterByUDID(string UDID)
