@@ -98,7 +98,6 @@ namespace ProjectBS
         private static IEnumerator IELoadData<T>(string name) where T : IGameData
         {
             string _url = string.Format(DATA_URL, "dev", name);
-            UnityWebRequest.ClearCookieCache(new Uri(_url));
             UnityWebRequest _request = UnityWebRequest.Get(_url);
             
             yield return _request.SendWebRequest();
