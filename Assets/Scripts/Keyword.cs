@@ -33,5 +33,6 @@
         public const string Time = "Time";
         public const string Owner = "Owner";
         public const string From = "From";
+        public const string SkillEffectID = "SkillEffectID";
     }
 }

@@ -326,6 +326,10 @@ namespace ProjectBS.Combat
                                     {
                                         return _buff.remainingTime;
                                     }
+                                case Keyword.SkillEffectID:
+                                    {
+                                        return _buff.effectID;
+                                    }
                                 default:
                                     {
                                         throw new System.Exception("[CombatUtility][GetValueByCommand] Invaild value type when getting buff info:" + _varParts[2]);
