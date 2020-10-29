@@ -49,6 +49,7 @@ namespace ProjectBS.Combat.EffectCommand
                     caster = processData.caster,
                     target = processData.target,
                     formula = m_valueString,
+                    referenceBuff = processData.referenceBuff,
                     useRawValue = true
                 });
             int _set = Convert.ToInt32(_value);

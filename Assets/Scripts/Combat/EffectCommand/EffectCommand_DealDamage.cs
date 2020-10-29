@@ -83,6 +83,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     caster = processData.caster,
                     target = m_targets[m_currentTargetIndex],
+                    referenceBuff = processData.referenceBuff,
                     formula = m_valueString,
                     useRawValue = false
                 });

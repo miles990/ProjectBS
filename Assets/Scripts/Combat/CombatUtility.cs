@@ -30,6 +30,7 @@ namespace ProjectBS.Combat
         {
             public CombatUnit caster = null;
             public CombatUnit target = null;
+            public CombatUnit.Buff referenceBuff = null;
             public string formula = "";
             public bool useRawValue = false;
         }
@@ -289,6 +290,16 @@ namespace ProjectBS.Combat
                             case Keyword.Target:
                                 {
                                     _getValueTarget = data.target;
+                                    break;
+                                }
+                            case Keyword.Owner:
+                                {
+                                    _getValueTarget = data.referenceBuff.owner;
+                                    break;
+                                }
+                            case Keyword.From:
+                                {
+                                    _getValueTarget = data.referenceBuff.from;
                                     break;
                                 }
                             default:

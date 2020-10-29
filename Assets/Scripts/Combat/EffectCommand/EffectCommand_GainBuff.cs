@@ -56,7 +56,10 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     _buff.stackCount++;
                 }
-                _buff.remainingTime = m_buffTime;
+                if(_buff.remainingTime < m_buffTime)
+                {
+                    _buff.remainingTime = m_buffTime;
+                }
             }
             else
             {

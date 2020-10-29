@@ -201,6 +201,7 @@ namespace ProjectBS.Combat
                         {
                             caster = _adderList[i].parentBuff.from,
                             target = this,
+                            referenceBuff = null,
                             formula = _adderList[i].valueString,
                             useRawValue = true
                         });
