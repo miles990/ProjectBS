@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_RemoveBuff : EffectCommandBase
+    public class EffectCommand_AddBuffTime : EffectCommandBase
     {
         private int m_effectID = 0;
-        private int m_removeStackCount = 0;
+        private int m_addTime = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
         private CombatUnit.Buff m_currentBuff = null;
@@ -17,7 +17,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             m_effectID = int.Parse(vars[1]);
 
-            m_removeStackCount = int.Parse(vars[2]);
+            m_addTime = int.Parse(vars[2]);
 
             m_onCompleted = onCompleted;
 
@@ -42,18 +42,26 @@ namespace ProjectBS.Combat.EffectCommand
             GetPage<UI.CombatUIView>().RefreshAllInfo();
 
             m_currentTargetIndex++;
-            if(m_currentTargetIndex >= m_targets.Count)
+            if (m_currentTargetIndex >= m_targets.Count)
             {
                 m_onCompleted?.Invoke();
                 return;
             }
 
-            if(m_effectID != -1)
+            if (m_effectID != -1)
             {
                 m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.effectID == m_effectID);
                 if (m_currentBuff != null)
                 {
-                    if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, m_removeStackCount, delegate { DisaplayRemoveBuff(GoNextTarget); }))
+                    m_currentBuff.remainingTime += m_addTime;
+                    if(m_currentBuff.remainingTime <= 0)
+                    {
+                        if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, -1, delegate { DisaplayRemoveBuff(GoNextTarget); }))
+                        {
+                            GoNextTarget();
+                        }
+                    }
+                    else
                     {
                         GoNextTarget();
                     }
@@ -82,13 +90,21 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
             {
                 GoNextTarget();
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
-            if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, m_removeStackCount, delegate { DisaplayRemoveBuff(GoNextBuff); }))
+            m_currentBuff.remainingTime += m_addTime;
+            if (m_currentBuff.remainingTime <= 0)
+            {
+                if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, -1, delegate { DisaplayRemoveBuff(GoNextBuff); }))
+                {
+                    GoNextBuff();
+                }
+            }
+            else
             {
                 GoNextBuff();
             }
