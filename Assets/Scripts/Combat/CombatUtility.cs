@@ -254,6 +254,15 @@ namespace ProjectBS.Combat
                     i--;
                 }
             }
+            for(int i = 0; i < unit.shields.Count; i++)
+            {
+                if(unit.shields[i].parentBuff != null
+                    && unit.shields[i].parentBuff.effectID == effectID)
+                {
+                    unit.shields.RemoveAt(i);
+                    i--;
+                }
+            }
         }
 
         private static int GetValueByCommand(CalculateData data, string command, string paraString)

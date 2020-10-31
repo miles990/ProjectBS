@@ -38,6 +38,13 @@ namespace ProjectBS.Combat
             public Buff parentBuff = null;
         }
 
+        public class Shield
+        {
+            public int value = 0;
+            public int triggerSKillID = 0;
+            public Buff parentBuff = null;
+        }
+
         public string name = "";
         public UnityEngine.Sprite sprite = null;
         public Camp camp = Camp.Player;
@@ -102,6 +109,7 @@ namespace ProjectBS.Combat
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
         public List<StatusAddLocker> statusAddLockers = new List<StatusAddLocker>();
+        public List<Shield> shields = new List<Shield>();
 
         public bool skipAction = false;
         public bool skipCheckSP = false;

@@ -224,7 +224,11 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 taker = m_targets[m_currentTargetIndex],
                 damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]
-            }, null);
+            }, OnDmgShown);
+        }
+
+        private void OnDmgShown()
+        {
             GetPage<UI.CombatUIView>().RefreshAllInfo();
 
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
