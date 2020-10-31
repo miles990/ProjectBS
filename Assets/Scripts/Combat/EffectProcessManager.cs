@@ -11,7 +11,9 @@ namespace ProjectBS.Combat
             typeof(EffectCommand_EndIf),
             typeof(EffectCommand_BeginIf),
             typeof(EffectCommand_BeginIf_Effect),
-            typeof(EffectCommand_BeginIf_Skill)
+            typeof(EffectCommand_BeginIf_Skill),
+            typeof(EffectCommand_BeginIf_HasEffectTag),
+            typeof(EffectCommand_BeginIf_LastSkillTag)
         };
 
         private static Dictionary<int, EffectProcesser> m_effectIDToProcesser = new Dictionary<int, EffectProcesser>();
