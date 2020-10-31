@@ -142,6 +142,11 @@ namespace ProjectBS.Combat
 
         public bool RemoveBuff(Buff buff, int stackCount, System.Action onRemoved)
         {
+            if(buff == null)
+            {
+                return false;
+            }
+
             if (stackCount == -1)
             {
                 StartRemoveBuff(buff, onRemoved);

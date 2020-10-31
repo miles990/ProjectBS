@@ -77,6 +77,9 @@ namespace ProjectBS.Combat.EffectCommand
             float _attackAddRollPersent = 0.01f * (float)_roll;
             float _defenseAddRollPersent = UnityEngine.Random.Range(0f, 1f);
 
+            UnityEngine.Debug.Log("_attackAddRollPersent=" + (_attackAddRollPersent * 100) + "%");
+            UnityEngine.Debug.Log("_defenseAddRollPersent=" + (_defenseAddRollPersent * 100) + "%");
+
             if (!float.TryParse(m_valueString, out float _attack))
             {
                 _attack = CombatUtility.Calculate(new CombatUtility.CalculateData
@@ -184,7 +187,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = null,
                 target = null,
-                timing = EffectProcesser.TriggerTiming.OnAttacked_Any,
+                timing = EffectProcesser.TriggerTiming.OnAttackEnded_Any,
                 onEnded = OnAttackedAnyEnded
             });
         }
@@ -195,7 +198,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = processData.caster,
                 target = null,
-                timing = EffectProcesser.TriggerTiming.OnAttacked_Self,
+                timing = EffectProcesser.TriggerTiming.OnAttackEnded_Self,
                 onEnded = End
             });
         }
@@ -219,7 +222,8 @@ namespace ProjectBS.Combat.EffectCommand
                 if (m_targets[m_currentTargetIndex].shields[0].value > processData.caster.targetToDmg[m_targets[m_currentTargetIndex]])
                 {
                     m_targets[m_currentTargetIndex].shields[0].value -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-                    ApplyDamageToNextTarget();
+                    processData.caster.targetToDmg[m_targets[m_currentTargetIndex]] = 0;
+                    OnDamageTaken_Self_Ended();
                     return;
                 }
                 else
@@ -265,7 +269,15 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnShieldSkillTriggered()
         {
-            m_targets[m_currentTargetIndex].RemoveBuff(m_targets[m_currentTargetIndex].shields[0].parentBuff, -1, OnShieldBuffRemoved);
+            if(m_targets[m_currentTargetIndex].shields[0].parentBuff == null)
+            {
+                m_targets[m_currentTargetIndex].shields.RemoveAt(0);
+                OnShieldBuffRemoved();
+            }
+            else
+            {
+                m_targets[m_currentTargetIndex].RemoveBuff(m_targets[m_currentTargetIndex].shields[0].parentBuff, -1, OnShieldBuffRemoved);
+            }
         }
 
         private void OnShieldBuffRemoved()
@@ -294,6 +306,28 @@ namespace ProjectBS.Combat.EffectCommand
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnDamageTaken_Self,
+                onEnded = OnDamageTaken_Self_Ended
+            });
+        }
+
+        private void OnDamageTaken_Self_Ended()
+        {
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = processData.caster,
+                timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Any,
+                onEnded = OnBeAttackedEnded_Any_Ended
+            });
+        }
+
+        private void OnBeAttackedEnded_Any_Ended()
+        {
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = m_targets[m_currentTargetIndex],
+                target = processData.caster,
+                timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Self,
                 onEnded = ApplyDamageToNextTarget
             });
         }

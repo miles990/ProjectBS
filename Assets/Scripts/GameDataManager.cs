@@ -54,6 +54,7 @@ namespace ProjectBS
                 new DownloadDataTask(IELoadData<RandomSkillData>("RandomSkillData")),
                 new DownloadDataTask(IELoadData<RawEquipmentData>("RawEquipmentData")),
                 new DownloadDataTask(IELoadData<BossStageData>("BossStageData")),
+                new DownloadDataTask(IELoadData<BossData>("BossData")),
                 new DownloadDataTask(IELoadGameProperties("GameProperties")),
             };
 
