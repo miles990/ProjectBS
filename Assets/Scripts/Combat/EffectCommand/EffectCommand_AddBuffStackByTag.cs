@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_RemoveBuffByTag : EffectCommandBase
+    public class EffectCommand_AddBuffStackByTag : EffectCommandBase
     {
         private int m_tag = 0;
         private int m_removeStackCount = 0;

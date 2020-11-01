@@ -48,9 +48,9 @@ namespace ProjectBS.UI
                 _skillName[2],
                 _skillName[3]);
 
-            if(m_currnetDisplayingUnit.HP > 0)
+            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.CurrentComabtManager.AllUnit;
+            if (_allUnits.Contains(m_currnetDisplayingUnit))
             {
-                List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.CurrentComabtManager.AllUnit;
                 int _totalHaterd = 0;
                 for (int i = 0; i < _allUnits.Count; i++)
                 {
