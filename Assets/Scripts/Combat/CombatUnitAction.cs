@@ -22,9 +22,7 @@ namespace ProjectBS.Combat
         public void Start(Action onEnded)
         {
             m_onEnded = onEnded;
-
-            GetPage<UI.CombatUIView>().OnActionAnimationEnded += OnActionAnimationEnded;
-            GetPage<UI.CombatUIView>().ShowActorActionStart(Actor);
+            GetPage<UI.CombatUIView>().ShowActorActionStart(Actor, OnActionAnimationEnded);
         }
 
         public void ForceEnd()
@@ -35,7 +33,6 @@ namespace ProjectBS.Combat
 
         private void OnActionAnimationEnded()
         {
-            GetPage<UI.CombatUIView>().OnActionAnimationEnded -= OnActionAnimationEnded;
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,

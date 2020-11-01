@@ -249,14 +249,11 @@ namespace ProjectBS.Combat
                 m_unitActions.Add(new CombatUnitAction(m_units[i], AllUnitAllEffectProcesser));
             }
 
-            GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded += OnTurnStartAnimationEnded;
-            GetPage<UI.CombatUIView>().ShowTurnStart(TurnCount);
+            GetPage<UI.CombatUIView>().ShowTurnStart(TurnCount, OnTurnStartAnimationEnded);
         }
 
         private void OnTurnStartAnimationEnded()
         {
-            GetPage<UI.CombatUIView>().OnTurnStartAnimationEnded -= OnTurnStartAnimationEnded;
-
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,

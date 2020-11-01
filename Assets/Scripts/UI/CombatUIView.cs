@@ -13,8 +13,6 @@ namespace ProjectBS.UI
 
         public override bool IsShowing { get { return m_root.activeSelf; } }
 
-        public event Action OnTurnStartAnimationEnded = null;
-        public event Action OnActionAnimationEnded = null;
         public event Action<Data.SkillData> OnSkillSelected = null;
 
         public class SelectTargetData
@@ -139,16 +137,22 @@ namespace ProjectBS.UI
             SetInfoText(unit, string.Format("消滅"));
         }
 
-        public void ShowTurnStart(int turnCount)
+        public void ShowTurnStart(int turnCount, Action onTurnStartAnimationEnded)
         {
             SetInfoText(null, string.Format("第 {0} 回合", turnCount));
-            TimerManager.Schedule(1f, OnTurnStartAnimationEnded);
+            TimerManager.Schedule(1f, onTurnStartAnimationEnded);
         }
 
-        public void ShowActorActionStart(CombatUnit actor)
+        public void ShowActorActionStart(CombatUnit actor, Action onActionAnimationEnded)
         {
             SetInfoText(actor, string.Format("開始行動"));
-            TimerManager.Schedule(1f, OnActionAnimationEnded);
+            TimerManager.Schedule(1f, onActionAnimationEnded);
+        }
+
+        public void ShowActorEndStart(CombatUnit actor, Action onActionAnimationEnded)
+        {
+            SetInfoText(actor, string.Format("行動結束"));
+            TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 
         public class SkillAnimationData
@@ -391,7 +395,7 @@ namespace ProjectBS.UI
                     {
                         continue;
                     }
-                    m_characterPanels[i].SetEnable(enable);
+                    m_characterPanels[i].SetEnable(m_indexToUnit[i].HP > 0 ? enable : false);
                 }
             }
         }
@@ -406,7 +410,7 @@ namespace ProjectBS.UI
                     {
                         continue;
                     }
-                    m_characterPanels[i].SetEnable(enable);
+                    m_characterPanels[i].SetEnable(m_indexToUnit[i].HP > 0 ? enable : false);
                 }
             }
         }

@@ -77,8 +77,8 @@ namespace ProjectBS.Combat.EffectCommand
             float _attackAddRollPersent = 0.01f * (float)_roll;
             float _defenseAddRollPersent = UnityEngine.Random.Range(0f, 1f);
 
-            UnityEngine.Debug.Log("_attackAddRollPersent=" + (_attackAddRollPersent * 100) + "%");
-            UnityEngine.Debug.Log("_defenseAddRollPersent=" + (_defenseAddRollPersent * 100) + "%");
+            //UnityEngine.Debug.Log("_attackAddRollPersent=" + (_attackAddRollPersent * 100) + "%");
+            //UnityEngine.Debug.Log("_defenseAddRollPersent=" + (_defenseAddRollPersent * 100) + "%");
 
             if (!float.TryParse(m_valueString, out float _attack))
             {
@@ -205,7 +205,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void End()
         {
-            KahaGameCore.Static.TimerManager.Schedule(1f, m_onCompleted);
+            m_onCompleted?.Invoke();
         }
 
         private void ApplyDamageToNextTarget()
@@ -224,12 +224,11 @@ namespace ProjectBS.Combat.EffectCommand
                     m_targets[m_currentTargetIndex].shields[0].value -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
                     processData.caster.targetToDmg[m_targets[m_currentTargetIndex]] = 0;
                     OnDamageTaken_Self_Ended();
-                    return;
                 }
                 else
                 {
                     processData.caster.targetToDmg[m_targets[m_currentTargetIndex]] -= m_targets[m_currentTargetIndex].shields[0].value;
-                    if (m_targets[m_currentTargetIndex].shields[0].triggerSKillID != 0)
+                    if (m_targets[m_currentTargetIndex].shields[0].triggerSKillID > 0)
                     {
                         EffectProcessManager.GetSkillProcesser(m_targets[m_currentTargetIndex].shields[0].triggerSKillID)
                             .Start(new EffectProcesser.ProcessData
@@ -248,8 +247,8 @@ namespace ProjectBS.Combat.EffectCommand
                     {
                         OnShieldSkillTriggered();
                     }
-                    return;
                 }
+                return;
             }
 
             m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];

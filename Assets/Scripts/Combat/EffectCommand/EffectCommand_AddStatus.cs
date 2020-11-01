@@ -53,22 +53,35 @@ namespace ProjectBS.Combat.EffectCommand
                         CombatUnit.Buff _buff = processData.referenceBuff;
                         if(_buff == null)
                         {
-                            _buff = new CombatUnit.Buff
+                            m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                             {
-                                effectID = 0,
-                                from = GetSelf(),
-                                owner = m_targets[m_currentTargetIndex],
-                                remainingTime = -1,
-                                stackCount = 1
-                            };
+                                parentBuff = new CombatUnit.Buff
+                                {
+                                    effectID = 0,
+                                    from = GetSelf(),
+                                    owner = m_targets[m_currentTargetIndex],
+                                    remainingTime = -1,
+                                    stackCount = 1
+                                },
+                                statusType = m_statusString,
+                                valueString = m_valueString
+                            });
                         }
-
-                        m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
+                        else
                         {
-                            parentBuff = _buff,
-                            statusType = m_statusString,
-                            valueString = m_valueString
-                        });
+                            CombatUnit.StatusAdder _adder = m_targets[m_currentTargetIndex].statusAdders
+                                .Find(x => x.parentBuff == processData.referenceBuff
+                                        && x.statusType == m_statusString);
+                            if (_adder == null)
+                            {
+                                m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
+                                {
+                                    parentBuff = _buff,
+                                    statusType = m_statusString,
+                                    valueString = m_valueString
+                                });
+                            }
+                        }
 
                         GetPage<UI.CombatUIView>().RefreshAllInfo();
                         GoNextTarget();
