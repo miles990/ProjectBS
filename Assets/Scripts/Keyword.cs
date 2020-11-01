@@ -13,6 +13,7 @@
         public const string Speed = "Speed";
         public const string Hatred = "Hatred";
         public const string LastSkill = "LastSkill";
+        public const string LastSkillTag = "LastSkillTag";
         public const string SkillTarget = "SkillTarget";
         public const string Effect = "Effect";
         public const string ActionIndex = "ActionIndex";
