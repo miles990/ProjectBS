@@ -23,6 +23,8 @@ namespace ProjectBS.Combat
             OnStartToTakeDamage_Self,
             OnDamageTaken_Any,
             OnDamageTaken_Self,
+            OnDamageDealed_Any,
+            OnDamageDealed_Self,
             OnBeAttackedEnded_Self,
             OnBeAttackedEnded_Any,
             OnAttackEnded_Any,

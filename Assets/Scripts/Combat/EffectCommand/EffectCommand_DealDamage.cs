@@ -251,13 +251,10 @@ namespace ProjectBS.Combat.EffectCommand
                     return;
                 }
             }
-            else
-            {
-                m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-                m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-                m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            }
 
+            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
             processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
 
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
@@ -290,6 +287,28 @@ namespace ProjectBS.Combat.EffectCommand
         {
             GetPage<UI.CombatUIView>().RefreshAllInfo();
 
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = processData.caster,
+                timing = EffectProcesser.TriggerTiming.OnDamageDealed_Any,
+                onEnded = OnDamageDealed_Any_Ended
+            });
+        }
+
+        private void OnDamageDealed_Any_Ended()
+        {
+            processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = processData.caster,
+                target = m_targets[m_currentTargetIndex],
+                timing = EffectProcesser.TriggerTiming.OnDamageDealed_Self,
+                onEnded = OnDamageDealed_Self_Ended
+            });
+        }
+
+        private void OnDamageDealed_Self_Ended()
+        {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
