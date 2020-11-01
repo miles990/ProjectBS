@@ -12,8 +12,6 @@ namespace ProjectBS.Combat.EffectCommand
         private int m_currentBuffIndex = -1;
         private Action m_onEnded = null;
 
-        private CombatUnit.Buff m_targetBuff;
-
         public override void Process(string[] vars, Action onCompleted)
         {
             m_tag = int.Parse(vars[1]);
