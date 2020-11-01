@@ -37,8 +37,8 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            GetPage<UI.CombatUIView>().ShowUnitDestoryed(m_targets[m_currentTargetIndex]);
             CombatUtility.CurrentComabtManager.ForceRemoveUnit(m_targets[m_currentTargetIndex]);
+            GetPage<UI.CombatUIView>().ShowUnitDestoryed(m_targets[m_currentTargetIndex], GoNextTarget);
         }
     }
 }

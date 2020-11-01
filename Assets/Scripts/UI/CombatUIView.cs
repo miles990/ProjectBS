@@ -127,20 +127,22 @@ namespace ProjectBS.UI
             SetInfoText(actor, string.Format("強制結束", actor.name));
         }
 
-        public void ShowUnitDied(CombatUnit dyingUnit)
+        public void ShowUnitDied(CombatUnit dyingUnit, Action onInfoShown)
         {
             SetInfoText(dyingUnit, string.Format("死亡"));
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
-        public void ShowUnitDestoryed(CombatUnit unit)
+        public void ShowUnitDestoryed(CombatUnit unit, Action onInfoShown)
         {
             SetInfoText(unit, string.Format("消滅"));
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
         public void ShowTurnStart(int turnCount, Action onTurnStartAnimationEnded)
         {
             SetInfoText(null, string.Format("第 {0} 回合", turnCount));
-            TimerManager.Schedule(1f, onTurnStartAnimationEnded);
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onTurnStartAnimationEnded);
         }
 
         public void ShowActorActionStart(CombatUnit actor, Action onActionAnimationEnded)

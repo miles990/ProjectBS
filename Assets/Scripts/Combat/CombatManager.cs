@@ -94,6 +94,10 @@ namespace ProjectBS.Combat
             {
                 AddBoss(bosses[i]);
             }
+            for(int i = 0; i < m_units.Count; i++)
+            {
+                m_units[i].HP = m_units[i].GetMaxHP();
+            }
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
@@ -148,7 +152,6 @@ namespace ProjectBS.Combat
                 camp = CombatUnit.Camp.Player,
                 rawDefense = character.Defense,
                 rawMaxHP = character.HP,
-                HP = character.HP,
                 name = ContextConverter.Instance.GetContext(character.CharacterNameID),
                 SP = character.SP,
                 rawSpeed = character.Speed,
@@ -334,11 +337,13 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit);
             ForceRemoveUnit(m_currentDyingUnit);
-
-            m_currentDyingUnit = null;
-            m_onDiedCommandEnded?.Invoke();
+            GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit,
+                delegate 
+                {
+                    m_currentDyingUnit = null;
+                    m_onDiedCommandEnded?.Invoke();
+                });
         }
 
         private void EndTurn()

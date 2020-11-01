@@ -109,7 +109,11 @@ namespace ProjectBS.Combat
             }
 
             Actor.lastSkillID = skill.ID;
-            Actor.SP -= skill.SP;
+            
+            if(!Actor.skipCheckSP)
+            {
+                Actor.SP -= skill.SP;
+            }
 
             EffectProcessManager.GetSkillProcesser(skill.ID).Start(new EffectProcesser.ProcessData
             {

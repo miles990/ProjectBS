@@ -208,13 +208,11 @@ namespace ProjectBS.Combat
             AddValueByEquipment(hand, statusType, ref _temp);
             AddValueByEquipment(foot, statusType, ref _temp);
 
-            List<StatusAdder> _adderList = new List<StatusAdder>(statusAdders);
-
-            for (int i = 0; i < _adderList.Count; i++)
+            for (int i = 0; i < statusAdders.Count; i++)
             {
-                if (_adderList[i].statusType == statusType)
+                if (statusAdders[i].statusType == statusType)
                 {
-                    if (int.TryParse(_adderList[i].valueString, out int _adderValue))
+                    if (int.TryParse(statusAdders[i].valueString, out int _adderValue))
                     {
                         _temp += _adderValue;
                         continue;
@@ -223,20 +221,15 @@ namespace ProjectBS.Combat
                     {
                         float _result = CombatUtility.Calculate(new CombatUtility.CalculateData
                         {
-                            caster = _adderList[i].parentBuff.from,
+                            caster = this,
                             target = this,
-                            referenceBuff = null,
-                            formula = _adderList[i].valueString,
+                            referenceBuff = statusAdders[i].parentBuff,
+                            formula = statusAdders[i].valueString,
                             useRawValue = true
                         });
 
                         _temp += System.Convert.ToInt32(_result);
                     }
-                }
-                else
-                {
-                    _adderList.RemoveAt(i);
-                    i--;
                 }
             }
 
