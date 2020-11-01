@@ -413,6 +413,12 @@ namespace ProjectBS.Combat
 
         private void DisplayRemoveBuff(CombatUnit.Buff _buff)
         {
+            if(_buff.owner != CurrentActionInfo.actor)
+            {
+                CheckNextBuffEnd();
+                return;
+            }
+
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_buff.GetSkillEffectData().NameContextID),
