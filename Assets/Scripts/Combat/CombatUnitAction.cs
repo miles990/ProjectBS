@@ -89,14 +89,13 @@ namespace ProjectBS.Combat
             {
                 GetPage<UI.CombatUIView>().OnSkillSelected += OnSkillSelected;
                 List<SkillData> _skills = new List<SkillData>();
-                string[] _skillIDs = Actor.skills.Split(',');
-                for(int i = 0; i < _skillIDs.Length; i++)
+                for(int i = 0; i < Actor.skills.Length; i++)
                 {
-                    if(_skillIDs[i] == "0")
+                    if(Actor.skills[i] == 0)
                     {
                         continue;
                     }
-                    _skills.Add(GameDataManager.GetGameData<SkillData>(_skillIDs[i].ToInt()));
+                    _skills.Add(GameDataManager.GetGameData<SkillData>(Actor.skills[i]));
                 }
                 GetPage<UI.CombatUIView>().RefreshCurrentSkillMenu(_skills);
             }

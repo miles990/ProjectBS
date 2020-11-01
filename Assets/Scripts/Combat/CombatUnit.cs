@@ -104,7 +104,7 @@ namespace ProjectBS.Combat
         public OwningEquipmentData body = null;
         public OwningEquipmentData hand = null;
         public OwningEquipmentData foot = null;
-        public string skills = "";
+        public int[] skills = new int[4];
         public string ai = "";
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
@@ -150,6 +150,24 @@ namespace ProjectBS.Combat
 
             buff.stackCount += stackCount;
             if (buff.stackCount <= 0)
+            {
+                RemoveBuff(buff, onRemoved);
+                return;
+            }
+
+            onNotRemoved?.Invoke();
+        }
+
+        public void AddBuffTime(Buff buff, int addTime, System.Action onRemoved, System.Action onNotRemoved)
+        {
+            if (buff == null)
+            {
+                onNotRemoved?.Invoke();
+                return;
+            }
+
+            buff.remainingTime += addTime;
+            if (buff.remainingTime <= 0)
             {
                 RemoveBuff(buff, onRemoved);
                 return;

@@ -14,7 +14,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 if(_pool[i] == _self
                     || _pool[i].skipAction
-                    || !HasSkill(_pool[i], vars[0]))
+                    || !HasSkill(_pool[i], int.Parse(vars[0])))
                 {
                     _pool.RemoveAt(i);
                     i--;
@@ -44,12 +44,11 @@ namespace ProjectBS.Combat.EffectCommand
                 });
         }
 
-        private bool HasSkill(CombatUnit target, string skillID)
+        private bool HasSkill(CombatUnit target, int skillID)
         {
-            string[] _skills = target.skills.Split(',');
-            for(int i = 0; i < _skills.Length; i++)
+            for(int i = 0; i < target.skills.Length; i++)
             {
-                if(_skills[i].Trim() == skillID)
+                if(target.skills[i] == skillID)
                 {
                     return true;
                 }

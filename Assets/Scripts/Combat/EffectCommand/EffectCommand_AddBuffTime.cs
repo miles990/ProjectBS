@@ -53,19 +53,11 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.effectID == m_effectID);
                 if (m_currentBuff != null)
                 {
-                    m_currentBuff.remainingTime += m_addTime;
-                    if(m_currentBuff.remainingTime <= 0)
-                    {
-                        m_targets[m_currentTargetIndex].AddBuffStack(
-                            m_currentBuff, 
-                            -999,
-                            delegate { DisaplayRemoveBuff(GoNextTarget); }, 
-                            GoNextTarget);
-                    }
-                    else
-                    {
-                        GoNextTarget();
-                    }
+                    m_targets[m_currentTargetIndex].AddBuffTime(
+                        m_currentBuff,
+                        m_addTime,
+                        delegate { DisaplayRemoveBuff(GoNextTarget); },
+                        GoNextTarget);
                 }
                 else
                 {
@@ -79,13 +71,13 @@ namespace ProjectBS.Combat.EffectCommand
             }
         }
 
-        private void DisaplayRemoveBuff(Action onShonw)
+        private void DisaplayRemoveBuff(Action onShown)
         {
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetSkillEffectData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
-            }, onShonw);
+            }, onShown);
         }
 
         private void GoNextBuff()
@@ -97,19 +89,11 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
-            m_currentBuff.remainingTime += m_addTime;
-            if (m_currentBuff.remainingTime <= 0)
-            {
-                m_targets[m_currentTargetIndex].AddBuffStack(
-                    m_currentBuff,
-                    -999,
-                    delegate { DisaplayRemoveBuff(GoNextBuff); },
-                    GoNextBuff);
-            }
-            else
-            {
-                GoNextBuff();
-            }
+            m_targets[m_currentTargetIndex].AddBuffTime(
+                m_currentBuff,
+                m_addTime,
+                delegate { DisaplayRemoveBuff(GoNextBuff); },
+                GoNextBuff);
         }
     }
 }

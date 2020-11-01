@@ -25,14 +25,13 @@ namespace ProjectBS.UI
         {
             m_currnetDisplayingUnit = unit;
 
-            string[] _skills = unit.skills.Split(',');
             string[] _skillName = new string[4];
-            for(int i = 0; i < _skills.Length; i++)
+            for(int i = 0; i < unit.skills.Length; i++)
             {
-                if (_skills[i] == "")
+                if (unit.skills[i] == 0)
                     _skillName[i] = "無";
                 else
-                    _skillName[i] = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(int.Parse(_skills[i])).NameContextID);
+                    _skillName[i] = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(unit.skills[i]).NameContextID);
             }
 
             m_infoText.text = string.Format("{0}\nHP: {1} / {2}\nSP: {3} / {4}\nATK: {5}\nDEF: {6}\nSPD: {7}\n{8}\n{9}\n{10}\n{11}",

@@ -150,7 +150,6 @@ namespace ProjectBS.Combat
                 rawMaxHP = character.HP,
                 HP = character.HP,
                 name = ContextConverter.Instance.GetContext(character.CharacterNameID),
-                skills = string.Format("{0},{1},{2},{3}", character.SkillSlot_0, character.SkillSlot_1, character.SkillSlot_2, character.SkillSlot_3),
                 SP = character.SP,
                 rawSpeed = character.Speed,
                 Hatred = 1,
@@ -162,6 +161,11 @@ namespace ProjectBS.Combat
                 buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             });
+
+            m_units[m_units.Count - 1].skills[0] = character.SkillSlot_0;
+            m_units[m_units.Count - 1].skills[1] = character.SkillSlot_1;
+            m_units[m_units.Count - 1].skills[2] = character.SkillSlot_2;
+            m_units[m_units.Count - 1].skills[3] = character.SkillSlot_3;
         }
 
         private void AddBoss(BossData boss)
@@ -175,7 +179,6 @@ namespace ProjectBS.Combat
                 rawMaxHP = boss.HP,
                 HP = boss.HP,
                 name = ContextConverter.Instance.GetContext(boss.NameContextID),
-                skills = "",
                 SP = boss.SP,
                 rawSpeed = boss.Speed,
                 Hatred = 1,

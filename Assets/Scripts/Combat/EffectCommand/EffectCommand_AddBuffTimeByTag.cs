@@ -50,36 +50,41 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.GetSkillEffectData().Tag == m_tag);
-            if (m_currentBuff != null)
+            m_currentBuffIndex = -1;
+            GoNextBuff();
+        }
+
+        private void GoNextBuff()
+        {
+            m_currentBuffIndex++;
+            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
             {
-                m_currentBuff.remainingTime += m_addTime;
-                if (m_currentBuff.remainingTime <= 0)
-                {
-                    m_targets[m_currentTargetIndex].AddBuffStack(
-                        m_currentBuff,
-                        -999,
-                        delegate { DisaplayRemoveBuff(GoNextTarget); },
-                        GoNextTarget);
-                }
-                else
-                {
-                    GoNextTarget();
-                }
+                GoNextTarget();
+                return;
+            }
+
+            if (m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetSkillEffectData().Tag == m_tag)
+            {
+                m_targets[m_currentTargetIndex].AddBuffTime(
+                    m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
+                    m_addTime,
+                    DisaplayRemoveBuff,
+                    GoNextBuff);
             }
             else
             {
-                GoNextTarget();
+                GoNextBuff();
             }
         }
 
-        private void DisaplayRemoveBuff(Action onShonw)
+        private void DisaplayRemoveBuff()
         {
+            m_currentBuffIndex--;
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetSkillEffectData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
-            }, onShonw);
+            }, GoNextBuff);
         }
     }
 

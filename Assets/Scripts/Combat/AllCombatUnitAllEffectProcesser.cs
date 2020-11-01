@@ -23,7 +23,7 @@ namespace ProjectBS.Combat
         private int m_currentEquipment = -1;
         private string[] m_currentEquipmentEffectIDs = null;
         private int m_currentEquipmentEffectIDIndex = -1;
-        private string[] m_currentSkillIDs = null;
+        private int[] m_currentSkillIDs = null;
         private int m_currentSkillIndex = -1;
         private int m_currentBuffIndex = -1;
         private EffectProcesser m_currentBuffProcesser = null;
@@ -77,7 +77,7 @@ namespace ProjectBS.Combat
             if (m_currentEquipment >= 4)
             {
                 m_currentSkillIndex = -1;
-                m_currentSkillIDs = m_units[m_currentUnitIndex].skills.Split(',');
+                m_currentSkillIDs = m_units[m_currentUnitIndex].skills;
                 GoNextOwingSkill();
                 return;
             }
@@ -176,26 +176,20 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            if(string.IsNullOrEmpty(m_currentSkillIDs[m_currentSkillIndex]))
+            if(m_currentSkillIDs[m_currentSkillIndex] == 0)
             {
                 GoNextOwingSkill();
                 return;
             }
 
-            if(m_currentSkillIDs[m_currentSkillIndex] == "0")
-            {
-                GoNextOwingSkill();
-                return;
-            }
-
-            EffectProcessManager.GetSkillProcesser(m_currentSkillIDs[m_currentSkillIndex].ToInt()).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetSkillProcesser(m_currentSkillIDs[m_currentSkillIndex]).Start(new EffectProcesser.ProcessData
             {
                 caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
                 target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                 timing = m_data.timing,
                 allEffectProcesser = this,
                 referenceBuff = null,
-                refenceSkill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex].ToInt()),
+                refenceSkill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex]),
                 onEnded = GoNextOwingSkill
             });
         }

@@ -6,7 +6,7 @@ namespace ProjectBS.Combat.EffectCommand
     public class EffectCommand_BeginIf_Skill : EffectCommandBase
     {
         private string m_checkIsOwning = "";
-        private string m_skillID = "";
+        private int m_skillID = 0;
         private Action m_onCompleted = null;
 
         public override void Process(string[] vars, Action onCompleted)
@@ -19,7 +19,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             m_checkIsOwning = vars[1];
-            m_skillID = vars[2];
+            m_skillID = int.Parse(vars[2]);
             m_onCompleted = onCompleted;
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
@@ -38,10 +38,9 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 bool _isOwning = false;
 
-                string[] _skills = targets[i].skills.Split(',');
-                for(int _skillIndex = 0; _skillIndex < _skills.Length; _skillIndex++)
+                for(int _skillIndex = 0; _skillIndex < targets[i].skills.Length; _skillIndex++)
                 {
-                    if(_skills[_skillIndex] == m_skillID)
+                    if(targets[i].skills[_skillIndex] == m_skillID)
                     {
                         _isOwning = true;
                         break;

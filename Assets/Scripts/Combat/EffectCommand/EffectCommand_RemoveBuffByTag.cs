@@ -9,6 +9,7 @@ namespace ProjectBS.Combat.EffectCommand
         private int m_removeStackCount = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
+        private int m_currentBuffIndex = -1;
         private Action m_onEnded = null;
 
         private CombatUnit.Buff m_targetBuff;
@@ -43,18 +44,30 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            m_targetBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.GetSkillEffectData().Tag == m_tag);
-            if(m_targetBuff != null)
+            m_currentBuffIndex = -1;
+            GoNextBuff();
+        }
+
+        private void GoNextBuff()
+        {
+            m_currentBuffIndex++;
+            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            {
+                GoNextTarget();
+                return;
+            }
+
+            if(m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetSkillEffectData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
-                    m_targetBuff,
+                    m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
                     m_removeStackCount,
                     DisaplayRemoveBuff,
-                    GoNextTarget);
+                    GoNextBuff);
             }
             else
             {
-                GoNextTarget();
+                GoNextBuff();
             }
         }
 
@@ -64,7 +77,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 buffName = ContextConverter.Instance.GetContext(m_targetBuff.GetSkillEffectData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
-            }, GoNextTarget);
+            }, GoNextBuff);
         }
     }
 }
