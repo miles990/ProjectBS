@@ -56,10 +56,11 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff.remainingTime += m_addTime;
                 if (m_currentBuff.remainingTime <= 0)
                 {
-                    if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, -1, delegate { DisaplayRemoveBuff(GoNextTarget); }))
-                    {
-                        GoNextTarget();
-                    }
+                    m_targets[m_currentTargetIndex].AddBuffStack(
+                        m_currentBuff,
+                        -999,
+                        delegate { DisaplayRemoveBuff(GoNextTarget); },
+                        GoNextTarget);
                 }
                 else
                 {

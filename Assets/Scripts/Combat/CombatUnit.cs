@@ -140,32 +140,25 @@ namespace ProjectBS.Combat
             return GetResult(rawSpeed, Keyword.Speed);
         }
 
-        public bool RemoveBuff(Buff buff, int stackCount, System.Action onRemoved)
+        public void AddBuffStack(Buff buff, int stackCount, System.Action onRemoved, System.Action onNotRemoved)
         {
             if(buff == null)
             {
-                return false;
+                onNotRemoved?.Invoke();
+                return;
             }
 
-            if (stackCount == -1)
+            buff.stackCount += stackCount;
+            if (buff.stackCount <= 0)
             {
-                StartRemoveBuff(buff, onRemoved);
-                return true;
-            }
-            else
-            {
-                buff.stackCount -= stackCount;
-                if (buff.stackCount <= 0)
-                {
-                    StartRemoveBuff(buff, onRemoved);
-                    return true;
-                }
+                RemoveBuff(buff, onRemoved);
+                return;
             }
 
-            return false;
+            onNotRemoved?.Invoke();
         }
 
-        private void StartRemoveBuff(Buff buff, System.Action onRemoved)
+        public void RemoveBuff(Buff buff, System.Action onRemoved)
         {
             SkillEffectData _effect = buff.GetSkillEffectData();
 

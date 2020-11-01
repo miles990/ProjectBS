@@ -53,10 +53,11 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.effectID == m_effectID);
                 if (m_currentBuff != null)
                 {
-                    if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, m_removeStackCount, delegate { DisaplayRemoveBuff(GoNextTarget); }))
-                    {
-                        GoNextTarget();
-                    }
+                    m_targets[m_currentTargetIndex].AddBuffStack(
+                        m_currentBuff,
+                        m_removeStackCount,
+                        delegate { DisaplayRemoveBuff(GoNextTarget); },
+                        GoNextTarget);
                 }
                 else
                 {
@@ -88,10 +89,11 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
-            if (!m_targets[m_currentTargetIndex].RemoveBuff(m_currentBuff, m_removeStackCount, delegate { DisaplayRemoveBuff(GoNextBuff); }))
-            {
-                GoNextBuff();
-            }
+            m_targets[m_currentTargetIndex].AddBuffStack(
+                            m_currentBuff,
+                            m_removeStackCount,
+                            delegate { DisaplayRemoveBuff(GoNextBuff); },
+                            GoNextBuff);
         }
     }
 }

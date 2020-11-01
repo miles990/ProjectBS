@@ -269,15 +269,19 @@ namespace ProjectBS.Combat.EffectCommand
             if(m_targets[m_currentTargetIndex].shields[0].parentBuff == null)
             {
                 m_targets[m_currentTargetIndex].shields.RemoveAt(0);
-                OnShieldBuffRemoved();
+                OnShieldBuffStackRemoved();
             }
             else
             {
-                m_targets[m_currentTargetIndex].RemoveBuff(m_targets[m_currentTargetIndex].shields[0].parentBuff, -1, OnShieldBuffRemoved);
+                m_targets[m_currentTargetIndex].AddBuffStack(
+                    m_targets[m_currentTargetIndex].shields[0].parentBuff,
+                    -1,
+                    OnShieldBuffStackRemoved,
+                    OnShieldBuffStackRemoved);
             }
         }
 
-        private void OnShieldBuffRemoved()
+        private void OnShieldBuffStackRemoved()
         {
             m_currentTargetIndex--;
             ApplyDamageToNextTarget();

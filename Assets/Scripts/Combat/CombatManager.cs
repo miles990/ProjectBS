@@ -395,10 +395,9 @@ namespace ProjectBS.Combat
             if (m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex].remainingTime <= 0)
             {
                 CombatUnit.Buff _buff = m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex];
-                if(!m_units[m_currentCheckBuffEndUnitIndex].RemoveBuff(_buff, -1, delegate { DisplayRemoveBuff(_buff); }))
-                {
-                    CheckNextBuffEnd();
-                }
+                m_units[m_currentCheckBuffEndUnitIndex].RemoveBuff(
+                    _buff,
+                    delegate { DisplayRemoveBuff(_buff); });
             }
             else
             {

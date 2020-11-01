@@ -46,10 +46,11 @@ namespace ProjectBS.Combat.EffectCommand
             m_targetBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.GetSkillEffectData().Tag == m_tag);
             if(m_targetBuff != null)
             {
-                if (!m_targets[m_currentTargetIndex].RemoveBuff(m_targetBuff, m_removeStackCount, DisaplayRemoveBuff))
-                {
-                    GoNextTarget();
-                }
+                m_targets[m_currentTargetIndex].AddBuffStack(
+                    m_targetBuff,
+                    m_removeStackCount,
+                    DisaplayRemoveBuff,
+                    GoNextTarget);
             }
             else
             {
