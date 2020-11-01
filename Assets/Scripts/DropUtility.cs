@@ -59,7 +59,7 @@ namespace ProjectBS
 
         private static int RollSkill()
         {
-            Data.SkillData[] _allSkill = KahaGameCore.Static.GameDataManager.GetAllGameData<Data.SkillData>();
+            Data.SkillData[] _allSkill = GameDataManager.GetAllGameData<Data.SkillData>();
             Data.SkillData _random = _allSkill[Random.Range(0, _allSkill.Length)];
 
             int _count = 0;

@@ -72,8 +72,8 @@ namespace ProjectBS
                 return;
             }
 
-            m_nameIDPool = KahaGameCore.Static.GameDataManager.GetAllGameData<CharacterNamePoolData>();
-            AbilityData[] _allDatas = KahaGameCore.Static.GameDataManager.GetAllGameData<AbilityData>();
+            m_nameIDPool = GameDataManager.GetAllGameData<CharacterNamePoolData>();
+            AbilityData[] _allDatas = GameDataManager.GetAllGameData<AbilityData>();
             m_hpAbiPool = new List<AbilityData>();
             m_attackAbiPool = new List<AbilityData>();
             m_defenseAbiPool = new List<AbilityData>();
