@@ -141,6 +141,7 @@ namespace ProjectBS.Combat
         {
             m_unitActions.Remove(m_unitActions.Find(x => x.Actor == unit));
             m_units.Remove(unit);
+            GetPage<UI.CombatUIView>().RemoveActor(unit);
         }
 
         private void AddUnit(OwningCharacterData character)

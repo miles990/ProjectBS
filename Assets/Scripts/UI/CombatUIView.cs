@@ -122,6 +122,11 @@ namespace ProjectBS.UI
             }
         }
 
+        public void RemoveActor(CombatUnit unit)
+        {
+            m_characterPanels[m_unitToIndex[unit]].gameObject.SetActive(false);
+        }
+
         public void ShowForceEndAction(CombatUnit actor)
         {
             SetInfoText(actor, string.Format("強制結束", actor.name));
