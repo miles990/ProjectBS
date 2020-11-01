@@ -12,6 +12,8 @@ namespace ProjectBS.Combat.EffectCommand
         private int m_currentBuffIndex = -1;
         private Action m_onEnded = null;
 
+        private CombatUnit.Buff m_targetBuff;
+
         public override void Process(string[] vars, Action onCompleted)
         {
             m_tag = int.Parse(vars[1]);
@@ -55,7 +57,9 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            if(m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetSkillEffectData().Tag == m_tag)
+            m_targetBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
+
+            if (m_targetBuff.GetSkillEffectData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
                     m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
