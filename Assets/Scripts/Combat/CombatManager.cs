@@ -79,6 +79,19 @@ namespace ProjectBS.Combat
                 m_unitActions.Insert(_targetIndex, _refAction);
             }
         }
+        
+        public void AddExtraAction(CombatUnit unit, bool isImmediate)
+        {
+            CombatUnitAction _newAction = new CombatUnitAction(unit, AllUnitAllEffectProcesser);
+            if(isImmediate)
+            {
+                m_unitActions.Insert(0, _newAction);
+            }
+            else
+            {
+                m_unitActions.Add(_newAction);
+            }
+        }
 
         public List<CombatUnit> GetSameCampUnits(CombatUnit.Camp camp)
         {

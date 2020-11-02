@@ -148,6 +148,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_SetSkipCheckSP();
                     }
+                case "AddActionIndex":
+                    {
+                        return new EffectCommand_AddActionIndex();
+                    }
                 default:
                     {
                         throw new System.Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);

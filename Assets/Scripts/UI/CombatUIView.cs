@@ -163,6 +163,18 @@ namespace ProjectBS.UI
             TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 
+        public void ShowAddActionIndex(CombatUnit actor, int addIndex, Action onShown)
+        {
+            SetInfoText(actor, string.Format("{0} 順序", addIndex >= 0 ? "+" + addIndex : addIndex.ToString()));
+            TimerManager.Schedule(1f, onShown);
+        }
+
+        public void ShowAddExtraAction(CombatUnit actor, Action onShown)
+        {
+            SetInfoText(actor, string.Format("追加行動"));
+            TimerManager.Schedule(1f, onShown);
+        }
+
         public class SkillAnimationData
         {
             public CombatUnit caster = null;

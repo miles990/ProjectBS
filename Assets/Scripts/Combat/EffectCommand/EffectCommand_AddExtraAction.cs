@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_AddActionIndex : EffectCommandBase
+    public class EffectCommand_AddExtraAction : EffectCommandBase
     {
         private Action m_onCompleted = null;
-        private int m_addIndex = 0;
+        private bool m_isImmediate = false;
 
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            m_addIndex = int.Parse(vars[1]);
+            m_isImmediate = vars[1] == "1";
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
@@ -40,8 +42,8 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUtility.CurrentComabtManager.AddActionIndex(m_targets[m_currentTargetIndex], m_addIndex);
-            GetPage<UI.CombatUIView>().ShowAddActionIndex(m_targets[m_currentTargetIndex], m_addIndex, GoNextTarget);
+            CombatUtility.CurrentComabtManager.AddExtraAction(m_targets[m_currentTargetIndex], m_isImmediate);
+            GetPage<UI.CombatUIView>().ShowAddExtraAction(m_targets[m_currentTargetIndex], GoNextTarget);
         }
     }
 }
