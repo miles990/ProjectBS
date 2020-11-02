@@ -64,6 +64,22 @@ namespace ProjectBS.Combat
             return m_units.Count - GetCampCount(camp);
         }
 
+        public void AddActionIndex(CombatUnit unit, int addIndex)
+        {
+            int _currentIndex = m_unitActions.FindIndex(x => x.Actor == unit);
+            if(_currentIndex != -1)
+            {
+                int _targetIndex = _currentIndex + addIndex;
+                if (_targetIndex < 0)
+                    _targetIndex = 0;
+                if (_targetIndex >= m_unitActions.Count)
+                    _targetIndex = m_unitActions.Count - 1;
+                CombatUnitAction _refAction = m_unitActions[_currentIndex];
+                m_unitActions.RemoveAt(_currentIndex);
+                m_unitActions.Insert(_targetIndex, _refAction);
+            }
+        }
+
         public List<CombatUnit> GetSameCampUnits(CombatUnit.Camp camp)
         {
             List<CombatUnit> _units = new List<CombatUnit>();
