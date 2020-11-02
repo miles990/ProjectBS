@@ -13,7 +13,7 @@ namespace ProjectBS.Combat.EffectCommand
             for(int i = 0; i < _pool.Count; i++)
             {
                 if(_pool[i] == _self
-                    || _pool[i].skipAction
+                    || _pool[i].IsSkipAtion
                     || !HasSkill(_pool[i], int.Parse(vars[0])))
                 {
                     _pool.RemoveAt(i);

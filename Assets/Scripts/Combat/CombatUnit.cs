@@ -38,6 +38,11 @@ namespace ProjectBS.Combat
             public Buff parentBuff = null;
         }
 
+        public class Skiper
+        {
+            public Buff parentBuff = null;
+        }
+
         public class Shield
         {
             public int value = 0;
@@ -109,16 +114,18 @@ namespace ProjectBS.Combat
         public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
         public List<StatusAddLocker> statusAddLockers = new List<StatusAddLocker>();
+        public List<Skiper> actionSkipers = new List<Skiper>();
+        public List<Skiper> checkSPSkipers = new List<Skiper>();
         public List<Shield> shields = new List<Shield>();
-
-        public bool skipAction = false;
-        public bool skipCheckSP = false;
 
         public int lastSkillID = 0;
         public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
         public int lastTakenDamage = 0;
 
         public int actionIndex = 0;
+
+        public bool IsSkipAtion { get => actionSkipers.Count > 0; }
+        public bool IsSkipCheckSP { get => checkSPSkipers.Count > 0; }
 
         public int GetMaxHP()
         {

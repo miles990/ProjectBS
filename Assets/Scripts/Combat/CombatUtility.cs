@@ -258,7 +258,25 @@ namespace ProjectBS.Combat
                     i--;
                 }
             }
-            for(int i = 0; i < unit.shields.Count; i++)
+            for (int i = 0; i < unit.actionSkipers.Count; i++)
+            {
+                if (unit.actionSkipers[i].parentBuff != null
+                    && unit.actionSkipers[i].parentBuff.effectID == effectID)
+                {
+                    unit.actionSkipers.RemoveAt(i);
+                    i--;
+                }
+            }
+            for (int i = 0; i < unit.checkSPSkipers.Count; i++)
+            {
+                if (unit.checkSPSkipers[i].parentBuff != null
+                    && unit.checkSPSkipers[i].parentBuff.effectID == effectID)
+                {
+                    unit.checkSPSkipers.RemoveAt(i);
+                    i--;
+                }
+            }
+            for (int i = 0; i < unit.shields.Count; i++)
             {
                 if(unit.shields[i].parentBuff != null
                     && unit.shields[i].parentBuff.effectID == effectID)

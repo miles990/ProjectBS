@@ -55,7 +55,7 @@ namespace ProjectBS.Combat
 
         private void Act()
         {
-            if (Actor.skipAction || Actor.HP <= 0)
+            if (Actor.IsSkipAtion || Actor.HP <= 0)
             {
                 if (Actor.HP > 0)
                 {
@@ -102,7 +102,7 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().OnSkillSelected -= OnSkillSelected;
 
-            if(Actor.SP < skill.SP && !Actor.skipCheckSP)
+            if(Actor.SP < skill.SP && !Actor.IsSkipCheckSP)
             {
                 Act();
                 return;
@@ -110,7 +110,7 @@ namespace ProjectBS.Combat
 
             Actor.lastSkillID = skill.ID;
             
-            if(!Actor.skipCheckSP)
+            if(!Actor.IsSkipCheckSP)
             {
                 Actor.SP -= skill.SP;
             }

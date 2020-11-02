@@ -320,8 +320,6 @@ namespace ProjectBS.Combat
                 }
             }
 
-            m_currentAction.Actor.skipAction = false; // reset skip action state on action ended 
-            m_currentAction.Actor.skipCheckSP = false; // same
             CheckGameEnd();
         }
 
