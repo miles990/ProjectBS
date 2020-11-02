@@ -152,6 +152,7 @@ namespace ProjectBS.Combat
         {
             if(!m_units.Contains(unit))
             {
+                onDiedCommandEnded?.Invoke();
                 return;
             }
 
