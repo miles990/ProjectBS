@@ -9,6 +9,8 @@ namespace ProjectBS.Combat
         public struct CombatActionInfo
         {
             public CombatUnit actor;
+            public int minAttackRoll;
+            public int minDefenseRoll;
         }
         public CombatActionInfo CurrentActionInfo 
         {
@@ -16,7 +18,9 @@ namespace ProjectBS.Combat
             {
                 return new CombatActionInfo
                 {
-                    actor = m_currentAction.Actor
+                    actor = m_currentAction.Actor,
+                    minAttackRoll = m_currentAction.MinAttackRoll,
+                    minDefenseRoll = m_currentAction.MinDefenseRoll
                 };
             }
         }
@@ -105,6 +109,22 @@ namespace ProjectBS.Combat
             }
 
             return _units;
+        }
+
+        public void SetCurrentActionMinAttackRoll(int value)
+        {
+            if (value < 0)
+                value = 0;
+
+            m_currentAction.MinAttackRoll = value;
+        }
+
+        public void SetCurrentActionMinDefenseRoll(int value)
+        {
+            if (value < 0)
+                value = 0;
+
+            m_currentAction.MinDefenseRoll = value;
         }
 
         public void StartCombat(PartyData player, List<BossData> bosses)

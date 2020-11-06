@@ -9,6 +9,8 @@ namespace ProjectBS.Combat
     public class CombatUnitAction : Manager
     {
         public CombatUnit Actor { get; } = null;
+        public int MinAttackRoll = 0;
+        public int MinDefenseRoll = 0;
 
         private AllCombatUnitAllEffectProcesser m_processer = null;
         private Action m_onEnded = null;

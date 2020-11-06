@@ -5,9 +5,11 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_DealDamage : EffectCommandBase
     {
+        public static int LastAttackRoll = 0;
+        public static int LastDefenseRoll = 0;
+
         private Action m_onCompleted = null;
         private string m_valueString = "";
-        private string m_rollMin = "";
         private string m_ingnoreDefense = "";
 
         private List<CombatUnit> m_targets = null;
@@ -18,8 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
             GetSelf().targetToDmg.Clear();
 
             m_valueString = vars[1];
-            m_rollMin = vars[2];
-            m_ingnoreDefense = vars[3];
+            m_ingnoreDefense = vars[2];
             m_onCompleted = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(
@@ -71,14 +72,15 @@ namespace ProjectBS.Combat.EffectCommand
         {
             CombatUnit _attackTarget = m_targets[m_currentTargetIndex];
 
-            int _roll = int.Parse(m_rollMin);
-            _roll = UnityEngine.Random.Range(_roll, 101);
+            CombatManager.CombatActionInfo _info = CombatUtility.CurrentComabtManager.CurrentActionInfo;
+            float _minAttackRollPersent = (float)_info.minAttackRoll / 100f;
+            float _minDefenseRollPersent = (float)_info.minDefenseRoll / 100f;
 
-            float _attackAddRollPersent = 0.01f * (float)_roll;
-            float _defenseAddRollPersent = UnityEngine.Random.Range(0f, 1f);
+            float _attackAddRollPersent = UnityEngine.Random.Range(_minAttackRollPersent, 1f);
+            float _defenseAddRollPersent = UnityEngine.Random.Range(_minDefenseRollPersent, 1f);
 
-            //UnityEngine.Debug.Log("_attackAddRollPersent=" + (_attackAddRollPersent * 100) + "%");
-            //UnityEngine.Debug.Log("_defenseAddRollPersent=" + (_defenseAddRollPersent * 100) + "%");
+            LastAttackRoll = Convert.ToInt32(_attackAddRollPersent * 100f);
+            LastDefenseRoll = Convert.ToInt32(_defenseAddRollPersent * 100f);
 
             if (!float.TryParse(m_valueString, out float _attack))
             {
