@@ -467,6 +467,12 @@ namespace ProjectBS.Combat
                 return;
             }
 
+            if(m_currentCheckBuffEndUnitIndex >= m_units.Count)
+            {
+                CheckNextUnitBuffEnd();
+                return;
+            }
+
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_buff.GetSkillEffectData().NameContextID),

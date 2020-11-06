@@ -16,6 +16,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_isImmediate = vars[1] == "1";
+            m_onCompleted = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {

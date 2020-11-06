@@ -14,6 +14,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_addIndex = int.Parse(vars[1]);
+            m_onCompleted = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {

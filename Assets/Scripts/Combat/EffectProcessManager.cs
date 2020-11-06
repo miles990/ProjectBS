@@ -152,6 +152,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_AddActionIndex();
                     }
+                case "AddExtraAction":
+                    {
+                        return new EffectCommand_AddExtraAction();
+                    }
                 default:
                     {
                         throw new System.Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);
