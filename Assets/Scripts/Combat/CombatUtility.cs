@@ -17,6 +17,9 @@ namespace ProjectBS.Combat
             }
         }
         private static CombatManager m_currentCombatManager = null;
+        public static int LastAttackRoll = 0;
+        public static int LastDefenseRoll = 0;
+
         public static void SetCombatManager(CombatManager combatManager)
         {
             if(m_currentCombatManager != null)
@@ -133,6 +136,14 @@ namespace ProjectBS.Combat
                     {
                         return CurrentComabtManager.TurnCount;
                     }
+                case Keyword.LastAttackRoll:
+                    {
+                        return LastAttackRoll;
+                    }
+                case Keyword.LastDefenseRoll:
+                    {
+                        return LastDefenseRoll;
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetCombatFieldStatus] Invaild statusName=" + statusName);
@@ -230,6 +241,10 @@ namespace ProjectBS.Combat
                             _total += kvp.Value;
                         }
                         return _total;
+                    }
+                case Keyword.Camp:
+                    {
+                        return (int)unit.camp;
                     }
                 default:
                     {
@@ -417,6 +432,11 @@ namespace ProjectBS.Combat
                         int _max = int.Parse(_valueParts[1]);
 
                         return UnityEngine.Random.Range(_min, _max);
+                    }
+                case Keyword.CurrentDyingUnit:
+                    {
+                        _getValueTarget = CurrentComabtManager.CurrentDyingUnit;
+                        break;
                     }
                 default:
                     {

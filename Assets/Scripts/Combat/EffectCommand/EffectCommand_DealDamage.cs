@@ -5,9 +5,6 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_DealDamage : EffectCommandBase
     {
-        public static int LastAttackRoll = 0;
-        public static int LastDefenseRoll = 0;
-
         private Action m_onCompleted = null;
         private string m_valueString = "";
         private string m_ingnoreDefense = "";
@@ -79,8 +76,8 @@ namespace ProjectBS.Combat.EffectCommand
             float _attackAddRollPersent = UnityEngine.Random.Range(_minAttackRollPersent, 1f);
             float _defenseAddRollPersent = UnityEngine.Random.Range(_minDefenseRollPersent, 1f);
 
-            LastAttackRoll = Convert.ToInt32(_attackAddRollPersent * 100f);
-            LastDefenseRoll = Convert.ToInt32(_defenseAddRollPersent * 100f);
+            CombatUtility.LastAttackRoll = Convert.ToInt32(_attackAddRollPersent * 100f);
+            CombatUtility.LastDefenseRoll = Convert.ToInt32(_defenseAddRollPersent * 100f);
 
             if (!float.TryParse(m_valueString, out float _attack))
             {

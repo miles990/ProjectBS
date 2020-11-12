@@ -34,12 +34,12 @@ namespace ProjectBS.Combat
         private List<CombatUnit> m_units = new List<CombatUnit>();
 
         public int TurnCount { get; private set; } = 0;
+        public CombatUnit CurrentDyingUnit { get; private set; }
 
         public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; private set; }
         private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
         private CombatUnitAction m_currentAction = null;
 
-        private CombatUnit m_currentDyingUnit = null;
         private System.Action m_onDiedCommandEnded = null;
 
         private bool m_isCombating = false;
@@ -176,7 +176,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            m_currentDyingUnit = unit;
+            CurrentDyingUnit = unit;
             m_onDiedCommandEnded = onDiedCommandEnded;
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -377,7 +377,7 @@ namespace ProjectBS.Combat
         {
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
-                caster = m_currentDyingUnit,
+                caster = CurrentDyingUnit,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnDied_Self,
                 onEnded = OnDied_Self_Ended
@@ -386,11 +386,11 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            ForceRemoveUnit(m_currentDyingUnit);
-            GetPage<UI.CombatUIView>().ShowUnitDied(m_currentDyingUnit,
+            ForceRemoveUnit(CurrentDyingUnit);
+            GetPage<UI.CombatUIView>().ShowUnitDied(CurrentDyingUnit,
                 delegate 
                 {
-                    m_currentDyingUnit = null;
+                    CurrentDyingUnit = null;
                     m_onDiedCommandEnded?.Invoke();
                 });
         }
