@@ -248,6 +248,11 @@ namespace ProjectBS.Combat
 
             for (int i = 0; i < m_allUnit.Count; i++)
             {
+                if (m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                {
+                    continue;
+                }
+
                 switch (m_currentSelectRange)
                 {
                     case SelectRange.All:
@@ -346,6 +351,11 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
                             m_currentSelectedTargets.Add(m_allUnit[i]);
                         }
                         break;
@@ -354,7 +364,12 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
-                            if(m_attacker.camp != m_allUnit[i].camp)
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
+                            if (m_attacker.camp != m_allUnit[i].camp)
                                 m_currentSelectedTargets.Add(m_allUnit[i]);
                         }
                         break;
@@ -363,6 +378,11 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
                             if (m_attacker.camp == m_allUnit[i].camp)
                                 m_currentSelectedTargets.Add(m_allUnit[i]);
                         }
@@ -382,6 +402,11 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
                             _randomPool.Add(m_allUnit[i]);
                         }
                         break;
@@ -390,6 +415,11 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
                             if (m_attacker.camp != m_allUnit[i].camp)
                                 _randomPool.Add(m_allUnit[i]);
                         }
@@ -399,6 +429,11 @@ namespace ProjectBS.Combat
                     {
                         for (int i = 0; i < m_allUnit.Count; i++)
                         {
+                            if (!m_inculdeAttacker && m_allUnit[i] == m_attacker)
+                            {
+                                continue;
+                            }
+
                             if (m_attacker.camp == m_allUnit[i].camp)
                                 _randomPool.Add(m_allUnit[i]);
                         }
