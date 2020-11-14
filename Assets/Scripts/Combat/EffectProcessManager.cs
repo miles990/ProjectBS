@@ -108,17 +108,17 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_EndIf();
                     }
-                case "StoreDamage":
+                case "AddShield":
                     {
-                        return null;
+                        return new EffectCommand_AddShield();
                     }
                 case "Chain":
                     {
-                        return null;
+                        return new EffectCommand_Chain();
                     }
                 case "ReplaceSkill":
                     {
-                        return null;
+                        return new EffectCommand_ReplaceSkill();
                     }
                 case "CastSkill":
                     {
