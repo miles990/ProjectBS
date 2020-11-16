@@ -153,7 +153,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            EffectProcessManager.GetSkillEffectProcesser(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt())
+            EffectProcessManager.GetBuffProcesser(m_currentEquipmentEffectIDs[m_currentEquipmentEffectIDIndex].ToInt())
             .Start(new EffectProcesser.ProcessData
             {
                 caster = m_data.caster == null ? m_units[m_currentUnitIndex] : m_data.caster,
@@ -205,7 +205,7 @@ namespace ProjectBS.Combat
 
             CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].buffs[m_currentBuffIndex];
 
-            m_currentBuffProcesser = EffectProcessManager.GetSkillEffectProcesser(_currentBuff.effectID);
+            m_currentBuffProcesser = EffectProcessManager.GetBuffProcesser(_currentBuff.soruceID);
             m_currentBuffProcessData = new EffectProcesser.ProcessData
             {
                 caster = m_units[m_currentUnitIndex],

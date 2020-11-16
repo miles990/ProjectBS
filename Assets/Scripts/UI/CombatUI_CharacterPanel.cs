@@ -101,7 +101,7 @@ namespace ProjectBS.UI
                     string _buffString = "";
                     for(int i = 0; i < m_currnetDisplayingUnit.buffs.Count; i++)
                     {
-                        Data.SkillEffectData _effect = m_currnetDisplayingUnit.buffs[i].GetSkillEffectData();
+                        Data.BuffData _effect = m_currnetDisplayingUnit.buffs[i].GetBuffSourceData();
                         _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + m_currnetDisplayingUnit.buffs[i].stackCount
                             + " (" + (m_currnetDisplayingUnit.buffs[i].remainingTime == -1 ? "永久" : "剩餘 " + m_currnetDisplayingUnit.buffs[i].remainingTime.ToString() + " 回合") + ")\n"
                             + ContextConverter.Instance.GetContext(_effect.DescriptionContextID);

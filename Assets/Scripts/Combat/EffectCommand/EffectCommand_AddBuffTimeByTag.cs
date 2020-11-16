@@ -63,7 +63,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            if (m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetSkillEffectData().Tag == m_tag)
+            if (m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetBuffSourceData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffTime(
                     m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
@@ -82,7 +82,7 @@ namespace ProjectBS.Combat.EffectCommand
             m_currentBuffIndex--;
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetSkillEffectData().NameContextID),
+                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
             }, GoNextBuff);
         }

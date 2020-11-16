@@ -16,17 +16,17 @@ namespace ProjectBS.Combat
             typeof(EffectCommand_BeginIf_LastSkillTag)
         };
 
-        private static Dictionary<int, EffectProcesser> m_effectIDToProcesser = new Dictionary<int, EffectProcesser>();
+        private static Dictionary<int, EffectProcesser> m_buffIDToProcesser = new Dictionary<int, EffectProcesser>();
         private static Dictionary<int, EffectProcesser> m_skillIDToProcesser = new Dictionary<int, EffectProcesser>();
 
-        public static EffectProcesser GetSkillEffectProcesser(int id)
+        public static EffectProcesser GetBuffProcesser(int id)
         {
-            if(!m_effectIDToProcesser.ContainsKey(id))
+            if(!m_buffIDToProcesser.ContainsKey(id))
             {
-                m_effectIDToProcesser.Add(id, new EffectProcesser(GameDataManager.GetGameData<Data.SkillEffectData>(id).Command));
+                m_buffIDToProcesser.Add(id, new EffectProcesser(GameDataManager.GetGameData<Data.BuffData>(id).Command));
             }
 
-            return m_effectIDToProcesser[id];
+            return m_buffIDToProcesser[id];
         }
 
         public static EffectProcesser GetSkillProcesser(int id)

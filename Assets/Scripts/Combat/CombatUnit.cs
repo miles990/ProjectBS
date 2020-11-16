@@ -13,15 +13,15 @@ namespace ProjectBS.Combat
 
         public class Buff
         {
-            public int effectID = 0;
+            public int soruceID = 0;
             public int remainingTime = 1;
             public int stackCount = 1;
             public CombatUnit owner = null;
             public CombatUnit from = null;
 
-            public SkillEffectData GetSkillEffectData()
+            public BuffData GetBuffSourceData()
             {
-                return GameDataManager.GetGameData<SkillEffectData>(effectID);
+                return GameDataManager.GetGameData<BuffData>(soruceID);
             }
         }
 
@@ -185,9 +185,9 @@ namespace ProjectBS.Combat
 
         public void RemoveBuff(Buff buff, System.Action onRemoved)
         {
-            SkillEffectData _effect = buff.GetSkillEffectData();
+            BuffData _effect = buff.GetBuffSourceData();
 
-            EffectProcessManager.GetSkillEffectProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
+            EffectProcessManager.GetBuffProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
             {
                 caster = this,
                 target = null,
@@ -199,7 +199,7 @@ namespace ProjectBS.Combat
             });
         }
 
-        private void OnBuffRemoved(Buff buff, SkillEffectData _effect, System.Action onRemoved)
+        private void OnBuffRemoved(Buff buff, BuffData _effect, System.Action onRemoved)
         {
             CombatUtility.RemoveEffect(this, _effect.ID);
             buffs.Remove(buff);

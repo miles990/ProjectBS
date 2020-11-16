@@ -14,7 +14,7 @@ namespace ProjectBS
 
             OwningEquipmentData _newEquipment = new OwningEquipmentData
             {
-                EffectIDs = _source.SkillEffectIDs,
+                EffectIDs = _source.BuffIDs,
                 EquipmentSourceID = _source.ID,
                 Exp = 0,
                 Level = 1,

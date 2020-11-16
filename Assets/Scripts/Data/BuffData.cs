@@ -2,7 +2,7 @@
 
 namespace ProjectBS.Data
 {
-    public class SkillEffectData : IGameData
+    public class BuffData : IGameData
     {
         public int ID { get; private set; }
         public int NameContextID { get; private set; }

@@ -50,7 +50,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_effectID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.effectID == m_effectID);
+                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.soruceID == m_effectID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffTime(
@@ -75,7 +75,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetSkillEffectData().NameContextID),
+                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
             }, onShown);
         }

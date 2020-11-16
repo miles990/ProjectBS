@@ -5,7 +5,7 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_AddBuffStack : EffectCommandBase
     {
-        private int m_effectID = 0;
+        private int m_buffID = 0;
         private int m_removeStackCount = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            m_effectID = int.Parse(vars[1]);
+            m_buffID = int.Parse(vars[1]);
 
             m_removeStackCount = int.Parse(vars[2]);
 
@@ -48,9 +48,9 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            if(m_effectID != -1)
+            if(m_buffID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.effectID == m_effectID);
+                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.soruceID == m_buffID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffStack(
@@ -75,7 +75,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetSkillEffectData().NameContextID),
+                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
             }, onShonw);
         }

@@ -32,11 +32,11 @@ namespace ProjectBS.Combat.EffectCommand
         private void OnTargetSelected(List<CombatUnit> targets)
         {
             bool _checkIsOwning = int.Parse(m_checkIsOwning) == 1;
-            int _effectID = int.Parse(m_effectID);
+            int _buffID = int.Parse(m_effectID);
 
             for(int i = 0; i < targets.Count; i++)
             {
-                bool _isOwning = targets[i].buffs.Find(x => x.effectID == _effectID) != null;
+                bool _isOwning = targets[i].buffs.Find(x => x.soruceID == _buffID) != null;
                 if (_isOwning != _checkIsOwning)
                 {
                     processData.skipIfCount++;

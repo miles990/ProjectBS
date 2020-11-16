@@ -47,7 +47,7 @@ namespace ProjectBS
                 new DownloadDataTask(IELoadData<ContextData>("ContextData")),
                 new DownloadDataTask(IELoadData<SkillData>("SkillData")),
                 new DownloadDataTask(IELoadData<AbilityData>("AbilityData")),
-                new DownloadDataTask(IELoadData<SkillEffectData>("SkillEffectData")),
+                new DownloadDataTask(IELoadData<BuffData>("BuffData")),
                 new DownloadDataTask(IELoadData<ExpData>("ExpData")),
                 new DownloadDataTask(IELoadData<ContextData>("ContextData")),
                 new DownloadDataTask(IELoadData<CharacterNamePoolData>("CharacterNamePoolData")),

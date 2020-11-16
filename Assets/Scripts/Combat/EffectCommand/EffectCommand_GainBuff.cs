@@ -7,7 +7,7 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_GainBuff : EffectCommandBase
     {
-        private int m_effectID = 0;
+        private int m_buffID = 0;
         private int m_buffTime = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentActiveTargetIndex = -1;
@@ -16,7 +16,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            m_effectID = int.Parse(vars[1]);
+            m_buffID = int.Parse(vars[1]);
             m_buffTime = int.Parse(vars[2]);
             m_onCompleted = onCompleted;
 
@@ -47,8 +47,8 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].buffs.Find(x => x.effectID == m_effectID);
-            SkillEffectData _skillEffectData = GameDataManager.GetGameData<SkillEffectData>(m_effectID);
+            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].buffs.Find(x => x.soruceID == m_buffID);
+            BuffData _skillEffectData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
             if (_buff != null)
             {
@@ -65,7 +65,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 _buff = new CombatUnit.Buff
                 {
-                    effectID = m_effectID,
+                    soruceID = m_buffID,
                     from = processData.caster,
                     owner = m_targets[m_currentActiveTargetIndex],
                     remainingTime = m_buffTime,
@@ -75,7 +75,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_targets[m_currentActiveTargetIndex].buffs.Add(_buff);
             }
 
-            EffectProcessManager.GetSkillEffectProcesser(_skillEffectData.ID).Start(
+            EffectProcessManager.GetBuffProcesser(_skillEffectData.ID).Start(
                 new EffectProcesser.ProcessData
                 {
                     caster = m_targets[m_currentActiveTargetIndex],
@@ -88,7 +88,7 @@ namespace ProjectBS.Combat.EffectCommand
                 });
         }
 
-        private void DisplayGainBuff(SkillEffectData _skillEffectData)
+        private void DisplayGainBuff(BuffData _skillEffectData)
         {
             GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayBuffData
             {

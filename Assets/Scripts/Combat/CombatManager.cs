@@ -245,14 +245,14 @@ namespace ProjectBS.Combat
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
-            if (!string.IsNullOrEmpty(boss.EffectIDs))
+            if (!string.IsNullOrEmpty(boss.BuffIDs))
             {
-                string[] _effectIDs = boss.EffectIDs.Split(';');
-                for (int i = 0; i < _effectIDs.Length; i++)
+                string[] _buffIDs = boss.BuffIDs.Split(';');
+                for (int i = 0; i < _buffIDs.Length; i++)
                 {
                     _boss.buffs.Add(new CombatUnit.Buff
                     {
-                        effectID = int.Parse(_effectIDs[i]),
+                        soruceID = int.Parse(_buffIDs[i]),
                         from = _boss,
                         owner = _boss,
                         remainingTime = -1,
@@ -475,7 +475,7 @@ namespace ProjectBS.Combat
 
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(_buff.GetSkillEffectData().NameContextID),
+                buffName = ContextConverter.Instance.GetContext(_buff.GetBuffSourceData().NameContextID),
                 taker = m_units[m_currentCheckBuffEndUnitIndex]
             }, CheckNextBuffEnd);
         }

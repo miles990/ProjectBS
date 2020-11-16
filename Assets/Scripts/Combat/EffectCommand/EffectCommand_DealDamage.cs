@@ -163,7 +163,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
             else if(processData.referenceBuff != null)
             {
-                _id = processData.referenceBuff.GetSkillEffectData().NameContextID;
+                _id = processData.referenceBuff.GetBuffSourceData().NameContextID;
             }
 
             GetPage<UI.CombatUIView>().ShowSkillAnimation(new UI.CombatUIView.SkillAnimationData

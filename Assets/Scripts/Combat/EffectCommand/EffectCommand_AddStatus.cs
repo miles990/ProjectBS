@@ -57,7 +57,7 @@ namespace ProjectBS.Combat.EffectCommand
                             {
                                 parentBuff = new CombatUnit.Buff
                                 {
-                                    effectID = 0,
+                                    soruceID = 0,
                                     from = GetSelf(),
                                     owner = m_targets[m_currentTargetIndex],
                                     remainingTime = -1,

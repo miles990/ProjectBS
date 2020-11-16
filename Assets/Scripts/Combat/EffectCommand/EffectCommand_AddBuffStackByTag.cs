@@ -59,7 +59,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             m_targetBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
 
-            if (m_targetBuff.GetSkillEffectData().Tag == m_tag)
+            if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
                     m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
@@ -77,7 +77,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
-                buffName = ContextConverter.Instance.GetContext(m_targetBuff.GetSkillEffectData().NameContextID),
+                buffName = ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
             }, GoNextBuff);
         }

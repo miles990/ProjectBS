@@ -261,12 +261,12 @@ namespace ProjectBS.Combat
             }
         }
 
-        public static void RemoveEffect(CombatUnit unit, int effectID)
+        public static void RemoveEffect(CombatUnit unit, int buffID)
         {
             for (int i = 0; i < unit.statusAdders.Count; i++)
             {
                 if (unit.statusAdders[i].parentBuff != null
-                    && unit.statusAdders[i].parentBuff.effectID == effectID)
+                    && unit.statusAdders[i].parentBuff.soruceID == buffID)
                 {
                     unit.statusAdders.RemoveAt(i);
                     i--;
@@ -275,7 +275,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < unit.statusAddLockers.Count; i++)
             {
                 if (unit.statusAddLockers[i].parentBuff != null
-                    && unit.statusAddLockers[i].parentBuff.effectID == effectID)
+                    && unit.statusAddLockers[i].parentBuff.soruceID == buffID)
                 {
                     unit.statusAddLockers.RemoveAt(i);
                     i--;
@@ -284,7 +284,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < unit.actionSkipers.Count; i++)
             {
                 if (unit.actionSkipers[i].parentBuff != null
-                    && unit.actionSkipers[i].parentBuff.effectID == effectID)
+                    && unit.actionSkipers[i].parentBuff.soruceID == buffID)
                 {
                     unit.actionSkipers.RemoveAt(i);
                     i--;
@@ -293,7 +293,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < unit.checkSPSkipers.Count; i++)
             {
                 if (unit.checkSPSkipers[i].parentBuff != null
-                    && unit.checkSPSkipers[i].parentBuff.effectID == effectID)
+                    && unit.checkSPSkipers[i].parentBuff.soruceID == buffID)
                 {
                     unit.checkSPSkipers.RemoveAt(i);
                     i--;
@@ -302,7 +302,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < unit.shields.Count; i++)
             {
                 if(unit.shields[i].parentBuff != null
-                    && unit.shields[i].parentBuff.effectID == effectID)
+                    && unit.shields[i].parentBuff.soruceID == buffID)
                 {
                     unit.shields.RemoveAt(i);
                     i--;
@@ -362,8 +362,8 @@ namespace ProjectBS.Combat
                                 }
                         }
 
-                        int _effectID = int.Parse(_varParts[1]);
-                        CombatUnit.Buff _buff = _getValueTarget.buffs.Find(x => x.effectID == _effectID);
+                        int _buffID = int.Parse(_varParts[1]);
+                        CombatUnit.Buff _buff = _getValueTarget.buffs.Find(x => x.soruceID == _buffID);
                         if (_buff == null)
                         {
                             return 0;
@@ -382,7 +382,7 @@ namespace ProjectBS.Combat
                                     }
                                 case Keyword.SkillEffectID:
                                     {
-                                        return _buff.effectID;
+                                        return _buff.soruceID;
                                     }
                                 default:
                                     {
