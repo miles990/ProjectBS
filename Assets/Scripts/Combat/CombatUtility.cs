@@ -97,7 +97,15 @@ namespace ProjectBS.Combat
                             continue;
                         }
 
-                        _buffer[_buffer.Count - 2] += int.Parse(_blockResult);
+                        if(int.TryParse(_blockResult, out int _blockValue))
+                        {
+                            _buffer[_buffer.Count - 2] += _blockValue;
+                        }
+                        else
+                        {
+                            _buffer[_buffer.Count - 2] += Arithmetic(data, _blockResult);
+                        }
+
                         _buffer.RemoveAt(_buffer.Count - 1);
                         continue;
                     }
