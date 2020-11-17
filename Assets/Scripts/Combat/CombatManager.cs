@@ -195,6 +195,7 @@ namespace ProjectBS.Combat
         {
             m_unitActions.Remove(m_unitActions.Find(x => x.Actor == unit));
             m_units.Remove(unit);
+            m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
             GetPage<UI.CombatUIView>().RemoveActor(unit);
         }
 
@@ -415,6 +416,7 @@ namespace ProjectBS.Combat
 
         private int m_currentCheckBuffEndUnitIndex = -1;
         private int m_currentCheckBuffIndex = -1;
+        private CombatUnit m_currentCheckingUnit = null;
         private void OnStartToEndTurnEnded()
         {
             m_currentCheckBuffEndUnitIndex = -1;
@@ -430,6 +432,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
+            m_currentCheckingUnit = m_units[m_currentCheckBuffEndUnitIndex];
             m_currentCheckBuffIndex = -1;
             CheckNextBuffEnd();
         }
@@ -438,25 +441,31 @@ namespace ProjectBS.Combat
         {
             GetPage<UI.CombatUIView>().RefreshAllInfo();
 
-            m_currentCheckBuffIndex++;
-            if(m_currentCheckBuffIndex >= m_units[m_currentCheckBuffEndUnitIndex].buffs.Count)
+            if(!m_units.Contains(m_currentCheckingUnit))
             {
                 CheckNextUnitBuffEnd();
                 return;
             }
 
-            if(m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex].remainingTime == -1)
+            m_currentCheckBuffIndex++;
+            if(m_currentCheckBuffIndex >= m_currentCheckingUnit.buffs.Count)
+            {
+                CheckNextUnitBuffEnd();
+                return;
+            }
+
+            if(m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime == -1)
             {
                 CheckNextBuffEnd();
                 return;
             }
 
-            m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex].remainingTime--;
+            m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime--;
 
-            if (m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex].remainingTime <= 0)
+            if (m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime <= 0)
             {
-                CombatUnit.Buff _buff = m_units[m_currentCheckBuffEndUnitIndex].buffs[m_currentCheckBuffIndex];
-                m_units[m_currentCheckBuffEndUnitIndex].RemoveBuff(
+                CombatUnit.Buff _buff = m_currentCheckingUnit.buffs[m_currentCheckBuffIndex];
+                m_currentCheckingUnit.RemoveBuff(
                     _buff,
                     delegate { DisplayRemoveBuff(_buff); });
             }
@@ -468,22 +477,10 @@ namespace ProjectBS.Combat
 
         private void DisplayRemoveBuff(CombatUnit.Buff _buff)
         {
-            if(_buff.owner != CurrentActionInfo.actor)
-            {
-                CheckNextBuffEnd();
-                return;
-            }
-
-            if(m_currentCheckBuffEndUnitIndex >= m_units.Count)
-            {
-                CheckNextUnitBuffEnd();
-                return;
-            }
-
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_buff.GetBuffSourceData().NameContextID),
-                taker = m_units[m_currentCheckBuffEndUnitIndex]
+                taker = m_currentCheckingUnit
             }, CheckNextBuffEnd);
         }
     }

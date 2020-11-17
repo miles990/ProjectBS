@@ -375,6 +375,9 @@ namespace ProjectBS.UI
 
         private void SetInfoText(CombatUnit target, string info)
         {
+            if (!m_unitToIndex.ContainsKey(target))
+                return;
+
             CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
             _clone.transform.SetParent(transform);
             if (target == null)
