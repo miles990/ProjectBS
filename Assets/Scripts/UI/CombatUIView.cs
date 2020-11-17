@@ -177,9 +177,10 @@ namespace ProjectBS.UI
 
         public void ShowActorActionEnd(CombatUnit actor, Action onActionAnimationEnded)
         {
-            SetInfoText(actor, string.Format("行動結束"));
+            // SetInfoText(actor, string.Format("行動結束"));
             m_characterPanels[m_unitToIndex[actor]].EnableActingHint(false);
-            TimerManager.Schedule(1f, onActionAnimationEnded);
+            // TimerManager.Schedule(DISPLAY_INFO_TIME, onActionAnimationEnded);
+            onActionAnimationEnded?.Invoke();
         }
 
         public void ShowAddActionIndex(CombatUnit actor, int addIndex, Action onShown)
@@ -375,7 +376,7 @@ namespace ProjectBS.UI
 
         private void SetInfoText(CombatUnit target, string info)
         {
-            if (!m_unitToIndex.ContainsKey(target))
+            if (target != null && !m_unitToIndex.ContainsKey(target))
                 return;
 
             CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
