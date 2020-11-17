@@ -153,7 +153,7 @@ namespace ProjectBS.Combat
 
         private void OnStartToEndActionSelfEnded()
         {
-            m_onEnded?.Invoke();
+            GetPage<UI.CombatUIView>().ShowActorActionEnd(Actor, m_onEnded);
         }
     }
 }

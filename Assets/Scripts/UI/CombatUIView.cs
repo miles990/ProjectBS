@@ -29,6 +29,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
         [SerializeField] private CombatUI_InfoText m_infoPrefab = null;
+        [SerializeField] private UnityEngine.UI.Text m_actionSortInfoText = null; 
 
         private List<Data.SkillData> m_currentShowingSkills = null;
 
@@ -57,6 +58,11 @@ namespace ProjectBS.UI
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
             m_root.SetActive(show);
+            m_actionSortInfoText.gameObject.SetActive(show);
+            for(int i = 0; i < m_characterPanels.Length; i++)
+            {
+                m_characterPanels[i].EnableActingHint(false);
+            }
             onCompleted?.Invoke();
         }
 
@@ -122,6 +128,17 @@ namespace ProjectBS.UI
             }
         }
 
+        public void RefreshActionQueueInfo(List<CombatUnitAction> actions)
+        {
+            string _info = "";
+            for (int i = 0; i < actions.Count; i++)
+            {
+                _info += actions[i].Actor.name;
+                _info += "\n";
+            }
+            m_actionSortInfoText.text = _info;
+        }
+
         public void RemoveActor(CombatUnit unit)
         {
             m_characterPanels[m_unitToIndex[unit]].gameObject.SetActive(false);
@@ -154,12 +171,14 @@ namespace ProjectBS.UI
         public void ShowActorActionStart(CombatUnit actor, Action onActionAnimationEnded)
         {
             SetInfoText(actor, string.Format("開始行動"));
+            m_characterPanels[m_unitToIndex[actor]].EnableActingHint(true);
             TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 
-        public void ShowActorEndStart(CombatUnit actor, Action onActionAnimationEnded)
+        public void ShowActorActionEnd(CombatUnit actor, Action onActionAnimationEnded)
         {
             SetInfoText(actor, string.Format("行動結束"));
+            m_characterPanels[m_unitToIndex[actor]].EnableActingHint(false);
             TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 

@@ -11,6 +11,7 @@ namespace ProjectBS.UI
         [SerializeField] private Button m_button = null;
         [SerializeField] private Text m_infoText = null;
         [SerializeField] private Text m_hatePersentText = null;
+        [SerializeField] private GameObject m_actingHint = null;
 
         private Combat.CombatUnit m_currnetDisplayingUnit = null;
 
@@ -19,6 +20,11 @@ namespace ProjectBS.UI
         public void SetEnable(bool enable)
         {
             m_button.interactable = enable;
+        }
+
+        public void EnableActingHint(bool enable)
+        {
+            m_actingHint.SetActive(enable);
         }
 
         public void SetUp(Combat.CombatUnit unit)

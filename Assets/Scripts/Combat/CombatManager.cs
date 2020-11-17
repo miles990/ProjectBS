@@ -82,6 +82,8 @@ namespace ProjectBS.Combat
                 m_unitActions.RemoveAt(_currentIndex);
                 m_unitActions.Insert(_targetIndex, _refAction);
             }
+
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
         
         public void AddExtraAction(CombatUnit unit, bool isImmediate)
@@ -95,6 +97,8 @@ namespace ProjectBS.Combat
             {
                 m_unitActions.Add(_newAction);
             }
+
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
 
         public List<CombatUnit> GetSameCampUnits(CombatUnit.Camp camp)
@@ -303,6 +307,7 @@ namespace ProjectBS.Combat
                 m_unitActions.Add(new CombatUnitAction(m_units[i], AllUnitAllEffectProcesser));
             }
 
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
             GetPage<UI.CombatUIView>().ShowTurnStart(TurnCount, OnTurnStartAnimationEnded);
         }
 
@@ -327,6 +332,8 @@ namespace ProjectBS.Combat
             m_currentAction = m_unitActions[0];
             m_unitActions.RemoveAt(0);
             m_currentAction.Start(OnActionEnded);
+
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
 
         private void OnActionEnded()
