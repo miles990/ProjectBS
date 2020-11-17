@@ -51,9 +51,12 @@ namespace ProjectBS.UI
             OnEdited?.Invoke();
         }
 
-        public void Button_LevelUp()
+        public void Button_LevelUp(int addLevel)
         {
-            EquipmentUtility.TryAddOneLevel(m_refEquipment);
+            for(int i = 0; i < addLevel; i++)
+            {
+                EquipmentUtility.TryAddOneLevel(m_refEquipment);
+            }
             PlayerManager.Instance.SavePlayer();
 
             OnEdited?.Invoke();

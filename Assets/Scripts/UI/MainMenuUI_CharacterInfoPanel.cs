@@ -182,9 +182,13 @@ namespace ProjectBS.UI
             Button_Save();
         }
 
-        public void Button_LevelUp()
+        public void Button_LevelUp(int addLevel)
         {
-            CharacterUtility.TryAddOneLevel(m_refCharacter);
+            for(int i = 0; i < addLevel; i++)
+            {
+                CharacterUtility.TryAddOneLevel(m_refCharacter);
+            }
+
             RefreshInfo();
             PlayerManager.Instance.SavePlayer();
         }

@@ -149,6 +149,9 @@ namespace ProjectBS
 
         public static void TryAddOneLevel(OwningCharacterData character)
         {
+            if(PlayerManager.Instance.Player.OwnExp <= 0)
+                return;
+
             ExpData _expData = GameDataManager.GetGameData<ExpData>(character.Level);
             int _needExp = _expData.Require - character.Exp;
             if (PlayerManager.Instance.Player.OwnExp >= _needExp)
