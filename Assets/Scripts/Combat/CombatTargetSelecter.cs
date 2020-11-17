@@ -51,6 +51,7 @@ namespace ProjectBS.Combat
 
         public class SelectTargetData
         {
+            public string id = "";
             public CombatUnit attacker = null;
             public string commandString = "";
             public Action<List<CombatUnit>> onSelected = null;
@@ -60,10 +61,13 @@ namespace ProjectBS.Combat
         private bool m_inculdeAttacker = false;
         private int m_needCount = 0;
         private List<CombatUnit> m_allUnit = new List<CombatUnit>();
-        private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
+
         private SelectRange m_currentSelectRange = SelectRange.All;
         private SelectType m_currentSelectType = SelectType.Random;
         private Action<List<CombatUnit>> m_onSelected = null;
+
+        private Dictionary<string, List<CombatUnit>> m_idToSelected = new Dictionary<string, List<CombatUnit>>();
+        private string m_currnetManualSelectingID = "";
 
         public void StartSelect(SelectTargetData data)
         {
@@ -81,20 +85,45 @@ namespace ProjectBS.Combat
             {
                 case "Self":
                     {
-                        m_currentSelectedTargets = new List<CombatUnit> { data.attacker };
-                        data.onSelected?.Invoke(m_currentSelectedTargets);
+                        if(m_idToSelected.ContainsKey(data.id))
+                        {
+                            m_idToSelected[data.id] = new List<CombatUnit> { data.attacker };
+                        }
+                        else
+                        {
+                            m_idToSelected.Add(data.id, new List<CombatUnit> { data.attacker });
+                        }
+                        data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
                     }
                 case "CurrentActor":
                     {
-                        m_currentSelectedTargets = new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor };
-                        data.onSelected?.Invoke(m_currentSelectedTargets);
+                        if (m_idToSelected.ContainsKey(data.id))
+                        {
+                            m_idToSelected[data.id] = new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor };
+                        }
+                        else
+                        {
+                            m_idToSelected.Add(data.id, new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor });
+                        }
+
+                        data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
                     }
                 case "Select":
                 case "SelectOther":
                     {
-                        m_currentSelectedTargets.Clear();
+                        m_currnetManualSelectingID = data.id;
+
+                        if (m_idToSelected.ContainsKey(data.id))
+                        {
+                            m_idToSelected[data.id].Clear();
+                        }
+                        else
+                        {
+                            m_idToSelected.Add(data.id, new List<CombatUnit>());
+                        }
+
                         m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
                         m_currentSelectType = (SelectType)Enum.Parse(typeof(SelectType), _vars[1]);
                         m_allUnit = CombatUtility.CurrentComabtManager.AllUnit;
@@ -125,7 +154,15 @@ namespace ProjectBS.Combat
                     }
                 case "LastSelected":
                     {
-                        data.onSelected?.Invoke(m_currentSelectedTargets);
+                        if (m_idToSelected.ContainsKey(data.id))
+                        {
+                            data.onSelected?.Invoke(m_idToSelected[data.id]);
+                        }
+                        else
+                        {
+                            data.onSelected?.Invoke(new List<CombatUnit>());
+                        }
+
                         return;
                     }
                 default:
@@ -137,14 +174,7 @@ namespace ProjectBS.Combat
 
         private void OnManualSelected(List<CombatUnit> targets)
         {
-            m_currentSelectedTargets = targets;
-            string _debugLog = "OnSelected:";
-            for(int i = 0; i < m_currentSelectedTargets.Count; i++)
-            {
-                _debugLog += m_currentSelectedTargets[i].name;
-                if (i != m_currentSelectedTargets.Count - 1)
-                    _debugLog += ", ";
-            }
+            m_idToSelected[m_currnetManualSelectingID] = targets;
         }
 
         private void DoSelect()
@@ -288,12 +318,12 @@ namespace ProjectBS.Combat
                 _roll -= _rollPool[i].Hatred;
                 if (_roll <= 0)
                 {
-                    m_currentSelectedTargets.Add(_rollPool[i]);
+                    m_idToSelected[m_currnetManualSelectingID].Add(_rollPool[i]);
                     break;
                 }
             }
 
-            if (m_currentSelectedTargets.Count == m_needCount)
+            if (m_idToSelected[m_currnetManualSelectingID].Count == m_needCount)
             {
                 CompleteSelect();
             }
@@ -332,8 +362,8 @@ namespace ProjectBS.Combat
                 }
             }
 
-            m_currentSelectedTargets.Add(_currentSelect);
-            if (m_currentSelectedTargets.Count == m_needCount)
+            m_idToSelected[m_currnetManualSelectingID].Add(_currentSelect);
+            if (m_idToSelected[m_currnetManualSelectingID].Count == m_needCount)
             {
                 CompleteSelect();
             }
@@ -356,7 +386,7 @@ namespace ProjectBS.Combat
                                 continue;
                             }
 
-                            m_currentSelectedTargets.Add(m_allUnit[i]);
+                            m_idToSelected[m_currnetManualSelectingID].Add(m_allUnit[i]);
                         }
                         break;
                     }
@@ -370,7 +400,7 @@ namespace ProjectBS.Combat
                             }
 
                             if (m_attacker.camp != m_allUnit[i].camp)
-                                m_currentSelectedTargets.Add(m_allUnit[i]);
+                                m_idToSelected[m_currnetManualSelectingID].Add(m_allUnit[i]);
                         }
                         break;
                     }
@@ -384,7 +414,7 @@ namespace ProjectBS.Combat
                             }
 
                             if (m_attacker.camp == m_allUnit[i].camp)
-                                m_currentSelectedTargets.Add(m_allUnit[i]);
+                                m_idToSelected[m_currnetManualSelectingID].Add(m_allUnit[i]);
                         }
                         break;
                     }
@@ -444,9 +474,9 @@ namespace ProjectBS.Combat
             while (_randomPool.Count > 0)
             {
                 int _roll = UnityEngine.Random.Range(0, _randomPool.Count);
-                m_currentSelectedTargets.Add(_randomPool[_roll]);
+                m_idToSelected[m_currnetManualSelectingID].Add(_randomPool[_roll]);
                 _randomPool.RemoveAt(_roll);
-                if(m_currentSelectedTargets.Count == m_needCount)
+                if(m_idToSelected[m_currnetManualSelectingID].Count == m_needCount)
                 {
                     CompleteSelect();
                     return;
@@ -458,7 +488,7 @@ namespace ProjectBS.Combat
 
         private void CompleteSelect()
         {
-            m_onSelected?.Invoke(m_currentSelectedTargets);
+            m_onSelected?.Invoke(m_idToSelected[m_currnetManualSelectingID]);
         }
     }
 }

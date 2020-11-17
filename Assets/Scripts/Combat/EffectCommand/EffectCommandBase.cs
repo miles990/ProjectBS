@@ -18,5 +18,20 @@ namespace ProjectBS.Combat.EffectCommand
                 return processData.referenceBuff.owner;
             }
         }
+
+        protected string GetSelectID()
+        {
+            if(processData.refenceSkill != null)
+            {
+                return "Skill" + processData.refenceSkill.ID;
+            }
+
+            if (processData.referenceBuff != null)
+            {
+                return "Buff" + processData.referenceBuff.GetBuffSourceData().ID;
+            }
+
+            throw new Exception("[EffectCommandBase][GetSelectID] Must reference to skill or buff when select");
+        }
     }
 }

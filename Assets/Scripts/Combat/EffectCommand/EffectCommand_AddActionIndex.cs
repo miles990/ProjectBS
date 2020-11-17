@@ -18,6 +18,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
+                id = GetSelectID(),
                 attacker = GetSelf(),
                 commandString = vars[0],
                 onSelected = OnSelected
