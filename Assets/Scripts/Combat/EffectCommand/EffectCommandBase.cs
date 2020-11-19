@@ -31,7 +31,12 @@ namespace ProjectBS.Combat.EffectCommand
                 return "Buff" + processData.referenceBuff.GetBuffSourceData().ID;
             }
 
-            throw new Exception("[EffectCommandBase][GetSelectID] Must reference to skill or buff when select");
+            if(processData.caster != null)
+            {
+                return "Actor" + processData.caster.GetHashCode();
+            }
+
+            throw new Exception("[EffectCommandBase][GetSelectID] Must reference to skill or buff or having caster when select");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ProjectBS.UI
             {
                 m_bossNameText.text += " (Cleared)";
             }
-            m_bossDescriptionText.text = ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID);
+            m_bossDescriptionText.text = "";
         }
 
         public void Button_SelectBoss()
@@ -34,7 +34,9 @@ namespace ProjectBS.UI
 
         public void Button_ShowInfo()
         {
-            Debug.Log("show info");
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID),
+                m_bossNameText.text, null);
         }
 
         public void OnPointerDown(PointerEventData eventData)
