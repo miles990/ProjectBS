@@ -29,6 +29,21 @@ namespace ProjectBS.Combat
             m_currentCombatManager = combatManager;
         }
 
+        public static void EndCombat(CombatManager combatManager)
+        {
+            if(m_currentCombatManager == null)
+            {
+                return;
+            }
+
+            if(m_currentCombatManager != combatManager)
+            {
+                throw new System.Exception("[CombatUtility][EndCombat] Is trying to end combat with different combar manager");
+            }
+
+            m_currentCombatManager = null;
+        }
+
         public class CalculateData
         {
             public CombatUnit caster = null;
@@ -132,14 +147,6 @@ namespace ProjectBS.Combat
         {
             switch(statusName)
             {
-                case Keyword.BossUnitCount:
-                    {
-                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Enemy);
-                    }
-                case Keyword.PlayerUnitCount:
-                    {
-                        return CurrentComabtManager.GetCampCount(CombatUnit.Camp.Player);
-                    }
                 case Keyword.TurnCount:
                     {
                         return CurrentComabtManager.TurnCount;
@@ -252,7 +259,7 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.Camp:
                     {
-                        return (int)unit.camp;
+                        return unit.camp;
                     }
                 default:
                     {

@@ -6,6 +6,9 @@ namespace ProjectBS.Combat
 {
     public class CombatManager : Manager
     {
+        public static int playerCamp = 0;
+        public static int enemyCamp = 1;
+
         public struct CombatActionInfo
         {
             public CombatUnit actor;
@@ -27,7 +30,8 @@ namespace ProjectBS.Combat
 
         public CombatManager() 
         {
-            CombatUtility.SetCombatManager(this);
+            playerCamp = 0;
+            enemyCamp = 1;
         } 
 
         public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
@@ -43,30 +47,6 @@ namespace ProjectBS.Combat
         private System.Action m_onDiedCommandEnded = null;
 
         private bool m_isCombating = false;
-
-        public int GetCampCount(CombatUnit.Camp camp)
-        {
-            if(TurnCount == 0)
-            {
-                return 0;
-            }
-
-            int _count = 0;
-            for(int i = 0; i < m_units.Count; i++)
-            {
-                if(m_units[i].camp == camp)
-                {
-                    _count++;
-                }
-            }
-
-            return _count;
-        }
-
-        public int GetNotCampCount(CombatUnit.Camp camp)
-        {
-            return m_units.Count - GetCampCount(camp);
-        }
 
         public void AddActionIndex(CombatUnit unit, int addIndex)
         {
@@ -101,7 +81,7 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
 
-        public List<CombatUnit> GetSameCampUnits(CombatUnit.Camp camp)
+        public List<CombatUnit> GetSameCampUnits(int camp)
         {
             List<CombatUnit> _units = new List<CombatUnit>();
             for (int i = 0; i < m_units.Count; i++)
@@ -205,7 +185,7 @@ namespace ProjectBS.Combat
             {
                 ai = "",
                 rawAttack = character.Attack,
-                camp = CombatUnit.Camp.Player,
+                camp = playerCamp,
                 rawDefense = character.Defense,
                 rawMaxHP = character.HP,
                 name = ContextConverter.Instance.GetContext(character.CharacterNameID),
@@ -233,7 +213,7 @@ namespace ProjectBS.Combat
             {
                 ai = boss.AI,
                 rawAttack = boss.Attack,
-                camp = CombatUnit.Camp.Enemy,
+                camp = enemyCamp,
                 rawDefense = boss.Defense,
                 rawMaxHP = boss.HP,
                 HP = boss.HP,
@@ -357,7 +337,7 @@ namespace ProjectBS.Combat
             int _bossCount = 0;
             for (int i = 0; i < m_units.Count; i++)
             {
-                if (m_units[i].camp == CombatUnit.Camp.Enemy)
+                if (m_units[i].camp == enemyCamp)
                     _bossCount++;
                 else
                     _playerCount++;

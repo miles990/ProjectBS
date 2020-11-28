@@ -5,12 +5,6 @@ namespace ProjectBS.Combat
 {
     public class CombatUnit
     {
-        public enum Camp
-        {
-            Player,
-            Enemy
-        }
-
         public class Buff
         {
             public int soruceID = 0;
@@ -52,7 +46,7 @@ namespace ProjectBS.Combat
 
         public string name = "";
         public UnityEngine.Sprite sprite = null;
-        public Camp camp = Camp.Player;
+        public int camp = 0;
         public int HP 
         {
             get { return m_hp; }

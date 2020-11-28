@@ -32,7 +32,7 @@ namespace ProjectBS
 
         private State m_currentState = State.None;
 
-        private Combat.CombatManager m_combatManager = null;
+        private Combat.CombatManager m_localGameCombatManager = null;
         private Data.BossStageData m_currentPlayingStage = null;
 
         public void StartGame()
@@ -77,9 +77,9 @@ namespace ProjectBS
                 _bosses.Add(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i])));
             }
 
-            if(m_combatManager == null) m_combatManager = new Combat.CombatManager();
-            m_combatManager.StartCombat(
-                PlayerManager.Instance.Player.Party, _bosses);
+            if(m_localGameCombatManager == null) m_localGameCombatManager = new Combat.CombatManager();
+            Combat.CombatUtility.SetCombatManager(m_localGameCombatManager);
+            m_localGameCombatManager.StartCombat(PlayerManager.Instance.Player.Party, _bosses);
         }
 
         public void EndCombat(bool isWin)
@@ -130,6 +130,7 @@ namespace ProjectBS
             }
 
             m_currentPlayingStage = null;
+            Combat.CombatUtility.EndCombat(m_localGameCombatManager);
 
             PlayerManager.Instance.SavePlayer();
         }

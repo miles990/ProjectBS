@@ -33,7 +33,7 @@ namespace ProjectBS.UI
 
         private List<Data.SkillData> m_currentShowingSkills = null;
 
-        // 0~3:Player 4~8:Boss
+        // 0~3:Player 4~8:Enemy
         private Dictionary<int, CombatUnit> m_indexToUnit = new Dictionary<int, CombatUnit>();
         private Dictionary<CombatUnit, int> m_unitToIndex = new Dictionary<CombatUnit, int>();
 
@@ -74,11 +74,11 @@ namespace ProjectBS.UI
             }
 
             int _currentPlayerIndex = 0;
-            int _currentBossIndex = 4;
+            int _currentEnemyIndex = 4;
 
             for (int i = 0; i < units.Count; i++)
             { 
-                if (units[i].camp == CombatUnit.Camp.Player)
+                if (units[i].camp == CombatManager.playerCamp)
                 {
                     if(m_indexToUnit.ContainsKey(_currentPlayerIndex))
                     {
@@ -103,27 +103,27 @@ namespace ProjectBS.UI
                 }
                 else
                 {
-                    if (m_indexToUnit.ContainsKey(_currentBossIndex))
+                    if (m_indexToUnit.ContainsKey(_currentEnemyIndex))
                     {
-                        m_indexToUnit[_currentBossIndex] = units[i];
+                        m_indexToUnit[_currentEnemyIndex] = units[i];
                     }
                     else
                     {
-                        m_indexToUnit.Add(_currentBossIndex, units[i]);
+                        m_indexToUnit.Add(_currentEnemyIndex, units[i]);
                     }
 
                     if (m_unitToIndex.ContainsKey(units[i]))
                     {
-                        m_unitToIndex[units[i]] = _currentBossIndex;
+                        m_unitToIndex[units[i]] = _currentEnemyIndex;
                     }
                     else
                     {
-                        m_unitToIndex.Add(units[i], _currentBossIndex);
+                        m_unitToIndex.Add(units[i], _currentEnemyIndex);
                     }
 
-                    m_characterPanels[_currentBossIndex].SetUp(units[i]);
-                    m_characterPanels[_currentBossIndex].gameObject.SetActive(true);
-                    _currentBossIndex++;
+                    m_characterPanels[_currentEnemyIndex].SetUp(units[i]);
+                    m_characterPanels[_currentEnemyIndex].gameObject.SetActive(true);
+                    _currentEnemyIndex++;
                 }
             }
         }
@@ -403,7 +403,7 @@ namespace ProjectBS.UI
                     }
                 case CombatTargetSelecter.SelectRange.Opponent:
                     {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Enemy)
+                        if (m_currentSelectData.attacker.camp == 1)
                         {
                             EnableSelectPlayerButton(true);
                         }
@@ -415,7 +415,7 @@ namespace ProjectBS.UI
                     }
                 case CombatTargetSelecter.SelectRange.SameSide:
                     {
-                        if (m_currentSelectData.attacker.camp == CombatUnit.Camp.Enemy)
+                        if (m_currentSelectData.attacker.camp == 1)
                         {
                             EnableSelectBossButton(true);
                         }
