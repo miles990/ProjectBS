@@ -4,54 +4,25 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat
 {
-    public class CombatManager : Manager
+    public class CombatManager : CombatManagerBase
     {
         public static int playerCamp = 0;
         public static int enemyCamp = 1;
-
-        public struct CombatActionInfo
-        {
-            public CombatUnit actor;
-            public int minAttackRoll;
-            public int minDefenseRoll;
-        }
-        public CombatActionInfo CurrentActionInfo 
-        {
-            get
-            {
-                return new CombatActionInfo
-                {
-                    actor = m_currentAction.Actor,
-                    minAttackRoll = m_currentAction.MinAttackRoll,
-                    minDefenseRoll = m_currentAction.MinDefenseRoll
-                };
-            }
-        }
 
         public CombatManager() 
         {
             playerCamp = 0;
             enemyCamp = 1;
-        } 
-
-        public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
-        private List<CombatUnit> m_units = new List<CombatUnit>();
-
-        public int TurnCount { get; private set; } = 0;
-        public CombatUnit CurrentDyingUnit { get; private set; }
-
-        public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; private set; }
-        private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
-        private CombatUnitAction m_currentAction = null;
-
-        private System.Action m_onDiedCommandEnded = null;
+        }
 
         private bool m_isCombating = false;
 
-        public void AddActionIndex(CombatUnit unit, int addIndex)
+        private System.Action m_onDiedCommandEnded = null;
+
+        public override void AddActionIndex(CombatUnit unit, int addIndex)
         {
             int _currentIndex = m_unitActions.FindIndex(x => x.Actor == unit);
-            if(_currentIndex != -1)
+            if (_currentIndex != -1)
             {
                 int _targetIndex = _currentIndex + addIndex;
                 if (_targetIndex < 0)
@@ -65,11 +36,11 @@ namespace ProjectBS.Combat
 
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
-        
-        public void AddExtraAction(CombatUnit unit, bool isImmediate)
+
+        public override void AddExtraAction(CombatUnit unit, bool isImmediate)
         {
             CombatUnitAction _newAction = new CombatUnitAction(unit, AllUnitAllEffectProcesser);
-            if(isImmediate)
+            if (isImmediate)
             {
                 m_unitActions.Insert(0, _newAction);
             }
@@ -81,7 +52,7 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
 
-        public List<CombatUnit> GetSameCampUnits(int camp)
+        public override List<CombatUnit> GetSameCampUnits(int camp)
         {
             List<CombatUnit> _units = new List<CombatUnit>();
             for (int i = 0; i < m_units.Count; i++)
@@ -95,7 +66,7 @@ namespace ProjectBS.Combat
             return _units;
         }
 
-        public void SetCurrentActionMinAttackRoll(int value)
+        public override void SetCurrentActionMinAttackRoll(int value)
         {
             if (value < 0)
                 value = 0;
@@ -103,7 +74,7 @@ namespace ProjectBS.Combat
             m_currentAction.MinAttackRoll = value;
         }
 
-        public void SetCurrentActionMinDefenseRoll(int value)
+        public override void SetCurrentActionMinDefenseRoll(int value)
         {
             if (value < 0)
                 value = 0;
@@ -111,50 +82,23 @@ namespace ProjectBS.Combat
             m_currentAction.MinDefenseRoll = value;
         }
 
-        public void StartCombat(PartyData player, List<BossData> bosses)
+        public override void EndComabat(bool isWin)
         {
-            if(m_isCombating)
-            {
-                throw new System.Exception("[CombatManager][StartCombat] Is combating");
-            }
-
-            m_units.Clear();
-            AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_0));
-            AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_1));
-            AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_2));
-            AddUnit(PlayerManager.Instance.Player.Characters.Find(x => x.UDID == player.MemberUDID_3));
-            for(int i = 0; i < bosses.Count; i++)
-            {
-                AddBoss(bosses[i]);
-            }
-            for(int i = 0; i < m_units.Count; i++)
-            {
-                m_units[i].HP = m_units[i].GetMaxHP();
-            }
-
-            GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
-            GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
-
-            m_isCombating = true;
-        }
-
-        public void EndComabat(bool isWin)
-        {
-            GetPage<UI.CombatUIView>().Show(this, false, 
+            GetPage<UI.CombatUIView>().Show(this, false,
                 delegate
                 {
                     GameManager.Instance.EndCombat(isWin);
                 });
         }
 
-        public void ForceEndCurrentAction()
+        public override void ForceEndCurrentAction()
         {
             m_currentAction.ForceEnd();
         }
 
-        public void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded)
+        public override void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded)
         {
-            if(!m_units.Contains(unit))
+            if (!m_units.Contains(unit))
             {
                 onDiedCommandEnded?.Invoke();
                 return;
@@ -171,7 +115,7 @@ namespace ProjectBS.Combat
             });
         }
 
-        public void ForceRemoveUnit(CombatUnit unit)
+        public override void ForceRemoveUnit(CombatUnit unit)
         {
             m_unitActions.Remove(m_unitActions.Find(x => x.Actor == unit));
             m_units.Remove(unit);
@@ -179,79 +123,31 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().RemoveActor(unit);
         }
 
-        private void AddUnit(OwningCharacterData character)
+        public override void StartCombat(List<CombatUnit> camp0Units, List<CombatUnit> camp1Units)
         {
-            m_units.Add(new CombatUnit
+            if(m_isCombating)
             {
-                ai = "",
-                rawAttack = character.Attack,
-                camp = playerCamp,
-                rawDefense = character.Defense,
-                rawMaxHP = character.HP,
-                name = ContextConverter.Instance.GetContext(character.CharacterNameID),
-                SP = character.SP,
-                rawSpeed = character.Speed,
-                Hatred = 1,
-                //sprite = GameDataLoader.Instance.GetSprite(character.CharacterSpriteID),
-                body = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Body),
-                foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
-                hand = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Hand),
-                head = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Head),
-                buffs = new List<CombatUnit.Buff>(),
-                statusAdders = new List<CombatUnit.StatusAdder>()
-            });
-
-            m_units[m_units.Count - 1].skills[0] = character.SkillSlot_0;
-            m_units[m_units.Count - 1].skills[1] = character.SkillSlot_1;
-            m_units[m_units.Count - 1].skills[2] = character.SkillSlot_2;
-            m_units[m_units.Count - 1].skills[3] = character.SkillSlot_3;
-        }
-
-        private void AddBoss(BossData boss)
-        {
-            CombatUnit _boss = new CombatUnit
-            {
-                ai = boss.AI,
-                rawAttack = boss.Attack,
-                camp = enemyCamp,
-                rawDefense = boss.Defense,
-                rawMaxHP = boss.HP,
-                HP = boss.HP,
-                name = ContextConverter.Instance.GetContext(boss.NameContextID),
-                SP = boss.SP,
-                rawSpeed = boss.Speed,
-                Hatred = 1,
-                //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
-                body = null,
-                foot = null,
-                hand = null,
-                head = null,
-                buffs = new List<CombatUnit.Buff>(),
-                statusAdders = new List<CombatUnit.StatusAdder>()
-            };
-
-            if (!string.IsNullOrEmpty(boss.BuffIDs))
-            {
-                string[] _buffIDs = boss.BuffIDs.Split(';');
-                for (int i = 0; i < _buffIDs.Length; i++)
-                {
-                    _boss.buffs.Add(new CombatUnit.Buff
-                    {
-                        soruceID = int.Parse(_buffIDs[i]),
-                        from = _boss,
-                        owner = _boss,
-                        remainingTime = -1,
-                        stackCount = 1
-                    });
-                }
+                throw new System.Exception("[CombatManager][StartCombat] Is combating");
             }
 
-            m_units.Add(_boss);
+            m_units.Clear();
+            m_units.AddRange(camp0Units);
+            m_units.AddRange(camp1Units);
+
+            GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
+            GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
+
+            m_isCombating = true;
         }
 
         private void StartBattle()
         {
             TurnCount = 0;
+
+            for(int i = 0; i < m_units.Count; i++)
+            {
+                m_units[i].HP = m_units[i].GetMaxHP();
+            }
 
             AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(m_units);
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData

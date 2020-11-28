@@ -5,7 +5,7 @@ namespace ProjectBS.Combat
 {
     public static class CombatUtility
     {
-        public static CombatManager CurrentComabtManager
+        public static CombatManagerBase CurrentComabtManager
         {
             get
             {
@@ -16,11 +16,11 @@ namespace ProjectBS.Combat
                 return m_currentCombatManager;
             }
         }
-        private static CombatManager m_currentCombatManager = null;
+        private static CombatManagerBase m_currentCombatManager = null;
         public static int LastAttackRoll = 0;
         public static int LastDefenseRoll = 0;
 
-        public static void SetCombatManager(CombatManager combatManager)
+        public static void SetCombatManager(CombatManagerBase combatManager)
         {
             if(m_currentCombatManager != null)
             {
@@ -29,7 +29,7 @@ namespace ProjectBS.Combat
             m_currentCombatManager = combatManager;
         }
 
-        public static void EndCombat(CombatManager combatManager)
+        public static void EndCombatProcess(CombatManagerBase combatManager)
         {
             if(m_currentCombatManager == null)
             {
@@ -697,5 +697,78 @@ namespace ProjectBS.Combat
 
             return new string(_mathString.ToArray());
         }
+
+        public static CombatUnit GetUnit(Data.OwningCharacterData character, int camp)
+        {
+            CombatUnit _newUnit = new CombatUnit
+            {
+                ai = "",
+                rawAttack = character.Attack,
+                camp = camp,
+                rawDefense = character.Defense,
+                rawMaxHP = character.HP,
+                name = ContextConverter.Instance.GetContext(character.CharacterNameID),
+                SP = character.SP,
+                rawSpeed = character.Speed,
+                Hatred = 1,
+                //sprite = GameDataLoader.Instance.GetSprite(character.CharacterSpriteID),
+                body = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Body),
+                foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
+                hand = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Hand),
+                head = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Head),
+                buffs = new List<CombatUnit.Buff>(),
+                statusAdders = new List<CombatUnit.StatusAdder>()
+            };
+
+            _newUnit.skills[0] = character.SkillSlot_0;
+            _newUnit.skills[1] = character.SkillSlot_1;
+            _newUnit.skills[2] = character.SkillSlot_2;
+            _newUnit.skills[3] = character.SkillSlot_3;
+
+            return _newUnit;
+        }
+
+        public static CombatUnit GetUnit(Data.BossData boss)
+        {
+            CombatUnit _boss = new CombatUnit
+            {
+                ai = boss.AI,
+                rawAttack = boss.Attack,
+                camp = 1,
+                rawDefense = boss.Defense,
+                rawMaxHP = boss.HP,
+                HP = boss.HP,
+                name = ContextConverter.Instance.GetContext(boss.NameContextID),
+                SP = boss.SP,
+                rawSpeed = boss.Speed,
+                Hatred = 1,
+                //sprite = GameDataLoader.Instance.GetSprite(boss.CharacterSpriteID),
+                body = null,
+                foot = null,
+                hand = null,
+                head = null,
+                buffs = new List<CombatUnit.Buff>(),
+                statusAdders = new List<CombatUnit.StatusAdder>()
+            };
+
+            if (!string.IsNullOrEmpty(boss.BuffIDs))
+            {
+                string[] _buffIDs = boss.BuffIDs.Split(';');
+                for (int i = 0; i < _buffIDs.Length; i++)
+                {
+                    _boss.buffs.Add(new CombatUnit.Buff
+                    {
+                        soruceID = int.Parse(_buffIDs[i]),
+                        from = _boss,
+                        owner = _boss,
+                        remainingTime = -1,
+                        stackCount = 1
+                    });
+                }
+            }
+
+            return _boss;
+        }
+
     }
 }

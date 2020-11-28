@@ -66,20 +66,28 @@ namespace ProjectBS
 
             GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
-            string[] _bossIDs = bossStageData.BossIDs.Split('$');
-            List<Data.BossData> _bosses = new List<Data.BossData>();
-            for(int i = 0; i < _bossIDs.Length; i++)
+            if(m_localGameCombatManager == null) m_localGameCombatManager = new Combat.CombatManager();
+            Combat.CombatUtility.SetCombatManager(m_localGameCombatManager);
+
+            List<Combat.CombatUnit> _playerParty = new List<Combat.CombatUnit>
             {
-                if(string.IsNullOrEmpty(_bossIDs[i]))
+                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_0), 0),
+                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_1), 0),
+                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_2), 0),
+                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_3), 0)
+            };
+            List<Combat.CombatUnit> _bossParty = new List<Combat.CombatUnit>();
+            string[] _bossIDs = bossStageData.BossIDs.Split('$');
+            for (int i = 0; i < _bossIDs.Length; i++)
+            {
+                if (string.IsNullOrEmpty(_bossIDs[i]))
                 {
                     continue;
                 }
-                _bosses.Add(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i])));
+                _bossParty.Add(Combat.CombatUtility.GetUnit(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i]))));
             }
 
-            if(m_localGameCombatManager == null) m_localGameCombatManager = new Combat.CombatManager();
-            Combat.CombatUtility.SetCombatManager(m_localGameCombatManager);
-            m_localGameCombatManager.StartCombat(PlayerManager.Instance.Player.Party, _bosses);
+            m_localGameCombatManager.StartCombat(_playerParty, _bossParty);
         }
 
         public void EndCombat(bool isWin)
@@ -130,7 +138,7 @@ namespace ProjectBS
             }
 
             m_currentPlayingStage = null;
-            Combat.CombatUtility.EndCombat(m_localGameCombatManager);
+            Combat.CombatUtility.EndCombatProcess(m_localGameCombatManager);
 
             PlayerManager.Instance.SavePlayer();
         }

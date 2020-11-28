@@ -1,85 +1,49 @@
 ﻿using KahaGameCore.Interface;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ProjectBS.Combat
 {
-    public class CombatManagerBase : Manager
+    public abstract class CombatManagerBase : Manager
     {
-        public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
-        private List<CombatUnit> m_units = new List<CombatUnit>();
-
-        public int TurnCount { get; private set; } = 0;
-        public CombatUnit CurrentDyingUnit { get; private set; }
-
-        public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; private set; }
-        private List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
-        private CombatUnitAction m_currentAction = null;
-
-        private System.Action m_onDiedCommandEnded = null;
-
-        public void AddActionIndex(CombatUnit unit, int addIndex)
+        public struct CombatActionInfo
         {
-            int _currentIndex = m_unitActions.FindIndex(x => x.Actor == unit);
-            if (_currentIndex != -1)
-            {
-                int _targetIndex = _currentIndex + addIndex;
-                if (_targetIndex < 0)
-                    _targetIndex = 0;
-                if (_targetIndex >= m_unitActions.Count)
-                    _targetIndex = m_unitActions.Count - 1;
-                CombatUnitAction _refAction = m_unitActions[_currentIndex];
-                m_unitActions.RemoveAt(_currentIndex);
-                m_unitActions.Insert(_targetIndex, _refAction);
-            }
-
-            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
+            public CombatUnit actor;
+            public int minAttackRoll;
+            public int minDefenseRoll;
         }
 
-        public void AddExtraAction(CombatUnit unit, bool isImmediate)
+        public CombatActionInfo CurrentActionInfo
         {
-            CombatUnitAction _newAction = new CombatUnitAction(unit, AllUnitAllEffectProcesser);
-            if (isImmediate)
+            get
             {
-                m_unitActions.Insert(0, _newAction);
-            }
-            else
-            {
-                m_unitActions.Add(_newAction);
-            }
-
-            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
-        }
-
-        public List<CombatUnit> GetSameCampUnits(int camp)
-        {
-            List<CombatUnit> _units = new List<CombatUnit>();
-            for (int i = 0; i < m_units.Count; i++)
-            {
-                if (m_units[i].camp == camp)
+                return new CombatActionInfo
                 {
-                    _units.Add(m_units[i]);
-                }
+                    actor = m_currentAction.Actor,
+                    minAttackRoll = m_currentAction.MinAttackRoll,
+                    minDefenseRoll = m_currentAction.MinDefenseRoll
+                };
             }
-
-            return _units;
         }
 
-        public void SetCurrentActionMinAttackRoll(int value)
-        {
-            if (value < 0)
-                value = 0;
+        public int TurnCount { get; protected set; } = 0;
+        public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
+        protected List<CombatUnit> m_units = new List<CombatUnit>();
 
-            m_currentAction.MinAttackRoll = value;
-        }
+        public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; protected set; }
+        protected List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
+        protected CombatUnitAction m_currentAction = null;
 
-        public void SetCurrentActionMinDefenseRoll(int value)
-        {
-            if (value < 0)
-                value = 0;
+        public CombatUnit CurrentDyingUnit { get; protected set; }
 
-            m_currentAction.MinDefenseRoll = value;
-        }
+        public abstract void AddActionIndex(CombatUnit unit, int addIndex);
+        public abstract void AddExtraAction(CombatUnit unit, bool isImmediate);
+        public abstract List<CombatUnit> GetSameCampUnits(int camp);
+        public abstract void SetCurrentActionMinAttackRoll(int value);
+        public abstract void SetCurrentActionMinDefenseRoll(int value);
+        public abstract void EndComabat(bool isWin);
+        public abstract void ForceEndCurrentAction();
+        public abstract void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded);
+        public abstract void ForceRemoveUnit(CombatUnit unit);
+        public abstract void StartCombat(List<CombatUnit> playerUnits, List<CombatUnit> opponentUnits);
     }
 }
