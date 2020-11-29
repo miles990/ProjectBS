@@ -29,7 +29,7 @@ namespace ProjectBS.UI
 
         public void Button_SelectBoss()
         {
-            GameManager.Instance.StartCombat(m_refBossStageData);
+            GameManager.Instance.StartLocalCombat(m_refBossStageData);
         }
 
         public void Button_ShowInfo()

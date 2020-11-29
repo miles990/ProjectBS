@@ -45,7 +45,7 @@ namespace ProjectBS
             StartInitData();
         }
 
-        public void StartCombat(Data.BossStageData bossStageData)
+        public void StartLocalCombat(Data.BossStageData bossStageData)
         {
             if (m_currentState != State.MainMenu)
                 throw new System.Exception("[GameManager][StartGame] Can't start comabt now");
@@ -88,6 +88,11 @@ namespace ProjectBS
             }
 
             m_localGameCombatManager.StartCombat(_playerParty, _bossParty);
+        }
+
+        public void StartOnlineCombat()
+        {
+            Network.PhotonManager.Instance.ConnectToLobby();
         }
 
         public void EndCombat(bool isWin)
