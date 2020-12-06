@@ -6,15 +6,6 @@ namespace ProjectBS.Combat
 {
     public class CombatManager : CombatManagerBase
     {
-        public static int playerCamp = 0;
-        public static int enemyCamp = 1;
-
-        public CombatManager() 
-        {
-            playerCamp = 0;
-            enemyCamp = 1;
-        }
-
         private bool m_isCombating = false;
 
         private System.Action m_onDiedCommandEnded = null;
@@ -233,7 +224,7 @@ namespace ProjectBS.Combat
             int _bossCount = 0;
             for (int i = 0; i < m_units.Count; i++)
             {
-                if (m_units[i].camp == enemyCamp)
+                if (m_units[i].camp == 1)
                     _bossCount++;
                 else
                     _playerCount++;

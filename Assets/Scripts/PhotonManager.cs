@@ -96,11 +96,11 @@ namespace ProjectBS.Network
         private void OnBothSidePartySet()
         {
             SetCombatManager();
-            SetWaitCallback(102, OnSlaveUIInited);
+            SetWaitCallback(102, OnSlaveCombatManagerInited);
             m_photonView.RPC(nameof(Pun_CallSlaveInitCombatManager), RpcTarget.All);
         }
 
-        private void OnSlaveUIInited()
+        private void OnSlaveCombatManagerInited()
         {
             Debug.Log("Do Commands.....");
         }
@@ -242,12 +242,12 @@ namespace ProjectBS.Network
 
             for (int i = 0; i < _player.Length; i++)
             {
-                _playerUnits.Add(Combat.CombatUtility.GetUnit(_player[i], m_id));
+                _playerUnits.Add(Combat.CombatUtility.GetUnit(_player[i], 0));
             }
 
             for (int i = 0; i < _opponent.Length; i++)
             {
-                _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], m_id == 0 ? 1 : 0));
+                _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], 1));
             }
 
             Combat.CombatUtility.CurrentComabtManager.StartCombat(_playerUnits, _opponentUnits);

@@ -46,12 +46,14 @@ namespace ProjectBS
                 throw new System.Exception("[PlayerManager][Init] Player is already inited");
             }
 
-            m_player = KahaGameCore.Static.GameDataManager.LoadJsonData<SaveData>();
-            if(m_player == null)
-            {
-                m_player = CreateNewPlayer();
-                SavePlayer();
-            }
+            //m_player = KahaGameCore.Static.GameDataManager.LoadJsonData<SaveData>();
+            //if(m_player == null)
+            //{
+            //    m_player = CreateNewPlayer();
+            //    SavePlayer();
+            //}
+
+            m_player = CreateNewPlayer();
 
             m_isInited = true;
         }

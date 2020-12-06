@@ -78,7 +78,7 @@ namespace ProjectBS.UI
 
             for (int i = 0; i < units.Count; i++)
             { 
-                if (units[i].camp == CombatManager.playerCamp)
+                if (units[i].camp == 0)
                 {
                     if(m_indexToUnit.ContainsKey(_currentPlayerIndex))
                     {
