@@ -54,7 +54,12 @@ namespace ProjectBS.Combat
 
         public override void StartCombat(List<CombatUnit> playerUnits, List<CombatUnit> opponentUnits)
         {
-            throw new NotImplementedException();
+            m_units.Clear();
+            m_units.AddRange(playerUnits);
+            m_units.AddRange(opponentUnits);
+
+            GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
+            GetPage<UI.CombatUIView>().Show(this, true, null);
         }
     }
 }

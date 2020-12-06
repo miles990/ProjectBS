@@ -92,6 +92,7 @@ namespace ProjectBS
 
         public void StartOnlineCombat()
         {
+            GetPage<UI.MainMenuUIView>().Show(this, false, null);
             Network.PhotonManager.Instance.ConnectToLobby();
         }
 
