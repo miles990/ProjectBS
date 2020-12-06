@@ -84,20 +84,20 @@ namespace ProjectBS.Network
             string _json = GetPartyJson();
             m_idToTeamJson.Add(0, _json);
             SetWaitCallback(100, CallSlaveSyncParty);
-            m_photonView.RPC("Pun_SyncMasterParty", RpcTarget.All, _json);
+            m_photonView.RPC(nameof(Pun_SyncMasterParty), RpcTarget.All, _json);
         }
 
         private void CallSlaveSyncParty()
         {
             SetWaitCallback(101, OnBothSidePartySet);
-            m_photonView.RPC("Pun_StartToSyncSlaveParty", RpcTarget.All);
+            m_photonView.RPC(nameof(Pun_StartToSyncSlaveParty), RpcTarget.All);
         }
 
         private void OnBothSidePartySet()
         {
             SetCombatManager();
             SetWaitCallback(102, OnSlaveUIInited);
-            m_photonView.RPC("Pun_CallSlaveInitCombatManager", RpcTarget.All);
+            m_photonView.RPC(nameof(Pun_CallSlaveInitCombatManager), RpcTarget.All);
         }
 
         private void OnSlaveUIInited()
@@ -125,7 +125,7 @@ namespace ProjectBS.Network
                 string _json = GetPartyJson();
                 m_idToTeamJson.Add(1, _json);
                 SetWaitCallback(200, OnSlavePartySynced);
-                m_photonView.RPC("Pun_SyncSlaveParty", RpcTarget.All, _json);
+                m_photonView.RPC(nameof(Pun_SyncSlaveParty), RpcTarget.All, _json);
             }
         }
 
@@ -160,11 +160,11 @@ namespace ProjectBS.Network
         {
             if(m_id == 0)
             {
-                m_photonView.RPC("Pun_MasterSendCallBack", RpcTarget.All, code);
+                m_photonView.RPC(nameof(Pun_MasterSendCallBack), RpcTarget.All, code);
             }
             else if(m_id == 1)
             {
-                m_photonView.RPC("Pun_SlaveSendCallBack", RpcTarget.All, code);
+                m_photonView.RPC(nameof(Pun_SlaveSendCallBack), RpcTarget.All, code);
             }
         }
 
@@ -207,7 +207,7 @@ namespace ProjectBS.Network
                 return;
             }
 
-            m_photonView.RPC("Pun_Log", RpcTarget.All, m_id, log);
+            m_photonView.RPC(nameof(Pun_Log), RpcTarget.All, m_id, log);
         }
 
         [PunRPC]
@@ -251,7 +251,6 @@ namespace ProjectBS.Network
             }
 
             Combat.CombatUtility.CurrentComabtManager.StartCombat(_playerUnits, _opponentUnits);
-
         }
     }
 }
