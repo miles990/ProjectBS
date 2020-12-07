@@ -1,9 +1,9 @@
-﻿using Photon.Pun;
+﻿using JsonFx.Json;
+using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using JsonFx.Json;
-using System;
 
 namespace ProjectBS.Network
 {
@@ -83,20 +83,20 @@ namespace ProjectBS.Network
         {
             string _json = GetPartyJson();
             m_idToTeamJson.Add(0, _json);
-            SetWaitCallback(100, CallSlaveSyncParty);
+            SetWaitCallback(CallbackCode.IsMasterPartySynced, MasterCallSlaveSyncParty);
             m_photonView.RPC(nameof(Pun_SyncMasterParty), RpcTarget.All, _json);
         }
 
-        private void CallSlaveSyncParty()
+        private void MasterCallSlaveSyncParty()
         {
-            SetWaitCallback(101, OnBothSidePartySet);
+            SetWaitCallback(CallbackCode.IsSyncSlavePartyTaskDone, OnBothSidePartySet);
             m_photonView.RPC(nameof(Pun_StartToSyncSlaveParty), RpcTarget.All);
         }
 
         private void OnBothSidePartySet()
         {
             SetCombatManager();
-            SetWaitCallback(102, OnSlaveCombatManagerInited);
+            SetWaitCallback(CallbackCode.IsSlaveCombatManagerInited, OnSlaveCombatManagerInited);
             m_photonView.RPC(nameof(Pun_CallSlaveInitCombatManager), RpcTarget.All);
         }
 
@@ -113,7 +113,7 @@ namespace ProjectBS.Network
             if (m_id == 1)
             {
                 m_idToTeamJson.Add(0, json);
-                SendCallback(100);
+                SendCallback(CallbackCode.IsMasterPartySynced);
             }
         }
 
@@ -124,7 +124,7 @@ namespace ProjectBS.Network
             {
                 string _json = GetPartyJson();
                 m_idToTeamJson.Add(1, _json);
-                SetWaitCallback(200, OnSlavePartySynced);
+                SetWaitCallback(CallbackCode.IsSlavePartySynced, OnSlavePartySynced);
                 m_photonView.RPC(nameof(Pun_SyncSlaveParty), RpcTarget.All, _json);
             }
         }
@@ -135,7 +135,7 @@ namespace ProjectBS.Network
             if (m_id == 0)
             {
                 m_idToTeamJson.Add(1, json);
-                SendCallback(200);
+                SendCallback(CallbackCode.IsSlavePartySynced);
             }
         }
 
@@ -145,13 +145,13 @@ namespace ProjectBS.Network
             if (m_id == 1)
             {
                 SetCombatManager();
-                SendCallback(102);
+                SendCallback(CallbackCode.IsSlaveCombatManagerInited);
             }
         }
 
         private void OnSlavePartySynced()
         {
-            SendCallback(101);
+            SendCallback(CallbackCode.IsSyncSlavePartyTaskDone);
         }
 
         ////////////////////////////////////////////////////////////////////////////
