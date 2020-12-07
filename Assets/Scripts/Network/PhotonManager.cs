@@ -17,6 +17,7 @@ namespace ProjectBS.Network
         private int m_id = 0;
 
         public bool IsConnected { get { return PhotonNetwork.IsConnected; } }
+        public bool IsMaster { get { return m_id == 0; } }
 
         private Dictionary<int, string> m_idToTeamJson = new Dictionary<int, string>();
 
@@ -102,7 +103,23 @@ namespace ProjectBS.Network
 
         private void OnSlaveCombatManagerInited()
         {
-            Debug.Log("Do Commands.....");
+            Data.OwningCharacterData[] _player = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id]);
+            Data.OwningCharacterData[] _opponent = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id == 0 ? 1 : 0]);
+
+            List<Combat.CombatUnit> _playerUnits = new List<Combat.CombatUnit>();
+            List<Combat.CombatUnit> _opponentUnits = new List<Combat.CombatUnit>();
+
+            for (int i = 0; i < _player.Length; i++)
+            {
+                _playerUnits.Add(Combat.CombatUtility.GetUnit(_player[i], 0));
+            }
+
+            for (int i = 0; i < _opponent.Length; i++)
+            {
+                _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], 1));
+            }
+
+            Combat.CombatUtility.CurrentComabtManager.StartCombat(_playerUnits, _opponentUnits);
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -233,24 +250,6 @@ namespace ProjectBS.Network
         {
             Combat.OnlineCombatManager _combatManager = new Combat.OnlineCombatManager();
             Combat.CombatUtility.SetCombatManager(_combatManager);
-
-            Data.OwningCharacterData[] _player = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id]);
-            Data.OwningCharacterData[] _opponent = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id == 0 ? 1 : 0]);
-
-            List<Combat.CombatUnit> _playerUnits = new List<Combat.CombatUnit>();
-            List<Combat.CombatUnit> _opponentUnits = new List<Combat.CombatUnit>();
-
-            for (int i = 0; i < _player.Length; i++)
-            {
-                _playerUnits.Add(Combat.CombatUtility.GetUnit(_player[i], 0));
-            }
-
-            for (int i = 0; i < _opponent.Length; i++)
-            {
-                _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], 1));
-            }
-
-            Combat.CombatUtility.CurrentComabtManager.StartCombat(_playerUnits, _opponentUnits);
         }
     }
 }

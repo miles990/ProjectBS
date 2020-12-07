@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectBS.Network;
 
 namespace ProjectBS.Combat
 {
@@ -59,7 +60,44 @@ namespace ProjectBS.Combat
             m_units.AddRange(opponentUnits);
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
-            GetPage<UI.CombatUIView>().Show(this, true, null);
+            GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
+        }
+
+        private void StartBattle()
+        {
+            TurnCount = 0;
+
+            List<CombatUnit> _myUnits = new List<CombatUnit>();
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                m_units[i].HP = m_units[i].GetMaxHP();
+                if(m_units[i].camp == 0)
+                {
+                    _myUnits.Add(m_units[i]);
+                }
+            }
+
+            AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(_myUnits);
+            if(PhotonManager.Instance.IsMaster)
+            {
+                Master_TriggerOnBattleStarted();
+            }
+        }
+
+        private void Master_TriggerOnBattleStarted()
+        {
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnBattleStarted,
+                onEnded = SyncMasterUnitStatus
+            });
+        }
+
+        private void SyncMasterUnitStatus()
+        {
+
         }
     }
 }
