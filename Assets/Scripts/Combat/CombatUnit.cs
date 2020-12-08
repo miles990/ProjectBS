@@ -44,6 +44,7 @@ namespace ProjectBS.Combat
             public Buff parentBuff = null;
         }
 
+        public string UDID = "";
         public string name = "";
         public UnityEngine.Sprite sprite = null;
         public int camp = 0;

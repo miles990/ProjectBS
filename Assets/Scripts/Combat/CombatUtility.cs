@@ -702,6 +702,7 @@ namespace ProjectBS.Combat
         {
             CombatUnit _newUnit = new CombatUnit
             {
+                UDID = character.UDID,
                 ai = "",
                 rawAttack = character.Attack,
                 camp = camp,

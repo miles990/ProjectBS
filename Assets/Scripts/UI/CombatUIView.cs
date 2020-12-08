@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using KahaGameCore.Static;
+using Photon.Pun;
 
 namespace ProjectBS.UI
 {
@@ -29,13 +30,17 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
         [SerializeField] private CombatUI_InfoText m_infoPrefab = null;
-        [SerializeField] private UnityEngine.UI.Text m_actionSortInfoText = null; 
+        [SerializeField] private UnityEngine.UI.Text m_actionSortInfoText = null;
+        [Header("Network")]
+        [SerializeField] private PhotonView m_photonView = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
 
         // 0~3:Player 4~8:Enemy
         private Dictionary<int, CombatUnit> m_indexToUnit = new Dictionary<int, CombatUnit>();
         private Dictionary<CombatUnit, int> m_unitToIndex = new Dictionary<CombatUnit, int>();
+
+        private List<CombatUnit> m_allUnits = new List<CombatUnit>();
 
         private SelectTargetData m_currentSelectData = null;
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
@@ -73,6 +78,7 @@ namespace ProjectBS.UI
                 m_characterPanels[i].gameObject.SetActive(false);
             }
 
+            m_allUnits.Clear();
             int _currentPlayerIndex = 0;
             int _currentEnemyIndex = 4;
 
@@ -126,6 +132,8 @@ namespace ProjectBS.UI
                     _currentEnemyIndex++;
                 }
             }
+
+            m_allUnits = new List<CombatUnit>(units);
         }
 
         public void RefreshActionQueueInfo(List<CombatUnitAction> actions)
@@ -136,12 +144,40 @@ namespace ProjectBS.UI
                 _info += actions[i].Actor.name;
                 _info += "\n";
             }
-            m_actionSortInfoText.text = _info;
+
+            if(Network.PhotonManager.Instance.IsConnected)
+            {
+                m_photonView.RPC(nameof(Sync_RefreshActionQueueInfo), RpcTarget.All, _info);
+            }
+            else
+            {
+                Sync_RefreshActionQueueInfo(_info);
+            }
+        }
+
+        [PunRPC]
+        private void Sync_RefreshActionQueueInfo(string info)
+        {
+            m_actionSortInfoText.text = info;
         }
 
         public void RemoveActor(CombatUnit unit)
         {
-            m_characterPanels[m_unitToIndex[unit]].gameObject.SetActive(false);
+            if (Network.PhotonManager.Instance.IsConnected)
+            {
+                m_photonView.RPC(nameof(Sync_RemoveActor), RpcTarget.All, unit.UDID);
+            }
+            else
+            {
+                Sync_RemoveActor(unit.UDID);
+            }
+        }
+
+        [PunRPC]
+        private void Sync_RemoveActor(string UDID)
+        {
+            CombatUnit _unit = m_allUnits.Find(x => x.UDID == UDID);
+            m_characterPanels[m_unitToIndex[_unit]].gameObject.SetActive(false);
             RefreshAllInfo();
         }
 
@@ -170,17 +206,38 @@ namespace ProjectBS.UI
 
         public void ShowActorActionStart(CombatUnit actor, Action onActionAnimationEnded)
         {
+            if(Network.PhotonManager.Instance.IsConnected)
+            {
+                m_photonView.RPC(nameof(Sync_EnableActingHint), RpcTarget.All, actor.UDID, true);
+            }
+            else
+            {
+                m_characterPanels[m_unitToIndex[actor]].EnableActingHint(true);
+            }
+
             SetInfoText(actor, string.Format("開始行動"));
-            m_characterPanels[m_unitToIndex[actor]].EnableActingHint(true);
             TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 
         public void ShowActorActionEnd(CombatUnit actor, Action onActionAnimationEnded)
         {
-            // SetInfoText(actor, string.Format("行動結束"));
-            m_characterPanels[m_unitToIndex[actor]].EnableActingHint(false);
-            // TimerManager.Schedule(DISPLAY_INFO_TIME, onActionAnimationEnded);
+            if (Network.PhotonManager.Instance.IsConnected)
+            {
+                m_photonView.RPC(nameof(Sync_EnableActingHint), RpcTarget.All, actor.UDID, false);
+            }
+            else
+            {
+                m_characterPanels[m_unitToIndex[actor]].EnableActingHint(false);
+            }
+
             onActionAnimationEnded?.Invoke();
+        }
+
+        [PunRPC]
+        private void Sync_EnableActingHint(string UDID, bool enable)
+        {
+            CombatUnit _units = m_allUnits.Find(x => x.UDID == UDID);
+            m_characterPanels[m_unitToIndex[_units]].EnableActingHint(enable);
         }
 
         public void ShowAddActionIndex(CombatUnit actor, int addIndex, Action onShown)
@@ -202,6 +259,7 @@ namespace ProjectBS.UI
             public Action onEnded = null;
         }
 
+        // WIP
         public void ShowSkillAnimation(SkillAnimationData skillAnimationData)
         {
             if(skillAnimationData.nameContextID == 0)
@@ -379,12 +437,27 @@ namespace ProjectBS.UI
             if (target != null && !m_unitToIndex.ContainsKey(target))
                 return;
 
+            if(Network.PhotonManager.Instance.IsConnected)
+            {
+                m_photonView.RPC(nameof(Sync_SetInfoText), RpcTarget.All, target.UDID, info);
+            }
+            else
+            {
+                Sync_SetInfoText(target.UDID, info); 
+            }
+        }
+
+        [PunRPC]
+        private void Sync_SetInfoText(string UDID, string info)
+        {
+            CombatUnit _target = m_allUnits.Find(x => x.UDID == UDID);
+
             CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
             _clone.transform.SetParent(transform);
-            if (target == null)
+            if (_target == null)
                 _clone.transform.localPosition = Vector3.zero;
             else
-                _clone.transform.position = m_characterPanels[m_unitToIndex[target]].transform.position;
+                _clone.transform.position = m_characterPanels[m_unitToIndex[_target]].transform.position;
             _clone.SetText(string.Format(info));
             _clone.gameObject.SetActive(true);
 
