@@ -58,16 +58,16 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
             {
                 GoNextTarget();
                 return;
             }
 
-            if (m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex].GetBuffSourceData().Tag == m_tag)
+            if (m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex).GetBuffSourceData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffTime(
-                    m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
+                    m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
                     m_addTime,
                     DisaplayRemoveBuff,
                     GoNextBuff);

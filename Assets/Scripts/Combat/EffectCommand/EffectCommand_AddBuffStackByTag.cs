@@ -52,18 +52,18 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
             {
                 GoNextTarget();
                 return;
             }
 
-            m_targetBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
+            m_targetBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
 
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
-                    m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex],
+                    m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
                     m_removeStackCount,
                     DisaplayRemoveBuff,
                     GoNextBuff);

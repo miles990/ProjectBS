@@ -259,7 +259,6 @@ namespace ProjectBS.UI
             public Action onEnded = null;
         }
 
-        // WIP
         public void ShowSkillAnimation(SkillAnimationData skillAnimationData)
         {
             if(skillAnimationData.nameContextID == 0)
@@ -443,7 +442,7 @@ namespace ProjectBS.UI
             }
             else
             {
-                Sync_SetInfoText(target.UDID, info); 
+                Sync_SetInfoText(target != null ? target.UDID : "null", info); 
             }
         }
 

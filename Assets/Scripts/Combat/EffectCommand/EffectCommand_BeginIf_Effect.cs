@@ -37,7 +37,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             for(int i = 0; i < targets.Count; i++)
             {
-                bool _isOwning = targets[i].buffs.Find(x => x.soruceID == _buffID) != null;
+                bool _isOwning = targets[i].GetBuffByBuffEffectID(_buffID) != null;
                 if (_isOwning != _checkIsOwning)
                 {
                     processData.skipIfCount++;

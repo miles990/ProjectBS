@@ -315,23 +315,23 @@ namespace ProjectBS.Combat
             }
 
             m_currentCheckBuffIndex++;
-            if(m_currentCheckBuffIndex >= m_currentCheckingUnit.buffs.Count)
+            if(m_currentCheckBuffIndex >= m_currentCheckingUnit.OwnBuffCount)
             {
                 CheckNextUnitBuffEnd();
                 return;
             }
 
-            if(m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime == -1)
+            if(m_currentCheckingUnit.GetBuffByIndex(m_currentCheckBuffIndex).remainingTime == -1)
             {
                 CheckNextBuffEnd();
                 return;
             }
 
-            m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime--;
+            m_currentCheckingUnit.GetBuffByIndex(m_currentCheckBuffIndex).remainingTime--;
 
-            if (m_currentCheckingUnit.buffs[m_currentCheckBuffIndex].remainingTime <= 0)
+            if (m_currentCheckingUnit.GetBuffByIndex(m_currentCheckBuffIndex).remainingTime <= 0)
             {
-                CombatUnit.Buff _buff = m_currentCheckingUnit.buffs[m_currentCheckBuffIndex];
+                CombatUnit.Buff _buff = m_currentCheckingUnit.GetBuffByIndex(m_currentCheckBuffIndex);
                 m_currentCheckingUnit.RemoveBuff(
                     _buff,
                     delegate { DisplayRemoveBuff(_buff); });

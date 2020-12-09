@@ -48,7 +48,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].buffs.Find(x => x.soruceID == m_buffID);
+            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffEffectID(m_buffID);
             BuffData _skillEffectData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
             if (_buff != null)
@@ -73,7 +73,7 @@ namespace ProjectBS.Combat.EffectCommand
                     stackCount = 1
                 };
 
-                m_targets[m_currentActiveTargetIndex].buffs.Add(_buff);
+                m_targets[m_currentActiveTargetIndex].AddBuff(_buff);
             }
 
             EffectProcessManager.GetBuffProcesser(_skillEffectData.ID).Start(

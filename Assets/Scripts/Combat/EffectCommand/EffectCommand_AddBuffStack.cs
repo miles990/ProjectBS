@@ -51,7 +51,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             if(m_buffID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.soruceID == m_buffID);
+                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_buffID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffStack(
@@ -84,12 +84,12 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
             {
                 GoNextTarget();
                 return;
             }
-            m_currentBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
+            m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
             m_targets[m_currentTargetIndex].AddBuffStack(
                             m_currentBuff,
                             m_removeStackCount,

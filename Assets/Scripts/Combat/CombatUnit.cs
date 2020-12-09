@@ -106,7 +106,6 @@ namespace ProjectBS.Combat
         public OwningEquipmentData foot = null;
         public int[] skills = new int[4];
         public string ai = "";
-        public List<Buff> buffs = new List<Buff>();
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
         public List<StatusAddLocker> statusAddLockers = new List<StatusAddLocker>();
         public List<Skiper> actionSkipers = new List<Skiper>();
@@ -121,6 +120,9 @@ namespace ProjectBS.Combat
 
         public bool IsSkipAtion { get => actionSkipers.Count > 0; }
         public bool IsSkipCheckSP { get => checkSPSkipers.Count > 0; }
+
+        public int OwnBuffCount { get { return m_buffs.Count; } }
+        private List<Buff> m_buffs = new List<Buff>();
 
         public int GetMaxHP()
         {
@@ -140,6 +142,49 @@ namespace ProjectBS.Combat
         public int GetSpeed()
         {
             return GetResult(rawSpeed, Keyword.Speed);
+        }
+
+        public void AddBuff(Buff buff)
+        {
+            Buff _oldBuff = m_buffs.Find(x => x.soruceID == buff.soruceID);
+            if(_oldBuff == null)
+            {
+                m_buffs.Add(buff);
+            }
+            else
+            {
+                if(_oldBuff.stackCount < buff.stackCount
+                    || _oldBuff.remainingTime < buff.remainingTime)
+                {
+                    m_buffs.Remove(_oldBuff);
+                    m_buffs.Add(buff);
+                }
+            }
+        }
+
+        public Buff GetBuffByBuffEffectID(int id)
+        {
+            return m_buffs.Find(x => x.soruceID == id);
+        }
+
+        public Buff GetBuffByIndex(int index)
+        {
+            if(index >= m_buffs.Count)
+            {
+                return null;
+            }
+
+            if(index < 0 || m_buffs.Count == 0)
+            {
+                return null;
+            }
+
+            return m_buffs[index];
+        }
+
+        public bool HasBuffWithTag(int tag)
+        {
+            return m_buffs.Find(x => x.GetBuffSourceData().Tag == tag) != null;
         }
 
         public void AddBuffStack(Buff buff, int stackCount, System.Action onRemoved, System.Action onNotRemoved)
@@ -197,7 +242,7 @@ namespace ProjectBS.Combat
         private void OnBuffRemoved(Buff buff, BuffData _effect, System.Action onRemoved)
         {
             CombatUtility.RemoveEffect(this, _effect.ID);
-            buffs.Remove(buff);
+            m_buffs.Remove(buff);
             onRemoved?.Invoke();
         }
 

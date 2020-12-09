@@ -370,7 +370,7 @@ namespace ProjectBS.Combat
                         }
 
                         int _buffID = int.Parse(_varParts[1]);
-                        CombatUnit.Buff _buff = _getValueTarget.buffs.Find(x => x.soruceID == _buffID);
+                        CombatUnit.Buff _buff = _getValueTarget.GetBuffByBuffEffectID(_buffID);
                         if (_buff == null)
                         {
                             return 0;
@@ -717,7 +717,6 @@ namespace ProjectBS.Combat
                 foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
                 hand = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Hand),
                 head = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Head),
-                buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
@@ -748,7 +747,6 @@ namespace ProjectBS.Combat
                 foot = null,
                 hand = null,
                 head = null,
-                buffs = new List<CombatUnit.Buff>(),
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
@@ -757,7 +755,7 @@ namespace ProjectBS.Combat
                 string[] _buffIDs = boss.BuffIDs.Split(';');
                 for (int i = 0; i < _buffIDs.Length; i++)
                 {
-                    _boss.buffs.Add(new CombatUnit.Buff
+                    _boss.AddBuff(new CombatUnit.Buff
                     {
                         soruceID = int.Parse(_buffIDs[i]),
                         from = _boss,

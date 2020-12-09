@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using ProjectBS.Network;
 
 namespace ProjectBS.Combat
@@ -91,11 +89,16 @@ namespace ProjectBS.Combat
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnBattleStarted,
-                onEnded = SyncMasterUnitStatus
+                onEnded = MasterCallSlaveTriggerOnBattleStarted
             });
         }
 
-        private void SyncMasterUnitStatus()
+        private void MasterCallSlaveTriggerOnBattleStarted()
+        {
+
+        }
+
+        public void DoRPCCommand()
         {
 
         }

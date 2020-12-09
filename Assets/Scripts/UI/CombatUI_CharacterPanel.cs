@@ -105,14 +105,14 @@ namespace ProjectBS.UI
                 {
                     m_showInfoTimer = 0f;
                     string _buffString = "";
-                    for(int i = 0; i < m_currnetDisplayingUnit.buffs.Count; i++)
+                    for(int i = 0; i < m_currnetDisplayingUnit.OwnBuffCount; i++)
                     {
-                        Data.BuffData _effect = m_currnetDisplayingUnit.buffs[i].GetBuffSourceData();
-                        _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + m_currnetDisplayingUnit.buffs[i].stackCount
-                            + " (" + (m_currnetDisplayingUnit.buffs[i].remainingTime == -1 ? "永久" : "剩餘 " + m_currnetDisplayingUnit.buffs[i].remainingTime.ToString() + " 回合") + ")\n"
+                        Data.BuffData _effect = m_currnetDisplayingUnit.GetBuffByIndex(i).GetBuffSourceData();
+                        _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + m_currnetDisplayingUnit.GetBuffByIndex(i).stackCount
+                            + " (" + (m_currnetDisplayingUnit.GetBuffByIndex(i).remainingTime == -1 ? "永久" : "剩餘 " + m_currnetDisplayingUnit.GetBuffByIndex(i).remainingTime.ToString() + " 回合") + ")\n"
                             + ContextConverter.Instance.GetContext(_effect.DescriptionContextID);
 
-                        if (i != m_currnetDisplayingUnit.buffs.Count - 1)
+                        if (i != m_currnetDisplayingUnit.OwnBuffCount - 1)
                             _buffString += "\n\n";
                     }
 

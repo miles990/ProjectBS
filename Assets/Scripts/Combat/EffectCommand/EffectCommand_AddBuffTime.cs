@@ -51,7 +51,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_effectID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].buffs.Find(x => x.soruceID == m_effectID);
+                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_effectID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffTime(
@@ -84,12 +84,12 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].buffs.Count)
+            if (m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
             {
                 GoNextTarget();
                 return;
             }
-            m_currentBuff = m_targets[m_currentTargetIndex].buffs[m_currentBuffIndex];
+            m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
             m_targets[m_currentTargetIndex].AddBuffTime(
                 m_currentBuff,
                 m_addTime,

@@ -197,13 +197,13 @@ namespace ProjectBS.Combat
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_units[m_currentUnitIndex].buffs.Count)
+            if(m_currentBuffIndex >= m_units[m_currentUnitIndex].OwnBuffCount)
             {
                 GoNextUnit();
                 return;
             }
 
-            CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].buffs[m_currentBuffIndex];
+            CombatUnit.Buff _currentBuff = m_units[m_currentUnitIndex].GetBuffByIndex(m_currentBuffIndex);
 
             m_currentBuffProcesser = EffectProcessManager.GetBuffProcesser(_currentBuff.soruceID);
             m_currentBuffProcessData = new EffectProcesser.ProcessData
