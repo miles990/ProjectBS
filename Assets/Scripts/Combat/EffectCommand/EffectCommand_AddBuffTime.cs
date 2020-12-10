@@ -40,8 +40,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void GoNextTarget()
         {
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
-
             m_currentTargetIndex++;
             if (m_currentTargetIndex >= m_targets.Count)
             {

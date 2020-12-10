@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat
 {
+    [System.Serializable]
     public class CombatUnit
     {
         public class Buff
@@ -10,8 +11,8 @@ namespace ProjectBS.Combat
             public int soruceID = 0;
             public int remainingTime = 1;
             public int stackCount = 1;
-            public CombatUnit owner = null;
-            public CombatUnit from = null;
+            public string ownerUnitUDID = "";
+            public string fromUnitUDID = "";
 
             public BuffData GetBuffSourceData()
             {
@@ -23,25 +24,25 @@ namespace ProjectBS.Combat
         {
             public string statusType = "HP";
             public string valueString = "0";
-            public Buff parentBuff = null;
+            public int parentBuffID = 0;
         }
 
         public class StatusAddLocker
         {
             public string statusType = "HP";
-            public Buff parentBuff = null;
+            public int parentBuffID = 0;
         }
 
         public class Skiper
         {
-            public Buff parentBuff = null;
+            public int parentBuffID = 0;
         }
 
         public class Shield
         {
             public int value = 0;
             public int triggerSKillID = 0;
-            public Buff parentBuff = null;
+            public int parentBuffID = 0;
         }
 
         public string UDID = "";
@@ -100,10 +101,10 @@ namespace ProjectBS.Combat
             }
         }
         private int m_hatred = 0;
-        public OwningEquipmentData head = null;
-        public OwningEquipmentData body = null;
-        public OwningEquipmentData hand = null;
-        public OwningEquipmentData foot = null;
+        public string head = null;
+        public string body = null;
+        public string hand = null;
+        public string foot = null;
         public int[] skills = new int[4];
         public string ai = "";
         public List<StatusAdder> statusAdders = new List<StatusAdder>();
@@ -113,7 +114,7 @@ namespace ProjectBS.Combat
         public List<Shield> shields = new List<Shield>();
 
         public int lastSkillID = 0;
-        public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
+        public Dictionary<string, int> targetToDmg = new Dictionary<string, int>();
         public int lastTakenDamage = 0;
 
         public int actionIndex = 0;
@@ -232,7 +233,7 @@ namespace ProjectBS.Combat
                 caster = this,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnDeactived,
-                allEffectProcesser = CombatUtility.CurrentComabtManager.AllUnitAllEffectProcesser,
+                allEffectProcesser = CombatUtility.ComabtManager.AllUnitAllEffectProcesser,
                 referenceBuff = buff,
                 refenceSkill = null,
                 onEnded = delegate { OnBuffRemoved(buff, _effect, onRemoved); }
@@ -270,7 +271,7 @@ namespace ProjectBS.Combat
                         {
                             caster = this,
                             target = this,
-                            referenceBuff = statusAdders[i].parentBuff,
+                            referenceBuff = GetBuffByBuffEffectID(statusAdders[i].parentBuffID),
                             formula = statusAdders[i].valueString,
                             useRawValue = true
                         });
@@ -283,37 +284,39 @@ namespace ProjectBS.Combat
             return _temp;
         }
 
-        private void AddValueByEquipment(OwningEquipmentData equipmentData, string statusType, ref int value)
+        private void AddValueByEquipment(string equipmentData, string statusType, ref int value)
         {
-            if (equipmentData == null)
+            if (string.IsNullOrEmpty(equipmentData))
                 return;
+
+            OwningEquipmentData _equipment = PlayerManager.Instance.GetEquipmentByUDID(equipmentData);
 
             switch (statusType)
             {
                 case Keyword.HP:
                 case Keyword.MaxHP:
                     {
-                        value += equipmentData.HP;
+                        value += _equipment.HP;
                         break;
                     }
                 case Keyword.Attack:
                     {
-                        value += equipmentData.Attack;
+                        value += _equipment.Attack;
                         break;
                     }
                 case Keyword.Defense:
                     {
-                        value += equipmentData.Defense;
+                        value += _equipment.Defense;
                         break;
                     }
                 case Keyword.Speed:
                     {
-                        value += equipmentData.Speed;
+                        value += _equipment.Speed;
                         break;
                     }
                 case Keyword.SP:
                     {
-                        value += equipmentData.SP;
+                        value += _equipment.SP;
                         break;
                     }
             }

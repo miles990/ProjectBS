@@ -29,6 +29,11 @@ namespace ProjectBS.Combat
         public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
         protected List<CombatUnit> m_units = new List<CombatUnit>();
 
+        public CombatUnit GetUnitByUDID(string udid)
+        {
+            return m_units.Find(x => x.UDID == udid);
+        }
+
         public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; protected set; }
         protected List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
         protected CombatUnitAction m_currentAction = null;

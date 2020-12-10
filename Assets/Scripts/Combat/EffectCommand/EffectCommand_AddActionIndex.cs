@@ -42,7 +42,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUtility.CurrentComabtManager.AddActionIndex(m_targets[m_currentTargetIndex], m_addIndex);
+            CombatUtility.ComabtManager.AddActionIndex(m_targets[m_currentTargetIndex], m_addIndex);
             GetPage<UI.CombatUIView>().ShowAddActionIndex(m_targets[m_currentTargetIndex], m_addIndex, GoNextTarget);
         }
     }

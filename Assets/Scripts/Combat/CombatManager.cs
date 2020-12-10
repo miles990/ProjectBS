@@ -180,7 +180,7 @@ namespace ProjectBS.Combat
         }
 
         private void OnTurnStartAnimationEnded()
-        {
+        { 
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -306,8 +306,6 @@ namespace ProjectBS.Combat
 
         private void CheckNextBuffEnd()
         {
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
-
             if(!m_units.Contains(m_currentCheckingUnit))
             {
                 CheckNextUnitBuffEnd();

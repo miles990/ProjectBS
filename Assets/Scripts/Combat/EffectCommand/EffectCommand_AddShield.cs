@@ -59,14 +59,14 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 m_targets[m_currentTargetIndex].shields.Add(new CombatUnit.Shield
                 {
-                    parentBuff = null,
+                    parentBuffID = 0,
                     triggerSKillID = m_skillID,
                     value = Convert.ToInt32(_floatValue)
                 });
             }
             else
             {
-                CombatUnit.Shield _shield = m_targets[m_currentTargetIndex].shields.Find(x => x.parentBuff == processData.referenceBuff);
+                CombatUnit.Shield _shield = m_targets[m_currentTargetIndex].shields.Find(x => x.parentBuffID == processData.referenceBuff.soruceID);
                 if(_shield != null)
                 {
                     _shield.value = Convert.ToInt32(_floatValue);
@@ -75,7 +75,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     m_targets[m_currentTargetIndex].shields.Add(new CombatUnit.Shield
                     {
-                        parentBuff = processData.referenceBuff,
+                        parentBuffID = 0,
                         triggerSKillID = m_skillID,
                         value = Convert.ToInt32(_floatValue)
                     });

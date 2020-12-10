@@ -100,11 +100,11 @@ namespace ProjectBS.Combat
                     {
                         if (m_idToSelected.ContainsKey(data.id))
                         {
-                            m_idToSelected[data.id] = new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor };
+                            m_idToSelected[data.id] = new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor };
                         }
                         else
                         {
-                            m_idToSelected.Add(data.id, new List<CombatUnit> { CombatUtility.CurrentComabtManager.CurrentActionInfo.actor });
+                            m_idToSelected.Add(data.id, new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor });
                         }
 
                         data.onSelected?.Invoke(m_idToSelected[data.id]);
@@ -126,7 +126,7 @@ namespace ProjectBS.Combat
 
                         m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
                         m_currentSelectType = (SelectType)Enum.Parse(typeof(SelectType), _vars[1]);
-                        m_allUnit = CombatUtility.CurrentComabtManager.AllUnit;
+                        m_allUnit = CombatUtility.ComabtManager.AllUnit;
                         m_needCount = int.Parse(_vars[2]);
                         m_attacker = data.attacker;
                         m_onSelected = OnManualSelected;

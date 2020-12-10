@@ -56,14 +56,7 @@ namespace ProjectBS.Combat.EffectCommand
                         {
                             m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                             {
-                                parentBuff = new CombatUnit.Buff
-                                {
-                                    soruceID = 0,
-                                    from = GetSelf(),
-                                    owner = m_targets[m_currentTargetIndex],
-                                    remainingTime = -1,
-                                    stackCount = 1
-                                },
+                                parentBuffID = 0,
                                 statusType = m_statusString,
                                 valueString = m_valueString
                             });
@@ -71,20 +64,19 @@ namespace ProjectBS.Combat.EffectCommand
                         else
                         {
                             CombatUnit.StatusAdder _adder = m_targets[m_currentTargetIndex].statusAdders
-                                .Find(x => x.parentBuff == processData.referenceBuff
+                                .Find(x => x.parentBuffID == processData.referenceBuff.soruceID
                                         && x.statusType == m_statusString);
                             if (_adder == null)
                             {
                                 m_targets[m_currentTargetIndex].statusAdders.Add(new CombatUnit.StatusAdder
                                 {
-                                    parentBuff = _buff,
+                                    parentBuffID = _buff.soruceID,
                                     statusType = m_statusString,
                                     valueString = m_valueString
                                 });
                             }
                         }
 
-                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                         GoNextTarget();
                         break;
                     }
@@ -107,7 +99,6 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     m_targets[m_currentTargetIndex].Hatred += _add;
 
-                                    GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();
                                     break;
                                 }
@@ -116,7 +107,6 @@ namespace ProjectBS.Combat.EffectCommand
                                     if (_add < 0)
                                     {
                                         m_targets[m_currentTargetIndex].HP += _add;
-                                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                                         GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
@@ -127,7 +117,6 @@ namespace ProjectBS.Combat.EffectCommand
                                     {
                                         GetSelf().Hatred += _add;
                                         m_targets[m_currentTargetIndex].HP += _add;
-                                        GetPage<UI.CombatUIView>().RefreshAllInfo();
                                         GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
@@ -139,7 +128,6 @@ namespace ProjectBS.Combat.EffectCommand
                             case Keyword.SP:
                                 {
                                     m_targets[m_currentTargetIndex].SP += _add;
-                                    GetPage<UI.CombatUIView>().RefreshAllInfo();
                                     GoNextTarget();
                                     break;
                                 }

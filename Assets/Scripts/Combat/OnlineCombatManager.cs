@@ -51,6 +51,20 @@ namespace ProjectBS.Combat
             throw new NotImplementedException();
         }
 
+        public void ForceSyncCombatUnitsStatus(CombatUnit[] units)
+        {
+            for (int i = 0; i < units.Length; i++)
+            {
+                int _refIndex = m_units.FindIndex(x => x.UDID == units[i].UDID);
+                if(_refIndex != -1)
+                {
+                    int _orginCamp = m_units[_refIndex].camp;
+                    m_units[_refIndex] = units[i];
+                    m_units[_refIndex].camp = _orginCamp; // camp will be different in different client
+                }
+            }
+        }
+
         public override void StartCombat(List<CombatUnit> playerUnits, List<CombatUnit> opponentUnits)
         {
             m_units.Clear();
@@ -78,29 +92,55 @@ namespace ProjectBS.Combat
             AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(_myUnits);
             if(PhotonManager.Instance.IsMaster)
             {
-                Master_TriggerOnBattleStarted();
+                TriggerOnBattleStarted();
             }
         }
 
-        private void Master_TriggerOnBattleStarted()
+        private void TriggerOnBattleStarted()
         {
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnBattleStarted,
-                onEnded = MasterCallSlaveTriggerOnBattleStarted
+                onEnded = OnTriggerOnBattleStartEnded
             });
         }
 
-        private void MasterCallSlaveTriggerOnBattleStarted()
+        private void OnTriggerOnBattleStartEnded()
         {
-
+            if(PhotonManager.Instance.IsMaster)
+            {
+                PhotonManager.Instance.SyncMyCombatUnits();
+                PhotonManager.Instance.SetWaitCallback(CallbackCode.IsSlaveOnBattleStartedCommandEnded, StartNewTurn);
+                PhotonManager.Instance.Call(nameof(TriggerOnBattleStarted));
+            }
+            else
+            {
+                PhotonManager.Instance.SyncMyCombatUnits();
+                PhotonManager.Instance.SendCallback(CallbackCode.IsSlaveOnBattleStartedCommandEnded);
+            }
         }
 
-        public void DoRPCCommand()
+        private void StartNewTurn()
         {
+            UnityEngine.Debug.Log("Start New Turn");
+        }
 
+        public void DoRPCCommand(string command)
+        {
+            switch(command)
+            {
+                case nameof(TriggerOnBattleStarted):
+                    {
+                        TriggerOnBattleStarted();
+                        break;
+                    }
+                default:
+                    {
+                        throw new Exception("[OnlineCombatManager][DoRPCCommand] Invaild RPC command=" + command);
+                    }
+            }
         }
     }
 }

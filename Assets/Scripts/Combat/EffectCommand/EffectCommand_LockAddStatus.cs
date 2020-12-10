@@ -48,7 +48,7 @@ namespace ProjectBS.Combat.EffectCommand
             m_targets[m_currentTargetIndex].statusAddLockers.Add(
                 new CombatUnit.StatusAddLocker
                 {
-                    parentBuff = processData.referenceBuff,
+                    parentBuffID = processData.referenceBuff.soruceID,
                     statusType = m_statusType
                 });
 

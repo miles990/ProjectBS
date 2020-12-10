@@ -70,7 +70,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             CombatUnit _attackTarget = m_targets[m_currentTargetIndex];
 
-            CombatManager.CombatActionInfo _info = CombatUtility.CurrentComabtManager.CurrentActionInfo;
+            CombatManager.CombatActionInfo _info = CombatUtility.ComabtManager.CurrentActionInfo;
             float _minAttackRollPersent = (float)_info.minAttackRoll / 100f;
             float _minDefenseRollPersent = (float)_info.minDefenseRoll / 100f;
 
@@ -105,13 +105,13 @@ namespace ProjectBS.Combat.EffectCommand
             if (_dmg < 1)
                 _dmg = 1;
 
-            if(processData.caster.targetToDmg.ContainsKey(_attackTarget))
+            if(processData.caster.targetToDmg.ContainsKey(_attackTarget.UDID))
             {
-                processData.caster.targetToDmg[_attackTarget] = _dmg;
+                processData.caster.targetToDmg[_attackTarget.UDID] = _dmg;
             }
             else
             {
-                processData.caster.targetToDmg.Add(_attackTarget, _dmg);
+                processData.caster.targetToDmg.Add(_attackTarget.UDID, _dmg);
             }
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -219,15 +219,15 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_targets[m_currentTargetIndex].shields.Count > 0)
             {
-                if (m_targets[m_currentTargetIndex].shields[0].value > processData.caster.targetToDmg[m_targets[m_currentTargetIndex]])
+                if (m_targets[m_currentTargetIndex].shields[0].value > processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID])
                 {
-                    m_targets[m_currentTargetIndex].shields[0].value -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-                    processData.caster.targetToDmg[m_targets[m_currentTargetIndex]] = 0;
+                    m_targets[m_currentTargetIndex].shields[0].value -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+                    processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID] = 0;
                     OnDamageTaken_Self_Ended();
                 }
                 else
                 {
-                    processData.caster.targetToDmg[m_targets[m_currentTargetIndex]] -= m_targets[m_currentTargetIndex].shields[0].value;
+                    processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID] -= m_targets[m_currentTargetIndex].shields[0].value;
                     if (m_targets[m_currentTargetIndex].shields[0].triggerSKillID > 0)
                     {
                         EffectProcessManager.GetSkillProcesser(m_targets[m_currentTargetIndex].shields[0].triggerSKillID)
@@ -237,7 +237,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 caster = m_targets[m_currentTargetIndex],
                                 target = null,
                                 refenceSkill = null,
-                                referenceBuff = m_targets[m_currentTargetIndex].shields[0].parentBuff,
+                                referenceBuff = m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
                                 skipIfCount = 0,
                                 timing = EffectProcesser.TriggerTiming.OnActived,
                                 onEnded = OnShieldSkillTriggered
@@ -251,21 +251,21 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
-            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex]];
+            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
 
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {
                 taker = m_targets[m_currentTargetIndex],
-                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex]]
+                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID]
             }, OnDmgShown);
         }
 
         private void OnShieldSkillTriggered()
         {
-            if(m_targets[m_currentTargetIndex].shields[0].parentBuff == null)
+            if(m_targets[m_currentTargetIndex].shields[0].parentBuffID == 0)
             {
                 m_targets[m_currentTargetIndex].shields.RemoveAt(0);
                 OnShieldBuffStackRemoved();
@@ -273,7 +273,7 @@ namespace ProjectBS.Combat.EffectCommand
             else
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
-                    m_targets[m_currentTargetIndex].shields[0].parentBuff,
+                    m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
                     -1,
                     OnShieldBuffStackRemoved,
                     OnShieldBuffStackRemoved);
@@ -288,8 +288,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDmgShown()
         {
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
-
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,

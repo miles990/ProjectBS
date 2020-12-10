@@ -5,7 +5,7 @@ namespace ProjectBS.Combat
 {
     public static class CombatUtility
     {
-        public static CombatManagerBase CurrentComabtManager
+        public static CombatManagerBase ComabtManager
         {
             get
             {
@@ -149,7 +149,7 @@ namespace ProjectBS.Combat
             {
                 case Keyword.TurnCount:
                     {
-                        return CurrentComabtManager.TurnCount;
+                        return ComabtManager.TurnCount;
                     }
                 case Keyword.LastAttackRoll:
                     {
@@ -212,19 +212,19 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.Head:
                     {
-                        return unit.head == null ? 0 : unit.head.EquipmentSourceID;
+                        return string.IsNullOrEmpty(unit.head) ? 0 : PlayerManager.Instance.GetEquipmentByUDID(unit.head).EquipmentSourceID;
                     }
                 case Keyword.Body:
                     {
-                        return unit.body == null ? 0 : unit.body.EquipmentSourceID;
+                        return string.IsNullOrEmpty(unit.body) ? 0 : PlayerManager.Instance.GetEquipmentByUDID(unit.body).EquipmentSourceID;
                     }
                 case Keyword.Hand:
                     {
-                        return unit.hand == null ? 0 : unit.hand.EquipmentSourceID;
+                        return string.IsNullOrEmpty(unit.hand) ? 0 : PlayerManager.Instance.GetEquipmentByUDID(unit.hand).EquipmentSourceID;
                     }
                 case Keyword.Foot:
                     {
-                        return unit.foot == null ? 0 : unit.foot.EquipmentSourceID;
+                        return string.IsNullOrEmpty(unit.foot) ? 0 : PlayerManager.Instance.GetEquipmentByUDID(unit.foot).EquipmentSourceID;
                     }
                 case Keyword.TotalDamage:
                     {
@@ -251,7 +251,7 @@ namespace ProjectBS.Combat
                 case Keyword.LastDealedDamage:
                     {
                         int _total = 0;
-                        foreach(KeyValuePair<CombatUnit, int> kvp in unit.targetToDmg)
+                        foreach(KeyValuePair<string, int> kvp in unit.targetToDmg)
                         {
                             _total += kvp.Value;
                         }
@@ -272,8 +272,8 @@ namespace ProjectBS.Combat
         {
             for (int i = 0; i < unit.statusAdders.Count; i++)
             {
-                if (unit.statusAdders[i].parentBuff != null
-                    && unit.statusAdders[i].parentBuff.soruceID == buffID)
+                if (unit.statusAdders[i].parentBuffID != 0
+                    && unit.statusAdders[i].parentBuffID == buffID)
                 {
                     unit.statusAdders.RemoveAt(i);
                     i--;
@@ -281,8 +281,8 @@ namespace ProjectBS.Combat
             }
             for (int i = 0; i < unit.statusAddLockers.Count; i++)
             {
-                if (unit.statusAddLockers[i].parentBuff != null
-                    && unit.statusAddLockers[i].parentBuff.soruceID == buffID)
+                if (unit.statusAddLockers[i].parentBuffID != 0
+                    && unit.statusAddLockers[i].parentBuffID == buffID)
                 {
                     unit.statusAddLockers.RemoveAt(i);
                     i--;
@@ -290,8 +290,8 @@ namespace ProjectBS.Combat
             }
             for (int i = 0; i < unit.actionSkipers.Count; i++)
             {
-                if (unit.actionSkipers[i].parentBuff != null
-                    && unit.actionSkipers[i].parentBuff.soruceID == buffID)
+                if (unit.actionSkipers[i].parentBuffID != 0
+                    && unit.actionSkipers[i].parentBuffID == buffID)
                 {
                     unit.actionSkipers.RemoveAt(i);
                     i--;
@@ -299,8 +299,8 @@ namespace ProjectBS.Combat
             }
             for (int i = 0; i < unit.checkSPSkipers.Count; i++)
             {
-                if (unit.checkSPSkipers[i].parentBuff != null
-                    && unit.checkSPSkipers[i].parentBuff.soruceID == buffID)
+                if (unit.checkSPSkipers[i].parentBuffID != 0
+                    && unit.checkSPSkipers[i].parentBuffID == buffID)
                 {
                     unit.checkSPSkipers.RemoveAt(i);
                     i--;
@@ -308,8 +308,8 @@ namespace ProjectBS.Combat
             }
             for (int i = 0; i < unit.shields.Count; i++)
             {
-                if(unit.shields[i].parentBuff != null
-                    && unit.shields[i].parentBuff.soruceID == buffID)
+                if(unit.shields[i].parentBuffID != 0
+                    && unit.shields[i].parentBuffID == buffID)
                 {
                     unit.shields.RemoveAt(i);
                     i--;
@@ -340,8 +340,8 @@ namespace ProjectBS.Combat
                 case Keyword.Buff:
                     {
                         string[] _varParts = paraString.Split(',');
-                        CombatUnit _getValueTarget = null;
-                        switch(_varParts[0])
+                        CombatUnit _getValueTarget;
+                        switch (_varParts[0])
                         {
                             case Keyword.Caster:
                                 {
@@ -355,12 +355,12 @@ namespace ProjectBS.Combat
                                 }
                             case Keyword.Owner:
                                 {
-                                    _getValueTarget = data.referenceBuff.owner;
+                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.referenceBuff.ownerUnitUDID);
                                     break;
                                 }
                             case Keyword.From:
                                 {
-                                    _getValueTarget = data.referenceBuff.from;
+                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.referenceBuff.fromUnitUDID);
                                     break;
                                 }
                             default:
@@ -450,7 +450,7 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.CurrentDyingUnit:
                     {
-                        _getValueTarget = CurrentComabtManager.CurrentDyingUnit;
+                        _getValueTarget = ComabtManager.CurrentDyingUnit;
                         break;
                     }
                 default:
@@ -713,10 +713,10 @@ namespace ProjectBS.Combat
                 rawSpeed = character.Speed,
                 Hatred = 1,
                 //sprite = GameDataLoader.Instance.GetSprite(character.CharacterSpriteID),
-                body = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Body),
-                foot = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Foot),
-                hand = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Hand),
-                head = PlayerManager.Instance.GetEquipmentByUDID(character.Equipment_UDID_Head),
+                body = character.Equipment_UDID_Body,
+                foot = character.Equipment_UDID_Foot,
+                hand = character.Equipment_UDID_Hand,
+                head = character.Equipment_UDID_Head,
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
@@ -732,6 +732,7 @@ namespace ProjectBS.Combat
         {
             CombatUnit _boss = new CombatUnit
             {
+                UDID = System.Guid.NewGuid().ToString(),
                 ai = boss.AI,
                 rawAttack = boss.Attack,
                 camp = 1,
@@ -758,8 +759,8 @@ namespace ProjectBS.Combat
                     _boss.AddBuff(new CombatUnit.Buff
                     {
                         soruceID = int.Parse(_buffIDs[i]),
-                        from = _boss,
-                        owner = _boss,
+                        fromUnitUDID = _boss.UDID,
+                        ownerUnitUDID = _boss.UDID,
                         remainingTime = -1,
                         stackCount = 1
                     });

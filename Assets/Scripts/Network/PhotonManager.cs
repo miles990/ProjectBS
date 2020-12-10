@@ -103,6 +103,12 @@ namespace ProjectBS.Network
 
         private void OnSlaveCombatManagerInited()
         {
+            m_photonView.RPC(nameof(SyncStartBattle), RpcTarget.All);
+        }
+
+        [PunRPC]
+        private void SyncStartBattle()
+        {
             Data.OwningCharacterData[] _player = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id]);
             Data.OwningCharacterData[] _opponent = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id == 0 ? 1 : 0]);
 
@@ -119,7 +125,7 @@ namespace ProjectBS.Network
                 _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], 1));
             }
 
-            Combat.CombatUtility.CurrentComabtManager.StartCombat(_playerUnits, _opponentUnits);
+            Combat.CombatUtility.ComabtManager.StartCombat(_playerUnits, _opponentUnits);
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -173,7 +179,7 @@ namespace ProjectBS.Network
 
         ////////////////////////////////////////////////////////////////////////////
 
-        private void SendCallback(int code)
+        public void SendCallback(int code)
         {
             if(m_id == 0)
             {
@@ -203,7 +209,7 @@ namespace ProjectBS.Network
             }
         }
 
-        private void SetWaitCallback(int waitCode, Action onReceived)
+        public void SetWaitCallback(int waitCode, Action onReceived)
         {
             if(m_waitCallbackCode != -1)
             {
@@ -212,6 +218,46 @@ namespace ProjectBS.Network
 
             m_waitCallbackCode = waitCode;
             m_nextStep = onReceived;
+        }
+
+        public void Call(string command)
+        {
+            m_photonView.RPC(nameof(DoRPCCommand), RpcTarget.All, m_id, command);
+        }
+
+        [PunRPC]
+        private void DoRPCCommand(int from, string command)
+        {
+            if(from == m_id)
+            {
+                return;
+            }
+
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).DoRPCCommand(command);
+        }
+
+        public void SyncMyCombatUnits()
+        {
+            List<Combat.CombatUnit> _myUnits = new List<Combat.CombatUnit>();
+            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.ComabtManager.AllUnit;
+
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                if(_allUnits[i].camp == 0)
+                {
+                    _myUnits.Add(_allUnits[i]);
+                }
+            }
+
+            string _json = JsonWriter.Serialize(_myUnits.ToArray());
+            m_photonView.RPC(nameof(Pun_SyncCombatUnits), RpcTarget.All, _json);
+        }
+
+        [PunRPC]
+        private void Pun_SyncCombatUnits(string json)
+        {
+            Combat.CombatUnit[] _units = JsonReader.Deserialize<Combat.CombatUnit[]>(json);
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).ForceSyncCombatUnitsStatus(_units);
         }
 
         ////////////////////////////////////////////////////////////////////////////

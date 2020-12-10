@@ -97,7 +97,6 @@ namespace ProjectBS.Combat.EffectCommand
                         throw new Exception("[EffectCommand_SetStatus][Process] Invaild status:" + m_statusString);
                     }
             }
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
 
             GoNextTarget();
         }

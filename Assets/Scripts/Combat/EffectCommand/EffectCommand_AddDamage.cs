@@ -32,9 +32,9 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 _value *= 0.01f;
             }
-            if(CombatUtility.CurrentComabtManager.CurrentActionInfo.actor == processData.caster)
+            if(CombatUtility.ComabtManager.CurrentActionInfo.actor == processData.caster)
             {
-                List<CombatUnit> _targets = new List<CombatUnit>(processData.caster.targetToDmg.Keys);
+                List<string> _targets = new List<string>(processData.caster.targetToDmg.Keys);
                 for(int i = 0; i < _targets.Count; i++)
                 {
                     int _intDmg;
@@ -59,18 +59,18 @@ namespace ProjectBS.Combat.EffectCommand
                 int _intDmg;
                 if (_isPersent)
                 {
-                    float _dmg = (float)CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster];
+                    float _dmg = (float)CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID];
                     _intDmg = Convert.ToInt32(_dmg * _value);
-                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
+                    CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] += _intDmg;
                 }
                 else
                 {
                     _intDmg = Convert.ToInt32(_value);
-                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] += _intDmg;
+                    CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] += _intDmg;
                 }
 
-                if (CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] < 1)
-                    CombatUtility.CurrentComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster] = 1;
+                if (CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] < 1)
+                    CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] = 1;
 
             }
 

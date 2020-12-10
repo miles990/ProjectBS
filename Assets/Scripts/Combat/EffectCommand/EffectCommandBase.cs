@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
             else
             {
-                return processData.referenceBuff.owner;
+                return CombatUtility.ComabtManager.GetUnitByUDID(processData.referenceBuff.ownerUnitUDID);
             }
         }
 

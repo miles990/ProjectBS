@@ -86,56 +86,56 @@ namespace ProjectBS.Combat
             {
                 case 0:
                     {
-                        if (m_units[m_currentUnitIndex].head == null
-                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].head.EffectIDs))
+                        if(!TryGetEquipmentEffect(m_units[m_currentUnitIndex].head))
                         {
                             GoNextEquipment();
                             return;
                         }
-
-                        m_currentEquipmentEffectIDs = m_units[m_currentUnitIndex].head.EffectIDs.Split('$');
                         break;
                     }
                 case 1:
                     {
-                        if (m_units[m_currentUnitIndex].body == null
-                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].body.EffectIDs))
+                        if (!TryGetEquipmentEffect(m_units[m_currentUnitIndex].body))
                         {
                             GoNextEquipment();
                             return;
                         }
-
-                        m_currentEquipmentEffectIDs = m_units[m_currentUnitIndex].body.EffectIDs.Split('$');
                         break;
                     }
                 case 2:
                     {
-                        if (m_units[m_currentUnitIndex].hand == null
-                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].hand.EffectIDs))
+                        if (!TryGetEquipmentEffect(m_units[m_currentUnitIndex].hand))
                         {
                             GoNextEquipment();
                             return;
                         }
-
-                        m_currentEquipmentEffectIDs = m_units[m_currentUnitIndex].hand.EffectIDs.Split('$');
                         break;
                     }
                 case 3:
                     {
-                        if (m_units[m_currentUnitIndex].foot == null
-                            || string.IsNullOrEmpty(m_units[m_currentUnitIndex].foot.EffectIDs))
+                        if (!TryGetEquipmentEffect(m_units[m_currentUnitIndex].foot))
                         {
                             GoNextEquipment();
                             return;
                         }
-
-                        m_currentEquipmentEffectIDs = m_units[m_currentUnitIndex].foot.EffectIDs.Split('$');
                         break;
                     }
             }
 
             m_currentEquipmentEffectIDIndex = -1;
             GoNextEquipmentEffect();
+        }
+
+        private bool TryGetEquipmentEffect(string udid)
+        {
+            if (string.IsNullOrEmpty(udid)
+                || string.IsNullOrEmpty(PlayerManager.Instance.GetEquipmentByUDID(udid).EffectIDs))
+            {
+                return false;
+            }
+
+            m_currentEquipmentEffectIDs = PlayerManager.Instance.GetEquipmentByUDID(udid).EffectIDs.Split('$');
+            return true;
         }
 
         private void GoNextEquipmentEffect()

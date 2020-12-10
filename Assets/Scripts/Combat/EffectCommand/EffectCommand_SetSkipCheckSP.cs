@@ -7,13 +7,13 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             CombatUnit.Skiper _skiper
-                = GetSelf().checkSPSkipers.Find(x => x.parentBuff == processData.referenceBuff);
+                = GetSelf().checkSPSkipers.Find(x => x.parentBuffID == processData.referenceBuff.soruceID);
 
             if (_skiper == null)
             {
                 GetSelf().checkSPSkipers.Add(new CombatUnit.Skiper
                 {
-                    parentBuff = processData.referenceBuff
+                    parentBuffID = processData.referenceBuff.soruceID
                 });
             }
             onCompleted?.Invoke();

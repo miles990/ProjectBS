@@ -39,8 +39,6 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void SetNextTargetBuff()
         {
-            GetPage<UI.CombatUIView>().RefreshAllInfo();
-
             m_currentActiveTargetIndex++;
             if(m_currentActiveTargetIndex >= m_targets.Count)
             {
@@ -67,8 +65,8 @@ namespace ProjectBS.Combat.EffectCommand
                 _buff = new CombatUnit.Buff
                 {
                     soruceID = m_buffID,
-                    from = processData.caster,
-                    owner = m_targets[m_currentActiveTargetIndex],
+                    fromUnitUDID = processData.caster.UDID,
+                    ownerUnitUDID = m_targets[m_currentActiveTargetIndex].UDID,
                     remainingTime = m_buffTime,
                     stackCount = 1
                 };

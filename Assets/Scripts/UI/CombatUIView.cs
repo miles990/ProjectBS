@@ -55,6 +55,11 @@ namespace ProjectBS.UI
             }
         }
 
+        private void Update()
+        {
+            RefreshAllInfo();
+        }
+
         public override void ForceShow(Manager manager, bool show)
         {
             throw new NotImplementedException();
@@ -103,7 +108,7 @@ namespace ProjectBS.UI
                     {
                         m_unitToIndex.Add(units[i], _currentPlayerIndex);
                     }
-                    m_characterPanels[_currentPlayerIndex].SetUp(units[i]);
+                    m_characterPanels[_currentPlayerIndex].SetUp(units[i].UDID);
                     m_characterPanels[_currentPlayerIndex].gameObject.SetActive(true);
                     _currentPlayerIndex++;
                 }
@@ -127,7 +132,7 @@ namespace ProjectBS.UI
                         m_unitToIndex.Add(units[i], _currentEnemyIndex);
                     }
 
-                    m_characterPanels[_currentEnemyIndex].SetUp(units[i]);
+                    m_characterPanels[_currentEnemyIndex].SetUp(units[i].UDID);
                     m_characterPanels[_currentEnemyIndex].gameObject.SetActive(true);
                     _currentEnemyIndex++;
                 }
@@ -281,7 +286,7 @@ namespace ProjectBS.UI
             TimerManager.Schedule(1.5f, 
                 delegate
                 {
-                    CombatUtility.CurrentComabtManager.EndComabat(playerWin);
+                    CombatUtility.ComabtManager.EndComabat(playerWin);
                 });
         }
 
@@ -372,7 +377,7 @@ namespace ProjectBS.UI
             }
         }
 
-        public void RefreshAllInfo()
+        private void RefreshAllInfo()
         {
             for(int i = 0; i < m_characterPanels.Length; i++)
             {
@@ -386,7 +391,7 @@ namespace ProjectBS.UI
         public void Button_SkipAction()
         {
             m_skillPanel.SetActive(false);
-            CombatUtility.CurrentComabtManager.ForceEndCurrentAction();
+            CombatUtility.ComabtManager.ForceEndCurrentAction();
         }
 
         public class DisplayDamageData
