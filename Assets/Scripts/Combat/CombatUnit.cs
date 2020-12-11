@@ -124,6 +124,46 @@ namespace ProjectBS.Combat
 
         public int OwnBuffCount { get { return m_buffs.Count; } }
         private List<Buff> m_buffs = new List<Buff>();
+        public List<Buff> BuffDataPassBuffer { get; private set; }
+
+        public CombatUnit GetJsonableData()
+        {
+            // private member can't be read, so use this to set BuffDataPassBuffer for passing buff data
+            BuffDataPassBuffer = new List<Buff>(m_buffs);
+            return this;
+        }
+
+        public void UpdateData(CombatUnit unit)
+        {
+            if(UDID != unit.UDID)
+            {
+                throw new System.Exception("[CombatUnit][UpdateData] is trying to override data with different udid");
+            }
+
+            m_hp = unit.m_hp;
+            m_sp = unit.m_sp;
+            rawAttack = unit.rawAttack;
+            rawDefense = unit.rawDefense;
+            rawSpeed = unit.rawSpeed;
+            rawMaxHP = unit.rawMaxHP;
+            m_hatred = unit.m_hatred;
+            head = unit.head;
+            body = unit.body;
+            hand = unit.hand;
+            foot = unit.foot;
+            skills = unit.skills;
+            ai = unit.ai;
+            statusAdders = unit.statusAdders;
+            statusAddLockers = unit.statusAddLockers;
+            actionSkipers = unit.actionSkipers;
+            checkSPSkipers = unit.checkSPSkipers;
+            shields = unit.shields;
+            lastSkillID = unit.lastSkillID;
+            targetToDmg = unit.targetToDmg;
+            lastTakenDamage = unit.lastTakenDamage;
+            actionIndex = unit.actionIndex;
+            m_buffs = unit.BuffDataPassBuffer;
+        }
 
         public int GetMaxHP()
         {
@@ -151,6 +191,7 @@ namespace ProjectBS.Combat
             if(_oldBuff == null)
             {
                 m_buffs.Add(buff);
+                UnityEngine.Debug.Log("camp " + camp + " add buff=" + buff.soruceID + ", buff count=" + OwnBuffCount);
             }
             else
             {

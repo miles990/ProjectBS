@@ -7418,7 +7418,7 @@ MonoBehaviour:
   - {fileID: 2013687787}
   m_infoPrefab: {fileID: 1942148528}
   m_actionSortInfoText: {fileID: 1215039148}
-  m_photonView: {fileID: 0}
+  m_photonView: {fileID: 869509525}
 --- !u!114 &869509525
 MonoBehaviour:
   m_ObjectHideFlags: 0

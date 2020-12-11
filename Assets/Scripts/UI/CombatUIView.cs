@@ -443,7 +443,7 @@ namespace ProjectBS.UI
 
             if(Network.PhotonManager.Instance.IsConnected)
             {
-                m_photonView.RPC(nameof(Sync_SetInfoText), RpcTarget.All, target.UDID, info);
+                m_photonView.RPC(nameof(Sync_SetInfoText), RpcTarget.All, target != null ? target.UDID : "null", info);
             }
             else
             {

@@ -113,6 +113,7 @@ namespace ProjectBS.UI
 
                     m_showInfoTimer = 0f;
                     string _buffString = "";
+                    Debug.Log(_unit.OwnBuffCount);
                     for(int i = 0; i < _unit.OwnBuffCount; i++)
                     {
                         Data.BuffData _effect = _unit.GetBuffByIndex(i).GetBuffSourceData();

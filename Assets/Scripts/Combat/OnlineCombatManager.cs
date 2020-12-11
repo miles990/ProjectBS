@@ -6,12 +6,12 @@ namespace ProjectBS.Combat
 {
     public class OnlineCombatManager : CombatManagerBase
     {
-        public override void AddActionIndex(CombatUnit unit, int addIndex)
+        public override void AddActionIndex(string unitUDID, int addIndex)
         {
             throw new NotImplementedException();
         }
 
-        public override void AddExtraAction(CombatUnit unit, bool isImmediate)
+        public override void AddExtraAction(string unitUDID, bool isImmediate)
         {
             throw new NotImplementedException();
         }
@@ -26,12 +26,12 @@ namespace ProjectBS.Combat
             throw new NotImplementedException();
         }
 
-        public override void ForceRemoveUnit(CombatUnit unit)
+        public override void ForceRemoveUnit(string unitUDID)
         {
             throw new NotImplementedException();
         }
 
-        public override void ForceUnitDie(CombatUnit unit, Action onDiedCommandEnded)
+        public override void ForceUnitDie(string unitUDID, Action onDiedCommandEnded)
         {
             throw new NotImplementedException();
         }
@@ -58,9 +58,7 @@ namespace ProjectBS.Combat
                 int _refIndex = m_units.FindIndex(x => x.UDID == units[i].UDID);
                 if(_refIndex != -1)
                 {
-                    int _orginCamp = m_units[_refIndex].camp;
-                    m_units[_refIndex] = units[i];
-                    m_units[_refIndex].camp = _orginCamp; // camp will be different in different client
+                    m_units[_refIndex].UpdateData(units[i]);
                 }
             }
         }
@@ -112,28 +110,122 @@ namespace ProjectBS.Combat
             if(PhotonManager.Instance.IsMaster)
             {
                 PhotonManager.Instance.SyncMyCombatUnits();
-                PhotonManager.Instance.SetWaitCallback(CallbackCode.IsSlaveOnBattleStartedCommandEnded, StartNewTurn);
-                PhotonManager.Instance.Call(nameof(TriggerOnBattleStarted));
+                PhotonManager.Instance.SetWaitCallback(CallbackCode.IsSlaveProcessCommandEnded, Master_StartNewTurn);
+                PhotonManager.Instance.CallTheOther(nameof(TriggerOnBattleStarted));
             }
             else
             {
                 PhotonManager.Instance.SyncMyCombatUnits();
-                PhotonManager.Instance.SendCallback(CallbackCode.IsSlaveOnBattleStartedCommandEnded);
+                PhotonManager.Instance.SendCallback(CallbackCode.IsSlaveProcessCommandEnded);
             }
         }
 
-        private void StartNewTurn()
+        private void Master_StartNewTurn()
         {
-            UnityEngine.Debug.Log("Start New Turn");
+            TurnCount++;
+
+            m_units.Sort((x, y) => y.GetSpeed().CompareTo(x.GetSpeed()));
+            for (int i = 0; i < m_units.Count - 1; i++)
+            {
+                if (m_units[i].GetSpeed() == m_units[i + 1].GetSpeed())
+                {
+                    if (UnityEngine.Random.Range(0, 101) <= 50)
+                    {
+                        CombatUnit _temp = m_units[i + 1];
+                        m_units[i + 1] = m_units[i];
+                        m_units[i] = _temp;
+                    }
+                }
+            }
+            m_unitActions.Clear();
+
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                m_units[i].actionIndex = i;
+                m_unitActions.Add(new CombatUnitAction(m_units[i], AllUnitAllEffectProcesser));
+            }
+
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
+            GetPage<UI.CombatUIView>().ShowTurnStart(TurnCount, OnTurnStartAnimationEnded);
         }
 
-        public void DoRPCCommand(string command)
+        private void OnTurnStartAnimationEnded()
+        {
+            // here will only be called by master
+            TriggerOnTurnStarted();
+        }
+
+        private void TriggerOnTurnStarted()
+        {
+            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            {
+                caster = null,
+                target = null,
+                timing = EffectProcesser.TriggerTiming.OnTurnStarted,
+                onEnded = OnTriggerOnTurnStartedEnded
+            });
+        }
+
+        private void OnTriggerOnTurnStartedEnded()
+        {
+            if (PhotonManager.Instance.IsMaster)
+            {
+                PhotonManager.Instance.SyncMyCombatUnits();
+                PhotonManager.Instance.SetWaitCallback(CallbackCode.IsSlaveProcessCommandEnded, GoNextAction);
+                PhotonManager.Instance.CallTheOther(nameof(TriggerOnTurnStarted));
+            }
+            else
+            {
+                PhotonManager.Instance.SyncMyCombatUnits();
+                PhotonManager.Instance.SendCallback(CallbackCode.IsSlaveProcessCommandEnded);
+            }
+        }
+
+        private void GoNextAction()
+        {
+            if (m_unitActions.Count <= 0)
+            {
+                return;
+            }
+
+            m_currentAction = m_unitActions[0];
+            m_unitActions.RemoveAt(0);
+
+            GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
+
+            if(m_currentAction.Actor.camp == 0)
+            {
+                m_currentAction.Start(null);
+            }
+            else
+            {
+                PhotonManager.Instance.CallTheOther(nameof(TriggerStartAction), m_currentAction.Actor.UDID);
+            }
+        }
+
+        private void TriggerStartAction(string udid)
+        {
+            m_currentAction = new CombatUnitAction(GetUnitByUDID(udid), AllUnitAllEffectProcesser);
+            m_currentAction.Start(null);
+        }
+
+        public void DoRPCCommand(string command, params object[] paras)
         {
             switch(command)
             {
                 case nameof(TriggerOnBattleStarted):
                     {
                         TriggerOnBattleStarted();
+                        break;
+                    }
+                case nameof(TriggerOnTurnStarted):
+                    {
+                        TriggerOnTurnStarted();
+                        break;
+                    }
+                case nameof(TriggerStartAction):
+                    {
+                        TriggerStartAction((string)paras[0]);
                         break;
                     }
                 default:

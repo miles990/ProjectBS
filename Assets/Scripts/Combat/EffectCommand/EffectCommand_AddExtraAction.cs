@@ -44,7 +44,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUtility.ComabtManager.AddExtraAction(m_targets[m_currentTargetIndex], m_isImmediate);
+            CombatUtility.ComabtManager.AddExtraAction(m_targets[m_currentTargetIndex].UDID, m_isImmediate);
             GetPage<UI.CombatUIView>().ShowAddExtraAction(m_targets[m_currentTargetIndex], GoNextTarget);
         }
     }

@@ -38,7 +38,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUtility.ComabtManager.ForceUnitDie(m_targets[m_currentTargetIndex], GoNextTarget);
+            CombatUtility.ComabtManager.ForceUnitDie(m_targets[m_currentTargetIndex].UDID, GoNextTarget);
         }
     }
 }

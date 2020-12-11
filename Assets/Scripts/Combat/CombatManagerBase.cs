@@ -40,15 +40,15 @@ namespace ProjectBS.Combat
 
         public CombatUnit CurrentDyingUnit { get; protected set; }
 
-        public abstract void AddActionIndex(CombatUnit unit, int addIndex);
-        public abstract void AddExtraAction(CombatUnit unit, bool isImmediate);
+        public abstract void AddActionIndex(string unitUDID, int addIndex);
+        public abstract void AddExtraAction(string unitUDID, bool isImmediate);
         public abstract List<CombatUnit> GetSameCampUnits(int camp);
         public abstract void SetCurrentActionMinAttackRoll(int value);
         public abstract void SetCurrentActionMinDefenseRoll(int value);
         public abstract void EndComabat(bool isWin);
         public abstract void ForceEndCurrentAction();
-        public abstract void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded);
-        public abstract void ForceRemoveUnit(CombatUnit unit);
+        public abstract void ForceUnitDie(string unitUDID, System.Action onDiedCommandEnded);
+        public abstract void ForceRemoveUnit(string unitUDID);
         public abstract void StartCombat(List<CombatUnit> playerUnits, List<CombatUnit> opponentUnits);
     }
 }

@@ -72,6 +72,8 @@ namespace ProjectBS.Network
                 m_id = 0;
             else
                 m_id = 1;
+
+            Debug.Log("Joined ID=" + m_id);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -220,20 +222,20 @@ namespace ProjectBS.Network
             m_nextStep = onReceived;
         }
 
-        public void Call(string command)
+        public void CallTheOther(string command, params object[] paras)
         {
-            m_photonView.RPC(nameof(DoRPCCommand), RpcTarget.All, m_id, command);
+            m_photonView.RPC(nameof(DoRPCCommand), RpcTarget.All, m_id, command, paras);
         }
 
         [PunRPC]
-        private void DoRPCCommand(int from, string command)
+        private void DoRPCCommand(int from, string command, params object[] paras)
         {
             if(from == m_id)
             {
                 return;
             }
 
-            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).DoRPCCommand(command);
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).DoRPCCommand(command, paras);
         }
 
         public void SyncMyCombatUnits()
@@ -245,7 +247,7 @@ namespace ProjectBS.Network
             {
                 if(_allUnits[i].camp == 0)
                 {
-                    _myUnits.Add(_allUnits[i]);
+                    _myUnits.Add(_allUnits[i].GetJsonableData());
                 }
             }
 

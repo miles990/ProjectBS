@@ -10,9 +10,9 @@ namespace ProjectBS.Combat
 
         private System.Action m_onDiedCommandEnded = null;
 
-        public override void AddActionIndex(CombatUnit unit, int addIndex)
+        public override void AddActionIndex(string unit, int addIndex)
         {
-            int _currentIndex = m_unitActions.FindIndex(x => x.Actor == unit);
+            int _currentIndex = m_unitActions.FindIndex(x => x.Actor.UDID == unit);
             if (_currentIndex != -1)
             {
                 int _targetIndex = _currentIndex + addIndex;
@@ -28,9 +28,9 @@ namespace ProjectBS.Combat
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
         }
 
-        public override void AddExtraAction(CombatUnit unit, bool isImmediate)
+        public override void AddExtraAction(string unit, bool isImmediate)
         {
-            CombatUnitAction _newAction = new CombatUnitAction(unit, AllUnitAllEffectProcesser);
+            CombatUnitAction _newAction = new CombatUnitAction(GetUnitByUDID(unit), AllUnitAllEffectProcesser);
             if (isImmediate)
             {
                 m_unitActions.Insert(0, _newAction);
@@ -87,15 +87,15 @@ namespace ProjectBS.Combat
             m_currentAction.ForceEnd();
         }
 
-        public override void ForceUnitDie(CombatUnit unit, System.Action onDiedCommandEnded)
+        public override void ForceUnitDie(string unit, System.Action onDiedCommandEnded)
         {
-            if (!m_units.Contains(unit))
+            if (m_units.Find(x => x.UDID == unit) == null)
             {
                 onDiedCommandEnded?.Invoke();
                 return;
             }
 
-            CurrentDyingUnit = unit;
+            CurrentDyingUnit = GetUnitByUDID(unit);
             m_onDiedCommandEnded = onDiedCommandEnded;
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -106,12 +106,12 @@ namespace ProjectBS.Combat
             });
         }
 
-        public override void ForceRemoveUnit(CombatUnit unit)
+        public override void ForceRemoveUnit(string unit)
         {
-            m_unitActions.Remove(m_unitActions.Find(x => x.Actor == unit));
-            m_units.Remove(unit);
+            m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unit));
+            m_units.Remove(GetUnitByUDID(unit));
             m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
-            GetPage<UI.CombatUIView>().RemoveActor(unit);
+            GetPage<UI.CombatUIView>().RemoveActor(GetUnitByUDID(unit));
         }
 
         public override void StartCombat(List<CombatUnit> camp0Units, List<CombatUnit> camp1Units)
@@ -210,7 +210,7 @@ namespace ProjectBS.Combat
             {
                 if(m_units[i].HP <= 0)
                 {
-                    ForceUnitDie(m_units[i], OnActionEnded);
+                    ForceUnitDie(m_units[i].UDID, OnActionEnded);
                     return;
                 }
             }
@@ -261,7 +261,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            ForceRemoveUnit(CurrentDyingUnit);
+            ForceRemoveUnit(CurrentDyingUnit.UDID);
             GetPage<UI.CombatUIView>().ShowUnitDied(CurrentDyingUnit,
                 delegate 
                 {
