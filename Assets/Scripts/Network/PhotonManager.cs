@@ -105,11 +105,22 @@ namespace ProjectBS.Network
 
         private void OnSlaveCombatManagerInited()
         {
-            m_photonView.RPC(nameof(SyncStartBattle), RpcTarget.All);
+            StartBattle();
+            SetWaitCallback(CallbackCode.IsSlaveBattleStarted, OnSlaveIsAllInited);
+            m_photonView.RPC(nameof(CallSlaveStartBattle), RpcTarget.All);
         }
 
         [PunRPC]
-        private void SyncStartBattle()
+        private void CallSlaveStartBattle()
+        {
+            if(m_id == 1)
+            {
+                StartBattle();
+                SendCallback(CallbackCode.IsSlaveBattleStarted);
+            }
+        }
+
+        private void StartBattle()
         {
             Data.OwningCharacterData[] _player = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id]);
             Data.OwningCharacterData[] _opponent = JsonReader.Deserialize<Data.OwningCharacterData[]>(m_idToTeamJson[m_id == 0 ? 1 : 0]);
@@ -128,6 +139,11 @@ namespace ProjectBS.Network
             }
 
             Combat.CombatUtility.ComabtManager.StartCombat(_playerUnits, _opponentUnits);
+        }
+
+        private void OnSlaveIsAllInited()
+        {
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).Master_StartBattle();
         }
 
         ////////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,8 @@ namespace ProjectBS.Combat
 {
     public class OnlineCombatManager : CombatManagerBase
     {
+        private bool m_isCombating = false;
+
         public override void AddActionIndex(string unitUDID, int addIndex)
         {
             throw new NotImplementedException();
@@ -70,28 +72,34 @@ namespace ProjectBS.Combat
             m_units.AddRange(opponentUnits);
 
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
-            GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
+            GetPage<UI.CombatUIView>().Show(this, true, InitBattle);
         }
 
-        private void StartBattle()
+        public void Master_StartBattle()
+        {
+            if(m_isCombating)
+            {
+                throw new Exception("[OnlineCombatManager][StartBattle] is trying to start battle while is started");
+            }
+            m_isCombating = true;
+            TriggerOnBattleStarted();
+        }
+
+        private void InitBattle()
         {
             TurnCount = 0;
 
             List<CombatUnit> _myUnits = new List<CombatUnit>();
             for (int i = 0; i < m_units.Count; i++)
             {
-                m_units[i].HP = m_units[i].GetMaxHP();
                 if(m_units[i].camp == 0)
                 {
                     _myUnits.Add(m_units[i]);
+                    _myUnits[_myUnits.Count - 1].HP = _myUnits[_myUnits.Count - 1].GetMaxHP();
                 }
             }
 
             AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(_myUnits);
-            if(PhotonManager.Instance.IsMaster)
-            {
-                TriggerOnBattleStarted();
-            }
         }
 
         private void TriggerOnBattleStarted()

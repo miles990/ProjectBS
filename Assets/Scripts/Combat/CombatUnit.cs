@@ -58,7 +58,9 @@ namespace ProjectBS.Combat
                 {
                     return;
                 }
-
+                UnityEngine.Debug.Log(UDID + " Set HP old value=" + m_hp);
+                UnityEngine.Debug.Log(UDID + " Set HP new value=" + value);
+                UnityEngine.Debug.Log(UDID + " GetMaxHP=" + GetMaxHP());
                 m_hp = value;
                 if (m_hp > GetMaxHP())
                     m_hp = GetMaxHP();
@@ -125,11 +127,21 @@ namespace ProjectBS.Combat
         public int OwnBuffCount { get { return m_buffs.Count; } }
         private List<Buff> m_buffs = new List<Buff>();
         public List<Buff> BuffDataPassBuffer { get; private set; }
+        public class StatusBuffer
+        {
+            public int hp;
+            public int sp;
+            public int hatred;
+        }
+        public StatusBuffer CurrentStatusBuffer { get; private set; } = new StatusBuffer();
 
         public CombatUnit GetJsonableData()
         {
             // private member can't be read, so use this to set BuffDataPassBuffer for passing buff data
             BuffDataPassBuffer = new List<Buff>(m_buffs);
+            CurrentStatusBuffer.hp = m_hp;
+            CurrentStatusBuffer.sp = m_sp;
+            CurrentStatusBuffer.hatred = m_hatred;
             return this;
         }
 
@@ -140,13 +152,13 @@ namespace ProjectBS.Combat
                 throw new System.Exception("[CombatUnit][UpdateData] is trying to override data with different udid");
             }
 
-            m_hp = unit.m_hp;
-            m_sp = unit.m_sp;
+            rawMaxHP = unit.rawMaxHP;
             rawAttack = unit.rawAttack;
             rawDefense = unit.rawDefense;
             rawSpeed = unit.rawSpeed;
-            rawMaxHP = unit.rawMaxHP;
-            m_hatred = unit.m_hatred;
+            m_hp = unit.CurrentStatusBuffer.hp;
+            m_sp = unit.CurrentStatusBuffer.sp;
+            m_hatred = unit.CurrentStatusBuffer.hatred;
             head = unit.head;
             body = unit.body;
             hand = unit.hand;
@@ -191,7 +203,6 @@ namespace ProjectBS.Combat
             if(_oldBuff == null)
             {
                 m_buffs.Add(buff);
-                UnityEngine.Debug.Log("camp " + camp + " add buff=" + buff.soruceID + ", buff count=" + OwnBuffCount);
             }
             else
             {
