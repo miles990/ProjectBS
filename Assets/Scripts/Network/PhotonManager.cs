@@ -268,14 +268,31 @@ namespace ProjectBS.Network
             }
 
             string _json = JsonWriter.Serialize(_myUnits.ToArray());
-            m_photonView.RPC(nameof(Pun_SyncCombatUnits), RpcTarget.All, _json);
+            m_photonView.RPC(nameof(Pun_SyncCombatUnits), RpcTarget.All, m_id, _json);
+        }
+
+        public void SyncAllCombatUnits()
+        {
+            List<Combat.CombatUnit> _needToSyncUnits = new List<Combat.CombatUnit>();
+            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.ComabtManager.AllUnit;
+
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                _needToSyncUnits.Add(_allUnits[i].GetJsonableData());
+            }
+
+            string _json = JsonWriter.Serialize(_allUnits.ToArray());
+            m_photonView.RPC(nameof(Pun_SyncCombatUnits), RpcTarget.All, m_id, _json);
         }
 
         [PunRPC]
-        private void Pun_SyncCombatUnits(string json)
+        private void Pun_SyncCombatUnits(int sendBy, string json)
         {
+            if (m_id == sendBy)
+                return;
+
             Combat.CombatUnit[] _units = JsonReader.Deserialize<Combat.CombatUnit[]>(json);
-            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).ForceSyncCombatUnitsStatus(_units);
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).ForceUpdateCombatUnitsStatus(_units);
         }
 
         ////////////////////////////////////////////////////////////////////////////

@@ -53,7 +53,7 @@ namespace ProjectBS.Combat
             throw new NotImplementedException();
         }
 
-        public void ForceSyncCombatUnitsStatus(CombatUnit[] units)
+        public void ForceUpdateCombatUnitsStatus(CombatUnit[] units)
         {
             for (int i = 0; i < units.Length; i++)
             {
@@ -203,7 +203,7 @@ namespace ProjectBS.Combat
 
             if(m_currentAction.Actor.camp == 0)
             {
-                m_currentAction.Start(null);
+                m_currentAction.Start(OnActionEnded);
             }
             else
             {
@@ -214,7 +214,12 @@ namespace ProjectBS.Combat
         private void TriggerStartAction(string udid)
         {
             m_currentAction = new CombatUnitAction(GetUnitByUDID(udid), AllUnitAllEffectProcesser);
-            m_currentAction.Start(null);
+            m_currentAction.Start(OnActionEnded);
+        }
+
+        private void OnActionEnded()
+        {
+            PhotonManager.Instance.SyncAllCombatUnits();
         }
 
         public void DoRPCCommand(string command, params object[] paras)

@@ -58,9 +58,6 @@ namespace ProjectBS.Combat
                 {
                     return;
                 }
-                UnityEngine.Debug.Log(UDID + " Set HP old value=" + m_hp);
-                UnityEngine.Debug.Log(UDID + " Set HP new value=" + value);
-                UnityEngine.Debug.Log(UDID + " GetMaxHP=" + GetMaxHP());
                 m_hp = value;
                 if (m_hp > GetMaxHP())
                     m_hp = GetMaxHP();
@@ -142,6 +139,7 @@ namespace ProjectBS.Combat
             CurrentStatusBuffer.hp = m_hp;
             CurrentStatusBuffer.sp = m_sp;
             CurrentStatusBuffer.hatred = m_hatred;
+            UnityEngine.Debug.Log(UDID + " send hatred=" + CurrentStatusBuffer.hatred);
             return this;
         }
 
@@ -159,6 +157,7 @@ namespace ProjectBS.Combat
             m_hp = unit.CurrentStatusBuffer.hp;
             m_sp = unit.CurrentStatusBuffer.sp;
             m_hatred = unit.CurrentStatusBuffer.hatred;
+            UnityEngine.Debug.Log(UDID + " receive hatred=" + unit.CurrentStatusBuffer.hatred);
             head = unit.head;
             body = unit.body;
             hand = unit.hand;
