@@ -193,6 +193,7 @@ namespace ProjectBS.Combat
         {
             if (m_unitActions.Count <= 0)
             {
+                UnityEngine.Debug.Log("matster go end turn");
                 return;
             }
 
@@ -207,6 +208,7 @@ namespace ProjectBS.Combat
             }
             else
             {
+                PhotonManager.Instance.SetWaitCallback(CallbackCode.IsSlaveActionEnded, GoNextAction);
                 PhotonManager.Instance.CallTheOther(nameof(TriggerStartAction), m_currentAction.Actor.UDID);
             }
         }
@@ -220,6 +222,14 @@ namespace ProjectBS.Combat
         private void OnActionEnded()
         {
             PhotonManager.Instance.SyncAllCombatUnits();
+            if(!PhotonManager.Instance.IsMaster)
+            {
+                PhotonManager.Instance.SendCallback(CallbackCode.IsSlaveActionEnded);
+            }
+            else
+            {
+                GoNextAction();
+            }
         }
 
         public void DoRPCCommand(string command, params object[] paras)

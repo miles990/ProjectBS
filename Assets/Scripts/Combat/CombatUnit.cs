@@ -139,7 +139,6 @@ namespace ProjectBS.Combat
             CurrentStatusBuffer.hp = m_hp;
             CurrentStatusBuffer.sp = m_sp;
             CurrentStatusBuffer.hatred = m_hatred;
-            UnityEngine.Debug.Log(UDID + " send hatred=" + CurrentStatusBuffer.hatred);
             return this;
         }
 
