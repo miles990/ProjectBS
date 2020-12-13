@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ProjectBS.Network
+﻿namespace ProjectBS.Network
 {
     public static class CallbackCode
     {

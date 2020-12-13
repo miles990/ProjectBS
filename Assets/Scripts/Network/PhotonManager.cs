@@ -21,9 +21,8 @@ namespace ProjectBS.Network
 
         private Dictionary<int, string> m_idToTeamJson = new Dictionary<int, string>();
 
-        private int m_waitCallbackCode = -1;
+        private Dictionary<int, Action> m_callbackCodeToAction = new Dictionary<int, Action>();
         private int m_receiveCallbaclCode = -1;
-        private Action m_nextStep = null;
 
         private void Awake()
         {
@@ -38,15 +37,16 @@ namespace ProjectBS.Network
 
         private void Update()
         {
-            if(m_waitCallbackCode > 0)
+            if(m_callbackCodeToAction.Count > 0)
             {
-                if(m_waitCallbackCode == m_receiveCallbaclCode)
+                if(m_callbackCodeToAction.ContainsKey(m_receiveCallbaclCode))
                 {
-                    m_waitCallbackCode = -1;
-                    m_receiveCallbaclCode = -1;
-                    m_nextStep?.Invoke();
+                    Action _todo = m_callbackCodeToAction[m_receiveCallbaclCode];
+                    m_callbackCodeToAction.Remove(m_receiveCallbaclCode);
+                    _todo.Invoke();
                 }
             }
+            m_receiveCallbaclCode = -1;
         }
 
         public void ConnectToLobby()
@@ -199,7 +199,7 @@ namespace ProjectBS.Network
 
         public void SendCallback(int code)
         {
-            if(m_id == 0)
+            if (m_id == 0)
             {
                 m_photonView.RPC(nameof(Pun_MasterSendCallBack), RpcTarget.All, code);
             }
@@ -229,13 +229,12 @@ namespace ProjectBS.Network
 
         public void SetWaitCallback(int waitCode, Action onReceived)
         {
-            if(m_waitCallbackCode != -1)
+            if(m_callbackCodeToAction.ContainsKey(waitCode))
             {
-                throw new Exception("[PhotonManager][SetWaitCallback] Is waiting other code:" + waitCode);
+                throw new Exception("[PhotonManager][SetWaitCallback] Is already waiting code:" + waitCode);
             }
 
-            m_waitCallbackCode = waitCode;
-            m_nextStep = onReceived;
+            m_callbackCodeToAction.Add(waitCode, onReceived);
         }
 
         public void CallTheOther(string command, params object[] paras)

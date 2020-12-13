@@ -124,7 +124,10 @@ namespace ProjectBS
                         _resultString += "\n\nAdd Skills:\n";
                 }
 
-                PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
+                if(!PlayerManager.Instance.Player.ClearedBossStage.Contains(m_currentPlayingStage.ID))
+                {
+                    PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
+                }
                 PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
                 for (int i = 0; i < _drop.skillIDs.Count; i++)
                 {

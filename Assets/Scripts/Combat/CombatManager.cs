@@ -1,6 +1,4 @@
-﻿using KahaGameCore.Interface;
-using ProjectBS.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ProjectBS.Combat
 {

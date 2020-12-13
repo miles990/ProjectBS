@@ -156,7 +156,6 @@ namespace ProjectBS.Combat
             m_hp = unit.CurrentStatusBuffer.hp;
             m_sp = unit.CurrentStatusBuffer.sp;
             m_hatred = unit.CurrentStatusBuffer.hatred;
-            UnityEngine.Debug.Log(UDID + " receive hatred=" + unit.CurrentStatusBuffer.hatred);
             head = unit.head;
             body = unit.body;
             hand = unit.hand;
