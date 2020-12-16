@@ -183,6 +183,8 @@ namespace ProjectBS.UI
         {
             CombatUnit _unit = m_allUnits.Find(x => x.UDID == UDID);
             m_characterPanels[m_unitToIndex[_unit]].gameObject.SetActive(false);
+            m_indexToUnit.Remove(m_unitToIndex[_unit]);
+            m_unitToIndex.Remove(_unit);
             RefreshAllInfo();
         }
 

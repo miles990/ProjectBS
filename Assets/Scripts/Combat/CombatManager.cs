@@ -106,10 +106,10 @@ namespace ProjectBS.Combat
 
         public override void ForceRemoveUnit(string unit)
         {
-            m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unit));
-            m_units.Remove(GetUnitByUDID(unit));
             m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
             GetPage<UI.CombatUIView>().RemoveActor(GetUnitByUDID(unit));
+            m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unit));
+            m_units.Remove(GetUnitByUDID(unit));
         }
 
         public override void StartCombat(List<CombatUnit> camp0Units, List<CombatUnit> camp1Units)

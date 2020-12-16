@@ -237,20 +237,20 @@ namespace ProjectBS.Network
             m_callbackCodeToAction.Add(waitCode, onReceived);
         }
 
-        public void CallTheOther(string command, params object[] paras)
+        public void CallTheOther(string command, string paras = "", int callbackCode = -1)
         {
-            m_photonView.RPC(nameof(DoRPCCommand), RpcTarget.All, m_id, command, paras);
+            m_photonView.RPC(nameof(DoRPCCommand), RpcTarget.Others, m_id, command, callbackCode, paras);
         }
 
         [PunRPC]
-        private void DoRPCCommand(int from, string command, params object[] paras)
+        private void DoRPCCommand(int from, string command, int callbackCode, string paras)
         {
             if(from == m_id)
             {
                 return;
             }
 
-            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).DoRPCCommand(command, paras);
+            ((Combat.OnlineCombatManager)Combat.CombatUtility.ComabtManager).DoRPCCommand(command, callbackCode, paras);
         }
 
         public void SyncMyCombatUnits()

@@ -7,7 +7,8 @@ namespace ProjectBS.Combat
     public class OnlineCombatManager : CombatManagerBase
     {
         private bool m_isCombating = false;
-        private System.Action m_onDiedCommandEnded = null;
+        private Action m_onDiedCommandEnded = null;
+        private List<CombatUnit> m_myUnits = new List<CombatUnit>();
 
         // whenever do command, add 1 code into this.
         // if m_waitingQueue.count == 0, means all commands are done.
@@ -30,18 +31,19 @@ namespace ProjectBS.Combat
         private void OnReceivedCallback()
         {
             m_waitingQueue.RemoveAt(0);
-            if(m_waitingQueue.Count == 0)
-            {
-                OnActionEnded();
-            }
         }
 
-        private void CallTheOtherWithDynamicCode(string method, params object[] paras)
+        private void CallTheOtherWithDynamicCode(string method, string paras, Action onReceivedCallback)
         {
             m_waitingQueue.Add(0);
             SetNextCallbackCode();
-            PhotonManager.Instance.SetWaitCallback(m_usingCallbackCode, OnReceivedCallback);
-            PhotonManager.Instance.CallTheOther(method, m_usingCallbackCode, paras);
+            Action _action = OnReceivedCallback;
+            if(onReceivedCallback != null)
+            {
+                _action += onReceivedCallback;
+            }
+            PhotonManager.Instance.SetWaitCallback(m_usingCallbackCode, _action);
+            PhotonManager.Instance.CallTheOther(method, paras, m_usingCallbackCode);
         }
 
         public override void AddActionIndex(string unitUDID, int addIndex)
@@ -65,11 +67,11 @@ namespace ProjectBS.Combat
             }
             else
             {
-                CallTheOtherWithDynamicCode(nameof(Master_CalledToAddActionIndex), m_usingCallbackCode, unitUDID, addIndex);
+                CallTheOtherWithDynamicCode(nameof(SlaveToMaster_CalledToAddActionIndex), unitUDID + "," + addIndex, null);
             }
         }
 
-        private void Master_CalledToAddActionIndex(int callbackCode, string udid, int addIndex)
+        private void SlaveToMaster_CalledToAddActionIndex(int callbackCode, string udid, int addIndex)
         {
             if(!PhotonManager.Instance.IsMaster)
             {
@@ -98,11 +100,11 @@ namespace ProjectBS.Combat
             }
             else
             {
-                CallTheOtherWithDynamicCode(nameof(Master_CalledToAddExtraAction), m_usingCallbackCode, unitUDID, isImmediate);
+                CallTheOtherWithDynamicCode(nameof(SalveToMaster_CalledToAddExtraAction), unitUDID + "," + isImmediate, null);
             }
         }
 
-        private void Master_CalledToAddExtraAction(int callbackCode, string unitUDID, bool isImmediate)
+        private void SalveToMaster_CalledToAddExtraAction(int callbackCode, string unitUDID, bool isImmediate)
         {
             if (!PhotonManager.Instance.IsMaster)
             {
@@ -127,18 +129,25 @@ namespace ProjectBS.Combat
         {
             if(PhotonManager.Instance.IsMaster)
             {
-                m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unitUDID));
-                m_units.Remove(GetUnitByUDID(unitUDID));
-                m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
                 GetPage<UI.CombatUIView>().RemoveActor(GetUnitByUDID(unitUDID));
+                MasterToSlave_RemoveUnit(unitUDID);
+                CallTheOtherWithDynamicCode(nameof(MasterToSlave_RemoveUnit), unitUDID, null);
             }
             else
             {
-                CallTheOtherWithDynamicCode(nameof(Master_CalledToForceRemoveUnit), m_usingCallbackCode, unitUDID);
+                CallTheOtherWithDynamicCode(nameof(SlaveToMaster_CalledToForceRemoveUnit), unitUDID, null);
             }
         }
 
-        private void Master_CalledToForceRemoveUnit(int callbackCode, string unitUDID)
+        private void MasterToSlave_RemoveUnit(string unitUDID)
+        {
+            m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
+            m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unitUDID));
+            m_myUnits.Remove(GetUnitByUDID(unitUDID));
+            m_units.Remove(GetUnitByUDID(unitUDID));
+        }
+
+        private void SlaveToMaster_CalledToForceRemoveUnit(int callbackCode, string unitUDID)
         {
             if (!PhotonManager.Instance.IsMaster)
             {
@@ -171,11 +180,11 @@ namespace ProjectBS.Combat
             }
             else
             {
-                CallTheOtherWithDynamicCode(nameof(Master_CalledToForceUnitDie), m_usingCallbackCode, unitUDID);
+                CallTheOtherWithDynamicCode(nameof(SlaveToMaster_CalledToForceUnitDie), unitUDID, OnActionEnded);
             }
         }
 
-        private void Master_CalledToForceUnitDie(int callbackCode, string unitUDID)
+        private void SlaveToMaster_CalledToForceUnitDie(int callbackCode, string unitUDID)
         {
             if (!PhotonManager.Instance.IsMaster)
             {
@@ -198,10 +207,10 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            ForceRemoveUnit(CurrentDyingUnit.UDID);
-            GetPage<UI.CombatUIView>().ShowUnitDied(CurrentDyingUnit,
-                delegate
+            GetPage<UI.CombatUIView>().ShowUnitDied(CurrentDyingUnit, 
+                delegate 
                 {
+                    ForceRemoveUnit(CurrentDyingUnit.UDID);
                     CurrentDyingUnit = null;
                     m_onDiedCommandEnded?.Invoke();
                 });
@@ -260,17 +269,17 @@ namespace ProjectBS.Combat
 
             TurnCount = 0;
 
-            List<CombatUnit> _myUnits = new List<CombatUnit>();
+            m_myUnits.Clear();
             for (int i = 0; i < m_units.Count; i++)
             {
                 if(m_units[i].camp == 0)
                 {
-                    _myUnits.Add(m_units[i]);
-                    _myUnits[_myUnits.Count - 1].HP = _myUnits[_myUnits.Count - 1].GetMaxHP();
+                    m_myUnits.Add(m_units[i]);
+                    m_myUnits[m_myUnits.Count - 1].HP = m_myUnits[m_myUnits.Count - 1].GetMaxHP();
                 }
             }
 
-            AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(_myUnits);
+            AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(m_myUnits);
         }
 
         private void TriggerOnBattleStarted()
@@ -495,9 +504,9 @@ namespace ProjectBS.Combat
             }, CheckNextBuffEnd);
         }
 
-        public void DoRPCCommand(string command, params object[] paras)
+        public void DoRPCCommand(string command, int callbackCode, string paras)
         {
-            switch(command)
+            switch (command)
             {
                 case nameof(TriggerOnBattleStarted):
                     {
@@ -511,22 +520,34 @@ namespace ProjectBS.Combat
                     }
                 case nameof(TriggerStartAction):
                     {
-                        TriggerStartAction((string)paras[0]);
+                        TriggerStartAction(paras);
                         break;
                     }
-                case nameof(Master_CalledToAddActionIndex):
+                case nameof(SlaveToMaster_CalledToAddActionIndex):
                     {
-                        Master_CalledToAddActionIndex((int)paras[0], (string)paras[1], (int)paras[2]);
+                        string[] _paraParts = paras.Split(',');
+                        SlaveToMaster_CalledToAddActionIndex(callbackCode, _paraParts[1], int.Parse(_paraParts[2]));
                         break;
                     }
-                case nameof(Master_CalledToAddExtraAction):
+                case nameof(SalveToMaster_CalledToAddExtraAction):
                     {
-                        Master_CalledToAddExtraAction((int)paras[0], (string)paras[1], (bool)paras[2]);
+                        string[] _paraParts = paras.Split(',');
+                        SalveToMaster_CalledToAddExtraAction(callbackCode, _paraParts[0], bool.Parse(_paraParts[1]));
                         break;
                     }
-                case nameof(Master_CalledToForceRemoveUnit):
+                case nameof(SlaveToMaster_CalledToForceRemoveUnit):
                     {
-                        Master_CalledToForceRemoveUnit((int)paras[0], (string)paras[1]);
+                        SlaveToMaster_CalledToForceRemoveUnit(callbackCode, paras);
+                        break;
+                    }
+                case nameof(SlaveToMaster_CalledToForceUnitDie):
+                    {
+                        SlaveToMaster_CalledToForceUnitDie(callbackCode, paras);
+                        break;
+                    }
+                case nameof(MasterToSlave_RemoveUnit):
+                    {
+                        MasterToSlave_RemoveUnit(paras);
                         break;
                     }
                 default:
