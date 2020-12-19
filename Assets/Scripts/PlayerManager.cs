@@ -1,6 +1,7 @@
 ﻿using ProjectBS.Data;
 using KahaGameCore.Static;
 using System.Collections.Generic;
+using System;
 
 namespace ProjectBS
 {
@@ -30,12 +31,13 @@ namespace ProjectBS
             {
                 if(!m_isInited)
                 {
-                    throw new System.Exception("[PlayerManager][Player get] Need to init Player first");
+                    throw new Exception("[PlayerManager][Player get] Need to init Player first");
                 }
                 return m_player;
             }
         }
         private SaveData m_player = null;
+        private int m_passedGameTime = 0;
 
         private bool m_isInited = false;
 
@@ -46,15 +48,14 @@ namespace ProjectBS
                 throw new System.Exception("[PlayerManager][Init] Player is already inited");
             }
 
-            //m_player = KahaGameCore.Static.GameDataManager.LoadJsonData<SaveData>();
-            //if(m_player == null)
-            //{
-            //    m_player = CreateNewPlayer();
-            //    SavePlayer();
-            //}
+            m_player = KahaGameCore.Static.GameDataManager.LoadJsonData<SaveData>();
+            if (m_player == null)
+            {
+                m_player = CreateNewPlayer();
+                SavePlayer();
+            }
 
-            m_player = CreateNewPlayer();
-
+            GameTimeCounter.Instance.OnOneSecPassed += OnOneSecPassed;
             m_isInited = true;
         }
 
@@ -376,6 +377,21 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
             return _newPlayer;
+        }
+
+        private void OnOneSecPassed()
+        {
+            m_passedGameTime += 1;
+            if(m_passedGameTime >= GameDataManager.GameProperties.AddStaminaPerSec)
+            {
+                m_passedGameTime = 0;
+                m_player.Stamina += GameDataManager.GameProperties.AddStaminaPerTime;
+                if(m_player.Stamina > GameDataManager.GameProperties.MaxStamina)
+                {
+                    m_player.Stamina = GameDataManager.GameProperties.MaxStamina;
+                }
+                SavePlayer();
+            }
         }
     }
 }

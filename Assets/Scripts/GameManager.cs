@@ -161,6 +161,8 @@ namespace ProjectBS
         private void OnAllDataLoaded()
         {
             PlayerManager.Instance.Init();
+            UnityEngine.GameObject _gameTimeCounter = new UnityEngine.GameObject("[GameTimeCounter]");
+            _gameTimeCounter.AddComponent<GameTimeCounter>();
             ShowMainMenu();
         }
 
