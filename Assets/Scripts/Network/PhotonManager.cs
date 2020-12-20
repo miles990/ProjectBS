@@ -130,12 +130,12 @@ namespace ProjectBS.Network
 
             for (int i = 0; i < _player.Length; i++)
             {
-                _playerUnits.Add(Combat.CombatUtility.GetUnit(_player[i], 0));
+                _playerUnits.Add(Combat.CombatUtility.CreateUnit(_player[i], 0));
             }
 
             for (int i = 0; i < _opponent.Length; i++)
             {
-                _opponentUnits.Add(Combat.CombatUtility.GetUnit(_opponent[i], 1));
+                _opponentUnits.Add(Combat.CombatUtility.CreateUnit(_opponent[i], 1));
             }
 
             Combat.CombatUtility.ComabtManager.StartCombat(_playerUnits, _opponentUnits);

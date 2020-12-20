@@ -34,7 +34,6 @@
         public const string From = "From";
         public const string SkillEffectID = "SkillEffectID";
         public const string Camp = "Camp";
-        public const string CurrentDyingUnit = "CurrentDyingUnit";
         public const string LastAttackRoll = "LastAttackRoll";
         public const string LastDefenseRoll = "LastDefenseRoll";
     }

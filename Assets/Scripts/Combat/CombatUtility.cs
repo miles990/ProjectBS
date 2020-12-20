@@ -448,11 +448,6 @@ namespace ProjectBS.Combat
 
                         return UnityEngine.Random.Range(_min, _max);
                     }
-                case Keyword.CurrentDyingUnit:
-                    {
-                        _getValueTarget = ComabtManager.CurrentDyingUnit;
-                        break;
-                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetValueByParaString] Invaild target=" + _getValueData[0]);
@@ -698,7 +693,7 @@ namespace ProjectBS.Combat
             return new string(_mathString.ToArray());
         }
 
-        public static CombatUnit GetUnit(Data.OwningCharacterData character, int camp)
+        public static CombatUnit CreateUnit(Data.OwningCharacterData character, int camp)
         {
             CombatUnit _newUnit = new CombatUnit
             {

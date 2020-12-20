@@ -279,7 +279,7 @@ namespace ProjectBS.Combat
 
             EffectProcessManager.GetBuffProcesser(_effect.ID).Start(new EffectProcesser.ProcessData
             {
-                caster = this,
+                caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnDeactived,
                 allEffectProcesser = CombatUtility.ComabtManager.AllUnitAllEffectProcesser,

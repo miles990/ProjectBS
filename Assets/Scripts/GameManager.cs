@@ -71,10 +71,10 @@ namespace ProjectBS
 
             List<Combat.CombatUnit> _playerParty = new List<Combat.CombatUnit>
             {
-                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_0), 0),
-                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_1), 0),
-                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_2), 0),
-                Combat.CombatUtility.GetUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_3), 0)
+                Combat.CombatUtility.CreateUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_0), 0),
+                Combat.CombatUtility.CreateUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_1), 0),
+                Combat.CombatUtility.CreateUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_2), 0),
+                Combat.CombatUtility.CreateUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_3), 0)
             };
             List<Combat.CombatUnit> _bossParty = new List<Combat.CombatUnit>();
             string[] _bossIDs = bossStageData.BossIDs.Split('$');
@@ -160,9 +160,10 @@ namespace ProjectBS
 
         private void OnAllDataLoaded()
         {
-            PlayerManager.Instance.Init();
             UnityEngine.GameObject _gameTimeCounter = new UnityEngine.GameObject("[GameTimeCounter]");
             _gameTimeCounter.AddComponent<GameTimeCounter>();
+
+            PlayerManager.Instance.Init();
             ShowMainMenu();
         }
 

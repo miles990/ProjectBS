@@ -97,8 +97,8 @@ namespace ProjectBS.Combat
             m_onDiedCommandEnded = onDiedCommandEnded;
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
-                caster = null,
-                target = null,
+                caster = CurrentDyingUnit,
+                target = CurrentDyingUnit,
                 timing = EffectProcesser.TriggerTiming.OnDied_Any,
                 onEnded = OnDied_Any_Ended
             });
@@ -251,7 +251,7 @@ namespace ProjectBS.Combat
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
-                target = null,
+                target = CurrentDyingUnit,
                 timing = EffectProcesser.TriggerTiming.OnDied_Self,
                 onEnded = OnDied_Self_Ended
             });

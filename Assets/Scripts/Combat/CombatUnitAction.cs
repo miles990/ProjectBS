@@ -37,8 +37,8 @@ namespace ProjectBS.Combat
         {
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
-                caster = null,
-                target = null,
+                caster = Actor,
+                target = Actor,
                 timing = EffectProcesser.TriggerTiming.OnActionStarted_Any,
                 onEnded = OnActionStarted_Any_Ended
             });
@@ -49,7 +49,7 @@ namespace ProjectBS.Combat
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = Actor,
-                target = null,
+                target = Actor,
                 timing = EffectProcesser.TriggerTiming.OnActionStarted_Self,
                 onEnded = Act
             });
@@ -119,7 +119,7 @@ namespace ProjectBS.Combat
 
             EffectProcessManager.GetSkillProcesser(skill.ID).Start(new EffectProcesser.ProcessData
             {
-                caster = Actor,
+                caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
                 allEffectProcesser = m_processer,
@@ -133,8 +133,8 @@ namespace ProjectBS.Combat
         {
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
-                caster = null,
-                target = null,
+                caster = Actor,
+                target = Actor,
                 timing = EffectProcesser.TriggerTiming.OnStartToEndAction_Any,
                 onEnded = OnStartToEndActionAnyEffectEnded
             });
@@ -145,7 +145,7 @@ namespace ProjectBS.Combat
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = Actor,
-                target = null,
+                target = Actor,
                 timing = EffectProcesser.TriggerTiming.OnStartToEndAction_Self,
                 onEnded = OnStartToEndActionSelfEnded
             });

@@ -165,6 +165,23 @@ namespace ProjectBS.Combat
 
                         return;
                     }
+                case "LastAttacked":
+                    {
+                        if(data.attacker == null)
+                        {
+                            data.onSelected?.Invoke(new List<CombatUnit>());
+                            return;
+                        }
+
+                        List<string> _lastAttackedUnitUDID = new List<string>(data.attacker.targetToDmg.Keys);
+                        List<CombatUnit> _lastAttackedUnits = new List<CombatUnit>();
+                        for(int i = 0; i < _lastAttackedUnitUDID.Count; i++)
+                        {
+                            _lastAttackedUnits.Add(CombatUtility.ComabtManager.GetUnitByUDID(_lastAttackedUnitUDID[i]));
+                        }
+                        data.onSelected?.Invoke(_lastAttackedUnits);
+                        break;
+                    }
                 default:
                     {
                         throw new Exception("[CombatTargetSelecter][StartSelect] Invaild select command:" + _command);

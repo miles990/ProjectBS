@@ -67,6 +67,15 @@ namespace ProjectBS.Combat
                 }
             }
 
+            if (m_data.timing.ToString().Contains("_Any"))
+            {
+                if (m_data.caster != null && m_units[m_currentUnitIndex] == m_data.caster)
+                {
+                    GoNextUnit();
+                    return;
+                }
+            }
+
             m_currentEquipment = -1;
             GoNextEquipment();
         }
