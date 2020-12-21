@@ -159,6 +159,34 @@ namespace ProjectBS.Combat
                     {
                         return LastDefenseRoll;
                     }
+                case Keyword.MyUnitCount:
+                    {
+                        List<CombatUnit> _allUnits = m_currentCombatManager.AllUnit;
+                        int _count = 0;
+                        for(int i = 0; i < _allUnits.Count; i++)
+                        {
+                            if(_allUnits[i].camp == 0)
+                            {
+                                _count++;
+                            }
+                        }
+
+                        return _count;
+                    }
+                case Keyword.OpponentUnitCount:
+                    {
+                        List<CombatUnit> _allUnits = m_currentCombatManager.AllUnit;
+                        int _count = 0;
+                        for (int i = 0; i < _allUnits.Count; i++)
+                        {
+                            if (_allUnits[i].camp == 1)
+                            {
+                                _count++;
+                            }
+                        }
+
+                        return _count;
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetCombatFieldStatus] Invaild statusName=" + statusName);

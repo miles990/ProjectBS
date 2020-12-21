@@ -36,5 +36,7 @@
         public const string Camp = "Camp";
         public const string LastAttackRoll = "LastAttackRoll";
         public const string LastDefenseRoll = "LastDefenseRoll";
+        public const string MyUnitCount = "MyUnitCount";
+        public const string OpponentUnitCount = "OpponentUnitCount";
     }
 }
