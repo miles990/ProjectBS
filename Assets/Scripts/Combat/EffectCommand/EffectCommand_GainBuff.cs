@@ -49,6 +49,14 @@ namespace ProjectBS.Combat.EffectCommand
             CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffEffectID(m_buffID);
             BuffData _skillEffectData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
+            if(_skillEffectData == null)
+            {
+                throw new Exception(string.Format("[EffectCommand_GainBuff][SetNextTargetBuff] invaild buff id={0}, ref skill id={1}, ref buff id=",
+                    m_buffID,
+                    processData.refenceSkill == null ? "null" : processData.refenceSkill.ID.ToString(),
+                    processData.referenceBuff == null ? "null" : processData.referenceBuff.GetBuffSourceData().ID.ToString()));
+            }
+
             if (_buff != null)
             {
                 if (_skillEffectData.MaxStackCount > _buff.stackCount)
