@@ -21,7 +21,7 @@ namespace ProjectBS
             _dropInfo.exp = Random.Range(bossStage.MinExp, bossStage.MaxExp + 1);
            
             int _randomDropCount = Random.Range(10, 21);
-            string[] _dropPool = bossStage.DropData.Split('$');
+            string[] _dropPool = bossStage.DropData.RemoveBlankCharacters().Split(';');
             for (int i = 0; i < _randomDropCount; i++)
             {
                 if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropSkillChance)

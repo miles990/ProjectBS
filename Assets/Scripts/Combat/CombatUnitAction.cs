@@ -71,7 +71,7 @@ namespace ProjectBS.Combat
 
             if (!string.IsNullOrEmpty(Actor.ai))
             {
-                new EffectProcesser(Actor.ai).Start(
+                new EffectProcesser("AI{"+Actor.ai+"}").Start(
                     new EffectProcesser.ProcessData
                     {
                         caster = Actor,

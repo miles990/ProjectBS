@@ -77,7 +77,7 @@ namespace ProjectBS
                 Combat.CombatUtility.CreateUnit(PlayerManager.Instance.GetCharacterByUDID(PlayerManager.Instance.Player.Party.MemberUDID_3), 0)
             };
             List<Combat.CombatUnit> _bossParty = new List<Combat.CombatUnit>();
-            string[] _bossIDs = bossStageData.BossIDs.Split('$');
+            string[] _bossIDs = bossStageData.BossIDs.RemoveBlankCharacters().Split(';');
             for (int i = 0; i < _bossIDs.Length; i++)
             {
                 if (string.IsNullOrEmpty(_bossIDs[i]))
