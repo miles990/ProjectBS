@@ -30,6 +30,7 @@ namespace ProjectBS
 
         public KahaGameCore.Common.ConfirmWindowManager MessageManager { get; private set; }
 
+        public bool IsCombating { get { return m_currentState == State.Combat; } }
         private State m_currentState = State.None;
 
         private Combat.CombatManager m_localGameCombatManager = null;

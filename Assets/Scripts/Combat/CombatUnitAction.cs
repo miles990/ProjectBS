@@ -119,7 +119,7 @@ namespace ProjectBS.Combat
 
             EffectProcessManager.GetSkillProcesser(skill.ID).Start(new EffectProcesser.ProcessData
             {
-                caster = null,
+                caster = Actor,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
                 allEffectProcesser = m_processer,

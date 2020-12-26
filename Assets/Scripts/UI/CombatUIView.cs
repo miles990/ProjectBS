@@ -57,6 +57,9 @@ namespace ProjectBS.UI
 
         private void Update()
         {
+            if (!GameManager.Instance.IsCombating)
+                return;
+
             RefreshAllInfo();
         }
 
