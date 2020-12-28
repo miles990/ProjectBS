@@ -49,7 +49,7 @@ namespace ProjectBS
                     }
                 case Area.ja_jp:
                     {
-                        return GameDataManager.GetGameData<ContextData>(ID).en_us;
+                        return GameDataManager.GetGameData<ContextData>(ID).ja_jp;
                     }
                 default:
                     {
