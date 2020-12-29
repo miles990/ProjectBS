@@ -29,7 +29,7 @@ namespace ProjectBS
         { 
             get
             {
-                if(!m_isInited)
+                if(!IsInited)
                 {
                     throw new Exception("[PlayerManager][Player get] Need to init Player first");
                 }
@@ -39,11 +39,11 @@ namespace ProjectBS
         private SaveData m_player = null;
         private int m_passedGameTime = 0;
 
-        private bool m_isInited = false;
+        public bool IsInited { get; private set; } = false;
 
         public void Init()
         {
-            if (m_isInited)
+            if (IsInited)
             {
                 throw new System.Exception("[PlayerManager][Init] Player is already inited");
             }
@@ -56,7 +56,7 @@ namespace ProjectBS
             }
 
             GameTimeCounter.Instance.OnOneSecPassed += OnOneSecPassed;
-            m_isInited = true;
+            IsInited = true;
         }
 
         public void SavePlayer()
@@ -66,7 +66,7 @@ namespace ProjectBS
 
         public OwningCharacterData GetCharacterByUDID(string UDID)
         {
-            if (!m_isInited)
+            if (!IsInited)
             {
                 throw new System.Exception("[PlayerManager][GetEquipmentByUDID] Need to init Player first");
             }
@@ -76,7 +76,7 @@ namespace ProjectBS
 
         public OwningEquipmentData GetEquipmentByUDID(string UDID)
         {
-            if (!m_isInited)
+            if (!IsInited)
             {
                 throw new System.Exception("[PlayerManager][GetEquipmentByUDID] Need to init Player first");
             }

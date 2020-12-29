@@ -57,7 +57,7 @@ namespace ProjectBS.UI
         private void OnDisable()
         {
             DisableAllPanel();
-            m_characterInfoPanel.gameObject.SetActive(false);
+            m_characterInfoPanel.Hide();
         }
 
         private void OnCharacterButtonPressed(OwningCharacterData obj)
@@ -73,6 +73,12 @@ namespace ProjectBS.UI
         public override void Show()
         {
             DisableAllPanel();
+            
+            if (m_panelDatas == null || m_panelDatas.Length <= 0)
+            {
+                throw new Exception("[MainMenuUI_CharacterPanel][Show] m_panelDatas is null or empty");
+            }
+
             Button_Select(m_panelDatas[0].topButton);
             m_characterPanelRoot.SetActive(true);
         }

@@ -40,7 +40,13 @@ namespace ProjectBS.UI
 
         private void RefreshBossButtons()
         {
-            List<Data.BossStageData> _allStage = new List<Data.BossStageData>(GameDataManager.GetAllGameData<Data.BossStageData>());
+            Data.BossStageData[] _stages = GameDataManager.GetAllGameData<Data.BossStageData>();
+            if(_stages == null)
+            {
+                throw new System.Exception("[MainMenuUI_SelectBossPanel][RefreshBossButtons] _stages is null");
+            }
+
+            List<Data.BossStageData> _allStage = new List<Data.BossStageData>();
             for(int i = 0; i < _allStage.Count; i++)
             {
                 if(_allStage[i].Index == -1)

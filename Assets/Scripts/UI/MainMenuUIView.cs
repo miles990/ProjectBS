@@ -13,7 +13,7 @@ namespace ProjectBS.UI
         [Serializable]
         private class PanelData
         {
-            public Button downButton = null;
+            public Animator downButtonAnimator = null;
             public MainMenuUI_PanelBase panel = null;
         }
 
@@ -23,9 +23,16 @@ namespace ProjectBS.UI
         [Header("Panels")]
         [SerializeField] private PanelData[] m_panelDatas = null;
 
+        private Animator m_playingDownButtonAnimator = null;
+
         private void Update()
         {
-            if(m_root.activeSelf)
+            if(!PlayerManager.Instance.IsInited)
+            {
+                return;
+            }
+
+            if (m_root.activeSelf)
             {
                 m_playerInfoText.text = string.Format(PLAYER_INFO_FORMAT,
                     PlayerManager.Instance.Player.PlayerName,
@@ -47,16 +54,23 @@ namespace ProjectBS.UI
             onCompleted?.Invoke();
         }
 
-        public void Button_SwitchTo(Button button)
+        public void Button_SwitchTo(Animator button)
         {
             DisableAllPanel();
             for(int i = 0; i < m_panelDatas.Length; i++)
             {
-                if(m_panelDatas[i].downButton == button)
+                if(m_panelDatas[i].downButtonAnimator == button)
                 {
-                    m_panelDatas[i].downButton.interactable = false;
+                    if (m_playingDownButtonAnimator == button)
+                        return;
+
+                    m_playingDownButtonAnimator = button;
+                    m_playingDownButtonAnimator.Play("Disable", 0, 0f);
                     m_panelDatas[i].panel.Show();
-                    return;
+                }
+                else
+                {
+                    m_panelDatas[i].downButtonAnimator.Play("Enable");
                 }
             }
         }
@@ -76,7 +90,6 @@ namespace ProjectBS.UI
         {
             for (int i = 0; i < m_panelDatas.Length; i++)
             {
-                m_panelDatas[i].downButton.interactable = true;
                 m_panelDatas[i].panel.Hide();
             }
         }

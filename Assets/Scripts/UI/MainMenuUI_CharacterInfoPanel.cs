@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace ProjectBS.UI
 {
-    public class MainMenuUI_CharacterInfoPanel : MonoBehaviour
+    public class MainMenuUI_CharacterInfoPanel : MainMenuUI_PanelBase
     {
         private enum State
         {
@@ -76,7 +76,7 @@ namespace ProjectBS.UI
         {
             m_refCharacter = characterData;
             DisableAllSubPanel();
-            gameObject.SetActive(true);
+            Show();
         }
 
         public void Button_StartChangeEquipment(string equipmentType)
@@ -395,6 +395,16 @@ namespace ProjectBS.UI
                                 m_refCharacter.GetTotal(Keyword.HP),
                                 m_refCharacter.GetAbilityRankString(Keyword.HP),
                                 m_refCharacter.SP));
+        }
+
+        public override void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public override void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

@@ -174,9 +174,9 @@ MonoBehaviour:
   m_root: {fileID: 608523370}
   m_playerInfoText: {fileID: 481287301}
   m_panelDatas:
-  - downButton: {fileID: 1620468272}
+  - downButtonAnimator: {fileID: 1620468275}
     panel: {fileID: 76759159}
-  - downButton: {fileID: 1581945677}
+  - downButtonAnimator: {fileID: 1581945680}
     panel: {fileID: 1528476919}
 --- !u!1 &31547710
 GameObject:
@@ -13656,6 +13656,7 @@ GameObject:
   - component: {fileID: 1581945679}
   - component: {fileID: 1581945678}
   - component: {fileID: 1581945677}
+  - component: {fileID: 1581945680}
   m_Layer: 5
   m_Name: BattleButton
   m_TagString: Untagged
@@ -13730,8 +13731,8 @@ MonoBehaviour:
         m_MethodName: Button_SwitchTo
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1581945677}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 1581945680}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13773,6 +13774,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581945675}
   m_CullTransparentMesh: 0
+--- !u!95 &1581945680
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581945675}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 51e980103f20d254d8f579e0588d1d98, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1586521401
 GameObject:
   m_ObjectHideFlags: 0
@@ -14163,6 +14183,7 @@ GameObject:
   - component: {fileID: 1620468274}
   - component: {fileID: 1620468273}
   - component: {fileID: 1620468272}
+  - component: {fileID: 1620468275}
   m_Layer: 5
   m_Name: CharacterButton
   m_TagString: Untagged
@@ -14237,8 +14258,8 @@ MonoBehaviour:
         m_MethodName: Button_SwitchTo
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1620468272}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 1620468275}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14280,6 +14301,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620468270}
   m_CullTransparentMesh: 0
+--- !u!95 &1620468275
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620468270}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 51e980103f20d254d8f579e0588d1d98, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1622183362
 GameObject:
   m_ObjectHideFlags: 0
