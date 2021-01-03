@@ -73,7 +73,7 @@ namespace KahaGameCore.Common
 
         protected abstract void OnStartToShow(bool show, Action onShown);
 
-        public void SetMessage(string content, string title, Action onConfirmed)
+        public virtual void SetMessage(string content, string title, Action onConfirmed)
         {
             m_text.text = content;
             m_title.text = title;

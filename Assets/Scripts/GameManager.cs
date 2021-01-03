@@ -172,7 +172,16 @@ namespace ProjectBS
         {
             m_currentState = State.MainMenu;
             MessageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
+
+            //set log show up
+            UnityEngine.Application.logMessageReceived += HandleLog;
+
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
+        }
+
+        private void HandleLog(string condition, string stackTrace, UnityEngine.LogType type)
+        {
+            MessageManager.ShowCommonMessage(condition, type.ToString(), null);
         }
     }
 }

@@ -2,12 +2,12 @@
 using KahaGameCore.Interface;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUIView : UIView
     {
-        private const string PLAYER_INFO_FORMAT = "{0}\nStamina: {1} /  Exp: {2}";
         public override bool IsShowing { get { return m_root.activeSelf; } }
 
         [Serializable]
@@ -19,7 +19,9 @@ namespace ProjectBS.UI
 
         [SerializeField] private GameObject m_root = null; 
         [Header("Top")]
-        [SerializeField] private Text m_playerInfoText = null;
+        [SerializeField] private TextMeshProUGUI m_staminaText = null;
+        [SerializeField] private Image m_staminaImage = null;
+        [SerializeField] private TextMeshProUGUI m_expAmountText = null;
         [Header("Panels")]
         [SerializeField] private PanelData[] m_panelDatas = null;
 
@@ -27,17 +29,11 @@ namespace ProjectBS.UI
 
         private void Update()
         {
-            if(!PlayerManager.Instance.IsInited)
-            {
-                return;
-            }
-
             if (m_root.activeSelf)
             {
-                m_playerInfoText.text = string.Format(PLAYER_INFO_FORMAT,
-                    PlayerManager.Instance.Player.PlayerName,
-                    PlayerManager.Instance.Player.Stamina,
-                    PlayerManager.Instance.Player.OwnExp);
+                m_staminaText.text = PlayerManager.Instance.Player.Stamina + " / " + GameDataManager.GameProperties.MaxStamina;
+                m_staminaImage.fillAmount = (float)PlayerManager.Instance.Player.Stamina / (float)GameDataManager.GameProperties.MaxStamina;
+                m_expAmountText.text = PlayerManager.Instance.Player.OwnExp.ToString();
             }
         }
 
