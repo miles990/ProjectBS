@@ -15,16 +15,7 @@ namespace ProjectBS.UI
             Skill
         }
 
-        [Serializable]
-        private class PanelData
-        {
-            public PanelType panelType = PanelType.Party;
-            public Button topButton = null;
-            public GameObject[] panelObjs = null;
-        }
-
         [SerializeField] private GameObject m_characterPanelRoot = null;
-        [SerializeField] private PanelData[] m_panelDatas = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel m_characterInfoPanel = null;
         [Header("Buttons")]
         [SerializeField] private Button m_nextPageButton = null;
@@ -56,7 +47,6 @@ namespace ProjectBS.UI
 
         private void OnDisable()
         {
-            DisableAllPanel();
             m_characterInfoPanel.Hide();
         }
 
@@ -65,40 +55,12 @@ namespace ProjectBS.UI
             m_characterInfoPanel.Enable(obj);
         }
 
-        public override void Hide()
+        protected override void OnHidden()
         {
-            m_characterPanelRoot.SetActive(false);
         }
 
-        public override void Show()
+        protected override void OnShown()
         {
-            DisableAllPanel();
-            
-            if (m_panelDatas == null || m_panelDatas.Length <= 0)
-            {
-                throw new Exception("[MainMenuUI_CharacterPanel][Show] m_panelDatas is null or empty");
-            }
-
-            Button_Select(m_panelDatas[0].topButton);
-            m_characterPanelRoot.SetActive(true);
-        }
-
-        public void Button_Select(Button button)
-        {
-            DisableAllPanel();
-            for (int i = 0; i < m_panelDatas.Length; i++)
-            {
-                if(m_panelDatas[i].topButton == button)
-                {
-                    UpdateAllButtonData(m_panelDatas[i].panelType);
-                    m_panelDatas[i].topButton.interactable = false;
-                    for (int j = 0; j < m_panelDatas[i].panelObjs.Length; j++)
-                    {
-                        m_panelDatas[i].panelObjs[j].SetActive(true);
-                    }
-                    return;
-                }
-            }
         }
 
         private void UpdateAllButtonData(PanelType panelType)
@@ -235,18 +197,6 @@ namespace ProjectBS.UI
                 {
                     m_skillButtons[i].SetUp(PlayerManager.Instance.Player.Skills[i + m_skillButtons.Length * m_currentPage]);
                     m_skillButtons[i].gameObject.SetActive(true);
-                }
-            }
-        }
-
-        private void DisableAllPanel()
-        {
-            for (int i = 0; i < m_panelDatas.Length; i++)
-            {
-                m_panelDatas[i].topButton.interactable = true;
-                for(int j = 0; j < m_panelDatas[i].panelObjs.Length; j++)
-                {
-                    m_panelDatas[i].panelObjs[j].SetActive(false);
                 }
             }
         }

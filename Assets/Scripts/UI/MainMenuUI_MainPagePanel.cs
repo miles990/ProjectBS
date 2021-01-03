@@ -6,11 +6,11 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_MainPagePanel : MainMenuUI_PanelBase
     {
-        public override void Hide()
+        protected override void OnHidden()
         {
         }
 
-        public override void Show()
+        protected override void OnShown()
         {
         }
     }

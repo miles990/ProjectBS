@@ -397,14 +397,12 @@ namespace ProjectBS.UI
                                 m_refCharacter.SP));
         }
 
-        public override void Show()
+        protected override void OnShown()
         {
-            gameObject.SetActive(true);
         }
 
-        public override void Hide()
+        protected override void OnHidden()
         {
-            gameObject.SetActive(false);
         }
     }
 }

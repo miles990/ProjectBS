@@ -43,6 +43,9 @@ namespace ProjectBS
                 throw new System.Exception("[GameManager][StartGame] Game is already started");
             }
 
+            MessageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
+            UnityEngine.Application.logMessageReceived += HandleLog;
+
             StartInitData();
         }
 
@@ -171,11 +174,6 @@ namespace ProjectBS
         private void ShowMainMenu()
         {
             m_currentState = State.MainMenu;
-            MessageManager = new KahaGameCore.Common.ConfirmWindowManager(GetPage<UI.ConfirmWindowUIView>());
-
-            //set log show up
-            UnityEngine.Application.logMessageReceived += HandleLog;
-
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
         }
 

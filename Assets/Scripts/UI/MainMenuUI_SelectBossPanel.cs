@@ -13,16 +13,14 @@ namespace ProjectBS.UI
 
         private int m_currentPage = 0;
 
-        public override void Hide()
+        protected override void OnShown()
         {
-            gameObject.SetActive(false);
         }
 
-        public override void Show()
+        protected override void OnHidden()
         {
-            gameObject.SetActive(true);
-            m_currentPage = 0;
-            RefreshBossButtons();
+            //m_currentPage = 0;
+            //RefreshBossButtons();
         }
 
         public void Button_GoNextPage()
