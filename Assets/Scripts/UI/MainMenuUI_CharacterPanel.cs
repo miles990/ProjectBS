@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProjectBS.Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,29 +16,59 @@ namespace ProjectBS.UI
             Skill
         }
 
-        [SerializeField] private GameObject m_characterPanelRoot = null;
+        [SerializeField] private Michsky.UI.ModernUIPack.WindowManager m_panelManger = null;
+        [SerializeField] private RectTransform m_characterButtonContainer = null;
+        [SerializeField] private MainMenuUI_CharacterButton[] m_partyCharacterButtons = null;
+        [SerializeField] private MainMenuUI_CharacterButton m_characterButtonPrefab = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel m_characterInfoPanel = null;
-        [Header("Buttons")]
-        [SerializeField] private Button m_nextPageButton = null;
-        [SerializeField] private Button m_previousButton = null;
-        [SerializeField] private MainMenuUI_CharacterButton[] m_characterButtons = null;
-        [SerializeField] private MainMenuUI_EquipmentButton[] m_equipmentButtons = null;
-        [SerializeField] private MainMenuUI_SkillButton[] m_skillButtons = null;
+
+        private List<MainMenuUI_CharacterButton> m_allClonedCharacterButtons = new List<MainMenuUI_CharacterButton>();
 
         private PanelType m_currentPanelType = PanelType.Party;
-        private int m_currentPage = 0;
 
         private void Start()
         {
-            for(int i = 0; i < m_characterButtons.Length; i++)
+            for(int i = 0; i < m_partyCharacterButtons.Length; i++)
             {
-                m_characterButtons[i].OnButtonPressed += OnCharacterButtonPressed;
+                m_partyCharacterButtons[i].OnButtonPressed += OnCharacterButtonPressed;
             }
             m_characterInfoPanel.OnEditEnded += RefreshCharacterPageButtonState;
-            for(int i = 0; i < m_equipmentButtons.Length; i++)
+
+            //for(int i = 0; i < m_equipmentButtons.Length; i++)
+            //{
+            //    m_equipmentButtons[i].OnEdited += RefrshEquipmentPageButtonState;
+            //}
+
+            m_panelManger.OnWindowChanged += OnWindowChanged;
+        }
+
+        private void OnWindowChanged(int windowIndex)
+        {
+            switch(windowIndex)
             {
-                m_equipmentButtons[i].OnEdited += RefrshEquipmentPageButtonState;
+                case 0:
+                    {
+                        m_currentPanelType = PanelType.Party;
+                        break;
+                    }
+                case 1:
+                    {
+                        m_currentPanelType = PanelType.AllCharacter;
+                        break;
+                    }
+                case 2:
+                    {
+                        m_currentPanelType = PanelType.Equipment;
+                        break;
+                    }
+                case 3:
+                    {
+                        m_currentPanelType = PanelType.Skill;
+                        break;
+                    }
             }
+
+            UpdateAllButtonData();
         }
 
         private void OnEnable()
@@ -63,55 +94,30 @@ namespace ProjectBS.UI
         {
         }
 
-        private void UpdateAllButtonData(PanelType panelType)
+        private void UpdateAllButtonData()
         {
-            m_currentPanelType = panelType;
-            switch (panelType)
+            switch (m_currentPanelType)
             {
                 case PanelType.Party:
-                    {
-                        for(int i = 0; i < m_characterButtons.Length; i++)
-                        {
-                            m_characterButtons[i].SetUp(PlayerManager.Instance.GetCharacterByPartyIndex(i));
-                            m_characterButtons[i].gameObject.SetActive(true);
-                        }
-                        break;
-                    }
                 case PanelType.AllCharacter:
                     {
-                        m_currentPage = 0;
                         RefreshCharacterPageButtonState();
                         break;
                     }
                 case PanelType.Equipment:
                     {
-                        m_currentPage = 0;
-                        RefreshPageButtonState();
+                        RefreshButtonState();
                         break;
                     }
                 case PanelType.Skill:
                     {
-                        m_currentPage = 0;
                         RefreshSkillPageButtonState();
                         break;
                     }
             }
         }
 
-        public void Button_GoNextPage()
-        {
-            m_currentPage++;
-            RefreshPageButtonState();
-        }
-
-        public void Button_GoPreviousPage()
-        {
-            m_currentPage--;
-            if (m_currentPage < 0) m_currentPage = 0;
-            RefreshPageButtonState();
-        }
-
-        private void RefreshPageButtonState()
+        private void RefreshButtonState()
         {
             switch (m_currentPanelType)
             {
@@ -138,46 +144,40 @@ namespace ProjectBS.UI
 
         private void RefrshEquipmentPageButtonState()
         {
-            m_previousButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_equipmentButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Equipments.Count;
-            for (int i = 0; i < m_equipmentButtons.Length; i++)
-            {
-                if (i + m_equipmentButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Equipments.Count)
-                {
-                    m_equipmentButtons[i].gameObject.SetActive(false);
-                }
-                else
-                {
-                    m_equipmentButtons[i].SetUp(PlayerManager.Instance.Player.Equipments[i + m_equipmentButtons.Length * m_currentPage]);
-                    m_equipmentButtons[i].gameObject.SetActive(true);
-                }
-            }
+            throw new NotImplementedException();
         }
 
         private void RefreshCharacterPageButtonState()
         {
             if(m_currentPanelType == PanelType.Party)
             {
-                for (int i = 0; i < m_characterButtons.Length; i++)
+                for (int i = 0; i < m_partyCharacterButtons.Length; i++)
                 {
-                    m_characterButtons[i].SetUp(PlayerManager.Instance.GetCharacterByPartyIndex(i));
-                    m_characterButtons[i].gameObject.SetActive(true);
+                    m_partyCharacterButtons[i].SetUp(PlayerManager.Instance.GetCharacterByPartyIndex(i));
                 }
             }
             else
             {
-                m_previousButton.interactable = m_currentPage != 0;
-                m_nextPageButton.interactable = m_characterButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Characters.Count;
-                for (int i = 0; i < m_characterButtons.Length; i++)
+                List<OwningCharacterData> _allCharacter = PlayerManager.Instance.Player.Characters;
+                
+                for(int i = 0; i < m_allClonedCharacterButtons.Count; i++)
                 {
-                    if (i + m_characterButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Characters.Count)
+                    m_allClonedCharacterButtons[i].gameObject.SetActive(false);
+                }
+
+                for(int i = 0; i < _allCharacter.Count; i++)
+                {
+                    if(i < m_allClonedCharacterButtons.Count)
                     {
-                        m_characterButtons[i].gameObject.SetActive(false);
+                        m_allClonedCharacterButtons[i].SetUp(_allCharacter[i]);
+                        m_allClonedCharacterButtons[i].gameObject.SetActive(true);
                     }
                     else
                     {
-                        m_characterButtons[i].SetUp(PlayerManager.Instance.Player.Characters[i + m_characterButtons.Length * m_currentPage]);
-                        m_characterButtons[i].gameObject.SetActive(true);
+                        MainMenuUI_CharacterButton _cloneButton = Instantiate(m_characterButtonPrefab);
+                        _cloneButton.transform.SetParent(m_characterButtonContainer);
+                        _cloneButton.SetUp(_allCharacter[i]);
+                        m_allClonedCharacterButtons.Add(_cloneButton);
                     }
                 }
             }
@@ -185,20 +185,7 @@ namespace ProjectBS.UI
 
         private void RefreshSkillPageButtonState()
         {
-            m_previousButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_skillButtons.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Skills.Count;
-            for (int i = 0; i < m_skillButtons.Length; i++)
-            {
-                if (i + m_skillButtons.Length * m_currentPage >= PlayerManager.Instance.Player.Skills.Count)
-                {
-                    m_skillButtons[i].gameObject.SetActive(false);
-                }
-                else
-                {
-                    m_skillButtons[i].SetUp(PlayerManager.Instance.Player.Skills[i + m_skillButtons.Length * m_currentPage]);
-                    m_skillButtons[i].gameObject.SetActive(true);
-                }
-            }
+            throw new NotImplementedException();
         }
     }
 }

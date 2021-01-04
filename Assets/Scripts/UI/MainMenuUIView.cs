@@ -17,12 +17,14 @@ namespace ProjectBS.UI
             public MainMenuUI_PanelBase panel = null;
         }
 
-        [SerializeField] private GameObject m_root = null; 
+        [SerializeField] private GameObject m_root = null;
+        [SerializeField] private GameObject m_preloadAnimationObject = null;
         [Header("Top")]
         [SerializeField] private TextMeshProUGUI m_staminaText = null;
         [SerializeField] private Image m_staminaImage = null;
         [SerializeField] private TextMeshProUGUI m_expAmountText = null;
         [Header("Panels")]
+        [SerializeField] private int m_defaultIndex = 0;
         [SerializeField] private PanelData[] m_panelDatas = null;
 
         private Animator m_playingDownButtonAnimator = null;
@@ -44,9 +46,12 @@ namespace ProjectBS.UI
 
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
-            if (show)
-                DisableAllPanel();
             m_root.SetActive(show);
+            if (show)
+            {
+                Button_SwitchTo(m_panelDatas[m_defaultIndex].downButtonAnimator);
+                m_preloadAnimationObject.SetActive(false);
+            }
             onCompleted?.Invoke();
         }
 
@@ -62,6 +67,7 @@ namespace ProjectBS.UI
 
                     m_playingDownButtonAnimator = button;
                     m_playingDownButtonAnimator.Play("Disable", 0, 0f);
+
                     m_panelDatas[i].panel.Show();
                 }
                 else

@@ -1,7 +1,6 @@
-﻿using KahaGameCore.Static;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using System;
+using TMPro;
 
 namespace ProjectBS.UI
 {
@@ -9,14 +8,18 @@ namespace ProjectBS.UI
     {
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
 
-        private const string ABILITY_FORMAT = "HP: {0} ({1})\nSP:{2}\nAttack: {3} ({4})\nDefense: {5} ({6})\nSpeed: {7} ({8})";
-
-        [SerializeField] private Text m_nameAndLevelText = null;
-        [SerializeField] private Text m_abilityText = null;
-        [SerializeField] private Text m_equipmentText = null;
-        [SerializeField] private Text m_skillText = null;
         [SerializeField] private GameObject m_partyHintRoot = null;
-        [SerializeField] private Text m_partyHintText = null;
+        [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [Header("Status")]
+        [SerializeField] private TextMeshProUGUI m_hpValueText = null;
+        [SerializeField] private TextMeshProUGUI m_attackValueText = null;
+        [SerializeField] private TextMeshProUGUI m_defenseValueText = null;
+        [SerializeField] private TextMeshProUGUI m_speedValueText = null;
+        [Header("Skills")]
+        [SerializeField] private TextMeshProUGUI m_skill0Text = null;
+        [SerializeField] private TextMeshProUGUI m_skill1Text = null;
+        [SerializeField] private TextMeshProUGUI m_skill2Text = null;
+        [SerializeField] private TextMeshProUGUI m_skill3Text = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -28,41 +31,21 @@ namespace ProjectBS.UI
 
         public void RefreshInfo()
         {
-            m_nameAndLevelText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID) + "\nLevel " + m_refCharacter.Level;
-            m_abilityText.text = string.Format(ABILITY_FORMAT,
-                                        m_refCharacter.GetTotal(Keyword.HP),
-                                        GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).RankString,
-                                        m_refCharacter.SP,
-                                        m_refCharacter.GetTotal(Keyword.Attack),
-                                        GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).RankString,
-                                        m_refCharacter.GetTotal(Keyword.Defense),
-                                        GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).RankString,
-                                        m_refCharacter.GetTotal(Keyword.Speed),
-                                        GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).RankString);
+            m_nameText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID);
 
-            Data.OwningEquipmentData _head = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head);
-            int _headNameID = _head != null ? _head.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _body = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body);
-            int _bodyNameID = _body != null ? _body.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _hand = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand);
-            int _handNameID = _hand != null ? _hand.GetSourceData().NameContextID : 0;
-            Data.OwningEquipmentData _foot = PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot);
-            int _footNameID = _foot != null ? _foot.GetSourceData().NameContextID : 0;
+            m_hpValueText.text = m_refCharacter.GetTotal(Keyword.HP).ToString();
+            m_attackValueText.text = m_refCharacter.GetTotal(Keyword.Attack).ToString();
+            m_defenseValueText.text = m_refCharacter.GetTotal(Keyword.Defense).ToString();
+            m_speedValueText.text = m_refCharacter.GetTotal(Keyword.Speed).ToString();
 
-            m_equipmentText.text = ContextConverter.Instance.GetContext(_headNameID) + "\n" +
-                                   ContextConverter.Instance.GetContext(_bodyNameID) + "\n" +
-                                   ContextConverter.Instance.GetContext(_handNameID) + "\n" +
-                                   ContextConverter.Instance.GetContext(_footNameID);
-
-            m_skillText.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_0).NameContextID) + "\n" +
-                               ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_1).NameContextID) + "\n" +
-                               ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_2).NameContextID) + "\n" +
-                               ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_3).NameContextID);
+            m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_0).NameContextID);
+            m_skill1Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_1).NameContextID);
+            m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_2).NameContextID);
+            m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_3).NameContextID);
 
             int _partyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
             if (_partyIndex != -1)
             {
-                m_partyHintText.text = (_partyIndex+1).ToString();
                 m_partyHintRoot.SetActive(true);
             }
             else

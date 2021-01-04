@@ -6,6 +6,8 @@ namespace Michsky.UI.ModernUIPack
 {
     public class WindowManager : MonoBehaviour
     {
+        public event System.Action<int> OnWindowChanged = null;
+
         // Content
         public List<WindowItem> windows = new List<WindowItem>();
 
@@ -51,6 +53,7 @@ namespace Michsky.UI.ModernUIPack
             currentWindow = windows[currentWindowIndex].windowObject;
             currentWindowAnimator = currentWindow.GetComponent<Animator>();
             currentWindowAnimator.Play(windowFadeIn);
+            OnWindowChanged(currentWindowIndex);
             isFirstTime = false;
         }
 
@@ -153,6 +156,8 @@ namespace Michsky.UI.ModernUIPack
                     nextButtonAnimator = nextButton.GetComponent<Animator>();
                     currentButtonAnimator.Play(buttonFadeOut);
                     nextButtonAnimator.Play(buttonFadeIn);
+
+                    OnWindowChanged?.Invoke(currentButtonIndex);
                 }
 
                 catch { }
