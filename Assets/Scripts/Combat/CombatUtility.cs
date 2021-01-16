@@ -345,6 +345,28 @@ namespace ProjectBS.Combat
             }
         }
 
+        public static float GetHatredPersent(CombatUnit unit)
+        {
+            List<CombatUnit> _allUnits = ComabtManager.AllUnit;
+            if (_allUnits.Contains(unit))
+            {
+                int _totalHaterd = 0;
+                for (int i = 0; i < _allUnits.Count; i++)
+                {
+                    if (_allUnits[i].camp == unit.camp)
+                    {
+                        _totalHaterd += _allUnits[i].Hatred;
+                    }
+                }
+
+                return (float)unit.Hatred / (float)_totalHaterd;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
         private static int GetValueByCommand(CalculateData data, string command, string paraString)
         {
             bool _minus = false;

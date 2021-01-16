@@ -99,6 +99,7 @@ namespace ProjectBS.Combat.EffectCommand
             float _fleeReduceDmgPersent = (1f - UnityEngine.Random.Range(0f, _flee));
 
             float _rawDmg = (_finalAttackValue - (_finalDefenseValue * (1f - _ingnoreDefense))) * _fleeReduceDmgPersent;
+            _rawDmg *= CombatUtility.GetHatredPersent(_attackTarget);
 
             int _dmg = Convert.ToInt32(_rawDmg);
 
