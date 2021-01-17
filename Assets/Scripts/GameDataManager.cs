@@ -13,7 +13,7 @@ namespace ProjectBS
     {
         private static Dictionary<Type, IGameData[]> m_gameData = new Dictionary<Type, IGameData[]>();
 
-        private const string DATA_URL = "https://raw.githubusercontent.com/wannasaynone/ProjectBSGameData/master/{0}/{1}.txt";
+        private const string DATA_URL = "https://wannasaynone.github.io/ProjectBSGameData/{0}/{1}.txt";
 
         public static GameProperties GameProperties { get; private set; }
 
