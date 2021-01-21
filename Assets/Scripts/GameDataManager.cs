@@ -50,7 +50,7 @@ namespace ProjectBS
                 new DownloadDataTask(IELoadData<BuffData>("BuffData")),
                 new DownloadDataTask(IELoadData<ExpData>("ExpData")),
                 new DownloadDataTask(IELoadData<ContextData>("ContextData")),
-                new DownloadDataTask(IELoadData<CharacterNamePoolData>("CharacterNamePoolData")),
+                new DownloadDataTask(IELoadData<AppearanceData>("AppearanceData")),
                 new DownloadDataTask(IELoadData<RandomSkillData>("RandomSkillData")),
                 new DownloadDataTask(IELoadData<RawEquipmentData>("RawEquipmentData")),
                 new DownloadDataTask(IELoadData<BossStageData>("BossStageData")),

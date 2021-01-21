@@ -8,6 +8,7 @@ namespace ProjectBS.Data
         public int SP { get; private set; }
         public int NameContextID { get; private set; }
         public int DescriptionContextID { get; private set; }
+        public int StoryContextID { get; private set; }
         public string ReferenceContextIDs { get; private set; }
         public string Command { get; private set; }
         public int IsDrop { get; private set; }

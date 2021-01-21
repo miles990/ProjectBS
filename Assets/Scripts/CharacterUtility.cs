@@ -18,7 +18,7 @@ namespace ProjectBS
         private static int m_defenseTotalWeight = 1;
         private static List<AbilityData> m_speedAbiPool = null;
         private static int m_speedTotalWeight = 1;
-        private static CharacterNamePoolData[] m_nameIDPool = null;
+        private static AppearanceData[] m_appearanceIDPool = null;
 
         public static OwningCharacterData CreateNewCharacter()
         {
@@ -29,12 +29,19 @@ namespace ProjectBS
             AbilityData _defense = RollFromList(m_defenseTotalWeight, m_defenseAbiPool);
             AbilityData _speed = RollFromList(m_speedTotalWeight, m_speedAbiPool);
 
+            AppearanceData _skin = GetRandomSkin();
+            string[] _skillIDs = _skin.DefaultSkillSet.Split(';');
+            if(_skillIDs.Length != 4)
+            {
+                throw new System.Exception("[CharacterUtility][CreateNewCharacter] _skillIDs MUST be 4 elements. AppearanceData ID=" + _skin.ID);
+            }
+
             OwningCharacterData _newChar = new OwningCharacterData
             {
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
                 AttackAbilityID = _attack.ID,
-                CharacterNameID = GetRandomName(),
-                CharacterSpriteID = 0,
+                CharacterNameID = _skin.NameContextID,
+                CharacterSpriteID = _skin.ID,
                 Defense = Random.Range(_defense.MinValue, _defense.MaxValue),
                 DefenseAbilityID = _defense.ID,
                 Equipment_UDID_Body = null,
@@ -45,10 +52,10 @@ namespace ProjectBS
                 HP = Random.Range(_hp.MinValue, _hp.MaxValue),
                 HPAbilityID = _hp.ID,
                 Level = 1,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SkillSlot_2 = 0,
-                SkillSlot_3 = 0,
+                SkillSlot_0 = int.Parse(_skillIDs[0]),
+                SkillSlot_1 = int.Parse(_skillIDs[1]),
+                SkillSlot_2 = int.Parse(_skillIDs[2]),
+                SkillSlot_3 = int.Parse(_skillIDs[3]),
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
                 SpeedAbilityID = _speed.ID,
@@ -58,11 +65,11 @@ namespace ProjectBS
             return _newChar;
         }
 
-        public static int GetRandomName()
+        public static AppearanceData GetRandomSkin()
         {
             InitAbilityData();
 
-            return m_nameIDPool[Random.Range(0, m_nameIDPool.Length - 1)].NameContextID;
+            return m_appearanceIDPool[Random.Range(0, m_appearanceIDPool.Length - 1)];
         }
 
         private static void InitAbilityData()
@@ -72,7 +79,7 @@ namespace ProjectBS
                 return;
             }
 
-            m_nameIDPool = GameDataManager.GetAllGameData<CharacterNamePoolData>();
+            m_appearanceIDPool = GameDataManager.GetAllGameData<AppearanceData>();
             AbilityData[] _allDatas = GameDataManager.GetAllGameData<AbilityData>();
             m_hpAbiPool = new List<AbilityData>();
             m_attackAbiPool = new List<AbilityData>();

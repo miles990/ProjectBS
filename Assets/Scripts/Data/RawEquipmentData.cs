@@ -10,5 +10,6 @@ namespace ProjectBS.Data
         public string BuffIDs { get; private set; }
         public string EquipmentType { get; private set; }
         public int DescriptionContextID { get; private set; }
+        public int StoryContextID { get; private set; }
     }
 }

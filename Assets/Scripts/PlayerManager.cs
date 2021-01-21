@@ -295,8 +295,8 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 15,
-                CharacterNameID = CharacterUtility.GetRandomName(),
-                CharacterSpriteID = 0,
+                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(1).NameContextID,
+                CharacterSpriteID = 1,
                 DefenseAbilityID = 24,
                 HPAbilityID = 4,
                 Exp = 0,
@@ -315,8 +315,8 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 16,
-                CharacterNameID = CharacterUtility.GetRandomName(),
-                CharacterSpriteID = 0,
+                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(2).NameContextID,
+                CharacterSpriteID = 2,
                 DefenseAbilityID = 24,
                 HPAbilityID = 4,
                 Exp = 0,
@@ -335,8 +335,8 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 14,
-                CharacterNameID = CharacterUtility.GetRandomName(),
-                CharacterSpriteID = 0,
+                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(3).NameContextID,
+                CharacterSpriteID = 3,
                 DefenseAbilityID = 26,
                 HPAbilityID = 5,
                 Exp = 0,
@@ -355,8 +355,8 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 14,
-                CharacterNameID = CharacterUtility.GetRandomName(),
-                CharacterSpriteID = 0,
+                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(4).NameContextID,
+                CharacterSpriteID = 4,
                 DefenseAbilityID = 24,
                 HPAbilityID = 6,
                 Exp = 0,

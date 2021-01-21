@@ -6,6 +6,8 @@ namespace ProjectBS.Data
     {
         public int ID { get; private set; }
         public string SpriteAssetPath { get; private set; }
+        public int NameContextID { get; private set; }
+        public string DefaultSkillSet { get; private set; }
     }
 }
 
