@@ -312,19 +312,13 @@ namespace ProjectBS.Combat
         {
             TurnCount++;
 
-            m_units.Sort((x, y) => y.GetSpeed().CompareTo(x.GetSpeed()));
             for (int i = 0; i < m_units.Count - 1; i++)
             {
-                if (m_units[i].GetSpeed() == m_units[i + 1].GetSpeed())
-                {
-                    if (UnityEngine.Random.Range(0, 101) <= 50)
-                    {
-                        CombatUnit _temp = m_units[i + 1];
-                        m_units[i + 1] = m_units[i];
-                        m_units[i] = _temp;
-                    }
-                }
+                int _spd = m_units[i].GetSpeed();
+                m_units[i].actionValue = _spd + Convert.ToInt32(UnityEngine.Random.Range(0f, (float)_spd * 0.1f));
             }
+
+            m_units.Sort((x, y) => y.actionValue.CompareTo(x.actionValue));
             m_unitActions.Clear();
 
             for (int i = 0; i < m_units.Count; i++)

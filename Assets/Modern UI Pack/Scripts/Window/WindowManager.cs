@@ -53,7 +53,7 @@ namespace Michsky.UI.ModernUIPack
             currentWindow = windows[currentWindowIndex].windowObject;
             currentWindowAnimator = currentWindow.GetComponent<Animator>();
             currentWindowAnimator.Play(windowFadeIn);
-            OnWindowChanged(currentWindowIndex);
+            OnWindowChanged?.Invoke(currentWindowIndex);
             isFirstTime = false;
         }
 

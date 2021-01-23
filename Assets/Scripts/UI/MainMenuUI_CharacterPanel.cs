@@ -176,6 +176,7 @@ namespace ProjectBS.UI
                     {
                         MainMenuUI_CharacterButton _cloneButton = Instantiate(m_characterButtonPrefab);
                         _cloneButton.transform.SetParent(m_characterButtonContainer);
+                        _cloneButton.transform.localScale = Vector3.one;
                         _cloneButton.SetUp(_allCharacter[i]);
                         m_allClonedCharacterButtons.Add(_cloneButton);
                     }

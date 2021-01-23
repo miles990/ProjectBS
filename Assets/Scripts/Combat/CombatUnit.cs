@@ -84,6 +84,7 @@ namespace ProjectBS.Combat
         public int rawAttack = 10;
         public int rawDefense = 10;
         public int rawSpeed = 1;
+        public int actionValue = 0;
         public int Hatred 
         {
             get { return m_hatred; }
