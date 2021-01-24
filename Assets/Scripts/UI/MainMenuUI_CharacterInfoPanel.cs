@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ProjectBS.UI
 {
@@ -25,9 +26,9 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_footEquipment = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_handEquipment = null;
         [Header("Status")]
-        [SerializeField] private Text m_levelText = null;
-        [SerializeField] private Text m_hpspText = null;
-        [SerializeField] private Text m_statusText = null;
+        [SerializeField] private TextMeshProUGUI m_levelText = null;
+        [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TextMeshProUGUI m_expText = null;
         [Header("Skill")]
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill0 = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill1 = null;
@@ -76,6 +77,7 @@ namespace ProjectBS.UI
         {
             m_refCharacter = characterData;
             DisableAllSubPanel();
+            RefreshInfo();
             Show();
         }
 
@@ -255,7 +257,6 @@ namespace ProjectBS.UI
             m_setToPartyPanelRoot.SetActive(false);
             m_nextPageButton.gameObject.SetActive(false);
             m_previousPageButton.gameObject.SetActive(false);
-            RefreshInfo();
         }
 
         private void RefreshChangeEquipmentPanel(string equipmentType)
@@ -382,19 +383,8 @@ namespace ProjectBS.UI
             m_skill2.SetUp(m_refCharacter.GetSkill(2));
             m_skill3.SetUp(m_refCharacter.GetSkill(3));
 
-            m_levelText.text = "Level" + m_refCharacter.Level + "\n\nExp\n" + m_refCharacter.Exp + "/" + m_refCharacter.GetRequireExp();
-            m_statusText.text = string.Format(ABILITY_FORMAT,
-                            m_refCharacter.GetTotal(Keyword.Attack),
-                            m_refCharacter.GetAbilityRankString(Keyword.Attack),
-                            m_refCharacter.GetTotal(Keyword.Defense),
-                            m_refCharacter.GetAbilityRankString(Keyword.Defense),
-                            m_refCharacter.GetTotal(Keyword.Speed),
-                            m_refCharacter.GetAbilityRankString(Keyword.Speed),
-
-            m_hpspText.text = string.Format(HP_FORMAT,
-                                m_refCharacter.GetTotal(Keyword.HP),
-                                m_refCharacter.GetAbilityRankString(Keyword.HP),
-                                m_refCharacter.SP));
+            m_nameText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID);
+            m_levelText.text = "Level" + m_refCharacter.Level;
         }
 
         protected override void OnShown()

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterInfoPanel_SkilltButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
-        [SerializeField] private Text m_nameText = null;
+        [SerializeField] private TMPro.TextMeshProUGUI m_nameText = null;
 
         private Data.SkillData m_referenceSkill = null;
         private float m_showInfoTimer = 0f;
