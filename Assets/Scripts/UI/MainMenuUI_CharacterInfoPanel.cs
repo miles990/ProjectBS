@@ -26,9 +26,28 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_footEquipment = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_handEquipment = null;
         [Header("Status")]
+        [SerializeField] private GameObject m_partyHint = null;
+        [SerializeField] private TextMeshProUGUI m_partyHintText = null;
         [SerializeField] private TextMeshProUGUI m_levelText = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
         [SerializeField] private TextMeshProUGUI m_expText = null;
+        [SerializeField] private TextMeshProUGUI m_hpRankText = null;
+        [SerializeField] private TextMeshProUGUI m_hpText = null;
+        [SerializeField] private TextMeshProUGUI m_attackRankText = null;
+        [SerializeField] private TextMeshProUGUI m_attackText = null;
+        [SerializeField] private TextMeshProUGUI m_defenseRankText = null;
+        [SerializeField] private TextMeshProUGUI m_defenseText = null;
+        [SerializeField] private TextMeshProUGUI m_speedRankText = null;
+        [SerializeField] private TextMeshProUGUI m_speedText = null;
+        [Header("Status Bar")]
+        [SerializeField] private Image m_hpProgressBarImage = null;
+        [SerializeField] private TextMeshProUGUI m_hpProgressText = null;
+        [SerializeField] private Image m_attackProgressBarImage = null;
+        [SerializeField] private TextMeshProUGUI m_attackProgressText = null;
+        [SerializeField] private Image m_defenseProgressBarImage = null;
+        [SerializeField] private TextMeshProUGUI m_defenseProgressText = null;
+        [SerializeField] private Image m_speedProgressBarImage = null;
+        [SerializeField] private TextMeshProUGUI m_speedProgressText = null;
         [Header("Skill")]
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill0 = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill1 = null;
@@ -47,9 +66,6 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_ChangeSkillPanel_SkilltButton[] m_changeSkillPanel_skillList = null;
         [SerializeField] private Text m_changeSkillPanel_beforeText = null;
         [SerializeField] private Text m_changeSkillPanel_afterText = null;
-        [Header("General")]
-        [SerializeField] private Button m_nextPageButton = null;
-        [SerializeField] private Button m_previousPageButton = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -96,8 +112,6 @@ namespace ProjectBS.UI
             }
             RefreshChangeEquipmentPanel(equipmentType);
             m_changeEquipmentPanelRoot.SetActive(true);
-            m_nextPageButton.gameObject.SetActive(true);
-            m_previousPageButton.gameObject.SetActive(true);
         }
 
         public void Button_StartChangeSkill(int index)
@@ -108,8 +122,6 @@ namespace ProjectBS.UI
             m_currentSelectSkill = null;
             RefreshChangeSkillPanel();
             m_changeSkillPanelRoot.SetActive(true);
-            m_nextPageButton.gameObject.SetActive(true);
-            m_previousPageButton.gameObject.SetActive(true);
         }
 
         public void Button_ChangePanels_GoNextPage()
@@ -255,8 +267,6 @@ namespace ProjectBS.UI
             m_changeEquipmentPanelRoot.SetActive(false);
             m_changeSkillPanelRoot.SetActive(false);
             m_setToPartyPanelRoot.SetActive(false);
-            m_nextPageButton.gameObject.SetActive(false);
-            m_previousPageButton.gameObject.SetActive(false);
         }
 
         private void RefreshChangeEquipmentPanel(string equipmentType)
@@ -264,8 +274,6 @@ namespace ProjectBS.UI
             m_currentEquipmentType = equipmentType;
 
             List<Data.OwningEquipmentData> _equipments = PlayerManager.Instance.GetEquipmentsByType(m_currentEquipmentType);
-            m_previousPageButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_changeEquipmentPanel_equipmentList.Length * (m_currentPage + 1) < _equipments.Count;
             
             for (int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
             {
@@ -319,8 +327,6 @@ namespace ProjectBS.UI
 
         private void RefreshChangeSkillPanel()
         {
-            m_previousPageButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_changeSkillPanel_skillList.Length * (m_currentPage + 1) < PlayerManager.Instance.Player.Skills.Count;
             for (int i = 0; i < m_changeSkillPanel_skillList.Length; i++)
             {
                 int _currentDisplaySkillIndex = i + m_changeSkillPanel_skillList.Length * m_currentPage;
@@ -373,6 +379,17 @@ namespace ProjectBS.UI
 
         private void RefreshInfo()
         {
+            int _partyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
+            if(_partyIndex == -1)
+            {
+                m_partyHint.SetActive(false);
+            }
+            else
+            {
+                m_partyHint.SetActive(true);
+                m_partyHintText.text = "#" + (_partyIndex + 1);
+            }
+
             m_headEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Head));
             m_bodyEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Body));
             m_handEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand));
@@ -384,7 +401,35 @@ namespace ProjectBS.UI
             m_skill3.SetUp(m_refCharacter.GetSkill(3));
 
             m_nameText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID);
-            m_levelText.text = "Level" + m_refCharacter.Level;
+            m_levelText.text = "Level. " + m_refCharacter.Level;
+            m_expText.text = m_refCharacter.Exp + " / " + m_refCharacter.GetRequireExp();
+            m_hpRankText.text = m_refCharacter.GetAbilityRankString("HP");
+            m_hpRankText.color = UITextColorStorer.GetRankStringColor(m_hpRankText.text);
+            m_hpText.text = m_refCharacter.HP.ToString();
+            m_attackRankText.text = m_refCharacter.GetAbilityRankString("Attack");
+            m_attackRankText.color = UITextColorStorer.GetRankStringColor(m_attackRankText.text);
+            m_attackText.text = m_refCharacter.Attack.ToString();
+            m_defenseRankText.text = m_refCharacter.GetAbilityRankString("Defense");
+            m_defenseRankText.color = UITextColorStorer.GetRankStringColor(m_defenseRankText.text);
+            m_defenseText.text = m_refCharacter.Defense.ToString();
+            m_speedRankText.text = m_refCharacter.GetAbilityRankString("Speed");
+            m_speedRankText.color = UITextColorStorer.GetRankStringColor(m_speedRankText.text);
+            m_speedText.text = m_refCharacter.Speed.ToString();
+
+            // const value from designer
+            int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).MaxValue * 100 + 100000;
+            int _maxAttackValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).MaxValue * 100 + 10000;
+            int _maxDefenseValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).MaxValue * 100 + 10000;
+            int _maxSpeedValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).MaxValue * 100 + 10000;
+
+            m_hpProgressBarImage.fillAmount = (float)m_refCharacter.HP / (float)_maxHPValue;
+            m_hpProgressText.text = m_refCharacter.HP + " / " + _maxHPValue;
+            m_attackProgressBarImage.fillAmount = (float)m_refCharacter.Attack / (float)_maxAttackValue;
+            m_attackProgressText.text = m_refCharacter.Attack + " / " + _maxAttackValue;
+            m_defenseProgressBarImage.fillAmount = (float)m_refCharacter.Defense / (float)_maxDefenseValue;
+            m_defenseProgressText.text = m_refCharacter.Defense + " / " + _maxDefenseValue;
+            m_speedProgressBarImage.fillAmount = (float)m_refCharacter.Speed / (float)_maxSpeedValue;
+            m_speedProgressText.text = m_refCharacter.Speed + " / " + _maxSpeedValue;
         }
 
         protected override void OnShown()

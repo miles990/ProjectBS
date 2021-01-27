@@ -12,6 +12,7 @@ namespace ProjectBS.UI
         {
             m_targetValue = 1f;
             m_root.gameObject.SetActive(true);
+            m_root.blocksRaycasts = true;
 
             OnShown();
         }
@@ -19,6 +20,7 @@ namespace ProjectBS.UI
         public void Hide()
         {
             m_targetValue = 0f;
+            m_root.blocksRaycasts = false;
 
             OnHidden();
         }

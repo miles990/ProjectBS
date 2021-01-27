@@ -179,6 +179,8 @@ namespace ProjectBS
 
         private void HandleLog(string condition, string stackTrace, UnityEngine.LogType type)
         {
+            if (type == UnityEngine.LogType.Log) return;
+
             MessageManager.ShowCommonMessage(condition, type.ToString(), null);
         }
     }

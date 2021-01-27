@@ -21,13 +21,21 @@ namespace ProjectBS.UI
         public void SetUp(Data.OwningEquipmentData data)
         {
             m_referenceEquipment = data;
-            m_noneContentHintRoot.SetActive(m_referenceEquipment == null);
-            m_contentRoot.SetActive(m_referenceEquipment != null);
+
+
             RefreshInfo();
         }
 
         public void RefreshInfo()
         {
+            if(m_referenceEquipment == null)
+            {
+                m_noneContentHintRoot.SetActive(true);
+                m_contentRoot.SetActive(false);
+                return;
+            }
+            m_noneContentHintRoot.SetActive(false);
+            m_contentRoot.SetActive(true);
             m_nameText.text = ContextConverter.Instance.GetContext(m_referenceEquipment.GetSourceData().NameContextID);
             m_hpValueText.text = m_referenceEquipment.HP.ToString();
             m_attackValueText.text = m_referenceEquipment.Attack.ToString();

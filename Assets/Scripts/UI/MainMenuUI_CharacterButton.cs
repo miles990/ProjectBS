@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace ProjectBS.UI
 {
-    public class MainMenuUI_CharacterButton : MonoBehaviour
+    public class MainMenuUI_CharacterButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
 
@@ -54,7 +55,11 @@ namespace ProjectBS.UI
             }
         }
 
-        public void Button_Pressed()
+        public void OnPointerDown(PointerEventData eventData)
+        {
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
         {
             OnButtonPressed?.Invoke(m_refCharacter);
         }

@@ -39,6 +39,7 @@ namespace ProjectBS.UI
             //    m_equipmentButtons[i].OnEdited += RefrshEquipmentPageButtonState;
             //}
 
+            OnWindowChanged(0);
             m_panelManger.OnWindowChanged += OnWindowChanged;
         }
 
@@ -73,7 +74,7 @@ namespace ProjectBS.UI
 
         private void OnEnable()
         {
-            m_characterInfoPanel.gameObject.SetActive(false);
+            m_characterInfoPanel.Hide();
         }
 
         private void OnDisable()
