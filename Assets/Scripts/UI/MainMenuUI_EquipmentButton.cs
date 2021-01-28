@@ -8,8 +8,6 @@ namespace ProjectBS.UI
     {
         public event System.Action OnEdited = null;
 
-        private const string ABILITY_FORMAT = "HP {0}\nAttack {1}\nDefense {2}\nSpeed {3}";
-
         [SerializeField] private Text m_nameAndLevelText = null;
         [SerializeField] private Text m_abilityText = null;
         [SerializeField] private GameObject m_equipedHint = null;
@@ -25,20 +23,6 @@ namespace ProjectBS.UI
 
             m_refEquipment = equipmentData;
             Data.RawEquipmentData _source = equipmentData.GetSourceData();
-
-            m_nameAndLevelText.text = ContextConverter.Instance.GetContext(_source.NameContextID) 
-                + "\nLevel " + equipmentData.Level 
-                + "\nExp " + equipmentData.Exp + "/" + GameDataManager.GetGameData<Data.ExpData>(equipmentData.Level).Require;
-            m_abilityText.text = string.Format(ABILITY_FORMAT,
-                                               equipmentData.HP >= 0 ? "+" + equipmentData.HP : equipmentData.HP.ToString(),
-                                               equipmentData.Attack >= 0 ? "+" + equipmentData.Attack : equipmentData.Attack.ToString(),
-                                               equipmentData.Defense >= 0 ? "+" + equipmentData.Defense : equipmentData.Defense.ToString(),
-                                               equipmentData.Speed >= 0 ? "+" + equipmentData.Speed : equipmentData.Speed.ToString());
-
-            m_lockToggle.isOn = PlayerManager.Instance.Player.LockedEquipmentUDIDs.Contains(m_refEquipment.UDID);
-            m_departButton.interactable = !m_lockToggle.isOn;
-
-            m_equipedHint.SetActive(PlayerManager.Instance.GetEquipedCharacter(equipmentData.UDID) != null);
 
             m_initing = false;
         }

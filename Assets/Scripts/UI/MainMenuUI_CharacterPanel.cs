@@ -18,11 +18,14 @@ namespace ProjectBS.UI
 
         [SerializeField] private Michsky.UI.ModernUIPack.WindowManager m_panelManger = null;
         [SerializeField] private RectTransform m_characterButtonContainer = null;
+        [SerializeField] private RectTransform m_equipmentButtonContainer = null;
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyCharacterButtons = null;
         [SerializeField] private MainMenuUI_CharacterButton m_characterButtonPrefab = null;
+        [SerializeField] private MainMenuUI_EquipmentButton m_equipmentButtonPrefab = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel m_characterInfoPanel = null;
 
         private List<MainMenuUI_CharacterButton> m_allClonedCharacterButtons = new List<MainMenuUI_CharacterButton>();
+        private List<MainMenuUI_EquipmentButton> m_allClonedEquipmentButtons = new List<MainMenuUI_EquipmentButton>();
 
         private PanelType m_currentPanelType = PanelType.Party;
 
@@ -33,11 +36,6 @@ namespace ProjectBS.UI
                 m_partyCharacterButtons[i].OnButtonPressed += OnCharacterButtonPressed;
             }
             m_characterInfoPanel.OnEditEnded += RefreshCharacterPageButtonState;
-
-            //for(int i = 0; i < m_equipmentButtons.Length; i++)
-            //{
-            //    m_equipmentButtons[i].OnEdited += RefrshEquipmentPageButtonState;
-            //}
 
             OnWindowChanged(0);
             m_panelManger.OnWindowChanged += OnWindowChanged;
@@ -69,7 +67,7 @@ namespace ProjectBS.UI
                     }
             }
 
-            UpdateAllButtonData();
+            RefreshButtonState();
         }
 
         private void OnEnable()
@@ -93,29 +91,6 @@ namespace ProjectBS.UI
 
         protected override void OnShown()
         {
-        }
-
-        private void UpdateAllButtonData()
-        {
-            switch (m_currentPanelType)
-            {
-                case PanelType.Party:
-                case PanelType.AllCharacter:
-                    {
-                        RefreshCharacterPageButtonState();
-                        break;
-                    }
-                case PanelType.Equipment:
-                    {
-                        RefreshButtonState();
-                        break;
-                    }
-                case PanelType.Skill:
-                    {
-                        RefreshSkillPageButtonState();
-                        break;
-                    }
-            }
         }
 
         private void RefreshButtonState()
@@ -145,7 +120,29 @@ namespace ProjectBS.UI
 
         private void RefrshEquipmentPageButtonState()
         {
-            throw new NotImplementedException();
+            List<OwningEquipmentData> _allEquipment = PlayerManager.Instance.Player.Equipments;
+
+            for (int i = 0; i < m_allClonedEquipmentButtons.Count; i++)
+            {
+                m_allClonedEquipmentButtons[i].gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < _allEquipment.Count; i++)
+            {
+                if (i < m_allClonedEquipmentButtons.Count)
+                {
+                    m_allClonedEquipmentButtons[i].SetUp(_allEquipment[i]);
+                    m_allClonedEquipmentButtons[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    MainMenuUI_EquipmentButton _cloneButton = Instantiate(m_equipmentButtonPrefab);
+                    _cloneButton.transform.SetParent(m_equipmentButtonContainer);
+                    _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.SetUp(_allEquipment[i]);
+                    m_allClonedEquipmentButtons.Add(_cloneButton);
+                }
+            }
         }
 
         private void RefreshCharacterPageButtonState()
