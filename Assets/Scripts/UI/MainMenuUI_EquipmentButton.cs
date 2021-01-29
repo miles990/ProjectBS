@@ -1,4 +1,4 @@
-﻿using KahaGameCore.Static;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +8,13 @@ namespace ProjectBS.UI
     {
         public event System.Action OnEdited = null;
 
-        [SerializeField] private Text m_nameAndLevelText = null;
-        [SerializeField] private Text m_abilityText = null;
-        [SerializeField] private GameObject m_equipedHint = null;
+        [SerializeField] private TextMeshProUGUI m_levelText = null;
+        [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TextMeshProUGUI m_hpText = null;
+        [SerializeField] private TextMeshProUGUI m_attackText = null;
+        [SerializeField] private TextMeshProUGUI m_defenseText = null;
+        [SerializeField] private TextMeshProUGUI m_speedText = null;
+        [SerializeField] private TextMeshProUGUI m_effectText = null;
         [SerializeField] private Toggle m_lockToggle = null;
         [SerializeField] private Button m_departButton = null;
 
@@ -30,17 +34,6 @@ namespace ProjectBS.UI
         public void Button_Depart()
         {
             EquipmentUtility.Depart(m_refEquipment.UDID);
-            PlayerManager.Instance.SavePlayer();
-
-            OnEdited?.Invoke();
-        }
-
-        public void Button_LevelUp(int addLevel)
-        {
-            for(int i = 0; i < addLevel; i++)
-            {
-                EquipmentUtility.TryAddOneLevel(m_refEquipment);
-            }
             PlayerManager.Instance.SavePlayer();
 
             OnEdited?.Invoke();

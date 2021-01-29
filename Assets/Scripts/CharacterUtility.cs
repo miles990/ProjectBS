@@ -173,23 +173,24 @@ namespace ProjectBS
             }
         }
 
-        public static void Depart(string UDID)
+        public static bool Depart(string UDID)
         {
             if (PlayerManager.Instance.Player.Characters.Count <= 4)
             {
                 GameManager.Instance.MessageManager.ShowCommonMessage("角色不可少於4人", "Warning", null);
-                return;
+                return false;
             }
 
             if (PlayerManager.Instance.GetPartyIndex(UDID) != -1)
             {
                 GameManager.Instance.MessageManager.ShowCommonMessage("不可分解已編組角色", "Warning", null);
-                return;
+                return false;
             }
 
             OwningCharacterData _target = PlayerManager.Instance.GetCharacterByUDID(UDID);
             PlayerManager.Instance.Player.Characters.Remove(_target);
             PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<ExpData>(_target.Level).Owning / 2;
+            return true;
         }
 
         public static void AddExp(OwningCharacterData character, int addExp)

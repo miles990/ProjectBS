@@ -8,6 +8,7 @@ namespace ProjectBS.UI
     public class MainMenuUI_CharacterButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
+        public event System.Action OnEdited = null;
 
         [SerializeField] private GameObject m_partyHintRoot = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
@@ -62,6 +63,15 @@ namespace ProjectBS.UI
         public void OnPointerUp(PointerEventData eventData)
         {
             OnButtonPressed?.Invoke(m_refCharacter);
+        }
+
+        public void Button_Depart()
+        {
+            if(CharacterUtility.Depart(m_refCharacter.UDID))
+            {
+                PlayerManager.Instance.SavePlayer();
+                OnEdited?.Invoke();
+            }
         }
     }
 }

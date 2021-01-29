@@ -176,6 +176,8 @@ namespace ProjectBS.UI
                         _cloneButton.transform.SetParent(m_characterButtonContainer);
                         _cloneButton.transform.localScale = Vector3.one;
                         _cloneButton.SetUp(_allCharacter[i]);
+                        _cloneButton.OnButtonPressed += OnCharacterButtonPressed;
+                        _cloneButton.OnEdited += RefreshCharacterPageButtonState;
                         m_allClonedCharacterButtons.Add(_cloneButton);
                     }
                 }

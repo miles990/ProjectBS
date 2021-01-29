@@ -8609,7 +8609,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -226, y: 0}
-  m_SizeDelta: {x: 2.5, y: 100}
+  m_SizeDelta: {x: 2.5, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &755223715
 MonoBehaviour:
@@ -17841,6 +17841,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5935509797355980364, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8298493928454195752, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
         type: 3}
       propertyPath: m_Enabled
@@ -22606,7 +22611,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 229, y: 0}
-  m_SizeDelta: {x: 2.5, y: 100}
+  m_SizeDelta: {x: 2.5, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1665802130
 MonoBehaviour:
@@ -23770,7 +23775,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4, y: 0}
-  m_SizeDelta: {x: 2.5, y: 100}
+  m_SizeDelta: {x: 2.5, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1735393083
 MonoBehaviour:
@@ -27409,6 +27414,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5935509797355980364, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8298493928454195752, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
         type: 3}
       propertyPath: m_Enabled
@@ -28234,6 +28244,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5935509797355980364, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8298493928454195752, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
         type: 3}
@@ -29942,6 +29957,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5935509797355980364, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8298493928454195752, guid: 86fb967c11fef1f4e9317b13dd9e2ea2,
         type: 3}
