@@ -24,6 +24,7 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_skill3Text = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
+        private Vector2 m_touchDownPos;
 
         public void SetUp(Data.OwningCharacterData characterData)
         {
@@ -58,11 +59,15 @@ namespace ProjectBS.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            m_touchDownPos = eventData.position;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            OnButtonPressed?.Invoke(m_refCharacter);
+            if(Vector2.Distance(m_touchDownPos, eventData.position) <= 0.5f)
+            {
+                OnButtonPressed?.Invoke(m_refCharacter);
+            }
         }
 
         public void Button_Depart()
