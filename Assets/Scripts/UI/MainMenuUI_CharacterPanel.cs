@@ -105,7 +105,7 @@ namespace ProjectBS.UI
                     }
                 case PanelType.Equipment:
                     {
-                        RefrshEquipmentPageButtonState();
+                        RefreshEquipmentPageButtonState();
                         break;
                     }
                 case PanelType.Skill:
@@ -118,7 +118,7 @@ namespace ProjectBS.UI
             }
         }
 
-        private void RefrshEquipmentPageButtonState()
+        private void RefreshEquipmentPageButtonState()
         {
             List<OwningEquipmentData> _allEquipment = PlayerManager.Instance.Player.Equipments;
 
@@ -140,6 +140,7 @@ namespace ProjectBS.UI
                     _cloneButton.transform.SetParent(m_equipmentButtonContainer);
                     _cloneButton.transform.localScale = Vector3.one;
                     _cloneButton.SetUp(_allEquipment[i]);
+                    _cloneButton.OnEdited += RefreshEquipmentPageButtonState;
                     m_allClonedEquipmentButtons.Add(_cloneButton);
                 }
             }

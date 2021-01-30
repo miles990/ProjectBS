@@ -29,6 +29,7 @@ namespace ProjectBS
         public static void Depart(string UDID)
         {
             OwningEquipmentData _target = PlayerManager.Instance.GetEquipmentByUDID(UDID);
+            if (_target == null) return;
             PlayerManager.Instance.Player.Equipments.Remove(_target);
             PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID);
             PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<ExpData>(_target.Level).Owning / 2;

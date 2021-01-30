@@ -64,7 +64,7 @@ namespace ProjectBS.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if(Vector2.Distance(m_touchDownPos, eventData.position) <= 0.5f)
+            if(Vector2.Distance(m_touchDownPos, eventData.position) <= 2f)
             {
                 OnButtonPressed?.Invoke(m_refCharacter);
             }
