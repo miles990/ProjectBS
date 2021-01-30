@@ -15,9 +15,6 @@ namespace ProjectBS.UI
             ChangingSkill
         }
 
-        private const string HP_FORMAT = "HP: {0}({1})\nSP: {2}";
-        private const string ABILITY_FORMAT = "Attack: {0} ({1})\nDefense: {2} ({3})\nSpeed: {4} ({5})";
-
         public event System.Action OnEditEnded = null;
 
         [Header("Equipmet")]
@@ -53,11 +50,20 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill1 = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill2 = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill3 = null;
+        [Header("Select Object Panel")]
+        [SerializeField] private GameObject m_selectObjectPanelRoot = null;
+        [SerializeField] private RectTransform m_selectObjectContainer = null;
         [Header("Change Equipment Panel")]
-        [SerializeField] private GameObject m_changeEquipmentPanelRoot = null;
-        [SerializeField] private MainMenuUI_ChangeWeaponPanel_EquipmentButton[] m_changeEquipmentPanel_equipmentList = null;
-        [SerializeField] private Text m_changeEquipmentPanel_beforeText = null;
-        [SerializeField] private Text m_changeEquipmentPanel_afterText = null;
+        [SerializeField] private MainMenuUI_EquipmentButton m_equipmentButtonPrefab = null;
+        [SerializeField] private GameObject m_compareEquipmentPanelRoot = null;
+        [SerializeField] private MainMenuUI_EquipmentButton m_changeEquipment_before = null;
+        [SerializeField] private GameObject m_changeEquipment_before_noContentRoot = null;
+        [SerializeField] private MainMenuUI_EquipmentButton m_changeEquipment_after = null;
+        [SerializeField] private GameObject m_changeEquipment_after_noContentRoot = null;
+        [SerializeField] private TextMeshProUGUI m_changeEquipment_defferentValue_hp = null;
+        [SerializeField] private TextMeshProUGUI m_changeEquipment_defferentValue_attack = null;
+        [SerializeField] private TextMeshProUGUI m_changeEquipment_defferentValue_defense = null;
+        [SerializeField] private TextMeshProUGUI m_changeEquipment_defferentValue_speed = null;
         [Header("Set To Party Panel")]
         [SerializeField] private GameObject m_setToPartyPanelRoot = null;
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyButtons = null;
@@ -77,16 +83,19 @@ namespace ProjectBS.UI
         private Data.OwningSkillData m_currentSelectSkill = null;
         private int m_targetSkillSlotIndex = 0;
 
+        private List<MainMenuUI_EquipmentButton> m_clonedEquipmentButtons = new List<MainMenuUI_EquipmentButton>();
+
         private void Start()
         {
-            for(int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
-            {
-                m_changeEquipmentPanel_equipmentList[i].OnSelected += Button_ChangeEquipment_Select;
-            }
             for (int i = 0; i < m_changeSkillPanel_skillList.Length; i++)
             {
                 m_changeSkillPanel_skillList[i].OnSelected += Button_ChangeSkill_Select;
             }
+
+            m_headEquipment.OnSelected += StartChangeEquipment;
+            m_bodyEquipment.OnSelected += StartChangeEquipment;
+            m_handEquipment.OnSelected += StartChangeEquipment;
+            m_footEquipment.OnSelected += StartChangeEquipment;
         }
 
         public void Enable(Data.OwningCharacterData characterData)
@@ -97,11 +106,32 @@ namespace ProjectBS.UI
             Show();
         }
 
-        public void Button_StartChangeEquipment(string equipmentType)
+        private void StartChangeEquipment(MainMenuUI_CharacterInfoPanel_EquipmentButton button)
         {
             m_currentPage = 0;
             m_currentState = State.ChangingEquipment;
-            string _equipingUDID = m_refCharacter.GetEquipmentUDID(equipmentType);
+
+            if(button == m_headEquipment)
+            {
+                ShowEquipmentList(Keyword.Head);
+            }
+            else if (button == m_handEquipment)
+            {
+                ShowEquipmentList(Keyword.Hand);
+            }
+            else if (button == m_bodyEquipment)
+            {
+                ShowEquipmentList(Keyword.Body);
+            }
+            else if (button == m_footEquipment)
+            {
+                ShowEquipmentList(Keyword.Foot);
+            }
+        }
+
+        private void ShowEquipmentList(string type)
+        {
+            string _equipingUDID = m_refCharacter.GetEquipmentUDID(type);
             if (string.IsNullOrEmpty(_equipingUDID))
             {
                 m_equipingEquipment = m_currrentSelectEquipment = null;
@@ -110,8 +140,8 @@ namespace ProjectBS.UI
             {
                 m_equipingEquipment = m_currrentSelectEquipment = PlayerManager.Instance.GetEquipmentByUDID(_equipingUDID);
             }
-            RefreshChangeEquipmentPanel(equipmentType);
-            m_changeEquipmentPanelRoot.SetActive(true);
+            RefreshChangeEquipmentPanel(type);
+            m_selectObjectPanelRoot.SetActive(true);
         }
 
         public void Button_StartChangeSkill(int index)
@@ -264,7 +294,7 @@ namespace ProjectBS.UI
         private void DisableAllSubPanel()
         {
             m_currentState = State.None;
-            m_changeEquipmentPanelRoot.SetActive(false);
+            m_selectObjectPanelRoot.SetActive(false);
             m_changeSkillPanelRoot.SetActive(false);
             m_setToPartyPanelRoot.SetActive(false);
         }
@@ -273,56 +303,76 @@ namespace ProjectBS.UI
         {
             m_currentEquipmentType = equipmentType;
 
+            for(int i = 0; i < m_clonedEquipmentButtons.Count; i++)
+            {
+                m_clonedEquipmentButtons[i].gameObject.SetActive(false);
+            }
+
             List<Data.OwningEquipmentData> _equipments = PlayerManager.Instance.GetEquipmentsByType(m_currentEquipmentType);
             
-            for (int i = 0; i < m_changeEquipmentPanel_equipmentList.Length; i++)
+            for (int i = 0; i < _equipments.Count; i++)
             {
-                int _currentDisplayEquipmentIndex = i + m_changeEquipmentPanel_equipmentList.Length * m_currentPage;
-
-                if (_currentDisplayEquipmentIndex >= _equipments.Count)
+                if (i < m_clonedEquipmentButtons.Count)
                 {
-                    m_changeEquipmentPanel_equipmentList[i].gameObject.SetActive(false);
+                    m_clonedEquipmentButtons[i].SetUp(_equipments[i]);
+                    m_clonedEquipmentButtons[i].gameObject.SetActive(true);
                 }
                 else
                 {
-                    m_changeEquipmentPanel_equipmentList[i].SetUp(_equipments[_currentDisplayEquipmentIndex]);
-                    m_changeEquipmentPanel_equipmentList[i].EnableButton(_equipments[_currentDisplayEquipmentIndex] != m_currrentSelectEquipment);
-                    m_changeEquipmentPanel_equipmentList[i].gameObject.SetActive(true);
+                    MainMenuUI_EquipmentButton _cloneButton = Instantiate(m_equipmentButtonPrefab);
+                    _cloneButton.transform.SetParent(m_selectObjectContainer);
+                    _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.SetUp(_equipments[i]);
+                    _cloneButton.OnButtonPressed += ShowEquipmentComparePanel;
+                    m_clonedEquipmentButtons.Add(_cloneButton);
                 }
             }
 
-            int _beforeHP = m_refCharacter.GetTotal(Keyword.HP);
-            int _beforeSP = m_refCharacter.GetTotal(Keyword.SP);
-            int _beforeAtk = m_refCharacter.GetTotal(Keyword.Attack);
-            int _beforeDef = m_refCharacter.GetTotal(Keyword.Defense);
-            int _beforeSpd = m_refCharacter.GetTotal(Keyword.Speed);
+            //int _beforeHP = m_refCharacter.GetTotal(Keyword.HP);
+            //int _beforeSP = m_refCharacter.GetTotal(Keyword.SP);
+            //int _beforeAtk = m_refCharacter.GetTotal(Keyword.Attack);
+            //int _beforeDef = m_refCharacter.GetTotal(Keyword.Defense);
+            //int _beforeSpd = m_refCharacter.GetTotal(Keyword.Speed);
 
-            m_changeEquipmentPanel_beforeText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-                                                        _beforeHP.ToString(),
-                                                        _beforeSP.ToString(),
-                                                        _beforeAtk.ToString(),
-                                                        _beforeDef.ToString(),
-                                                        _beforeSpd.ToString());
+            //m_changeEquipmentPanel_beforeText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
+            //                                            _beforeHP.ToString(),
+            //                                            _beforeSP.ToString(),
+            //                                            _beforeAtk.ToString(),
+            //                                            _beforeDef.ToString(),
+            //                                            _beforeSpd.ToString());
 
-            if(m_currrentSelectEquipment == null)
-            {
-                m_changeEquipmentPanel_afterText.text = m_changeEquipmentPanel_beforeText.text;
-            }
-            else
-            {
-                int _afterHP = _beforeHP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.HP) + m_currrentSelectEquipment.HP;
-                int _afterSP = _beforeSP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.SP) + m_currrentSelectEquipment.SP;
-                int _afterAtk = _beforeAtk - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Attack) + m_currrentSelectEquipment.Attack;
-                int _afterDef = _beforeDef - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Defense) + m_currrentSelectEquipment.Defense;
-                int _afterSpd = _beforeSpd - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Speed) + m_currrentSelectEquipment.Speed;
+            //if(m_currrentSelectEquipment == null)
+            //{
+            //    m_changeEquipmentPanel_afterText.text = m_changeEquipmentPanel_beforeText.text;
+            //}
+            //else
+            //{
+            //    int _afterHP = _beforeHP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.HP) + m_currrentSelectEquipment.HP;
+            //    int _afterSP = _beforeSP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.SP) + m_currrentSelectEquipment.SP;
+            //    int _afterAtk = _beforeAtk - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Attack) + m_currrentSelectEquipment.Attack;
+            //    int _afterDef = _beforeDef - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Defense) + m_currrentSelectEquipment.Defense;
+            //    int _afterSpd = _beforeSpd - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Speed) + m_currrentSelectEquipment.Speed;
 
-                m_changeEquipmentPanel_afterText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-                                            GetChangeStatusString(_beforeHP, _afterHP),
-                                            GetChangeStatusString(_beforeSP, _afterSP),
-                                            GetChangeStatusString(_beforeAtk, _afterAtk),
-                                            GetChangeStatusString(_beforeDef, _afterDef),
-                                            GetChangeStatusString(_beforeSpd, _afterSpd));
-            }
+            //    m_changeEquipmentPanel_afterText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
+            //                                GetChangeStatusString(_beforeHP, _afterHP),
+            //                                GetChangeStatusString(_beforeSP, _afterSP),
+            //                                GetChangeStatusString(_beforeAtk, _afterAtk),
+            //                                GetChangeStatusString(_beforeDef, _afterDef),
+            //                                GetChangeStatusString(_beforeSpd, _afterSpd));
+            //}
+        }
+
+        protected void ShowEquipmentComparePanel(Data.OwningEquipmentData selected)
+        {
+            m_changeEquipment_before_noContentRoot.SetActive(m_equipingEquipment == null);
+            if (m_equipingEquipment != null) m_changeEquipment_before.SetUp(m_equipingEquipment);
+            m_changeEquipment_before.gameObject.SetActive(m_equipingEquipment != null);
+
+            m_changeEquipment_after_noContentRoot.SetActive(selected == null);
+            if (selected != null) m_changeEquipment_after.SetUp(selected);
+            m_changeEquipment_after.gameObject.SetActive(selected != null);
+
+            m_compareEquipmentPanelRoot.SetActive(true);
         }
 
         private void RefreshChangeSkillPanel()

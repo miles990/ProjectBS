@@ -7,6 +7,8 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterInfoPanel_EquipmentButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
+        public event System.Action<MainMenuUI_CharacterInfoPanel_EquipmentButton> OnSelected = null; 
+
         [SerializeField] private GameObject m_noneContentHintRoot = null;
         [SerializeField] private GameObject m_contentRoot = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
@@ -50,6 +52,10 @@ namespace ProjectBS.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if(m_showInfoTimer > 0f)
+            {
+                OnSelected?.Invoke(this);
+            }
             m_showInfoTimer = 0f;
         }
 

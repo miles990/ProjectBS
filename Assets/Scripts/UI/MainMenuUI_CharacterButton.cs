@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System;
 using TMPro;
-using UnityEngine.EventSystems;
 
 namespace ProjectBS.UI
 {
-    public class MainMenuUI_CharacterButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class MainMenuUI_CharacterButton : MainMenuUI_CustomButtonBase
     {
+        public event Action OnEdited = null;
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
-        public event System.Action OnEdited = null;
 
         [SerializeField] private GameObject m_partyHintRoot = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
@@ -24,7 +23,6 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_skill3Text = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
-        private Vector2 m_touchDownPos;
 
         public void SetUp(Data.OwningCharacterData characterData)
         {
@@ -57,18 +55,7 @@ namespace ProjectBS.UI
             }
         }
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            m_touchDownPos = eventData.position;
-        }
 
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            if(Vector2.Distance(m_touchDownPos, eventData.position) <= 2f)
-            {
-                OnButtonPressed?.Invoke(m_refCharacter);
-            }
-        }
 
         public void Button_Depart()
         {
@@ -77,6 +64,11 @@ namespace ProjectBS.UI
                 PlayerManager.Instance.SavePlayer();
                 OnEdited?.Invoke();
             }
+        }
+
+        protected override void OnPressed()
+        {
+            OnButtonPressed?.Invoke(m_refCharacter);
         }
     }
 }

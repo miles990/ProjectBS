@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 namespace ProjectBS.UI
 {
-    public class MainMenuUI_EquipmentButton : MonoBehaviour
+    public class MainMenuUI_EquipmentButton : MainMenuUI_CustomButtonBase
     {
         public event System.Action OnEdited = null;
+        public event System.Action<Data.OwningEquipmentData> OnButtonPressed = null;
 
         [SerializeField] private TextMeshProUGUI m_levelText = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
@@ -26,12 +27,9 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_unlockUIRoot = null;
 
         private Data.OwningEquipmentData m_refEquipment = null;
-        private bool m_initing = false;
 
         public void SetUp(Data.OwningEquipmentData equipmentData)
         {
-            m_initing = true;
-
             m_refEquipment = equipmentData;
             Data.RawEquipmentData _source = equipmentData.GetSourceData();
 
@@ -60,8 +58,6 @@ namespace ProjectBS.UI
             }
 
             UpdateToogleUI();
-
-            m_initing = false;
         }
 
         public void Button_Depart()
@@ -74,9 +70,6 @@ namespace ProjectBS.UI
 
         public void Button_OnToggleValueChanged()
         {
-            if (m_initing)
-                return;
-
             if(m_refEquipment != null)
             {
                 EquipmentUtility.Lock(m_refEquipment.UDID, m_lockToggle.isOn);
@@ -91,6 +84,11 @@ namespace ProjectBS.UI
             m_departButton.gameObject.SetActive(!m_lockToggle.isOn);
             m_lockUIRoot.gameObject.SetActive(m_lockToggle.isOn);
             m_unlockUIRoot.gameObject.SetActive(!m_lockToggle.isOn);
+        }
+
+        protected override void OnPressed()
+        {
+            OnButtonPressed?.Invoke(m_refEquipment);
         }
     }
 }
