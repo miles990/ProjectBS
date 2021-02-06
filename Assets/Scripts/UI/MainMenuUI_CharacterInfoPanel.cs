@@ -76,7 +76,6 @@ namespace ProjectBS.UI
         private Data.OwningCharacterData m_refCharacter = null;
 
         private State m_currentState = State.None;
-        private int m_currentPage = 0;
         private string m_currentEquipmentType = Keyword.Head;
         private Data.OwningEquipmentData m_equipingEquipment = null;
         private Data.OwningEquipmentData m_currrentSelectEquipment = null;
@@ -108,7 +107,6 @@ namespace ProjectBS.UI
 
         private void StartChangeEquipment(MainMenuUI_CharacterInfoPanel_EquipmentButton button)
         {
-            m_currentPage = 0;
             m_currentState = State.ChangingEquipment;
 
             if(button == m_headEquipment)
@@ -147,24 +145,10 @@ namespace ProjectBS.UI
         public void Button_StartChangeSkill(int index)
         {
             m_targetSkillSlotIndex = index;
-            m_currentPage = 0;
             m_currentState = State.ChangingSkill;
             m_currentSelectSkill = null;
             RefreshChangeSkillPanel();
             m_changeSkillPanelRoot.SetActive(true);
-        }
-
-        public void Button_ChangePanels_GoNextPage()
-        {
-            m_currentPage++;
-            RefreshSelectPanel();
-        }
-
-        public void Button_ChangePanels_GoPreviousPage()
-        {
-            m_currentPage--;
-            m_currentPage = m_currentPage < 0 ? 0 : m_currentPage;
-            RefreshSelectPanel();
         }
 
         public void Button_ChangeEquipment_Select(Data.OwningEquipmentData data)
@@ -186,6 +170,7 @@ namespace ProjectBS.UI
                 PlayerManager.Instance.EquipmentTo(m_refCharacter, m_currrentSelectEquipment.UDID);
             }
             PlayerManager.Instance.SavePlayer();
+            RefreshInfo();
             DisableAllSubPanel();
         }
 
@@ -296,6 +281,7 @@ namespace ProjectBS.UI
             m_currentState = State.None;
             m_selectObjectPanelRoot.SetActive(false);
             m_changeSkillPanelRoot.SetActive(false);
+            m_compareEquipmentPanelRoot.SetActive(false);
             m_setToPartyPanelRoot.SetActive(false);
         }
 
@@ -327,39 +313,6 @@ namespace ProjectBS.UI
                     m_clonedEquipmentButtons.Add(_cloneButton);
                 }
             }
-
-            //int _beforeHP = m_refCharacter.GetTotal(Keyword.HP);
-            //int _beforeSP = m_refCharacter.GetTotal(Keyword.SP);
-            //int _beforeAtk = m_refCharacter.GetTotal(Keyword.Attack);
-            //int _beforeDef = m_refCharacter.GetTotal(Keyword.Defense);
-            //int _beforeSpd = m_refCharacter.GetTotal(Keyword.Speed);
-
-            //m_changeEquipmentPanel_beforeText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-            //                                            _beforeHP.ToString(),
-            //                                            _beforeSP.ToString(),
-            //                                            _beforeAtk.ToString(),
-            //                                            _beforeDef.ToString(),
-            //                                            _beforeSpd.ToString());
-
-            //if(m_currrentSelectEquipment == null)
-            //{
-            //    m_changeEquipmentPanel_afterText.text = m_changeEquipmentPanel_beforeText.text;
-            //}
-            //else
-            //{
-            //    int _afterHP = _beforeHP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.HP) + m_currrentSelectEquipment.HP;
-            //    int _afterSP = _beforeSP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.SP) + m_currrentSelectEquipment.SP;
-            //    int _afterAtk = _beforeAtk - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Attack) + m_currrentSelectEquipment.Attack;
-            //    int _afterDef = _beforeDef - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Defense) + m_currrentSelectEquipment.Defense;
-            //    int _afterSpd = _beforeSpd - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Speed) + m_currrentSelectEquipment.Speed;
-
-            //    m_changeEquipmentPanel_afterText.text = string.Format("HP: {0}\nSP: {1}\nAttack: {2}\nDefense: {3}\nSpeed: {4}",
-            //                                GetChangeStatusString(_beforeHP, _afterHP),
-            //                                GetChangeStatusString(_beforeSP, _afterSP),
-            //                                GetChangeStatusString(_beforeAtk, _afterAtk),
-            //                                GetChangeStatusString(_beforeDef, _afterDef),
-            //                                GetChangeStatusString(_beforeSpd, _afterSpd));
-            //}
         }
 
         protected void ShowEquipmentComparePanel(Data.OwningEquipmentData selected)
@@ -372,26 +325,28 @@ namespace ProjectBS.UI
             if (selected != null) m_changeEquipment_after.SetUp(selected);
             m_changeEquipment_after.gameObject.SetActive(selected != null);
 
+            m_currrentSelectEquipment = selected;
+
+            int _beforeHP = m_refCharacter.GetTotal(Keyword.HP);
+            int _beforeAtk = m_refCharacter.GetTotal(Keyword.Attack);
+            int _beforeDef = m_refCharacter.GetTotal(Keyword.Defense);
+            int _beforeSpd = m_refCharacter.GetTotal(Keyword.Speed);
+
+            int _afterHP = _beforeHP - (m_equipingEquipment == null ? 0 : m_equipingEquipment.HP) + m_currrentSelectEquipment.HP;
+            int _afterAtk = _beforeAtk - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Attack) + m_currrentSelectEquipment.Attack;
+            int _afterDef = _beforeDef - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Defense) + m_currrentSelectEquipment.Defense;
+            int _afterSpd = _beforeSpd - (m_equipingEquipment == null ? 0 : m_equipingEquipment.Speed) + m_currrentSelectEquipment.Speed;
+
+            m_changeEquipment_defferentValue_hp.text = GetChangeStatusString(_beforeHP, _afterHP);
+            m_changeEquipment_defferentValue_attack.text = GetChangeStatusString(_beforeAtk, _afterAtk);
+            m_changeEquipment_defferentValue_defense.text = GetChangeStatusString(_beforeDef, _afterDef);
+            m_changeEquipment_defferentValue_speed.text = GetChangeStatusString(_beforeSpd, _afterSpd);
+
             m_compareEquipmentPanelRoot.SetActive(true);
         }
 
         private void RefreshChangeSkillPanel()
         {
-            for (int i = 0; i < m_changeSkillPanel_skillList.Length; i++)
-            {
-                int _currentDisplaySkillIndex = i + m_changeSkillPanel_skillList.Length * m_currentPage;
-
-                if (i + m_changeSkillPanel_skillList.Length * m_currentPage >= PlayerManager.Instance.Player.Skills.Count)
-                {
-                    m_changeSkillPanel_skillList[i].transform.gameObject.SetActive(false);
-                }
-                else
-                {
-                    m_changeSkillPanel_skillList[i].SetUp(PlayerManager.Instance.Player.Skills[_currentDisplaySkillIndex]);
-                    m_changeSkillPanel_skillList[i].transform.gameObject.SetActive(true);
-                }
-            }
-
             Data.SkillData _beforeSkillData = m_refCharacter.GetSkill(m_targetSkillSlotIndex);
             
             m_changeSkillPanel_beforeText.text = string.Format("{0}\n(Cost SP:{1})\n{2}",
@@ -418,11 +373,15 @@ namespace ProjectBS.UI
         {
             string _string;
             if (after > before)
-                _string = "<Color=blue>" + after + "</color>";
+            {
+                _string = "<#FFAA00FF>(+" + (after - before) + ")</color>";
+            }
             else if (after < before)
-                _string = "<Color=red>" + after + "</color>";
+            {
+                _string = "<#00C0FFFF>(" + (after - before) + ")</color>";
+            }
             else
-                _string = after.ToString();
+                _string = "";
 
             return _string;
         }

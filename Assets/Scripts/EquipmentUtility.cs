@@ -21,7 +21,7 @@ namespace ProjectBS
                 UDID = System.Guid.NewGuid().ToString()
             };
 
-            SetAility(_newEquipment);
+            SetAbility(_newEquipment);
 
             return _newEquipment;
         }
@@ -91,10 +91,10 @@ namespace ProjectBS
         private static void LevelUp(OwningEquipmentData owningEquipmentData)
         {
             owningEquipmentData.Level++;
-            SetAility(owningEquipmentData);
+            SetAbility(owningEquipmentData);
         }
 
-        private static void SetAility(OwningEquipmentData owningEquipmentData)
+        private static void SetAbility(OwningEquipmentData owningEquipmentData)
         {
             RawEquipmentData _source = owningEquipmentData.GetSourceData();
 
