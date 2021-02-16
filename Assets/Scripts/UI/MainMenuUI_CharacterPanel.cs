@@ -19,13 +19,16 @@ namespace ProjectBS.UI
         [SerializeField] private Michsky.UI.ModernUIPack.WindowManager m_panelManger = null;
         [SerializeField] private RectTransform m_characterButtonContainer = null;
         [SerializeField] private RectTransform m_equipmentButtonContainer = null;
+        [SerializeField] private RectTransform m_skillButtonContainer = null;
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyCharacterButtons = null;
         [SerializeField] private MainMenuUI_CharacterButton m_characterButtonPrefab = null;
         [SerializeField] private MainMenuUI_EquipmentButton m_equipmentButtonPrefab = null;
+        [SerializeField] private MainMenuUI_SkillButton m_skillButtonPrefab = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel m_characterInfoPanel = null;
 
         private List<MainMenuUI_CharacterButton> m_allClonedCharacterButtons = new List<MainMenuUI_CharacterButton>();
         private List<MainMenuUI_EquipmentButton> m_allClonedEquipmentButtons = new List<MainMenuUI_EquipmentButton>();
+        private List<MainMenuUI_SkillButton> m_allClonedSkillButtons = new List<MainMenuUI_SkillButton>();
 
         private PanelType m_currentPanelType = PanelType.Party;
 
@@ -187,7 +190,29 @@ namespace ProjectBS.UI
 
         private void RefreshSkillPageButtonState()
         {
-            throw new NotImplementedException();
+            List<OwningSkillData> _allSkills = PlayerManager.Instance.Player.Skills;
+
+            for (int i = 0; i < m_allClonedSkillButtons.Count; i++)
+            {
+                m_allClonedSkillButtons[i].gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < _allSkills.Count; i++)
+            {
+                if (i < m_allClonedSkillButtons.Count)
+                {
+                    m_allClonedSkillButtons[i].SetUp(_allSkills[i]);
+                    m_allClonedSkillButtons[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    MainMenuUI_SkillButton _cloneButton = Instantiate(m_skillButtonPrefab);
+                    _cloneButton.transform.SetParent(m_skillButtonContainer);
+                    _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.SetUp(_allSkills[i]);
+                    m_allClonedSkillButtons.Add(_cloneButton);
+                }
+            }
         }
     }
 }

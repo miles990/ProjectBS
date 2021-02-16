@@ -1,13 +1,14 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUI_SkillButton : MonoBehaviour
     {
-        [SerializeField] private Text m_nameText = null;
-        [SerializeField] private Text m_descriptionText = null;
-        [SerializeField] private Text m_amoumtText = null;
+        [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TextMeshProUGUI m_descriptionText = null;
+        [SerializeField] private TextMeshProUGUI m_amoumtText = null;
 
         public void SetUp(Data.OwningSkillData skillData)
         {
@@ -15,7 +16,7 @@ namespace ProjectBS.UI
 
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
             m_descriptionText.text = _source.GetAllDescriptionContext();
-            m_amoumtText.text = "x" + skillData.Amount;
+            m_amoumtText.text = "x " + skillData.Amount;
         }
     }
 }
