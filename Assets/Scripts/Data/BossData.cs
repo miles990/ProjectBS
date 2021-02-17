@@ -7,6 +7,7 @@ namespace ProjectBS.Data
         public int ID { get; private set; }
         public int NameContextID { get; private set; }
         public int CharacterSpriteID { get; private set; }
+        public string RankString { get; private set; }
         public int Attack { get; private set; }
         public int Defense { get; private set; }
         public int Speed { get; private set; }

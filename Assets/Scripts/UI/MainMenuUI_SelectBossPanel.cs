@@ -7,47 +7,39 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_SelectBossPanel : MainMenuUI_PanelBase
     {
-        [SerializeField] private MainMenuUI_BossButton[] m_bossButtons = null;
-        [SerializeField] private Button m_nextPageButton = null;
-        [SerializeField] private Button m_previousPageButton = null;
+        [SerializeField] private MainMenuUI_BossButton m_bossButtonPrefab = null;
+        [SerializeField] private RectTransform m_buttonContainer = null;
 
-        private int m_currentPage = 0;
+        private List<MainMenuUI_BossButton> m_clonedButtons = new List<MainMenuUI_BossButton>();
 
         protected override void OnShown()
         {
+            RefreshBossButtons();
         }
 
         protected override void OnHidden()
         {
-            //m_currentPage = 0;
-            //RefreshBossButtons();
-        }
-
-        public void Button_GoNextPage()
-        {
-            m_currentPage++;
-            RefreshBossButtons();
-        }
-
-        public void Button_GoPreviousPage()
-        {
-            m_currentPage--;
-            m_currentPage = m_currentPage < 0 ? 0 : m_currentPage;
-            RefreshBossButtons();
         }
 
         private void RefreshBossButtons()
         {
             Data.BossStageData[] _stages = GameDataManager.GetAllGameData<Data.BossStageData>();
+        
             if(_stages == null)
             {
                 throw new System.Exception("[MainMenuUI_SelectBossPanel][RefreshBossButtons] _stages is null");
             }
 
-            List<Data.BossStageData> _allStage = new List<Data.BossStageData>();
-            for(int i = 0; i < _allStage.Count; i++)
+            for (int i = 0; i < m_clonedButtons.Count; i++)
             {
-                if(_allStage[i].Index == -1)
+                m_clonedButtons[i].gameObject.SetActive(false);
+            }
+
+            List<Data.BossStageData> _allStage = new List<Data.BossStageData>(_stages);
+
+            for (int i = 0; i < _allStage.Count; i++)
+            {
+                if (_allStage[i].Index == -1)
                 {
                     _allStage.RemoveAt(i);
                     i--;
@@ -55,20 +47,20 @@ namespace ProjectBS.UI
             }
             _allStage.Sort((x, y) => x.Index.CompareTo(y.Index));
 
-            m_previousPageButton.interactable = m_currentPage != 0;
-            m_nextPageButton.interactable = m_bossButtons.Length * (m_currentPage + 1) < _allStage.Count;
-
-            for (int i = 0; i < m_bossButtons.Length; i++)
+            for (int i = 0; i < _allStage.Count; i++)
             {
-                int _currentDisplayStageIndex = i + m_bossButtons.Length * m_currentPage;
-                if(_currentDisplayStageIndex >= _allStage.Count)
+                if (i < m_clonedButtons.Count)
                 {
-                    m_bossButtons[i].gameObject.SetActive(false);
+                    m_clonedButtons[i].SetUp(_allStage[i]);
+                    m_clonedButtons[i].gameObject.SetActive(true);
                 }
                 else
                 {
-                    m_bossButtons[i].SetUp(_allStage[_currentDisplayStageIndex]);
-                    m_bossButtons[i].gameObject.SetActive(true);
+                    MainMenuUI_BossButton _cloneButton = Instantiate(m_bossButtonPrefab);
+                    _cloneButton.transform.SetParent(m_buttonContainer);
+                    _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.SetUp(_allStage[i]);
+                    m_clonedButtons.Add(_cloneButton);
                 }
             }
         }

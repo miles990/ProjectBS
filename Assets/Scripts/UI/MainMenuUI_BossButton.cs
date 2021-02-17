@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using KahaGameCore.Static;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUI_BossButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
-        [SerializeField] private Text m_bossNameText = null;
-        [SerializeField] private Text m_bossDescriptionText = null;
+        [SerializeField] private TextMeshProUGUI m_bossNameText = null;
+        [SerializeField] private TextMeshProUGUI m_bossDescriptionText = null;
+        [SerializeField] private TextMeshProUGUI m_levelText = null;
 
         private Data.BossStageData m_refBossStageData = null;
         private float m_showInfoTimer = 0f;
@@ -24,7 +23,8 @@ namespace ProjectBS.UI
             {
                 m_bossNameText.text += " (Cleared)";
             }
-            m_bossDescriptionText.text = "";
+            m_levelText.text = _mainBoss.RankString;
+            m_bossDescriptionText.text = ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID);
         }
 
         public void Button_SelectBoss()
