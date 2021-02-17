@@ -26,13 +26,15 @@ namespace ProjectBS
             return _newEquipment;
         }
 
-        public static void Depart(string UDID)
+        public static bool Depart(string UDID)
         {
             OwningEquipmentData _target = PlayerManager.Instance.GetEquipmentByUDID(UDID);
-            if (_target == null) return;
+            if (_target == null) return false;
             PlayerManager.Instance.Player.Equipments.Remove(_target);
             PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID);
             PlayerManager.Instance.Player.OwnExp += GameDataManager.GetGameData<ExpData>(_target.Level).Owning / 2;
+            PlayerManager.Instance.SavePlayer();
+            return true;
         }
 
         public static void Lock(string UDID, bool lockItem)
@@ -43,10 +45,14 @@ namespace ProjectBS
                     return;
 
                 PlayerManager.Instance.Player.LockedEquipmentUDIDs.Add(UDID);
+                PlayerManager.Instance.SavePlayer();
             }
             else
             {
-                PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID);
+                if(PlayerManager.Instance.Player.LockedEquipmentUDIDs.Remove(UDID))
+                {
+                    PlayerManager.Instance.SavePlayer();
+                }
             }
         }
 

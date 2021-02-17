@@ -68,10 +68,12 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_setToPartyPanelRoot = null;
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyButtons = null;
         [Header("Change Skill Panel")]
-        [SerializeField] private GameObject m_changeSkillPanelRoot = null;
-        [SerializeField] private MainMenuUI_ChangeSkillPanel_SkilltButton[] m_changeSkillPanel_skillList = null;
-        [SerializeField] private Text m_changeSkillPanel_beforeText = null;
-        [SerializeField] private Text m_changeSkillPanel_afterText = null;
+        [SerializeField] private MainMenuUI_SkillButton m_skillButtonPrefab = null;
+        [SerializeField] private GameObject m_compareSkillPanelRoot = null;
+        [SerializeField] private MainMenuUI_SkillButton m_changeSkill_beforeSkill = null;
+        [SerializeField] private GameObject m_changeSkill_before_noContentRoot = null;
+        [SerializeField] private MainMenuUI_SkillButton m_changeSkill_afterSkill = null;
+        [SerializeField] private GameObject m_changeSkill_after_noContentRoot = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -83,18 +85,18 @@ namespace ProjectBS.UI
         private int m_targetSkillSlotIndex = 0;
 
         private List<MainMenuUI_EquipmentButton> m_clonedEquipmentButtons = new List<MainMenuUI_EquipmentButton>();
+        private List<MainMenuUI_SkillButton> m_clonedSkillButtons = new List<MainMenuUI_SkillButton>();
 
         private void Start()
         {
-            for (int i = 0; i < m_changeSkillPanel_skillList.Length; i++)
-            {
-                m_changeSkillPanel_skillList[i].OnSelected += Button_ChangeSkill_Select;
-            }
-
             m_headEquipment.OnSelected += StartChangeEquipment;
             m_bodyEquipment.OnSelected += StartChangeEquipment;
             m_handEquipment.OnSelected += StartChangeEquipment;
             m_footEquipment.OnSelected += StartChangeEquipment;
+            m_skill0.OnSelected += StartChangeSkill;
+            m_skill1.OnSelected += StartChangeSkill;
+            m_skill2.OnSelected += StartChangeSkill;
+            m_skill3.OnSelected += StartChangeSkill;
         }
 
         public void Enable(Data.OwningCharacterData characterData)
@@ -142,13 +144,21 @@ namespace ProjectBS.UI
             m_selectObjectPanelRoot.SetActive(true);
         }
 
-        public void Button_StartChangeSkill(int index)
+        private void StartChangeSkill(MainMenuUI_CharacterInfoPanel_SkilltButton skill)
         {
-            m_targetSkillSlotIndex = index;
+            m_targetSkillSlotIndex = -1;
+            if (skill == m_skill0) m_targetSkillSlotIndex = 0;
+            if (skill == m_skill1) m_targetSkillSlotIndex = 1;
+            if (skill == m_skill2) m_targetSkillSlotIndex = 2;
+            if (skill == m_skill3) m_targetSkillSlotIndex = 3;
+
+            if (m_targetSkillSlotIndex == -1) 
+                throw new System.Exception("[MainMenuUI_CharacterInfoPanel][StartChangeSkill] Invaild skill button");
+
             m_currentState = State.ChangingSkill;
             m_currentSelectSkill = null;
             RefreshChangeSkillPanel();
-            m_changeSkillPanelRoot.SetActive(true);
+            m_selectObjectPanelRoot.SetActive(true);
         }
 
         public void Button_ChangeEquipment_Select(Data.OwningEquipmentData data)
@@ -180,6 +190,7 @@ namespace ProjectBS.UI
             {
                 PlayerManager.Instance.SetSkill(m_refCharacter, m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
             }
+            RefreshInfo();
             DisableAllSubPanel();
         }
 
@@ -240,21 +251,6 @@ namespace ProjectBS.UI
             m_setToPartyPanelRoot.SetActive(true);
         }
 
-        private void RefreshSelectPanel()
-        {
-            switch(m_currentState)
-            {
-                case State.ChangingEquipment:
-                    RefreshChangeEquipmentPanel(m_currentEquipmentType);
-                    break;
-                case State.ChangingSkill:
-                    RefreshChangeSkillPanel();
-                    break;
-                default:
-                    throw new System.Exception("[MainMenuUI_CharacterInfoPanel][RefreshSelectPanel] Invaild State=" + m_currentState.ToString());
-            }
-        }
-
         private void OnPartyCharacterButtonSelected(Data.OwningCharacterData characterData)
         {
             for (int i = 0; i < m_partyButtons.Length; i++)
@@ -280,7 +276,7 @@ namespace ProjectBS.UI
         {
             m_currentState = State.None;
             m_selectObjectPanelRoot.SetActive(false);
-            m_changeSkillPanelRoot.SetActive(false);
+            m_compareSkillPanelRoot.SetActive(false);
             m_compareEquipmentPanelRoot.SetActive(false);
             m_setToPartyPanelRoot.SetActive(false);
         }
@@ -315,7 +311,7 @@ namespace ProjectBS.UI
             }
         }
 
-        protected void ShowEquipmentComparePanel(Data.OwningEquipmentData selected)
+        private void ShowEquipmentComparePanel(Data.OwningEquipmentData selected)
         {
             m_changeEquipment_before_noContentRoot.SetActive(m_equipingEquipment == null);
             if (m_equipingEquipment != null) m_changeEquipment_before.SetUp(m_equipingEquipment);
@@ -347,26 +343,46 @@ namespace ProjectBS.UI
 
         private void RefreshChangeSkillPanel()
         {
+            for (int i = 0; i < m_clonedSkillButtons.Count; i++)
+            {
+                m_clonedSkillButtons[i].gameObject.SetActive(false);
+            }
+
+            List<Data.OwningSkillData> _skills = PlayerManager.Instance.Player.Skills;
+
+            for (int i = 0; i < _skills.Count; i++)
+            {
+                if (i < m_clonedSkillButtons.Count)
+                {
+                    m_clonedSkillButtons[i].SetUp(_skills[i]);
+                    m_clonedSkillButtons[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    MainMenuUI_SkillButton _cloneButton = Instantiate(m_skillButtonPrefab);
+                    _cloneButton.transform.SetParent(m_selectObjectContainer);
+                    _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.SetUp(_skills[i]);
+                    _cloneButton.OnButtonPressed += ShowSkillComparePanel;
+                    m_clonedSkillButtons.Add(_cloneButton);
+                }
+            }
+        }
+
+        private void ShowSkillComparePanel(Data.OwningSkillData skillData)
+        {
             Data.SkillData _beforeSkillData = m_refCharacter.GetSkill(m_targetSkillSlotIndex);
-            
-            m_changeSkillPanel_beforeText.text = string.Format("{0}\n(Cost SP:{1})\n{2}",
-            ContextConverter.Instance.GetContext(_beforeSkillData.NameContextID),
-            _beforeSkillData.SP,
-            ContextConverter.Instance.GetContext(_beforeSkillData.DescriptionContextID));
+            m_changeSkill_before_noContentRoot.SetActive(_beforeSkillData == null);
+            m_changeSkill_beforeSkill.gameObject.SetActive(_beforeSkillData != null);
+            if (_beforeSkillData != null) m_changeSkill_beforeSkill.SetUp(_beforeSkillData);
 
-            if (m_currentSelectSkill == null)
-            {
-                m_changeSkillPanel_afterText.text = m_changeSkillPanel_beforeText.text;
-            }
-            else
-            {
-                Data.SkillData _selectingSkill = m_currentSelectSkill.GetSourceData();
+            m_currentSelectSkill = skillData;
 
-                m_changeSkillPanel_afterText.text = string.Format("{0}\n(Cost SP:{1})\n{2}",
-                    ContextConverter.Instance.GetContext(_selectingSkill.NameContextID),
-                    _selectingSkill.SP,
-                    ContextConverter.Instance.GetContext(_selectingSkill.DescriptionContextID));
-            }
+            m_changeSkill_after_noContentRoot.SetActive(m_currentSelectSkill == null);
+            m_changeSkill_afterSkill.gameObject.SetActive(m_currentSelectSkill != null);
+            if (m_currentSelectSkill != null) m_changeSkill_afterSkill.SetUp(m_currentSelectSkill);
+
+            m_compareSkillPanelRoot.SetActive(true);
         }
 
         private string GetChangeStatusString(int before, int after)

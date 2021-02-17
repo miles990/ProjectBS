@@ -6,7 +6,8 @@ namespace ProjectBS.UI
 {
     public class ConfirmWindowUIView : KahaGameCore.Common.ConfirmWindowBase
     {
-        [Header("=============is not using above=============")]
+        [Space(50)]
+        [Header("=============Do not use above=============")]
         [SerializeField] private ModalWindowManager m_modernUI = null;
 
         private Action m_onConfirmed = null;

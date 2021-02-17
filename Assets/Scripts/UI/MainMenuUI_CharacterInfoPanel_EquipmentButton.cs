@@ -66,7 +66,13 @@ namespace ProjectBS.UI
                 m_showInfoTimer -= Time.deltaTime;
                 if (m_showInfoTimer <= 0f)
                 {
-                    throw new System.NotImplementedException();
+                    if (m_referenceEquipment == null)
+                        return;
+
+                    GameManager.Instance.MessageManager.ShowCommonMessage(
+                        ContextConverter.Instance.GetContext(m_referenceEquipment.GetSourceData().DescriptionContextID),
+                        ContextConverter.Instance.GetContext(m_referenceEquipment.GetSourceData().NameContextID),
+                        null);
                 }
             }
         }

@@ -5,6 +5,8 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterInfoPanel_SkilltButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
+        public event System.Action<MainMenuUI_CharacterInfoPanel_SkilltButton> OnSelected = null;
+
         [SerializeField] private TMPro.TextMeshProUGUI m_nameText = null;
 
         private Data.SkillData m_referenceSkill = null;
@@ -23,6 +25,7 @@ namespace ProjectBS.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if (m_showInfoTimer > 0f) OnSelected.Invoke(this);
             m_showInfoTimer = 0f;
         }
 

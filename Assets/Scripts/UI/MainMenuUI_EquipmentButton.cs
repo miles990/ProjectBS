@@ -62,10 +62,7 @@ namespace ProjectBS.UI
 
         public void Button_Depart()
         {
-            EquipmentUtility.Depart(m_refEquipment.UDID);
-            PlayerManager.Instance.SavePlayer();
-
-            OnEdited?.Invoke();
+            if (EquipmentUtility.Depart(m_refEquipment.UDID)) OnEdited?.Invoke();
         }
 
         public void Button_OnToggleValueChanged()
@@ -73,7 +70,6 @@ namespace ProjectBS.UI
             if(m_refEquipment != null)
             {
                 EquipmentUtility.Lock(m_refEquipment.UDID, m_lockToggle.isOn);
-                PlayerManager.Instance.SavePlayer();
                 UpdateToogleUI();
             }
         }
