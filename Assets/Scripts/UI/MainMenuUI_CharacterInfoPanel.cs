@@ -306,6 +306,7 @@ namespace ProjectBS.UI
                     _cloneButton.transform.localScale = Vector3.one;
                     _cloneButton.SetUp(_equipments[i]);
                     _cloneButton.OnButtonPressed += ShowEquipmentComparePanel;
+                    _cloneButton.OnEdited += delegate { RefreshChangeEquipmentPanel(m_currentEquipmentType); };
                     m_clonedEquipmentButtons.Add(_cloneButton);
                 }
             }
@@ -430,16 +431,16 @@ namespace ProjectBS.UI
             m_expText.text = m_refCharacter.Exp + " / " + m_refCharacter.GetRequireExp();
             m_hpRankText.text = m_refCharacter.GetAbilityRankString("HP");
             m_hpRankText.color = UITextColorStorer.GetRankStringColor(m_hpRankText.text);
-            m_hpText.text = m_refCharacter.HP.ToString();
+            m_hpText.text = m_refCharacter.GetTotal(Keyword.HP).ToString();
             m_attackRankText.text = m_refCharacter.GetAbilityRankString("Attack");
             m_attackRankText.color = UITextColorStorer.GetRankStringColor(m_attackRankText.text);
-            m_attackText.text = m_refCharacter.Attack.ToString();
+            m_attackText.text = m_refCharacter.GetTotal(Keyword.Attack).ToString();
             m_defenseRankText.text = m_refCharacter.GetAbilityRankString("Defense");
             m_defenseRankText.color = UITextColorStorer.GetRankStringColor(m_defenseRankText.text);
-            m_defenseText.text = m_refCharacter.Defense.ToString();
+            m_defenseText.text = m_refCharacter.GetTotal(Keyword.Defense).ToString();
             m_speedRankText.text = m_refCharacter.GetAbilityRankString("Speed");
             m_speedRankText.color = UITextColorStorer.GetRankStringColor(m_speedRankText.text);
-            m_speedText.text = m_refCharacter.Speed.ToString();
+            m_speedText.text = m_refCharacter.GetTotal(Keyword.Speed).ToString();
 
             // const value from designer
             int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).MaxValue * 100 + 100000;

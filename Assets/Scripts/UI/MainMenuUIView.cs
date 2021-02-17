@@ -31,7 +31,7 @@ namespace ProjectBS.UI
 
         private void Update()
         {
-            if (m_root.activeSelf)
+            if (m_root.activeSelf && PlayerManager.Instance.IsInited)
             {
                 m_staminaText.text = PlayerManager.Instance.Player.Stamina + " / " + GameDataManager.GameProperties.MaxStamina;
                 m_staminaImage.fillAmount = (float)PlayerManager.Instance.Player.Stamina / (float)GameDataManager.GameProperties.MaxStamina;

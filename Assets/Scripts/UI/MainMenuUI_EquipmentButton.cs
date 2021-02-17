@@ -65,6 +65,16 @@ namespace ProjectBS.UI
             if (EquipmentUtility.Depart(m_refEquipment.UDID)) OnEdited?.Invoke();
         }
 
+        public void Button_LevelUp(int level)
+        {
+            if (m_refEquipment == null) return;
+            for(int i = 0; i < level; i++)
+            {
+                EquipmentUtility.TryAddOneLevel(m_refEquipment);
+            }
+            OnEdited?.Invoke();
+        }
+
         public void Button_OnToggleValueChanged()
         {
             if(m_refEquipment != null)
