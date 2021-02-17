@@ -23,16 +23,16 @@ namespace ProjectBS.UI
             {
                 m_bossNameText.text += " (Cleared)";
             }
-            m_levelText.text = _mainBoss.RankString;
+            m_levelText.text = m_refBossStageData.Stamina.ToString();
             m_bossDescriptionText.text = ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID);
         }
 
-        public void Button_SelectBoss()
+        private void Button_SelectBoss()
         {
             GameManager.Instance.StartLocalCombat(m_refBossStageData);
         }
 
-        public void Button_ShowInfo()
+        private void Button_ShowInfo()
         {
             GameManager.Instance.MessageManager.ShowCommonMessage(
                 ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID),
