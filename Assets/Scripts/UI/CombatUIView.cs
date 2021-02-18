@@ -29,8 +29,6 @@ namespace ProjectBS.UI
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
-        [SerializeField] private CombatUI_InfoText m_infoPrefab = null;
-        [SerializeField] private UnityEngine.UI.Text m_actionSortInfoText = null;
         [Header("Network")]
         [SerializeField] private PhotonView m_photonView = null;
 
@@ -53,6 +51,11 @@ namespace ProjectBS.UI
                 m_skillButtons[i].OnSelected += Button_SelectSkill;
                 m_skillButtons[i].OnShownDetailCommanded += Button_ShowSkillInfo;
             }
+
+            for(int i = 0; i < m_characterPanels.Length;i++)
+            {
+                m_characterPanels[i].OnSelected += Button_SelectCharacter;
+            }
         }
 
         private void Update()
@@ -71,7 +74,7 @@ namespace ProjectBS.UI
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
             m_root.SetActive(show);
-            m_actionSortInfoText.gameObject.SetActive(show);
+            //m_actionSortInfoText.gameObject.SetActive(show);
             for(int i = 0; i < m_characterPanels.Length; i++)
             {
                 m_characterPanels[i].EnableActingHint(false);
@@ -112,6 +115,8 @@ namespace ProjectBS.UI
                         m_unitToIndex.Add(units[i], _currentPlayerIndex);
                     }
                     m_characterPanels[_currentPlayerIndex].SetUp(units[i].UDID);
+                    m_characterPanels[_currentPlayerIndex].EnableActingHint(false);
+                    m_characterPanels[_currentPlayerIndex].EnableButton(false);
                     m_characterPanels[_currentPlayerIndex].gameObject.SetActive(true);
                     _currentPlayerIndex++;
                 }
@@ -136,6 +141,8 @@ namespace ProjectBS.UI
                     }
 
                     m_characterPanels[_currentEnemyIndex].SetUp(units[i].UDID);
+                    m_characterPanels[_currentEnemyIndex].EnableActingHint(false);
+                    m_characterPanels[_currentEnemyIndex].EnableButton(false);
                     m_characterPanels[_currentEnemyIndex].gameObject.SetActive(true);
                     _currentEnemyIndex++;
                 }
@@ -166,7 +173,7 @@ namespace ProjectBS.UI
         [PunRPC]
         private void Sync_RefreshActionQueueInfo(string info)
         {
-            m_actionSortInfoText.text = info;
+            //m_actionSortInfoText.text = info;
         }
 
         public void RemoveActor(CombatUnit unit)
@@ -359,7 +366,7 @@ namespace ProjectBS.UI
                 ContextConverter.Instance.GetContext(_selectedSkill.NameContextID), null);
         }
 
-        public void Button_SelectCharacter(int index)
+        private void Button_SelectCharacter(int index)
         {
             if(!m_indexToUnit.ContainsKey(index))
             {
@@ -459,18 +466,20 @@ namespace ProjectBS.UI
         [PunRPC]
         private void Sync_SetInfoText(string UDID, string info)
         {
-            CombatUnit _target = m_allUnits.Find(x => x.UDID == UDID);
+            //CombatUnit _target = m_allUnits.Find(x => x.UDID == UDID);
 
-            CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
-            _clone.transform.SetParent(transform);
-            if (_target == null)
-                _clone.transform.localPosition = Vector3.zero;
-            else
-                _clone.transform.position = m_characterPanels[m_unitToIndex[_target]].transform.position;
-            _clone.SetText(string.Format(info));
-            _clone.gameObject.SetActive(true);
+            //CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
+            //_clone.transform.SetParent(transform);
+            //if (_target == null)
+            //    _clone.transform.localPosition = Vector3.zero;
+            //else
+            //    _clone.transform.position = m_characterPanels[m_unitToIndex[_target]].transform.position;
+            //_clone.SetText(string.Format(info));
+            //_clone.gameObject.SetActive(true);
 
-            Destroy(_clone.gameObject, DISPLAY_INFO_TIME);
+            //Destroy(_clone.gameObject, DISPLAY_INFO_TIME);
+
+            Debug.Log("UDID=" + UDID + ", info=" + info);
         }
 
         private void WaitPlayerSelect()
@@ -520,7 +529,7 @@ namespace ProjectBS.UI
                     {
                         continue;
                     }
-                    m_characterPanels[i].SetEnable(m_indexToUnit[i].HP > 0 ? enable : false);
+                    m_characterPanels[i].EnableButton(m_indexToUnit[i].HP > 0 ? enable : false);
                 }
             }
         }
@@ -535,7 +544,7 @@ namespace ProjectBS.UI
                     {
                         continue;
                     }
-                    m_characterPanels[i].SetEnable(m_indexToUnit[i].HP > 0 ? enable : false);
+                    m_characterPanels[i].EnableButton(m_indexToUnit[i].HP > 0 ? enable : false);
                 }
             }
         }

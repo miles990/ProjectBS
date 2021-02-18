@@ -341,6 +341,9 @@ namespace ProjectBS.Combat
 
             OwningEquipmentData _equipment = PlayerManager.Instance.GetEquipmentByUDID(equipmentData);
 
+            if (_equipment == null)
+                throw new System.Exception("[CombatUnit][AddValueByEquipment] save data is broken, don't have equipment " + equipmentData);
+
             switch (statusType)
             {
                 case Keyword.HP:
