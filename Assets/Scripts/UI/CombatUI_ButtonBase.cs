@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace ProjectBS.Combat
+namespace ProjectBS.UI
 {
     public class CombatUI_ButtonBase : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {

@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 using TMPro;
-using System;
+using ProjectBS.Combat;
 
-namespace ProjectBS.Combat
+namespace ProjectBS.UI
 {
     public class CombatUI_CharacterPanel : CombatUI_ButtonBase
     {
+        public enum AnimationClipName
+        {
+            Appear
+        }
+
+        [SerializeField] private Animator m_animator = null;
+        [SerializeField] private Image m_hpBar = null;
+        [SerializeField] private Image m_spBar = null;
         [SerializeField] private TextMeshProUGUI m_hpText = null;
         [SerializeField] private TextMeshProUGUI m_spText = null;
         [SerializeField] private TextMeshProUGUI m_hatePersentText = null;
@@ -21,6 +28,11 @@ namespace ProjectBS.Combat
             m_actingHint.SetActive(enable);
         }
 
+        public void PlayAni(AnimationClipName name)
+        {
+            m_animator.Play(name.ToString(), 0, 0f);
+        }
+
         public void SetUp(string unitUDID)
         {
             m_refUnitUDID = unitUDID;
@@ -29,7 +41,7 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            Combat.CombatUnit _unit = Combat.CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID);
+            CombatUnit _unit = CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID);
 
             string[] _skillName = new string[4];
             for(int i = 0; i < _unit.skills.Length; i++)
@@ -40,8 +52,8 @@ namespace ProjectBS.Combat
                     _skillName[i] = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_unit.skills[i]).NameContextID);
             }
 
-            List<Combat.CombatUnit> _allUnits = Combat.CombatUtility.ComabtManager.AllUnit;
-            if (_allUnits.Contains(Combat.CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID)))
+            List<CombatUnit> _allUnits = CombatUtility.ComabtManager.AllUnit;
+            if (_allUnits.Contains(CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID)))
             {
                 float _haterdPersent = Combat.CombatUtility.GetHatredPersent(_unit);
                 m_hatePersentText.text = System.Convert.ToInt32((_haterdPersent * 100f)) + "%";
@@ -51,6 +63,9 @@ namespace ProjectBS.Combat
             {
                 m_hatePersentText.gameObject.SetActive(false);
             }
+
+            m_hpBar.fillAmount = (float)_unit.HP / (float)_unit.GetMaxHP();
+            m_spBar.fillAmount = (float)_unit.SP / 100f;
 
             m_hpText.text = _unit.HP.ToString();
             m_spText.text = _unit.SP.ToString();

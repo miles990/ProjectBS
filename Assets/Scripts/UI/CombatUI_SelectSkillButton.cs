@@ -1,10 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
 
-namespace ProjectBS.Combat
+namespace ProjectBS.UI
 {
     public class CombatUI_SelectSkillButton : CombatUI_ButtonBase
     {

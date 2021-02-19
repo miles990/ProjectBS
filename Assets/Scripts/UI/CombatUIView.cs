@@ -26,6 +26,8 @@ namespace ProjectBS.UI
         }
 
         [SerializeField] private GameObject m_root = null;
+        [SerializeField] private CombatUI_StatusObjLayout m_camp0Layout = null;
+        [SerializeField] private CombatUI_StatusObjLayout m_camp1Layout = null;
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
@@ -78,6 +80,7 @@ namespace ProjectBS.UI
             for(int i = 0; i < m_characterPanels.Length; i++)
             {
                 m_characterPanels[i].EnableActingHint(false);
+                m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
             }
             onCompleted?.Invoke();
         }
@@ -92,6 +95,8 @@ namespace ProjectBS.UI
             m_allUnits.Clear();
             int _currentPlayerIndex = 0;
             int _currentEnemyIndex = 4;
+            int _camp0Count = 0;
+            int _camp1Count = 0;
 
             for (int i = 0; i < units.Count; i++)
             { 
@@ -119,6 +124,7 @@ namespace ProjectBS.UI
                     m_characterPanels[_currentPlayerIndex].EnableButton(false);
                     m_characterPanels[_currentPlayerIndex].gameObject.SetActive(true);
                     _currentPlayerIndex++;
+                    _camp0Count++;
                 }
                 else
                 {
@@ -145,10 +151,13 @@ namespace ProjectBS.UI
                     m_characterPanels[_currentEnemyIndex].EnableButton(false);
                     m_characterPanels[_currentEnemyIndex].gameObject.SetActive(true);
                     _currentEnemyIndex++;
+                    _camp1Count++;
                 }
             }
 
             m_allUnits = new List<CombatUnit>(units);
+            m_camp0Layout.SetUp(_camp0Count);
+            m_camp1Layout.SetUp(_camp1Count);
         }
 
         public void RefreshActionQueueInfo(List<CombatUnitAction> actions)
