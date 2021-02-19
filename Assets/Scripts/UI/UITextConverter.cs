@@ -1,10 +1,10 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
-namespace ProjectBS
+namespace ProjectBS.UI
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class Localizer : MonoBehaviour
+    public class UITextConverter : MonoBehaviour
     {
         [SerializeField] private int m_id = 0;
 
@@ -13,8 +13,11 @@ namespace ProjectBS
         private void Awake()
         {
             m_text = GetComponent<TextMeshProUGUI>();
+        }
+
+        private void OnEnable()
+        {
             m_text.text = ContextConverter.Instance.GetContext(m_id);
         }
     }
 }
-

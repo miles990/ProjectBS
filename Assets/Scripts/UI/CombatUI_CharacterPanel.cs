@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using ProjectBS.Combat;
+using KahaGameCore.Static;
 
 namespace ProjectBS.UI
 {
@@ -30,7 +31,10 @@ namespace ProjectBS.UI
 
         public void PlayAni(AnimationClipName name)
         {
+            m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
+
+            TimerManager.Schedule(1f, delegate { m_animator.enabled = false; });
         }
 
         public void SetUp(string unitUDID)
@@ -55,7 +59,7 @@ namespace ProjectBS.UI
             List<CombatUnit> _allUnits = CombatUtility.ComabtManager.AllUnit;
             if (_allUnits.Contains(CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID)))
             {
-                float _haterdPersent = Combat.CombatUtility.GetHatredPersent(_unit);
+                float _haterdPersent = CombatUtility.GetHatredPersent(_unit);
                 m_hatePersentText.text = System.Convert.ToInt32((_haterdPersent * 100f)) + "%";
                 m_hatePersentText.gameObject.SetActive(true);
             }

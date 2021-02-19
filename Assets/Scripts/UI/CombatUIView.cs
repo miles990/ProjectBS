@@ -28,6 +28,8 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_root = null;
         [SerializeField] private CombatUI_StatusObjLayout m_camp0Layout = null;
         [SerializeField] private CombatUI_StatusObjLayout m_camp1Layout = null;
+        [SerializeField] private Animator m_turnStartAni = null;
+        [SerializeField] private TMPro.TextMeshProUGUI m_turnInfoText = null;
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
@@ -82,7 +84,8 @@ namespace ProjectBS.UI
                 m_characterPanels[i].EnableActingHint(false);
                 m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
             }
-            onCompleted?.Invoke();
+
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onCompleted);
         }
 
         public void InitBattleUnits(List<CombatUnit> units)
@@ -226,7 +229,9 @@ namespace ProjectBS.UI
 
         public void ShowTurnStart(int turnCount, Action onTurnStartAnimationEnded)
         {
-            SetInfoText(null, string.Format("第 {0} 回合", turnCount));
+            m_turnInfoText.text = string.Format(ContextConverter.Instance.GetContext(1000008), turnCount);
+            m_turnStartAni.gameObject.SetActive(true);
+            m_turnStartAni.Play("Display", 0, 0f);
             TimerManager.Schedule(DISPLAY_INFO_TIME, onTurnStartAnimationEnded);
         }
 
