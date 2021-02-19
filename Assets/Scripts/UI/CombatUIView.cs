@@ -85,7 +85,7 @@ namespace ProjectBS.UI
                 m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
             }
 
-            TimerManager.Schedule(DISPLAY_INFO_TIME, onCompleted);
+            TimerManager.Schedule(1.75f, onCompleted);
         }
 
         public void InitBattleUnits(List<CombatUnit> units)
@@ -232,7 +232,7 @@ namespace ProjectBS.UI
             m_turnInfoText.text = string.Format(ContextConverter.Instance.GetContext(1000008), turnCount);
             m_turnStartAni.gameObject.SetActive(true);
             m_turnStartAni.Play("Display", 0, 0f);
-            TimerManager.Schedule(DISPLAY_INFO_TIME, onTurnStartAnimationEnded);
+            TimerManager.Schedule(1f, onTurnStartAnimationEnded);
         }
 
         public void ShowActorActionStart(CombatUnit actor, Action onActionAnimationEnded)
@@ -286,20 +286,19 @@ namespace ProjectBS.UI
         public class SkillAnimationData
         {
             public CombatUnit caster = null;
-            public int nameContextID = 0;
+            public int skillID = 0;
             public Action onEnded = null;
         }
 
         public void ShowSkillAnimation(SkillAnimationData skillAnimationData)
         {
-            if(skillAnimationData.nameContextID == 0)
+            if(skillAnimationData.skillID == 0)
             {
                 skillAnimationData.onEnded?.Invoke();
                 return;
             }
 
-            SetInfoText(skillAnimationData.caster, ContextConverter.Instance.GetContext(skillAnimationData.nameContextID));
-            TimerManager.Schedule(DISPLAY_INFO_TIME, skillAnimationData.onEnded);
+            m_characterPanels[m_unitToIndex[skillAnimationData.caster]].PlayAni(skillAnimationData.skillID, skillAnimationData.onEnded);
         }
 
         public void ShowGameEnd(bool playerWin)

@@ -123,6 +123,11 @@ namespace ProjectBS.Combat
             m_units.AddRange(camp0Units);
             m_units.AddRange(camp1Units);
 
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                m_units[i].HP = m_units[i].GetMaxHP();
+            }
+
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
 
@@ -132,11 +137,6 @@ namespace ProjectBS.Combat
         private void StartBattle()
         {
             TurnCount = 0;
-
-            for(int i = 0; i < m_units.Count; i++)
-            {
-                m_units[i].HP = m_units[i].GetMaxHP();
-            }
 
             AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(m_units);
             AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData

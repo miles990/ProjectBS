@@ -14,6 +14,34 @@ namespace ProjectBS.UI
             Appear
         }
 
+        private class AnimationCommand
+        {
+            public string commandName = "";
+            public List<string> commandParas = new List<string>();
+
+            public void Process()
+            {
+                switch(commandName)
+                {
+                    case "Fire":
+                        {
+                            Debug.Log("Fire");
+                            break;
+                        }
+                    case "Show":
+                        {
+                            Debug.Log("Show");
+                            break;
+                        }
+                }
+
+                for (int i = 0; i < commandParas.Count; i++)
+                {
+                    Debug.Log("para[" + i + "]=" + commandParas[i]);
+                }
+            }
+        }
+
         [SerializeField] private Animator m_animator = null;
         [SerializeField] private Image m_hpBar = null;
         [SerializeField] private Image m_spBar = null;
@@ -23,6 +51,9 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_actingHint = null;
 
         private string m_refUnitUDID = "";
+
+        private float m_hpBarTartgetValue = 1f;
+        private float m_spBarTargetValue = 1f;
 
         public void EnableActingHint(bool enable)
         {
@@ -34,7 +65,64 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
 
-            TimerManager.Schedule(1f, delegate { m_animator.enabled = false; });
+            TimerManager.Schedule(1f, 
+                delegate 
+                {
+                    m_animator.enabled = false;
+                });
+
+            if (name == AnimationClipName.Appear)
+            {
+                m_hpBar.fillAmount = 0.25f;
+                m_spBar.fillAmount = 0.15f;
+                TimerManager.Schedule(1.02f,
+                delegate
+                {
+                    SetUp(m_refUnitUDID);
+                });
+            }
+        }
+
+        public void PlayAni(int skillID, System.Action onEnded)
+        {
+            string _info = GameDataManager.GetGameData<Data.SkillData>(skillID).AnimationInfo;
+
+            if(string.IsNullOrEmpty(_info))
+            {
+                onEnded?.Invoke();
+                return;
+            }
+
+            string[] _infoParts = _info.Split(';');
+            
+            string _aniName = _infoParts[0];
+
+            for(int _infoIndex = 1; _infoIndex < _infoParts.Length; _infoIndex++)
+            {
+                string[] _commandPart = _infoParts[_infoIndex].Split('_');
+                float _time = float.Parse(_commandPart[0]);
+
+                AnimationCommand _commandObj = new AnimationCommand
+                {
+                    commandName = _commandPart[1].Trim()
+                };
+                for (int _commandPartIndex = 2; _commandPartIndex < _commandPart.Length; _commandPartIndex++)
+                {
+                    _commandObj.commandParas.Add(_commandPart[_commandPartIndex].Trim());
+                }
+
+                TimerManager.Schedule(_time, _commandObj.Process);
+            }
+
+            m_animator.enabled = true;
+            m_animator.Play(_aniName.ToString(), 0, 0f);
+
+            TimerManager.Schedule(1.02f,
+                delegate 
+                {
+                    m_animator.enabled = false;
+                    onEnded?.Invoke();
+                });
         }
 
         public void SetUp(string unitUDID)
@@ -68,8 +156,8 @@ namespace ProjectBS.UI
                 m_hatePersentText.gameObject.SetActive(false);
             }
 
-            m_hpBar.fillAmount = (float)_unit.HP / (float)_unit.GetMaxHP();
-            m_spBar.fillAmount = (float)_unit.SP / 100f;
+            m_hpBarTartgetValue = (float)_unit.HP / (float)_unit.GetMaxHP();
+            m_spBarTargetValue = (float)_unit.SP / 100f;
 
             m_hpText.text = _unit.HP.ToString();
             m_spText.text = _unit.SP.ToString();
@@ -108,6 +196,21 @@ namespace ProjectBS.UI
             }
 
             GameManager.Instance.MessageManager.ShowCommonMessage(_buffString, _unit.name, null);
+        }
+
+        private void Update()
+        {
+            UpdateBar(m_hpBar, m_hpBarTartgetValue, 0.035f);
+            UpdateBar(m_spBar, m_spBarTargetValue, 0.035f);
+        }
+
+        private void UpdateBar(Image bar, float target, float spd)
+        {
+            bar.fillAmount = Mathf.Lerp(bar.fillAmount, target, spd);
+            if(Mathf.Abs(bar.fillAmount - target) <= 0.01f)
+            {
+                bar.fillAmount = target;
+            }
         }
     }
 }
