@@ -41,6 +41,7 @@ namespace ProjectBS.UI
                             else
                                 _clone.transform.position = Vector3.zero;
 
+                            CombatUtility.ComabtManager.Shake();
                             break;
                         }
                 }
@@ -90,11 +91,6 @@ namespace ProjectBS.UI
             {
                 m_hpBar.fillAmount = 0.25f;
                 m_spBar.fillAmount = 0.15f;
-                TimerManager.Schedule(1.02f,
-                delegate
-                {
-                    SetUp(m_refUnitUDID);
-                });
             }
         }
 
@@ -129,7 +125,7 @@ namespace ProjectBS.UI
                 {
                     commandName = _commandPart[1].Trim(),
                     casterPos = animationData.casterPos,
-                    targetPos = animationData.targetPos
+                    targetPos = animationData.targetPos,
                 };
                 for (int _commandPartIndex = 2; _commandPartIndex < _commandPart.Length; _commandPartIndex++)
                 {

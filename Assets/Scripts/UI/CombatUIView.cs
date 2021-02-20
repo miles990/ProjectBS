@@ -33,6 +33,10 @@ namespace ProjectBS.UI
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
+        [Header("Shake")]
+        [SerializeField] private float m_shakeTime = 0.3f;
+        [SerializeField] private float m_moveSpeed = 2f;
+        [SerializeField] private float m_moveTime = 0.1f;
         [Header("Network")]
         [SerializeField] private PhotonView m_photonView = null;
 
@@ -47,6 +51,10 @@ namespace ProjectBS.UI
         private SelectTargetData m_currentSelectData = null;
         private List<CombatUnit> m_currentSelectedTargets = new List<CombatUnit>();
         private Action<List<CombatUnit>> m_onSelected = null;
+
+        private float m_shakeTimer = 0f;
+        private float m_moveTimer = 0f;
+        private bool m_isMoingToRight = true;
 
         private void Start()
         {
@@ -68,6 +76,30 @@ namespace ProjectBS.UI
                 return;
 
             RefreshAllInfo();
+
+            if (m_shakeTimer > 0f)
+            {
+                if (m_isMoingToRight)
+                {
+                    transform.position += Vector3.right * m_moveSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    transform.position += Vector3.left * m_moveSpeed * Time.deltaTime;
+                }
+                m_moveTimer -= Time.deltaTime;
+                if (m_moveTimer <= 0f)
+                {
+                    m_isMoingToRight = !m_isMoingToRight;
+                    m_moveTimer = m_moveTime * 2f;
+                }
+
+                m_shakeTimer -= Time.deltaTime;
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, Vector3.zero, 0.1f);
+            }
         }
 
         public override void ForceShow(Manager manager, bool show)
@@ -468,6 +500,12 @@ namespace ProjectBS.UI
         {
             SetInfoText(data.taker, "-" + data.buffName);
             TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
+        }
+
+        public void Shake()
+        {
+            m_shakeTimer = m_shakeTime;
+            m_moveTimer = m_moveTime;
         }
 
         private void SetInfoText(CombatUnit target, string info)

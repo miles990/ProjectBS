@@ -112,6 +112,11 @@ namespace ProjectBS.Combat
             m_units.Remove(GetUnitByUDID(unit));
         }
 
+        public override void Shake()
+        {
+            GetPage<UI.CombatUIView>().Shake();
+        }
+
         public override void StartCombat(List<CombatUnit> camp0Units, List<CombatUnit> camp1Units)
         {
             if(m_isCombating)

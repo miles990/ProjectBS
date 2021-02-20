@@ -38076,6 +38076,9 @@ MonoBehaviour:
   - {fileID: 1203068649}
   - {fileID: 715928435}
   - {fileID: 1799928671}
+  m_shakeTime: 0.26
+  m_moveSpeed: 1.75
+  m_moveTime: 0.05
   m_photonView: {fileID: 1213016811}
 --- !u!1 &2047771184
 GameObject:

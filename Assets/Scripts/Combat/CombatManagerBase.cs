@@ -40,6 +40,7 @@ namespace ProjectBS.Combat
 
         public CombatUnit CurrentDyingUnit { get; protected set; }
 
+        public abstract void Shake();
         public abstract void AddActionIndex(string unitUDID, int addIndex);
         public abstract void AddExtraAction(string unitUDID, bool isImmediate);
         public abstract List<CombatUnit> GetSameCampUnits(int camp);

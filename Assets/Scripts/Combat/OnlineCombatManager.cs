@@ -231,6 +231,11 @@ namespace ProjectBS.Combat
             throw new NotImplementedException();
         }
 
+        public override void Shake()
+        {
+            throw new NotImplementedException();
+        }
+
         public void ForceUpdateCombatUnitsStatus(CombatUnit[] units)
         {
             for (int i = 0; i < units.Length; i++)
