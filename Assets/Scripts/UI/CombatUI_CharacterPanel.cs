@@ -19,7 +19,8 @@ namespace ProjectBS.UI
             public string commandName = "";
             public List<string> commandParas = new List<string>();
             public Vector3 casterPos = default;
-            public Vector3 targetPos = default;
+            public List<CombatUI_CharacterPanel> targets = default;
+            public Dictionary<CombatUI_CharacterPanel, int> targetToDmg = new Dictionary<CombatUI_CharacterPanel, int>();
 
             public void Process()
             {
@@ -27,21 +28,44 @@ namespace ProjectBS.UI
                 {
                     case "Fire":
                         {
-                            break;
+                            throw new System.Exception("Fire");
                         }
                     case "Show":
                         {
-                            GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
-                            Destroy(_clone, 1f);
-
                             if (commandParas[1] == "Target")
-                                _clone.transform.position = targetPos;
+                            {
+                                for(int i = 0; i < targets.Count; i++)
+                                {
+                                    GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
+                                    Destroy(_clone, 1f);
+                                    _clone.transform.position = targets[i].transform.position;
+                                }
+                            }
                             else if (commandParas[1] == "Caster")
+                            {
+                                GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
+                                Destroy(_clone, 1f);
                                 _clone.transform.position = casterPos;
-                            else
-                                _clone.transform.position = Vector3.zero;
-
+                            }
+                            break;
+                        }
+                    case "Shake":
+                        {
                             CombatUtility.ComabtManager.Shake();
+                            break;
+                        }
+                    case "Damage":
+                        {
+                            for (int i = 0; i < targets.Count; i++)
+                            {
+                                float _persent = float.Parse(commandParas[0]);
+                                float _dmg = (float)targetToDmg[targets[i]] * _persent;
+
+                                if (_dmg < 1f) _dmg = 1f;
+
+                                targets[i].ShowDamage(System.Convert.ToInt32(_dmg));
+                            }
+
                             break;
                         }
                 }
@@ -51,6 +75,8 @@ namespace ProjectBS.UI
         [SerializeField] private Animator m_animator = null;
         [SerializeField] private Animator m_infoAnimator = null;
         [SerializeField] private TextMeshProUGUI m_infoText = null;
+        [SerializeField] private Animator m_dmgAnimator = null;
+        [SerializeField] private TextMeshProUGUI m_dmgText = null;
         [SerializeField] private Image m_hpBar = null;
         [SerializeField] private Image m_spBar = null;
         [SerializeField] private TextMeshProUGUI m_hpText = null;
@@ -76,6 +102,13 @@ namespace ProjectBS.UI
             TimerManager.Schedule(1.26f, delegate { m_infoAnimator.gameObject.SetActive(false); });
         }
 
+        public void ShowDamage(int dmg)
+        {
+            m_dmgText.text = "-" + dmg;
+            m_dmgAnimator.gameObject.SetActive(true);
+            m_dmgAnimator.Play("Show", 0, 0f);
+        }
+
         public void PlayAni(AnimationClipName name)
         {
             m_animator.enabled = true;
@@ -97,18 +130,19 @@ namespace ProjectBS.UI
         public class AnimationData
         {
             public Vector3 casterPos = default;
-            public Vector3 targetPos = default;
+            public List<CombatUI_CharacterPanel> targets = new List<CombatUI_CharacterPanel>();
             public int skillID = 0;
+            public Dictionary<CombatUI_CharacterPanel, int> targetToDmg = new Dictionary<CombatUI_CharacterPanel, int>();
             public System.Action onEnded = null;
         }
 
-        public void PlayAni(AnimationData animationData)
+        public void PlaySkillAni(AnimationData animationData)
         {
             string _info = GameDataManager.GetGameData<Data.SkillData>(animationData.skillID).AnimationInfo;
 
             if(string.IsNullOrEmpty(_info))
             {
-                animationData.onEnded?.Invoke();
+                ForceShowDamageWithAnimationData(animationData);
                 return;
             }
 
@@ -125,7 +159,8 @@ namespace ProjectBS.UI
                 {
                     commandName = _commandPart[1].Trim(),
                     casterPos = animationData.casterPos,
-                    targetPos = animationData.targetPos,
+                    targets = animationData.targets,
+                    targetToDmg = animationData.targetToDmg
                 };
                 for (int _commandPartIndex = 2; _commandPartIndex < _commandPart.Length; _commandPartIndex++)
                 {
@@ -141,9 +176,51 @@ namespace ProjectBS.UI
             TimerManager.Schedule(1.02f,
                 delegate 
                 {
-                    m_animator.enabled = false;
-                    animationData.onEnded?.Invoke();
+                    ForceShowDamageWithAnimationData(animationData);
                 });
+        }
+
+        private void ForceShowDamageWithAnimationData(AnimationData animationData)
+        {
+            if (animationData.targetToDmg.Count > 0)
+            {
+                for (int i = 0; i < animationData.targets.Count; i++)
+                {
+                    if (!animationData.targets[i].m_dmgAnimator.gameObject.activeSelf)
+                    {
+                        animationData.targets[i].ShowDamage(animationData.targetToDmg[animationData.targets[i]]);
+                        if (i == 0)
+                        {
+                            TimerManager.Schedule(0.75f, delegate
+                            {
+                                for (int j = 0; j < animationData.targets.Count; j++)
+                                {
+                                    animationData.targets[j].SetDamageIn(animationData.onEnded);
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        animationData.targets[i].SetDamageIn(animationData.onEnded);
+                    }
+                }
+            }
+            else
+            {
+                m_animator.enabled = false;
+                animationData.onEnded?.Invoke();
+            }
+        }
+
+        private void SetDamageIn(System.Action onEnded)
+        {
+            m_dmgAnimator.Play("SetIn", 0, 0f);
+            TimerManager.Schedule(0.6f, delegate
+            {
+                m_dmgAnimator.gameObject.SetActive(false);
+                onEnded?.Invoke();
+            });
         }
 
         public void SetUp(string unitUDID)

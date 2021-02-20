@@ -773,7 +773,7 @@ namespace ProjectBS.Combat
             return _newUnit;
         }
 
-        public static CombatUnit GetUnit(Data.BossData boss)
+        public static CombatUnit CreateUnit(Data.BossData boss)
         {
             CombatUnit _boss = new CombatUnit
             {

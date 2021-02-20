@@ -168,10 +168,17 @@ namespace ProjectBS.Combat.EffectCommand
                 _id = processData.referenceBuff.GetBuffSourceData().NameContextID;
             }
 
+            Dictionary<CombatUnit, int> _targetToDmg = new Dictionary<CombatUnit, int>();
+            foreach(KeyValuePair<string, int> udidToDmg in processData.caster.targetToDmg)
+            {
+                _targetToDmg.Add(CombatUtility.ComabtManager.GetUnitByUDID(udidToDmg.Key), udidToDmg.Value);
+            }
+
             GetPage<UI.CombatUIView>().ShowSkillAnimation(new UI.CombatUIView.SkillAnimationData
             {
                 caster = processData.caster,
-                target = m_targets[0],
+                targets = m_targets,
+                targetToDmg = _targetToDmg,
                 skillID = _id,
                 onEnded = OnAnimationShown
             });

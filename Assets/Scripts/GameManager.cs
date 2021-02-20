@@ -88,7 +88,7 @@ namespace ProjectBS
                 {
                     continue;
                 }
-                _bossParty.Add(Combat.CombatUtility.GetUnit(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i]))));
+                _bossParty.Add(Combat.CombatUtility.CreateUnit(GameDataManager.GetGameData<Data.BossData>(int.Parse(_bossIDs[i]))));
             }
 
             m_localGameCombatManager.StartCombat(_playerParty, _bossParty);

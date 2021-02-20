@@ -318,7 +318,8 @@ namespace ProjectBS.UI
         public class SkillAnimationData
         {
             public CombatUnit caster = null;
-            public CombatUnit target = null;
+            public List<CombatUnit> targets = new List<CombatUnit>();
+            public Dictionary<CombatUnit, int> targetToDmg = new Dictionary<CombatUnit, int>();
             public int skillID = 0;
             public Action onEnded = null;
         }
@@ -331,15 +332,33 @@ namespace ProjectBS.UI
                 return;
             }
 
-            m_characterPanels[m_unitToIndex[skillAnimationData.caster]].PlayAni
+            List<CombatUI_CharacterPanel> _targets = new List<CombatUI_CharacterPanel>();
+            Dictionary<CombatUI_CharacterPanel, int> _targetToDmg = new Dictionary<CombatUI_CharacterPanel, int>();
+
+            for (int i = 0; i < skillAnimationData.targets.Count; i++)
+            {
+                _targets.Add(m_characterPanels[m_unitToIndex[skillAnimationData.targets[i]]]);
+                if(skillAnimationData.targetToDmg.ContainsKey(skillAnimationData.targets[i]))
+                {
+                    _targetToDmg.Add
+                        (
+                            m_characterPanels[m_unitToIndex[skillAnimationData.targets[i]]],
+                            skillAnimationData.targetToDmg[skillAnimationData.targets[i]]
+                        );
+                }
+            }
+
+            m_characterPanels[m_unitToIndex[skillAnimationData.caster]].PlaySkillAni
                 (
                     new CombatUI_CharacterPanel.AnimationData
                     {
                         casterPos = m_characterPanels[m_unitToIndex[skillAnimationData.caster]].transform.position,
-                        targetPos = m_characterPanels[m_unitToIndex[skillAnimationData.target]].transform.position,
+                        targets = _targets,
+                        targetToDmg = _targetToDmg,
                         skillID = skillAnimationData.skillID,
                         onEnded = skillAnimationData.onEnded
-                    });
+                    }
+                );
         }
 
         public void ShowGameEnd(bool playerWin)
