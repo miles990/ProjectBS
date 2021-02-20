@@ -171,6 +171,7 @@ namespace ProjectBS.Combat.EffectCommand
             GetPage<UI.CombatUIView>().ShowSkillAnimation(new UI.CombatUIView.SkillAnimationData
             {
                 caster = processData.caster,
+                target = m_targets[0],
                 skillID = _id,
                 onEnded = OnAnimationShown
             });

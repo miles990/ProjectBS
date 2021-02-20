@@ -18,6 +18,8 @@ namespace ProjectBS.UI
         {
             public string commandName = "";
             public List<string> commandParas = new List<string>();
+            public Vector3 casterPos = default;
+            public Vector3 targetPos = default;
 
             public void Process()
             {
@@ -25,24 +27,29 @@ namespace ProjectBS.UI
                 {
                     case "Fire":
                         {
-                            Debug.Log("Fire");
                             break;
                         }
                     case "Show":
                         {
-                            Debug.Log("Show");
+                            GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
+                            Destroy(_clone, 1f);
+
+                            if (commandParas[1] == "Target")
+                                _clone.transform.position = targetPos;
+                            else if (commandParas[1] == "Caster")
+                                _clone.transform.position = casterPos;
+                            else
+                                _clone.transform.position = Vector3.zero;
+
                             break;
                         }
-                }
-
-                for (int i = 0; i < commandParas.Count; i++)
-                {
-                    Debug.Log("para[" + i + "]=" + commandParas[i]);
                 }
             }
         }
 
         [SerializeField] private Animator m_animator = null;
+        [SerializeField] private Animator m_infoAnimator = null;
+        [SerializeField] private TextMeshProUGUI m_infoText = null;
         [SerializeField] private Image m_hpBar = null;
         [SerializeField] private Image m_spBar = null;
         [SerializeField] private TextMeshProUGUI m_hpText = null;
@@ -58,6 +65,14 @@ namespace ProjectBS.UI
         public void EnableActingHint(bool enable)
         {
             m_actingHint.SetActive(enable);
+        }
+
+        public void ShowInfo(string info)
+        {
+            m_infoText.text = info;
+            m_infoAnimator.gameObject.SetActive(true);
+            m_infoAnimator.Play("Show", 0, 0f);
+            TimerManager.Schedule(1.26f, delegate { m_infoAnimator.gameObject.SetActive(false); });
         }
 
         public void PlayAni(AnimationClipName name)
@@ -83,13 +98,21 @@ namespace ProjectBS.UI
             }
         }
 
-        public void PlayAni(int skillID, System.Action onEnded)
+        public class AnimationData
         {
-            string _info = GameDataManager.GetGameData<Data.SkillData>(skillID).AnimationInfo;
+            public Vector3 casterPos = default;
+            public Vector3 targetPos = default;
+            public int skillID = 0;
+            public System.Action onEnded = null;
+        }
+
+        public void PlayAni(AnimationData animationData)
+        {
+            string _info = GameDataManager.GetGameData<Data.SkillData>(animationData.skillID).AnimationInfo;
 
             if(string.IsNullOrEmpty(_info))
             {
-                onEnded?.Invoke();
+                animationData.onEnded?.Invoke();
                 return;
             }
 
@@ -104,7 +127,9 @@ namespace ProjectBS.UI
 
                 AnimationCommand _commandObj = new AnimationCommand
                 {
-                    commandName = _commandPart[1].Trim()
+                    commandName = _commandPart[1].Trim(),
+                    casterPos = animationData.casterPos,
+                    targetPos = animationData.targetPos
                 };
                 for (int _commandPartIndex = 2; _commandPartIndex < _commandPart.Length; _commandPartIndex++)
                 {
@@ -121,7 +146,7 @@ namespace ProjectBS.UI
                 delegate 
                 {
                     m_animator.enabled = false;
-                    onEnded?.Invoke();
+                    animationData.onEnded?.Invoke();
                 });
         }
 
@@ -198,8 +223,9 @@ namespace ProjectBS.UI
             GameManager.Instance.MessageManager.ShowCommonMessage(_buffString, _unit.name, null);
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             UpdateBar(m_hpBar, m_hpBarTartgetValue, 0.035f);
             UpdateBar(m_spBar, m_spBarTargetValue, 0.035f);
         }

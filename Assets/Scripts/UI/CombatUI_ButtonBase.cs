@@ -39,7 +39,7 @@ namespace ProjectBS.UI
             m_showInfoTimer = 0f;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (m_showInfoTimer > 0f)
             {

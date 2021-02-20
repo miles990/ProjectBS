@@ -286,6 +286,7 @@ namespace ProjectBS.UI
         public class SkillAnimationData
         {
             public CombatUnit caster = null;
+            public CombatUnit target = null;
             public int skillID = 0;
             public Action onEnded = null;
         }
@@ -298,7 +299,15 @@ namespace ProjectBS.UI
                 return;
             }
 
-            m_characterPanels[m_unitToIndex[skillAnimationData.caster]].PlayAni(skillAnimationData.skillID, skillAnimationData.onEnded);
+            m_characterPanels[m_unitToIndex[skillAnimationData.caster]].PlayAni
+                (
+                    new CombatUI_CharacterPanel.AnimationData
+                    {
+                        casterPos = m_characterPanels[m_unitToIndex[skillAnimationData.caster]].transform.position,
+                        targetPos = m_characterPanels[m_unitToIndex[skillAnimationData.target]].transform.position,
+                        skillID = skillAnimationData.skillID,
+                        onEnded = skillAnimationData.onEnded
+                    });
         }
 
         public void ShowGameEnd(bool playerWin)
@@ -451,7 +460,7 @@ namespace ProjectBS.UI
 
         public void DisplayGainBuff(DisplayBuffData data, Action onDisplayEnded)
         {
-            SetInfoText(data.taker, "+" + data.buffName);
+            m_characterPanels[m_unitToIndex[data.taker]].ShowInfo("+" + data.buffName);
             TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
