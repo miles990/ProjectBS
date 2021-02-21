@@ -120,6 +120,9 @@ namespace ProjectBS.UI
 
         public void PlayAni(AnimationClipName name)
         {
+            if (!m_animator.gameObject.activeSelf)
+                return;
+
             m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
 

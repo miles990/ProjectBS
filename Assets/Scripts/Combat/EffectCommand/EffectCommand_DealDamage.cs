@@ -161,11 +161,7 @@ namespace ProjectBS.Combat.EffectCommand
             int _id = 0;
             if(processData.refenceSkill != null)
             {
-                _id = processData.refenceSkill.NameContextID;
-            }
-            else if(processData.referenceBuff != null)
-            {
-                _id = processData.referenceBuff.GetBuffSourceData().NameContextID;
+                _id = processData.refenceSkill.ID;
             }
 
             Dictionary<CombatUnit, int> _targetToDmg = new Dictionary<CombatUnit, int>();

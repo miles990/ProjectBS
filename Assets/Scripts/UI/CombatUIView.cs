@@ -117,6 +117,7 @@ namespace ProjectBS.UI
                 m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
             }
 
+            Time.timeScale = show ? 2f : 1f;
             TimerManager.Schedule(1.75f, onCompleted);
         }
 

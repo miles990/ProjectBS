@@ -15,13 +15,23 @@ namespace ProjectBS
 
         public static DropInfo Drop(Data.BossStageData bossStage)
         {
+            DropInfo _dropInfo = new DropInfo
+            {
+                exp = Random.Range(bossStage.MinExp, bossStage.MaxExp + 1)
+            };
+            DropInfo _skillAndEquipmentDrop = Drop(bossStage.DropData);
+            _dropInfo.equipments = _skillAndEquipmentDrop.equipments;
+            _dropInfo.skillIDs = _skillAndEquipmentDrop.skillIDs;
+
+            return _dropInfo;
+        }
+
+        public static DropInfo Drop(string info)
+        {
             DropInfo _dropInfo = new DropInfo();
 
-            Data.BossData _mainBoss = GameDataManager.GetGameData<Data.BossData>(bossStage.MainBossID);
-            _dropInfo.exp = Random.Range(bossStage.MinExp, bossStage.MaxExp + 1);
-           
             int _randomDropCount = Random.Range(10, 21);
-            string[] _dropPool = bossStage.DropData.RemoveBlankCharacters().Split(';');
+            string[] _dropPool = info.Split(';');
             for (int i = 0; i < _randomDropCount; i++)
             {
                 if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropSkillChance)

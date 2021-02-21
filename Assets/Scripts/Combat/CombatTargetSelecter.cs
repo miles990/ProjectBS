@@ -83,6 +83,7 @@ namespace ProjectBS.Combat
 
             switch (_command)
             {
+                case "Caster":
                 case "Self":
                     {
                         if(m_idToSelected.ContainsKey(data.id))

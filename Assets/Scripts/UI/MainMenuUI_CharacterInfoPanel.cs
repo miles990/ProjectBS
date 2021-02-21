@@ -289,6 +289,10 @@ namespace ProjectBS.UI
             {
                 m_clonedEquipmentButtons[i].gameObject.SetActive(false);
             }
+            for(int i = 0; i < m_clonedSkillButtons.Count; i++)
+            {
+                m_clonedSkillButtons[i].gameObject.SetActive(false);
+            }
 
             List<Data.OwningEquipmentData> _equipments = PlayerManager.Instance.GetEquipmentsByType(m_currentEquipmentType);
             
@@ -347,6 +351,10 @@ namespace ProjectBS.UI
             for (int i = 0; i < m_clonedSkillButtons.Count; i++)
             {
                 m_clonedSkillButtons[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < m_clonedEquipmentButtons.Count; i++)
+            {
+                m_clonedEquipmentButtons[i].gameObject.SetActive(false);
             }
 
             List<Data.OwningSkillData> _skills = PlayerManager.Instance.Player.Skills;
