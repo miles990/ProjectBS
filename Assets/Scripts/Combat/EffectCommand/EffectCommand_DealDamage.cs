@@ -260,11 +260,6 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-
             GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
             {
                 taker = m_targets[m_currentTargetIndex],
@@ -297,6 +292,11 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDmgShown()
         {
+            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,

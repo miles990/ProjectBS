@@ -91,6 +91,9 @@ namespace KahaGameCore.Static
             List<long> _allTimerIds = new List<long>(m_timers.Keys);
             for (int i = 0; i < _allTimerIds.Count; i++)
             {
+                if (!m_timers.ContainsKey(_allTimerIds[i]))
+                    continue;
+
                 if (m_timers[_allTimerIds[i]].time > 0f)
                 {
                     m_timers[_allTimerIds[i]].time -= _deltaTime;

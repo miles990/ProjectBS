@@ -209,10 +209,21 @@ namespace ProjectBS.UI
                     MainMenuUI_SkillButton _cloneButton = Instantiate(m_skillButtonPrefab);
                     _cloneButton.transform.SetParent(m_skillButtonContainer);
                     _cloneButton.transform.localScale = Vector3.one;
+                    _cloneButton.OnButtonPressed += OnSkillButtonPressed;
                     _cloneButton.SetUp(_allSkills[i]);
                     m_allClonedSkillButtons.Add(_cloneButton);
                 }
             }
+        }
+
+        private void OnSkillButtonPressed(OwningSkillData owningSkillData)
+        {
+            SkillData _skill = GameDataManager.GetGameData<SkillData>(owningSkillData.SkillSourceID);
+            string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
+
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                "Cost SP:" + _skill.SP + "\n\n" + _skill.GetAllDescriptionContext(),
+                _name, null);
         }
     }
 }

@@ -487,6 +487,7 @@ namespace ProjectBS.Combat
                 m_currentCheckingUnit.RemoveBuff(
                     _buff,
                     delegate { DisplayRemoveBuff(_buff); });
+                m_currentCheckBuffIndex--;
             }
             else
             {

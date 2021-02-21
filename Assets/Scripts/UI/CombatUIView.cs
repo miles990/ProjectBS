@@ -244,18 +244,18 @@ namespace ProjectBS.UI
 
         public void ShowForceEndAction(CombatUnit actor)
         {
-            SetInfoText(actor, string.Format("強制結束", actor.name));
+            SetInfoText(actor, ContextConverter.Instance.GetContext(1000012));
         }
 
         public void ShowUnitDied(CombatUnit dyingUnit, Action onInfoShown)
         {
-            SetInfoText(dyingUnit, string.Format("死亡"));
+            SetInfoText(dyingUnit, ContextConverter.Instance.GetContext(1000013));
             TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
         public void ShowUnitDestoryed(CombatUnit unit, Action onInfoShown)
         {
-            SetInfoText(unit, string.Format("消滅"));
+            SetInfoText(unit, ContextConverter.Instance.GetContext(1000014));
             TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
@@ -278,7 +278,7 @@ namespace ProjectBS.UI
                 m_characterPanels[m_unitToIndex[actor]].EnableActingHint(true);
             }
 
-            SetInfoText(actor, string.Format("開始行動"));
+            SetInfoText(actor, ContextConverter.Instance.GetContext(1000011));
             TimerManager.Schedule(1f, onActionAnimationEnded);
         }
 
@@ -305,13 +305,13 @@ namespace ProjectBS.UI
 
         public void ShowAddActionIndex(CombatUnit actor, int addIndex, Action onShown)
         {
-            SetInfoText(actor, string.Format("{0} 順序", addIndex >= 0 ? "+" + addIndex : addIndex.ToString()));
+            SetInfoText(actor, string.Format(ContextConverter.Instance.GetContext(1000010), addIndex >= 0 ? "+" + addIndex : addIndex.ToString()));
             TimerManager.Schedule(1f, onShown);
         }
 
         public void ShowAddExtraAction(CombatUnit actor, Action onShown)
         {
-            SetInfoText(actor, string.Format("追加行動"));
+            SetInfoText(actor, ContextConverter.Instance.GetContext(1000009));
             TimerManager.Schedule(1f, onShown);
         }
 
@@ -487,8 +487,15 @@ namespace ProjectBS.UI
 
         public void DisplayDamage(DisplayDamageData data, Action onDisplayEnded)
         {
-            SetInfoText(data.taker, "-" + data.damageValue.ToString());
-            TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
+            m_characterPanels[m_unitToIndex[data.taker]].ShowDamageWithAllAnimation(
+                new CombatUI_CharacterPanel.AnimationData
+                {
+                    skillID = -1,
+                    casterPos = m_characterPanels[m_unitToIndex[data.taker]].transform.position,
+                    targets = new List<CombatUI_CharacterPanel> { m_characterPanels[m_unitToIndex[data.taker]] },
+                    targetToDmg = new Dictionary<CombatUI_CharacterPanel, int> { { m_characterPanels[m_unitToIndex[data.taker]], data.damageValue } },
+                    onEnded = onDisplayEnded
+                });
         }
 
         public class DisplayHealData
@@ -517,7 +524,7 @@ namespace ProjectBS.UI
 
         public void DisplayRemoveBuff(DisplayBuffData data, Action onDisplayEnded)
         {
-            SetInfoText(data.taker, "-" + data.buffName);
+            m_characterPanels[m_unitToIndex[data.taker]].ShowInfo("-" + data.buffName);
             TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 
@@ -545,20 +552,10 @@ namespace ProjectBS.UI
         [PunRPC]
         private void Sync_SetInfoText(string UDID, string info)
         {
-            //CombatUnit _target = m_allUnits.Find(x => x.UDID == UDID);
+            if (string.IsNullOrEmpty(UDID) || UDID == "null")
+                return;
 
-            //CombatUI_InfoText _clone = Instantiate(m_infoPrefab);
-            //_clone.transform.SetParent(transform);
-            //if (_target == null)
-            //    _clone.transform.localPosition = Vector3.zero;
-            //else
-            //    _clone.transform.position = m_characterPanels[m_unitToIndex[_target]].transform.position;
-            //_clone.SetText(string.Format(info));
-            //_clone.gameObject.SetActive(true);
-
-            //Destroy(_clone.gameObject, DISPLAY_INFO_TIME);
-
-            Debug.Log("UDID=" + UDID + ", info=" + info);
+            m_characterPanels[m_unitToIndex[CombatUtility.ComabtManager.GetUnitByUDID(UDID)]].ShowInfo(info);
         }
 
         private void WaitPlayerSelect()

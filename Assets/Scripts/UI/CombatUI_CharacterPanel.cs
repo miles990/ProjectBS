@@ -63,7 +63,7 @@ namespace ProjectBS.UI
 
                                 if (_dmg < 1f) _dmg = 1f;
 
-                                targets[i].ShowDamage(System.Convert.ToInt32(_dmg));
+                                targets[i].SimpleShowDamage(System.Convert.ToInt32(_dmg));
                             }
 
                             break;
@@ -94,15 +94,24 @@ namespace ProjectBS.UI
             m_actingHint.SetActive(enable);
         }
 
+        private long m_currentInfoTimerID = -1L;
         public void ShowInfo(string info)
         {
             m_infoText.text = info;
             m_infoAnimator.gameObject.SetActive(true);
             m_infoAnimator.Play("Show", 0, 0f);
-            TimerManager.Schedule(1.26f, delegate { m_infoAnimator.gameObject.SetActive(false); });
+            if(m_currentInfoTimerID != -1L)
+            {
+                TimerManager.Cancel(m_currentInfoTimerID);
+            }
+            m_currentInfoTimerID = TimerManager.Schedule(1.26f, delegate 
+            {
+                m_infoAnimator.gameObject.SetActive(false);
+                m_currentInfoTimerID = -1L;
+            });
         }
 
-        public void ShowDamage(int dmg)
+        public void SimpleShowDamage(int dmg)
         {
             m_dmgText.text = "-" + dmg;
             m_dmgAnimator.gameObject.SetActive(true);
@@ -138,11 +147,17 @@ namespace ProjectBS.UI
 
         public void PlaySkillAni(AnimationData animationData)
         {
+            if (animationData.skillID <= 0)
+            {
+                animationData.onEnded?.Invoke();
+                return;
+            }
+
             string _info = GameDataManager.GetGameData<Data.SkillData>(animationData.skillID).AnimationInfo;
 
             if(string.IsNullOrEmpty(_info))
             {
-                ForceShowDamageWithAnimationData(animationData);
+                animationData.onEnded?.Invoke();
                 return;
             }
 
@@ -173,14 +188,15 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(_aniName.ToString(), 0, 0f);
 
-            TimerManager.Schedule(1.02f,
-                delegate 
+            TimerManager.Schedule(1f,
+                delegate
                 {
-                    ForceShowDamageWithAnimationData(animationData);
+                    m_animator.enabled = false;
+                    animationData.onEnded?.Invoke();
                 });
         }
 
-        private void ForceShowDamageWithAnimationData(AnimationData animationData)
+        public void ShowDamageWithAllAnimation(AnimationData animationData)
         {
             if (animationData.targetToDmg.Count > 0)
             {
@@ -188,7 +204,7 @@ namespace ProjectBS.UI
                 {
                     if (!animationData.targets[i].m_dmgAnimator.gameObject.activeSelf)
                     {
-                        animationData.targets[i].ShowDamage(animationData.targetToDmg[animationData.targets[i]]);
+                        animationData.targets[i].SimpleShowDamage(animationData.targetToDmg[animationData.targets[i]]);
                         if (i == 0)
                         {
                             TimerManager.Schedule(0.75f, delegate

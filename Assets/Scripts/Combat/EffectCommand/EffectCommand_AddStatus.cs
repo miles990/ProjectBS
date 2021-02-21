@@ -98,7 +98,6 @@ namespace ProjectBS.Combat.EffectCommand
                             case Keyword.Hatred:
                                 {
                                     m_targets[m_currentTargetIndex].Hatred += _add;
-
                                     GoNextTarget();
                                     break;
                                 }
@@ -106,22 +105,19 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     if (_add < 0)
                                     {
-                                        m_targets[m_currentTargetIndex].HP += _add;
                                         GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             damageValue = -_add,
-                                        }, GoNextTarget);
+                                        }, delegate { OnHPValueInfoShown(_add); });
                                     }
                                     else
                                     {
-                                        GetSelf().Hatred += _add;
-                                        m_targets[m_currentTargetIndex].HP += _add;
                                         GetPage<UI.CombatUIView>().DisplayHeal(new UI.CombatUIView.DisplayHealData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             healValue = _add
-                                        }, GoNextTarget);
+                                        }, delegate { OnHPValueInfoShown(_add); });
                                     }
                                     break;
                                 }
@@ -140,6 +136,14 @@ namespace ProjectBS.Combat.EffectCommand
                         break;
                     }
             }
+        }
+
+        private void OnHPValueInfoShown(int value)
+        {
+            m_targets[m_currentTargetIndex].HP += value;
+            if(value > 0) GetSelf().Hatred += value;
+
+            GoNextTarget();
         }
     }
 }
