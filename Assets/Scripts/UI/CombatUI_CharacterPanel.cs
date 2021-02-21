@@ -120,7 +120,7 @@ namespace ProjectBS.UI
 
         public void PlayAni(AnimationClipName name)
         {
-            if (!m_animator.gameObject.activeSelf)
+            if (!gameObject.activeSelf || !m_animator.gameObject.activeSelf)
                 return;
 
             m_animator.enabled = true;
@@ -150,6 +150,9 @@ namespace ProjectBS.UI
 
         public void PlaySkillAni(AnimationData animationData)
         {
+            if (!gameObject.activeSelf || !m_animator.gameObject.activeSelf)
+                return;
+
             if (animationData.skillID <= 0)
             {
                 animationData.onEnded?.Invoke();
