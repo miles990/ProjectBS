@@ -295,8 +295,7 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 15,
-                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(1).NameContextID,
-                CharacterSpriteID = 1,
+                AppearanceDataID = 1,
                 DefenseAbilityID = 24,
                 HPAbilityID = 4,
                 Exp = 0,
@@ -307,7 +306,7 @@ namespace ProjectBS
                 SkillSlot_3 = 108,
                 SpeedAbilityID = 36,
                 SP = 100,
-                UDID = System.Guid.NewGuid().ToString()
+                UDID = Guid.NewGuid().ToString()
             });
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
@@ -315,8 +314,7 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 16,
-                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(2).NameContextID,
-                CharacterSpriteID = 2,
+                AppearanceDataID = 2,
                 DefenseAbilityID = 24,
                 HPAbilityID = 4,
                 Exp = 0,
@@ -327,7 +325,7 @@ namespace ProjectBS
                 SkillSlot_3 = 119,
                 SpeedAbilityID = 35,
                 SP = 100,
-                UDID = System.Guid.NewGuid().ToString()
+                UDID = Guid.NewGuid().ToString()
             });
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
@@ -335,8 +333,7 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 14,
-                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(3).NameContextID,
-                CharacterSpriteID = 3,
+                AppearanceDataID = 3,
                 DefenseAbilityID = 26,
                 HPAbilityID = 5,
                 Exp = 0,
@@ -347,7 +344,7 @@ namespace ProjectBS
                 SkillSlot_3 = 106,
                 SpeedAbilityID = 34,
                 SP = 100,
-                UDID = System.Guid.NewGuid().ToString()
+                UDID = Guid.NewGuid().ToString()
             });
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
@@ -355,8 +352,7 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 AttackAbilityID = 14,
-                CharacterNameID = GameDataManager.GetGameData<AppearanceData>(4).NameContextID,
-                CharacterSpriteID = 4,
+                AppearanceDataID = 4,
                 DefenseAbilityID = 24,
                 HPAbilityID = 6,
                 Exp = 0,
@@ -367,7 +363,7 @@ namespace ProjectBS
                 SkillSlot_3 = 125,
                 SpeedAbilityID = 35,
                 SP = 100,
-                UDID = System.Guid.NewGuid().ToString()
+                UDID = Guid.NewGuid().ToString()
             });
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 

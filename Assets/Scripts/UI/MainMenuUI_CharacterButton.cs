@@ -10,6 +10,7 @@ namespace ProjectBS.UI
         public event Action<Data.OwningCharacterData> OnButtonPressed = null;
 
         [SerializeField] private GameObject m_partyHintRoot = null;
+        [SerializeField] private UnityEngine.UI.RawImage m_iconImage = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
         [Header("Status")]
         [SerializeField] private TextMeshProUGUI m_hpValueText = null;
@@ -32,7 +33,8 @@ namespace ProjectBS.UI
 
         public void RefreshInfo()
         {
-            m_nameText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID);
+            m_nameText.text = m_refCharacter.GetName();
+            m_iconImage.texture = m_refCharacter.GetIcon();
 
             m_hpValueText.text = m_refCharacter.GetTotal(Keyword.HP).ToString();
             m_attackValueText.text = m_refCharacter.GetTotal(Keyword.Attack).ToString();

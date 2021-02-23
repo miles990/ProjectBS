@@ -35,6 +35,7 @@ namespace ProjectBS.UI
 
             m_levelText.text = "Lv. " + m_refEquipment.Level;
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
+            if (PlayerManager.Instance.GetEquipedCharacter(m_refEquipment.UDID) != null) m_nameText.text += " (E)";
             m_hpText.text = m_refEquipment.HP.ToString();
             m_attackText.text = m_refEquipment.Attack.ToString();
             m_defenseText.text = m_refEquipment.Defense.ToString();

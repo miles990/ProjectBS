@@ -289,6 +289,10 @@ namespace ProjectBS.Combat
                     {
                         return unit.camp;
                     }
+                case Keyword.ActionIndex:
+                    {
+                        return unit.actionIndex;
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetStatusValue] Invaild statusName=" + statusName);
@@ -753,7 +757,8 @@ namespace ProjectBS.Combat
                 camp = camp,
                 rawDefense = character.Defense,
                 rawMaxHP = character.HP,
-                name = ContextConverter.Instance.GetContext(character.CharacterNameID),
+                name = character.GetName(),
+                icon = character.GetIcon(),
                 SP = character.SP,
                 rawSpeed = character.Speed,
                 Hatred = 1,
@@ -784,7 +789,8 @@ namespace ProjectBS.Combat
                 rawDefense = boss.Defense,
                 rawMaxHP = boss.HP,
                 HP = boss.HP,
-                name = ContextConverter.Instance.GetContext(boss.NameContextID),
+                name = boss.GetName(),
+                icon = boss.GetIcon(),
                 SP = boss.SP,
                 rawSpeed = boss.Speed,
                 Hatred = 1,

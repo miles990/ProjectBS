@@ -27,6 +27,7 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_partyHintText = null;
         [SerializeField] private TextMeshProUGUI m_levelText = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private RawImage m_iconImage = null;
         [SerializeField] private TextMeshProUGUI m_expText = null;
         [SerializeField] private TextMeshProUGUI m_hpRankText = null;
         [SerializeField] private TextMeshProUGUI m_hpText = null;
@@ -434,7 +435,8 @@ namespace ProjectBS.UI
             m_skill2.SetUp(m_refCharacter.GetSkill(2));
             m_skill3.SetUp(m_refCharacter.GetSkill(3));
 
-            m_nameText.text = ContextConverter.Instance.GetContext(m_refCharacter.CharacterNameID);
+            m_nameText.text = m_refCharacter.GetName();
+            m_iconImage.texture = m_refCharacter.GetIcon();
             m_levelText.text = "Level. " + m_refCharacter.Level;
             m_expText.text = m_refCharacter.Exp + " / " + m_refCharacter.GetRequireExp();
             m_hpRankText.text = m_refCharacter.GetAbilityRankString("HP");

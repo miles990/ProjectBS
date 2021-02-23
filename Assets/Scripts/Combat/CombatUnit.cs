@@ -47,6 +47,7 @@ namespace ProjectBS.Combat
 
         public string UDID = "";
         public string name = "";
+        public UnityEngine.Texture2D icon = null;
         public UnityEngine.Sprite sprite = null;
         public int camp = 0;
         public int HP 

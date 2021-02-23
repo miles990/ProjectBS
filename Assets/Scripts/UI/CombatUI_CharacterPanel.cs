@@ -36,14 +36,14 @@ namespace ProjectBS.UI
                             {
                                 for(int i = 0; i < targets.Count; i++)
                                 {
-                                    GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
+                                    GameObject _clone = Instantiate(Resources.Load<GameObject>("VFX/" + commandParas[0]));
                                     Destroy(_clone, 1f);
                                     _clone.transform.position = targets[i].transform.position;
                                 }
                             }
                             else if (commandParas[1] == "Caster")
                             {
-                                GameObject _clone = Instantiate(Resources.Load<GameObject>(commandParas[0]));
+                                GameObject _clone = Instantiate(Resources.Load<GameObject>("VFX/" + commandParas[0]));
                                 Destroy(_clone, 1f);
                                 _clone.transform.position = casterPos;
                             }
@@ -72,6 +72,7 @@ namespace ProjectBS.UI
             }
         }
 
+        [SerializeField] private Image m_iconImage = null;
         [SerializeField] private Animator m_animator = null;
         [SerializeField] private Animator m_infoAnimator = null;
         [SerializeField] private TextMeshProUGUI m_infoText = null;
@@ -281,6 +282,9 @@ namespace ProjectBS.UI
 
             m_hpText.text = _unit.HP.ToString();
             m_spText.text = _unit.SP.ToString();
+
+            if(_unit.icon != null)
+                m_iconImage.sprite = Sprite.Create(_unit.icon, new Rect(0.0f, 0.0f, _unit.icon.width, _unit.icon.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
 
         public void RefreshInfo()

@@ -33906,6 +33906,7 @@ MonoBehaviour:
   m_partyHintText: {fileID: 928882933}
   m_levelText: {fileID: 1691883184}
   m_nameText: {fileID: 125187345}
+  m_iconImage: {fileID: 0}
   m_expText: {fileID: 1684015981}
   m_hpRankText: {fileID: 1170755992}
   m_hpText: {fileID: 380901346}

@@ -8,6 +8,7 @@ namespace ProjectBS.Data
         public string SpriteAssetPath { get; private set; }
         public int NameContextID { get; private set; }
         public string DefaultSkillSet { get; private set; }
+        public int IsDrop { get; private set; }
     }
 }
 

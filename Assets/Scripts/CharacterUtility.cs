@@ -40,8 +40,7 @@ namespace ProjectBS
             {
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
                 AttackAbilityID = _attack.ID,
-                CharacterNameID = _skin.NameContextID,
-                CharacterSpriteID = _skin.ID,
+                AppearanceDataID = _skin.ID,
                 Defense = Random.Range(_defense.MinValue, _defense.MaxValue),
                 DefenseAbilityID = _defense.ID,
                 Equipment_UDID_Body = null,
@@ -69,7 +68,12 @@ namespace ProjectBS
         {
             InitAbilityData();
 
-            return m_appearanceIDPool[Random.Range(0, m_appearanceIDPool.Length - 1)];
+            AppearanceData _random = m_appearanceIDPool[Random.Range(0, m_appearanceIDPool.Length - 1)];
+
+            if (_random.IsDrop == 1)
+                return _random;
+            else
+                return GetRandomSkin();
         }
 
         private static void InitAbilityData()
