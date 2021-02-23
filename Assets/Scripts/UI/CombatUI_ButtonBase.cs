@@ -26,7 +26,7 @@ namespace ProjectBS.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            m_showInfoTimer = GameDataManager.GameProperties.PressDownShowInfoTime;
+            m_showInfoTimer = GameDataManager.GameProperties.PressDownShowInfoTime * Time.timeScale;
         }
 
         public void OnPointerUp(PointerEventData eventData)
