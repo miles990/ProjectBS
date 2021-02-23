@@ -50,12 +50,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
-                timing = EffectProcesser.TriggerTiming.OnStartToAttack_Any,
-                onEnded = OnStartToAttack_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnStartToAttack_Other,
+                onEnded = OnStartToAttack_Other_Ended
             });
         }
 
-        private void OnStartToAttack_Any_Ended()
+        private void OnStartToAttack_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -118,12 +118,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
-                timing = EffectProcesser.TriggerTiming.OnDamageCalculated_Any,
-                onEnded = OnDamageCalculated_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnDamageCalculated_Other,
+                onEnded = OnDamageCalculated_Other_Ended
             });
         }
 
-        private void OnDamageCalculated_Any_Ended()
+        private void OnDamageCalculated_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -140,12 +140,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
-                timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Any,
-                onEnded = OnStartToTakeDamage_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnStartToTakeDamage_Other,
+                onEnded = OnStartToTakeDamage_Other_Ended
             });
         }
 
-        private void OnStartToTakeDamage_Any_Ended()
+        private void OnStartToTakeDamage_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -192,12 +192,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = processData.caster,
                 target = processData.caster,
-                timing = EffectProcesser.TriggerTiming.OnAttackEnded_Any,
-                onEnded = OnAttackedAnyEnded
+                timing = EffectProcesser.TriggerTiming.OnAttackEnded_Other,
+                onEnded = OnAttacked_Other_Ended
             });
         }
 
-        private void OnAttackedAnyEnded()
+        private void OnAttacked_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -297,12 +297,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
-                timing = EffectProcesser.TriggerTiming.OnDamageDealed_Any,
-                onEnded = OnDamageDealed_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnDamageDealed_Other,
+                onEnded = OnDamageDealed_Other_Ended
             });
         }
 
-        private void OnDamageDealed_Any_Ended()
+        private void OnDamageDealed_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -319,12 +319,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
-                timing = EffectProcesser.TriggerTiming.OnDamageTaken_Any,
-                onEnded = OnDamageTaken_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnDamageTaken_Other,
+                onEnded = OnDamageTaken_Other_Ended
             });
         }
 
-        private void OnDamageTaken_Any_Ended()
+        private void OnDamageTaken_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -341,12 +341,12 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
-                timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Any,
-                onEnded = OnBeAttackedEnded_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Other,
+                onEnded = OnBeAttackedEnded_Other_Ended
             });
         }
 
-        private void OnBeAttackedEnded_Any_Ended()
+        private void OnBeAttackedEnded_Other_Ended()
         {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {

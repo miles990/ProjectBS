@@ -174,7 +174,7 @@ namespace ProjectBS.Combat
                 {
                     caster = null,
                     target = null,
-                    timing = EffectProcesser.TriggerTiming.OnDied_Any,
+                    timing = EffectProcesser.TriggerTiming.OnDied_Other,
                     onEnded = OnDied_Any_Ended
                 });
             }

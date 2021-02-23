@@ -99,7 +99,7 @@ namespace ProjectBS.Combat
             {
                 caster = CurrentDyingUnit,
                 target = CurrentDyingUnit,
-                timing = EffectProcesser.TriggerTiming.OnDied_Any,
+                timing = EffectProcesser.TriggerTiming.OnDied_Other,
                 onEnded = OnDied_Any_Ended
             });
         }

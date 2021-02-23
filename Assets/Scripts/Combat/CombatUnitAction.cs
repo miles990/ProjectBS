@@ -39,12 +39,12 @@ namespace ProjectBS.Combat
             {
                 caster = Actor,
                 target = Actor,
-                timing = EffectProcesser.TriggerTiming.OnActionStarted_Any,
-                onEnded = OnActionStarted_Any_Ended
+                timing = EffectProcesser.TriggerTiming.OnActionStarted_Other,
+                onEnded = OnActionStarted_Other_Ended
             });
         }
 
-        private void OnActionStarted_Any_Ended()
+        private void OnActionStarted_Other_Ended()
         {
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -135,12 +135,12 @@ namespace ProjectBS.Combat
             {
                 caster = Actor,
                 target = Actor,
-                timing = EffectProcesser.TriggerTiming.OnStartToEndAction_Any,
-                onEnded = OnStartToEndActionAnyEffectEnded
+                timing = EffectProcesser.TriggerTiming.OnStartToEndAction_Other,
+                onEnded = OnStartToEndActionOtherEffectEnded
             });
         }
 
-        private void OnStartToEndActionAnyEffectEnded()
+        private void OnStartToEndActionOtherEffectEnded()
         {
             m_processer.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
