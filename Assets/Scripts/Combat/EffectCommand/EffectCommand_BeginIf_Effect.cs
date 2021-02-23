@@ -11,6 +11,11 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
+            if (vars.Length != 3)
+                throw new Exception("[EffectCommand_BeginIf_Effect][Process] incorrect vars length, skill id=" 
+                    + (processData.refenceSkill == null ? "null" : processData.refenceSkill.ID.ToString())
+                    + (", buff id=" + processData.referenceBuff == null ? "null" : processData.referenceBuff.soruceID.ToString()));
+
             if (processData.skipIfCount > 0)
             {
                 processData.skipIfCount++;
