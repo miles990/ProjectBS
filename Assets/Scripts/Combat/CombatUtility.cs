@@ -196,6 +196,8 @@ namespace ProjectBS.Combat
 
         public static int GetStatusValue(CombatUnit unit, string statusName, bool useRawValue)
         {
+            if (unit == null) throw new System.Exception("[CombatUtility][GetStatusValue] unit == null");
+
             switch(statusName.Trim())
             {
                 case Keyword.MaxHP:

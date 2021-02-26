@@ -25,6 +25,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     id = GetSelectID(),
                     attacker = GetSelf(),
+                    currentEffectedTarget = processData.target,
                     commandString = vars[0],
                     onSelected = OnTargetSelected
                 });

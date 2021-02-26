@@ -53,6 +53,7 @@ namespace ProjectBS.Combat
         {
             public string id = "";
             public CombatUnit attacker = null;
+            public CombatUnit currentEffectedTarget = null;
             public string commandString = "";
             public Action<List<CombatUnit>> onSelected = null;
         }
@@ -86,13 +87,26 @@ namespace ProjectBS.Combat
                 case "Caster":
                 case "Self":
                     {
-                        if(m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.id))
                         {
                             m_idToSelected[data.id] = new List<CombatUnit> { data.attacker };
                         }
                         else
                         {
                             m_idToSelected.Add(data.id, new List<CombatUnit> { data.attacker });
+                        }
+                        data.onSelected?.Invoke(m_idToSelected[data.id]);
+                        return;
+                    }
+                case "Target":
+                    {
+                        if (m_idToSelected.ContainsKey(data.id))
+                        {
+                            m_idToSelected[data.id] = new List<CombatUnit> { data.currentEffectedTarget };
+                        }
+                        else
+                        {
+                            m_idToSelected.Add(data.id, new List<CombatUnit> { data.currentEffectedTarget });
                         }
                         data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
