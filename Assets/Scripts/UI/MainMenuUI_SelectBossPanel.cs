@@ -62,6 +62,11 @@ namespace ProjectBS.UI
                     _cloneButton.SetUp(_allStage[i]);
                     m_clonedButtons.Add(_cloneButton);
                 }
+
+                if(i == 0 && PlayerManager.Instance.Player.ClearedBossStage.Count == 0)
+                {
+                    break;
+                }
             }
         }
     }
