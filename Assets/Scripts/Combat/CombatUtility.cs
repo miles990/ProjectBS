@@ -270,10 +270,6 @@ namespace ProjectBS.Combat
                     {
                         return unit.lastSkillID;
                     }
-                case Keyword.LastSkillTag:
-                    {
-                        return GameDataManager.GetGameData<Data.SkillData>(unit.lastSkillID).Tag;
-                    }
                 case Keyword.LastTakenDamage:
                     {
                         return unit.lastTakenDamage;

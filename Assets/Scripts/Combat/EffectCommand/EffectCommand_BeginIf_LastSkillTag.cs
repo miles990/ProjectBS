@@ -40,9 +40,13 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 bool _isOwning = false;
 
-                if (GameDataManager.GetGameData<Data.SkillData>(targets[i].lastSkillID).Tag == m_tag)
+                string[] _tags = GameDataManager.GetGameData<Data.SkillData>(targets[i].lastSkillID).Tag.Split(';');
+                for(int j = 0; j < _tags.Length; j++)
                 {
-                    _isOwning = true;
+                    if (int.Parse(_tags[j]) == m_tag)
+                    {
+                        _isOwning = true;
+                    }
                 }
 
                 if (_isOwning != _checkIsOwning)
