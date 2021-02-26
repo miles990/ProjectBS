@@ -202,7 +202,7 @@ namespace ProjectBS.UI
                 case State.None:
                     {
                         OnEditEnded?.Invoke();
-                        gameObject.SetActive(false);
+                        Hide();
                         break;
                     }
                 case State.ChangingEquipment:
@@ -219,8 +219,10 @@ namespace ProjectBS.UI
 
         public void Button_Depart()
         {
-            CharacterUtility.Depart(m_refCharacter.UDID);
-            Button_Save();
+            if(CharacterUtility.Depart(m_refCharacter.UDID))
+            {
+                Button_Save();
+            }
         }
 
         public void Button_LevelUp(int addLevel)
