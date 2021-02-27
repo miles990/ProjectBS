@@ -13,7 +13,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             if (vars.Length != 3)
                 throw new Exception("[EffectCommand_BeginIf_Effect][Process] incorrect vars length, skill id=" 
-                    + (processData.refenceSkill == null ? "null" : processData.refenceSkill.ID.ToString())
+                    + (processData.refenceSkill == null ? "null" : processData.refenceSkill.skill.ID.ToString())
                     + (", buff id=" + processData.referenceBuff == null ? "null" : processData.referenceBuff.soruceID.ToString()));
 
             if (processData.skipIfCount > 0)

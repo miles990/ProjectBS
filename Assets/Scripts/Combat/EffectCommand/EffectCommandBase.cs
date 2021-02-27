@@ -11,7 +11,14 @@ namespace ProjectBS.Combat.EffectCommand
         {
             if(processData.referenceBuff == null)
             {
-                return processData.caster;
+                if(processData.refenceSkill == null)
+                {
+                    return processData.caster;
+                }
+                else
+                {
+                    return processData.refenceSkill.owner;
+                }
             }
             else
             {
@@ -23,7 +30,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             if(processData.refenceSkill != null)
             {
-                return "Skill" + processData.refenceSkill.ID;
+                return "Skill" + processData.refenceSkill.skill.ID;
             }
 
             if (processData.referenceBuff != null)

@@ -54,7 +54,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 throw new Exception(string.Format("[EffectCommand_GainBuff][SetNextTargetBuff] invaild buff id={0}, ref skill id={1}, ref buff id=",
                     m_buffID,
-                    processData.refenceSkill == null ? "null" : processData.refenceSkill.ID.ToString(),
+                    processData.refenceSkill == null ? "null" : processData.refenceSkill.skill.ID.ToString(),
                     processData.referenceBuff == null ? "null" : processData.referenceBuff.GetBuffSourceData().ID.ToString()));
             }
 

@@ -42,12 +42,17 @@ namespace ProjectBS.Combat
 
         public class ProcessData
         {
+            public class ReferenceSkillInfo
+            {
+                public CombatUnit owner;
+                public Data.SkillData skill;
+            }
             public TriggerTiming timing = TriggerTiming.OnActived;
             public CombatUnit caster = null;
             public CombatUnit target = null;
             public AllCombatUnitAllEffectProcesser allEffectProcesser = null;
             public CombatUnit.Buff referenceBuff = null;
-            public Data.SkillData refenceSkill = null;
+            public ReferenceSkillInfo refenceSkill = null;
             public int skipIfCount = 0;
             public Action onEnded = null;
         }
@@ -66,7 +71,20 @@ namespace ProjectBS.Combat
                 }
                 else
                 {
-                    command.Process(vars, onCompleted);
+                    //try
+                    //{
+                        command.Process(vars, onCompleted);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    string _errorMsg = "EffectData Info:";
+                    //    _errorMsg += "\nError Msg=" + e.Message;
+                    //    _errorMsg += "\nType=" + command.GetType();
+                    //    _errorMsg += command.processData.referenceBuff == null ? "" : "\nref buff=" + command.processData.referenceBuff.soruceID;
+                    //    _errorMsg += command.processData.refenceSkill == null ? "" : "\nref skill=" + command.processData.refenceSkill.skill.ID;
+                    //    _errorMsg += "\n\n\n";
+                    //    UnityEngine.Debug.LogError(_errorMsg);
+                    //}
                 }
             }
         }

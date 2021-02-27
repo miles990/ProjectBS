@@ -86,7 +86,7 @@ namespace ProjectBS.Combat
         {
             if(PhotonManager.Instance.IsMaster)
             {
-                CombatUnitAction _newAction = new CombatUnitAction(GetUnitByUDID(unitUDID), AllUnitAllEffectProcesser);
+                CombatUnitAction _newAction = new CombatUnitAction(GetUnitByUDID(unitUDID), GetNewAllProcesser());
                 if (isImmediate)
                 {
                     m_unitActions.Insert(0, _newAction);
@@ -170,7 +170,7 @@ namespace ProjectBS.Combat
 
                 CurrentDyingUnit = GetUnitByUDID(unitUDID);
                 m_onDiedCommandEnded = onDiedCommandEnded;
-                AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+                GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
                 {
                     caster = null,
                     target = null,
@@ -196,7 +196,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Any_Ended()
         {
-            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
                 target = null,
@@ -283,13 +283,11 @@ namespace ProjectBS.Combat
                     m_myUnits[m_myUnits.Count - 1].HP = m_myUnits[m_myUnits.Count - 1].GetMaxHP();
                 }
             }
-
-            AllUnitAllEffectProcesser = new AllCombatUnitAllEffectProcesser(m_myUnits);
         }
 
         private void TriggerOnBattleStarted()
         {
-            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -329,7 +327,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < m_units.Count; i++)
             {
                 m_units[i].actionIndex = i;
-                m_unitActions.Add(new CombatUnitAction(m_units[i], AllUnitAllEffectProcesser));
+                m_unitActions.Add(new CombatUnitAction(m_units[i], GetNewAllProcesser()));
             }
 
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
@@ -344,7 +342,7 @@ namespace ProjectBS.Combat
 
         private void TriggerOnTurnStarted()
         {
-            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -395,7 +393,7 @@ namespace ProjectBS.Combat
 
         private void TriggerStartAction(string udid)
         {
-            m_currentAction = new CombatUnitAction(GetUnitByUDID(udid), AllUnitAllEffectProcesser);
+            m_currentAction = new CombatUnitAction(GetUnitByUDID(udid), GetNewAllProcesser());
             m_currentAction.Start(OnActionEnded);
         }
 
@@ -426,7 +424,7 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
-            AllUnitAllEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,

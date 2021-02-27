@@ -284,7 +284,7 @@ namespace ProjectBS.Combat
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnDeactived,
-                allEffectProcesser = CombatUtility.ComabtManager.AllUnitAllEffectProcesser,
+                allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
                 referenceBuff = buff,
                 refenceSkill = null,
                 onEnded = delegate { OnBuffRemoved(buff, _effect, onRemoved); }

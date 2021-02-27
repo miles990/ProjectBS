@@ -800,6 +800,16 @@ namespace ProjectBS.Combat
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
+            if (!string.IsNullOrEmpty(boss.SkillIDs))
+            {
+                string[] _skillIDs = boss.SkillIDs.Split(';');
+                _boss.skills = new int[_skillIDs.Length];
+                for (int i = 0; i < _skillIDs.Length; i++)
+                {
+                    _boss.skills[i] = _skillIDs[i].ToInt();
+                }
+            }
+
             if (!string.IsNullOrEmpty(boss.BuffIDs))
             {
                 string[] _buffIDs = boss.BuffIDs.Split(';');

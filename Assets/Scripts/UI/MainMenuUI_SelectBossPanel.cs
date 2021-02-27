@@ -49,6 +49,22 @@ namespace ProjectBS.UI
 
             for (int i = 0; i < _allStage.Count; i++)
             {
+                bool _skip = false;
+                if (!string.IsNullOrEmpty(_allStage[i].FrontStageIDs))
+                {
+                    string[] _allFrontStageID = _allStage[i].FrontStageIDs.Split(';');
+                    for(int j = 0; j < _allFrontStageID.Length; j++)
+                    {
+                        if(!PlayerManager.Instance.Player.ClearedBossStage.Contains(_allFrontStageID[j].ToInt()))
+                        {
+                            _skip = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (_skip) continue;
+
                 if (i < m_clonedButtons.Count)
                 {
                     m_clonedButtons[i].SetUp(_allStage[i]);
@@ -61,11 +77,6 @@ namespace ProjectBS.UI
                     _cloneButton.transform.localScale = Vector3.one;
                     _cloneButton.SetUp(_allStage[i]);
                     m_clonedButtons.Add(_cloneButton);
-                }
-
-                if(i == 0 && PlayerManager.Instance.Player.ClearedBossStage.Count == 0)
-                {
-                    break;
                 }
             }
         }

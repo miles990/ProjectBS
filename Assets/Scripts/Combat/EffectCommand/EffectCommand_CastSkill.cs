@@ -8,20 +8,28 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
+            if (GetSelf().IsSkipAtion)
+                onCompleted?.Invoke();
+
             SkillData _skill = GameDataManager.GetGameData<SkillData>(int.Parse(vars[0]));
             if(_skill == null)
             {
                 throw new Exception("[EffectCommand_CastSkill][Process] Invaild Skill ID=" + int.Parse(vars[0]));
             }
-            processData.caster.lastSkillID = _skill.ID;
-            EffectProcessManager.GetSkillProcesser(processData.caster.lastSkillID).Start(new EffectProcesser.ProcessData
+            GetSelf().lastSkillID = _skill.ID;
+
+            new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
             {
                 caster = GetSelf(),
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
-                allEffectProcesser = processData.allEffectProcesser,
+                allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
                 referenceBuff = null,
-                refenceSkill = _skill,
+                refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
+                {
+                    skill = _skill,
+                    owner = GetSelf()
+                },
                 onEnded = onCompleted
             });
         }

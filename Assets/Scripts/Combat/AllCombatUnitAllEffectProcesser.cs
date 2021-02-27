@@ -46,7 +46,8 @@ namespace ProjectBS.Combat
         private void GoNextUnit()
         {
             m_currentUnitIndex++;
-            if(m_currentUnitIndex >= m_units.Count)
+
+            if (m_currentUnitIndex >= m_units.Count)
             {
                 m_data.onEnded?.Invoke();
                 return;
@@ -67,7 +68,7 @@ namespace ProjectBS.Combat
                 }
             }
 
-            if (m_data.timing.ToString().Contains("_Any"))
+            if (m_data.timing.ToString().Contains("_Other"))
             {
                 if (m_data.caster != null && m_units[m_currentUnitIndex] == m_data.caster)
                 {
@@ -198,7 +199,11 @@ namespace ProjectBS.Combat
                 timing = m_data.timing,
                 allEffectProcesser = this,
                 referenceBuff = null,
-                refenceSkill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex]),
+                refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
+                {
+                    skill = GameDataManager.GetGameData<SkillData>(m_currentSkillIDs[m_currentSkillIndex]),
+                    owner = m_units[m_currentUnitIndex]
+                },
                 onEnded = GoNextOwingSkill
             });
         }
@@ -206,7 +211,8 @@ namespace ProjectBS.Combat
         private void GoNextBuff()
         {
             m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_units[m_currentUnitIndex].OwnBuffCount)
+
+            if (m_currentBuffIndex >= m_units[m_currentUnitIndex].OwnBuffCount)
             {
                 GoNextUnit();
                 return;
@@ -225,6 +231,7 @@ namespace ProjectBS.Combat
                 refenceSkill = null,
                 onEnded = GoNextBuffStack
             };
+
             m_currentBuffStack = _currentBuff.stackCount;
             m_currentBuffRunningStack = 0;
             GoNextBuffStack();
@@ -233,7 +240,8 @@ namespace ProjectBS.Combat
         private void GoNextBuffStack()
         {
             m_currentBuffRunningStack++;
-            if(m_currentBuffRunningStack > m_currentBuffStack)
+
+            if (m_currentBuffRunningStack > m_currentBuffStack)
             {
                 GoNextBuff();
                 return;

@@ -30,12 +30,17 @@ namespace ProjectBS.Combat.EffectCommand
 
             int _roll = UnityEngine.Random.Range(0, _pool.Count);
             Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(int.Parse(vars[0]));
+            _pool[_roll].lastSkillID = _skill.ID;
             new EffectProcesser(_skill.Command).
                 Start(new EffectProcesser.ProcessData
                 {
-                    allEffectProcesser = processData.allEffectProcesser,
+                    allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
                     caster = _pool[_roll],
-                    refenceSkill = _skill,
+                    refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
+                    {
+                        skill = _skill,
+                        owner = _pool[_roll]
+                    },
                     referenceBuff = processData.referenceBuff,
                     skipIfCount = 0,
                     target = null,

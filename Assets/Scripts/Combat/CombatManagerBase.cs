@@ -34,11 +34,15 @@ namespace ProjectBS.Combat
             return m_units.Find(x => x.UDID == udid);
         }
 
-        public AllCombatUnitAllEffectProcesser AllUnitAllEffectProcesser { get; protected set; }
         protected List<CombatUnitAction> m_unitActions = new List<CombatUnitAction>();
         protected CombatUnitAction m_currentAction = null;
 
         public CombatUnit CurrentDyingUnit { get; protected set; }
+
+        public AllCombatUnitAllEffectProcesser GetNewAllProcesser()
+        {
+            return new AllCombatUnitAllEffectProcesser(m_units);
+        }
 
         public abstract void Shake();
         public abstract void AddActionIndex(string unitUDID, int addIndex);

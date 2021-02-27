@@ -124,7 +124,11 @@ namespace ProjectBS.Combat
                 timing = EffectProcesser.TriggerTiming.OnActived,
                 allEffectProcesser = m_processer,
                 referenceBuff = null,
-                refenceSkill = skill,
+                refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
+                {
+                    skill = skill,
+                    owner = Actor
+                },
                 onEnded = OnSkillEnded
             });
         }

@@ -12,6 +12,7 @@ namespace ProjectBS.Data
         public int Speed { get; private set; }
         public int HP { get; private set; }
         public int SP { get; private set; }
+        public string SkillIDs { get; private set; }
         public string BuffIDs { get; private set; }
         public string AI { get; private set; }
 
