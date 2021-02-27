@@ -755,7 +755,7 @@ namespace ProjectBS.Combat
                 camp = camp,
                 rawDefense = character.Defense,
                 rawMaxHP = character.HP,
-                name = character.GetName(),
+                name = character.Name,
                 icon = character.GetIcon(),
                 SP = character.SP,
                 rawSpeed = character.Speed,

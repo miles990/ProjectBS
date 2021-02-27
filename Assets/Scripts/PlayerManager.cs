@@ -294,6 +294,7 @@ namespace ProjectBS
             // tank
             _newPlayer.Characters.Add(new OwningCharacterData
             {
+                Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(1).NameContextID),
                 AttackAbilityID = 15,
                 AppearanceDataID = 1,
                 DefenseAbilityID = 24,
@@ -313,6 +314,7 @@ namespace ProjectBS
             // healer
             _newPlayer.Characters.Add(new OwningCharacterData
             {
+                Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(2).NameContextID),
                 AttackAbilityID = 16,
                 AppearanceDataID = 2,
                 DefenseAbilityID = 24,
@@ -332,6 +334,7 @@ namespace ProjectBS
             // DPS 0
             _newPlayer.Characters.Add(new OwningCharacterData
             {
+                Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(3).NameContextID),
                 AttackAbilityID = 14,
                 AppearanceDataID = 3,
                 DefenseAbilityID = 26,
@@ -351,6 +354,7 @@ namespace ProjectBS
             // DPS 1
             _newPlayer.Characters.Add(new OwningCharacterData
             {
+                Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(4).NameContextID),
                 AttackAbilityID = 14,
                 AppearanceDataID = 4,
                 DefenseAbilityID = 24,

@@ -26,7 +26,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_partyHint = null;
         [SerializeField] private TextMeshProUGUI m_partyHintText = null;
         [SerializeField] private TextMeshProUGUI m_levelText = null;
-        [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TMP_InputField m_nameText = null;
         [SerializeField] private RawImage m_iconImage = null;
         [SerializeField] private TextMeshProUGUI m_expText = null;
         [SerializeField] private TextMeshProUGUI m_hpRankText = null;
@@ -437,7 +437,7 @@ namespace ProjectBS.UI
             m_skill2.SetUp(m_refCharacter.GetSkill(2));
             m_skill3.SetUp(m_refCharacter.GetSkill(3));
 
-            m_nameText.text = m_refCharacter.GetName();
+            m_nameText.text = m_refCharacter.Name;
             m_iconImage.texture = m_refCharacter.GetIcon();
             m_levelText.text = "Level. " + m_refCharacter.Level;
             m_expText.text = m_refCharacter.Exp + " / " + m_refCharacter.GetRequireExp();
@@ -468,6 +468,18 @@ namespace ProjectBS.UI
             m_defenseProgressText.text = m_refCharacter.Defense + " / " + _maxDefenseValue;
             m_speedProgressBarImage.fillAmount = (float)m_refCharacter.Speed / (float)_maxSpeedValue;
             m_speedProgressText.text = m_refCharacter.Speed + " / " + _maxSpeedValue;
+        }
+
+        public void InputField_OnEditEnded()
+        {
+            if(string.IsNullOrEmpty(m_nameText.text))
+            {
+                m_refCharacter.Name = m_nameText.text = m_refCharacter.GetOriginName();
+            }
+            else
+            {
+                m_refCharacter.Name = m_nameText.text;
+            }
         }
 
         protected override void OnShown()

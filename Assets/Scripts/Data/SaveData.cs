@@ -28,6 +28,7 @@ namespace ProjectBS.Data
     {
         public string UDID = "";
         public int AppearanceDataID = 0;
+        public string Name = "";
         public int Level = 1;
         public int Exp = 0;
         public int HP = 100;
@@ -48,7 +49,7 @@ namespace ProjectBS.Data
         public int SkillSlot_2 = 0;
         public int SkillSlot_3 = 0;
 
-        public string GetName()
+        public string GetOriginName()
         {
             return ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(AppearanceDataID).NameContextID);
         }

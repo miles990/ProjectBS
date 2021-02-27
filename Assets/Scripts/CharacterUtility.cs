@@ -38,6 +38,7 @@ namespace ProjectBS
 
             OwningCharacterData _newChar = new OwningCharacterData
             {
+                Name = ContextConverter.Instance.GetContext(_skin.NameContextID),
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
                 AttackAbilityID = _attack.ID,
                 AppearanceDataID = _skin.ID,

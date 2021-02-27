@@ -33,7 +33,7 @@ namespace ProjectBS.UI
 
         public void RefreshInfo()
         {
-            m_nameText.text = m_refCharacter.GetName();
+            m_nameText.text = m_refCharacter.Name;
             m_iconImage.texture = m_refCharacter.GetIcon();
 
             m_hpValueText.text = m_refCharacter.GetTotal(Keyword.HP).ToString();
