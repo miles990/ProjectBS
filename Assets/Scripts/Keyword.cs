@@ -37,5 +37,6 @@
         public const string LastDefenseRoll = "LastDefenseRoll";
         public const string MyUnitCount = "MyUnitCount";
         public const string OpponentUnitCount = "OpponentUnitCount";
+        public const string CurrentActor = "CurrentActor";
     }
 }

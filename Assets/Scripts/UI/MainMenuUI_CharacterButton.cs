@@ -57,8 +57,6 @@ namespace ProjectBS.UI
             }
         }
 
-
-
         public void Button_Depart()
         {
             if(CharacterUtility.Depart(m_refCharacter.UDID))
@@ -71,6 +69,10 @@ namespace ProjectBS.UI
         protected override void OnPressed()
         {
             OnButtonPressed?.Invoke(m_refCharacter);
+        }
+
+        protected override void OnLongPressed()
+        {
         }
     }
 }

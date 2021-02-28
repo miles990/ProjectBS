@@ -500,6 +500,11 @@ namespace ProjectBS.Combat
 
                         return UnityEngine.Random.Range(_min, _max);
                     }
+                case Keyword.CurrentActor:
+                    {
+                        _getValueTarget = ComabtManager.CurrentActionInfo.actor;
+                        break;
+                    }
                 default:
                     {
                         throw new System.Exception("[CombatUtility][GetValueByParaString] Invaild target=" + _getValueData[0]);

@@ -1,22 +1,22 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
+using ProjectBS.Data;
 
 namespace ProjectBS.UI
 {
     public class MainMenuUI_SkillButton : MainMenuUI_CustomButtonBase
     {
-        public event System.Action<Data.OwningSkillData> OnButtonPressed = null;
+        public event System.Action<OwningSkillData> OnButtonPressed = null;
 
         [SerializeField] private TextMeshProUGUI m_nameText = null;
         [SerializeField] private TextMeshProUGUI m_descriptionText = null;
         [SerializeField] private TextMeshProUGUI m_amoumtText = null;
 
-        private Data.OwningSkillData m_referenceOwingSkill = null;
+        private OwningSkillData m_referenceOwingSkill = null;
 
-        public void SetUp(Data.OwningSkillData skillData)
+        public void SetUp(OwningSkillData skillData)
         {
-            Data.SkillData _source = skillData.GetSourceData();
+            SkillData _source = skillData.GetSourceData();
 
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
             m_descriptionText.text = _source.GetAllDescriptionContext();
@@ -25,13 +25,17 @@ namespace ProjectBS.UI
             m_referenceOwingSkill = skillData;
         }
 
-        public void SetUp(Data.SkillData skillData)
+        public void SetUp(SkillData skillData)
         {
             m_nameText.text = ContextConverter.Instance.GetContext(skillData.NameContextID);
             m_descriptionText.text = skillData.GetAllDescriptionContext();
             m_amoumtText.text = "";
 
-            m_referenceOwingSkill = null;
+            m_referenceOwingSkill = new OwningSkillData
+            {
+                SkillSourceID = skillData.ID,
+                Amount = 0
+            };
         }
 
         protected override void OnPressed()
@@ -39,6 +43,16 @@ namespace ProjectBS.UI
             if (m_referenceOwingSkill == null) return;
 
             OnButtonPressed?.Invoke(m_referenceOwingSkill);
+        }
+
+        protected override void OnLongPressed()
+        {
+            SkillData _skill = GameDataManager.GetGameData<SkillData>(m_referenceOwingSkill.SkillSourceID);
+            string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
+
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                "Cost SP:" + _skill.SP + "\n\n" + _skill.GetAllDescriptionContext(),
+                _name, null);
         }
     }
 }

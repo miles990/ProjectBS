@@ -97,5 +97,9 @@ namespace ProjectBS.UI
         {
             OnButtonPressed?.Invoke(m_refEquipment);
         }
+
+        protected override void OnLongPressed()
+        {
+        }
     }
 }
