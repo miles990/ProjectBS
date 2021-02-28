@@ -156,7 +156,7 @@ namespace ProjectBS.Combat
         {
             TurnCount++;
 
-            for (int i = 0; i < m_units.Count - 1; i++)
+            for (int i = 0; i < m_units.Count; i++)
             {
                 int _spd = m_units[i].GetSpeed();
                 m_units[i].actionValue = _spd + System.Convert.ToInt32(UnityEngine.Random.Range(0f, (float)_spd * 0.1f));

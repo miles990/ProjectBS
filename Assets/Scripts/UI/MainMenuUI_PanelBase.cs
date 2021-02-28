@@ -30,7 +30,7 @@ namespace ProjectBS.UI
 
         private void Update()
         {
-            m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.1f);
+            m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.2f);
             if (Mathf.Approximately(m_targetValue, 0f)
                 && m_root.alpha <= 0.05)
             {

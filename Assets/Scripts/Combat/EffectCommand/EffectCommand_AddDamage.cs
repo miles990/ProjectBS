@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
                 float _pureValue = CombatUtility.Calculate(new CombatUtility.CalculateData
                 {
                     caster = GetSelf(),
-                    target = null,
+                    target = processData.target,
                     referenceBuff = processData.referenceBuff,
                     formula = _valueString,
                     useRawValue = false

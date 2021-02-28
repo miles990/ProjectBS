@@ -224,7 +224,7 @@ namespace ProjectBS.Combat
             m_currentBuffProcessData = new EffectProcesser.ProcessData
             {
                 caster = m_units[m_currentUnitIndex],
-                target = null,
+                target = m_data.target == null ? m_units[m_currentUnitIndex] : m_data.target,
                 timing = m_data.timing,
                 allEffectProcesser = this,
                 referenceBuff = _currentBuff,
