@@ -21,7 +21,7 @@ namespace ProjectBS.UI
             m_bossNameText.text = _mainBoss.GetName();
             if(PlayerManager.Instance.Player.ClearedBossStage.Contains(bossStageData.ID))
             {
-                m_bossNameText.text += " (Cleared)";
+                m_bossNameText.text += " (" + ContextConverter.Instance.GetContext(1000015) + ")";
             }
             m_levelText.text = m_refBossStageData.Stamina.ToString();
             m_bossDescriptionText.text = ContextConverter.Instance.GetContext(m_refBossStageData.DescriptionContextID);

@@ -258,10 +258,10 @@ namespace ProjectBS.Combat
 
         private void OnDied_Self_Ended()
         {
-            ForceRemoveUnit(CurrentDyingUnit.UDID);
             GetPage<UI.CombatUIView>().ShowUnitDied(CurrentDyingUnit,
                 delegate 
                 {
+                    ForceRemoveUnit(CurrentDyingUnit.UDID);
                     CurrentDyingUnit = null;
                     m_onDiedCommandEnded?.Invoke();
                 });

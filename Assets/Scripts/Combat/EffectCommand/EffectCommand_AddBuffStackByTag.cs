@@ -18,6 +18,7 @@ namespace ProjectBS.Combat.EffectCommand
         {
             m_tag = int.Parse(vars[1]);
             m_removeStackCount = int.Parse(vars[2]);
+            m_onEnded = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData

@@ -41,6 +41,10 @@ namespace ProjectBS.Combat.EffectCommand
             m_currentTargetIndex++;
             if(m_currentTargetIndex >= m_targets.Count)
             {
+                for(int i = 0; i < m_targets.Count; i++)
+                {
+                    GetPage<UI.CombatUIView>().ForceDisableDamageAnimation(m_targets[i]);
+                }
                 m_onCompleted?.Invoke();
                 return;
             }
@@ -106,7 +110,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 {
                                     if (_add < 0)
                                     {
-                                        GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
+                                        GetPage<UI.CombatUIView>().SimpleDisplayDamage(new UI.CombatUIView.DisplayDamageData
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             damageValue = -_add,

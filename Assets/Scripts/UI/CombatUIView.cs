@@ -250,7 +250,7 @@ namespace ProjectBS.UI
 
         public void ShowUnitDied(CombatUnit dyingUnit, Action onInfoShown)
         {
-            SetInfoText(dyingUnit, ContextConverter.Instance.GetContext(1000013));
+            m_characterPanels[m_unitToIndex[dyingUnit]].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Died);
             TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
@@ -497,6 +497,17 @@ namespace ProjectBS.UI
                     targetToDmg = new Dictionary<CombatUI_CharacterPanel, int> { { m_characterPanels[m_unitToIndex[data.taker]], data.damageValue } },
                     onEnded = onDisplayEnded
                 });
+        }
+
+        public void SimpleDisplayDamage(DisplayDamageData data, Action onDisplayEnded)
+        {
+            m_characterPanels[m_unitToIndex[data.taker]].SimpleShowDamage(data.damageValue);
+            TimerManager.Schedule(0.7f, onDisplayEnded);
+        }
+
+        public void ForceDisableDamageAnimation(CombatUnit target)
+        {
+            m_characterPanels[m_unitToIndex[target]].ForceDisableDamageAnimation();
         }
 
         public class DisplayHealData

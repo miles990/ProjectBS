@@ -32,7 +32,7 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 _value *= 0.01f;
             }
-            if(CombatUtility.ComabtManager.CurrentActionInfo.actor == processData.caster)
+            if(CombatUtility.ComabtManager.CurrentActionInfo.actor == GetSelf())
             {
                 List<string> _targets = new List<string>(processData.caster.targetToDmg.Keys);
                 for(int i = 0; i < _targets.Count; i++)

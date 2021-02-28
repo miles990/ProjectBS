@@ -1,4 +1,5 @@
 ﻿using KahaGameCore.Interface;
+using KahaGameCore.Static;
 
 namespace ProjectBS.Data
 {
@@ -10,7 +11,7 @@ namespace ProjectBS.Data
         public int DescriptionContextID { get; private set; }
         public int StoryContextID { get; private set; }
         public string AnimationInfo { get; private set; }
-        public string ReferenceContextIDs { get; private set; }
+        public string ReferenceBuffIDs { get; private set; }
         public string Command { get; private set; }
         public int IsDrop { get; private set; }
         public string Tag { get; private set; }
@@ -34,14 +35,18 @@ namespace ProjectBS.Data
 
             _description += ContextConverter.Instance.GetContext(DescriptionContextID);
 
-            if (!string.IsNullOrEmpty(ReferenceContextIDs))
+            if (!string.IsNullOrEmpty(ReferenceBuffIDs))
             {
-                string[] _additionDescriptionIDs = ReferenceContextIDs.Split(';');
-                for (int i = 0; i < _additionDescriptionIDs.Length; i++)
+                string[] _refBuffIDs = ReferenceBuffIDs.Split(';');
+                for (int i = 0; i < _refBuffIDs.Length; i++)
                 {
+                    BuffData _refBuff = GameDataManager.GetGameData<BuffData>(_refBuffIDs[i].ToInt());
+
+                    _description += "\n\n";
+                    _description += ContextConverter.Instance.GetContext(_refBuff.NameContextID);
                     _description += "\n";
-                    if(i % 2 == 0) _description += "\n";
-                    _description += ContextConverter.Instance.GetContext(int.Parse(_additionDescriptionIDs[i]));
+                    _description += _refBuff.Tag == 0 ? "" : "[" + ContextConverter.Instance.GetContext(_refBuff.Tag) + "]\n";
+                    _description += ContextConverter.Instance.GetContext(_refBuff.DescriptionContextID);
                 }
             }
 

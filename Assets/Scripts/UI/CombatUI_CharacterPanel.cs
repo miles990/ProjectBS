@@ -11,7 +11,8 @@ namespace ProjectBS.UI
     {
         public enum AnimationClipName
         {
-            Appear
+            Appear,
+            Died
         }
 
         private class AnimationCommand
@@ -89,6 +90,8 @@ namespace ProjectBS.UI
 
         private float m_hpBarTartgetValue = 1f;
         private float m_spBarTargetValue = 1f;
+
+        private long m_setInTimerID = -1L;
 
         public void EnableActingHint(bool enable)
         {
@@ -214,6 +217,11 @@ namespace ProjectBS.UI
                         animationData.targets[i].SimpleShowDamage(animationData.targetToDmg[animationData.targets[i]]);
                         if (i == 0)
                         {
+                            if(m_setInTimerID != -1L)
+                            {
+                                TimerManager.SetTime(m_setInTimerID, Time.deltaTime);
+                                m_setInTimerID = -1L;
+                            }
                             TimerManager.Schedule(0.75f, delegate
                             {
                                 for (int j = 0; j < animationData.targets.Count; j++)
@@ -239,11 +247,16 @@ namespace ProjectBS.UI
         private void SetDamageIn(System.Action onEnded)
         {
             m_dmgAnimator.Play("SetIn", 0, 0f);
-            TimerManager.Schedule(0.6f, delegate
+            m_setInTimerID = TimerManager.Schedule(0.6f, delegate
             {
                 m_dmgAnimator.gameObject.SetActive(false);
                 onEnded?.Invoke();
             });
+        }
+
+        public void ForceDisableDamageAnimation()
+        {
+            m_dmgAnimator.gameObject.SetActive(false);
         }
 
         public void SetUp(string unitUDID)
@@ -311,8 +324,10 @@ namespace ProjectBS.UI
             for (int i = 0; i < _unit.OwnBuffCount; i++)
             {
                 Data.BuffData _effect = _unit.GetBuffByIndex(i).GetBuffSourceData();
+                string _tag = _effect.Tag == 0 ? "" : "[" + ContextConverter.Instance.GetContext(_effect.Tag) + "]\n";
                 _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + _unit.GetBuffByIndex(i).stackCount
                     + " (" + (_unit.GetBuffByIndex(i).remainingTime == -1 ? "永久" : "剩餘 " + _unit.GetBuffByIndex(i).remainingTime.ToString() + " 回合") + ")\n"
+                    + _tag 
                     + ContextConverter.Instance.GetContext(_effect.DescriptionContextID);
 
                 if (i != _unit.OwnBuffCount - 1)
