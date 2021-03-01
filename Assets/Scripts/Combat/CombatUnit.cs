@@ -265,6 +265,12 @@ namespace ProjectBS.Combat
                 return;
             }
 
+            if(buff.remainingTime == -1)
+            {
+                onNotRemoved?.Invoke();
+                return;
+            }
+
             buff.remainingTime += addTime;
             if (buff.remainingTime <= 0)
             {

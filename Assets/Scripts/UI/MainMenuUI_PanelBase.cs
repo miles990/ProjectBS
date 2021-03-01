@@ -12,7 +12,6 @@ namespace ProjectBS.UI
         {
             m_targetValue = 1f;
             m_root.gameObject.SetActive(true);
-            m_root.blocksRaycasts = true;
 
             OnShown();
         }
@@ -20,7 +19,6 @@ namespace ProjectBS.UI
         public void Hide()
         {
             m_targetValue = 0f;
-            m_root.blocksRaycasts = false;
 
             OnHidden();
         }
@@ -30,9 +28,9 @@ namespace ProjectBS.UI
 
         private void Update()
         {
-            m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.2f);
+            m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.1f);
             if (Mathf.Approximately(m_targetValue, 0f)
-                && m_root.alpha <= 0.1)
+                && m_root.alpha <= 0.05)
             {
                 m_root.gameObject.SetActive(false);
             }
