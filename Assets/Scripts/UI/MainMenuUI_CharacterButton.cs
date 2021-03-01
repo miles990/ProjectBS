@@ -73,6 +73,7 @@ namespace ProjectBS.UI
 
         protected override void OnLongPressed()
         {
+            OnButtonPressed?.Invoke(m_refCharacter);
         }
     }
 }
