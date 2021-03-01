@@ -71,20 +71,21 @@ namespace ProjectBS.Combat
                 }
                 else
                 {
-                    try
-                    {
-                        command.Process(vars, onCompleted);
-                    }
-                    catch (Exception e)
-                    {
-                        string _errorMsg = "EffectData Info:";
-                        _errorMsg += "\nError Msg=" + e.Message;
-                        _errorMsg += "\nType=" + command.GetType();
-                        _errorMsg += command.processData.referenceBuff == null ? "" : "\nref buff=" + command.processData.referenceBuff.soruceID;
-                        _errorMsg += command.processData.refenceSkill == null ? "" : "\nref skill=" + command.processData.refenceSkill.skill.ID;
-                        _errorMsg += "\n\n\n";
-                        UnityEngine.Debug.LogError(_errorMsg);
-                    }
+                    //try
+                    //{
+                    //    command.Process(vars, onCompleted);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    string _errorMsg = "EffectData Error Info:";
+                    //    _errorMsg += "\nError Msg=" + e.Message;
+                    //    _errorMsg += "\nType=" + command.GetType();
+                    //    _errorMsg += command.processData.referenceBuff == null ? "" : "\nref buff=" + command.processData.referenceBuff.soruceID;
+                    //    _errorMsg += command.processData.refenceSkill == null ? "" : "\nref skill=" + command.processData.refenceSkill.skill.ID;
+                    //    _errorMsg += "\n\n\n";
+                    //    UnityEngine.Debug.LogError(_errorMsg);
+                    //}
+                    command.Process(vars, onCompleted);
                 }
             }
         }

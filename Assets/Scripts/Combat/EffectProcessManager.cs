@@ -104,6 +104,14 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_BeginIf_Skill();
                     }
+                case "BeginIf_LastSkillTag":
+                    {
+                        return new EffectCommand_BeginIf_LastSkillTag();
+                    }
+                case "BeginIf_HasEffectTag":
+                    {
+                        return new EffectCommand_BeginIf_HasEffectTag();
+                    }
                 case "EndIf":
                     {
                         return new EffectCommand_EndIf();

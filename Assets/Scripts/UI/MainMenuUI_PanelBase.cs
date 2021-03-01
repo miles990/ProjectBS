@@ -32,7 +32,7 @@ namespace ProjectBS.UI
         {
             m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.2f);
             if (Mathf.Approximately(m_targetValue, 0f)
-                && m_root.alpha <= 0.05)
+                && m_root.alpha <= 0.1)
             {
                 m_root.gameObject.SetActive(false);
             }
