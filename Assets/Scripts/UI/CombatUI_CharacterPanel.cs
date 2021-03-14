@@ -130,7 +130,7 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
 
-            TimerManager.Schedule(1f, 
+            TimerManager.Schedule(1.1f, 
                 delegate 
                 {
                     m_animator.enabled = false;
@@ -198,7 +198,7 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(_aniName.ToString(), 0, 0f);
 
-            TimerManager.Schedule(1f,
+            TimerManager.Schedule(1.1f,
                 delegate
                 {
                     m_animator.enabled = false;

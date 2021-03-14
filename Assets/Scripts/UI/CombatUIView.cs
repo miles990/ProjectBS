@@ -253,7 +253,7 @@ namespace ProjectBS.UI
             RefreshAllInfo();
         }
 
-        public void AddCombatInfo(string text)
+        public void AddCombatInfo(string text, Action onShown)
         {
             CombatUI_InfoText _cloneInfo = Instantiate(m_infoTextPrefab);
             _cloneInfo.transform.SetParent(m_infoContainer);
@@ -265,6 +265,8 @@ namespace ProjectBS.UI
                 m_cloneInfoTexts.RemoveAt(0);
             }
             m_cloneInfoTexts.Add(_cloneInfo);
+
+            TimerManager.Schedule(0.75f, onShown);
         }
 
         public void ShowForceEndAction(CombatUnit actor)

@@ -184,7 +184,36 @@ namespace ProjectBS.Combat.EffectCommand
         private void OnAnimationShown()
         {
             m_currentTargetIndex = -1;
-            ApplyDamageToNextTarget();
+            ApplyDamageToNextTargetShield();
+        }
+
+        private void OnShieldDamageApplied()
+        {
+            for(int i = 0; i < m_targets.Count; i++)
+            {
+                if(i == m_targets.Count - 1)
+                {
+                    GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
+                    {
+                        damageValue = processData.caster.targetToDmg[m_targets[i].UDID],
+                        taker = m_targets[i]
+                    }, OnDamageShown);
+                }
+                else
+                {
+                    GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
+                    {
+                        damageValue = processData.caster.targetToDmg[m_targets[i].UDID],
+                        taker = m_targets[i]
+                    }, null);
+                }
+            }
+        }
+
+        private void OnDamageShown()
+        {
+            m_currentTargetIndex = -1;
+            OnDmgShown();
         }
 
         private void OnDamageApplied()
@@ -214,12 +243,12 @@ namespace ProjectBS.Combat.EffectCommand
             m_onCompleted?.Invoke();
         }
 
-        private void ApplyDamageToNextTarget()
+        private void ApplyDamageToNextTargetShield()
         {
             m_currentTargetIndex++;
             if (m_currentTargetIndex >= m_targets.Count)
             {
-                OnDamageApplied();
+                OnShieldDamageApplied();
                 return;
             }
 
@@ -229,7 +258,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     m_targets[m_currentTargetIndex].shields[0].value -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
                     processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID] = 0;
-                    OnDamageTaken_Self_Ended();
+                    ApplyDamageToNextTargetShield();
                 }
                 else
                 {
@@ -254,14 +283,11 @@ namespace ProjectBS.Combat.EffectCommand
                         OnShieldSkillTriggered();
                     }
                 }
-                return;
             }
-
-            GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
+            else
             {
-                taker = m_targets[m_currentTargetIndex],
-                damageValue = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID]
-            }, OnDmgShown);
+                OnShieldDamageApplied();
+            }
         }
 
         private void OnShieldSkillTriggered()
@@ -284,11 +310,18 @@ namespace ProjectBS.Combat.EffectCommand
         private void OnShieldBuffStackRemoved()
         {
             m_currentTargetIndex--;
-            ApplyDamageToNextTarget();
+            ApplyDamageToNextTargetShield();
         }
 
         private void OnDmgShown()
         {
+            m_currentTargetIndex++;
+            if (m_currentTargetIndex >= m_targets.Count)
+            {
+                OnDamageApplied();
+                return;
+            }
+
             m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
             m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
             m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
@@ -354,7 +387,7 @@ namespace ProjectBS.Combat.EffectCommand
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Self,
-                onEnded = ApplyDamageToNextTarget
+                onEnded = OnDmgShown
             });
         }
     }

@@ -78,16 +78,25 @@ namespace ProjectBS.Combat
                         {
                             if (command.processData.timing != TriggerTiming.OnActived)
                             {
-                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」技能效果發動");
+                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」技能效果發動",
+                                    delegate { command.Process(vars, onCompleted); });
                             }
                             else
                             {
-                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "使用「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」");
+                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "使用「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」",
+                                    null);
+                                command.Process(vars, onCompleted);
                             }
                         }
+                        else
+                        {
+                            command.Process(vars, onCompleted);
+                        }
                     }
-
-                    command.Process(vars, onCompleted);
+                    else
+                    {
+                        command.Process(vars, onCompleted);
+                    }
                 }
             }
         }
