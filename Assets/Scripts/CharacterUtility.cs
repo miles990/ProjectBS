@@ -31,9 +31,9 @@ namespace ProjectBS
 
             AppearanceData _skin = GetRandomSkin();
             string[] _skillIDs = _skin.DefaultSkillSet.Split(';');
-            if(_skillIDs.Length != 4)
+            if(_skillIDs.Length > 8)
             {
-                throw new System.Exception("[CharacterUtility][CreateNewCharacter] _skillIDs MUST be 4 elements. AppearanceData ID=" + _skin.ID);
+                throw new System.Exception("[CharacterUtility][CreateNewCharacter] _skillIDs MUST be less then 8 elements. AppearanceData ID=" + _skin.ID);
             }
 
             OwningCharacterData _newChar = new OwningCharacterData
@@ -52,15 +52,16 @@ namespace ProjectBS
                 HP = Random.Range(_hp.MinValue, _hp.MaxValue),
                 HPAbilityID = _hp.ID,
                 Level = 1,
-                SkillSlot_0 = int.Parse(_skillIDs[0]),
-                SkillSlot_1 = int.Parse(_skillIDs[1]),
-                SkillSlot_2 = int.Parse(_skillIDs[2]),
-                SkillSlot_3 = int.Parse(_skillIDs[3]),
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
                 SpeedAbilityID = _speed.ID,
                 UDID = System.Guid.NewGuid().ToString()
             };
+
+            for(int i = 0; i < _skillIDs.Length; i++)
+            {
+                _newChar.Skills[i] = int.Parse(_skillIDs[i]);
+            }
 
             return _newChar;
         }

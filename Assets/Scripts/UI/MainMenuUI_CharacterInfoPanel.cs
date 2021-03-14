@@ -47,10 +47,7 @@ namespace ProjectBS.UI
         [SerializeField] private Image m_speedProgressBarImage = null;
         [SerializeField] private TextMeshProUGUI m_speedProgressText = null;
         [Header("Skill")]
-        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill0 = null;
-        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill1 = null;
-        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill2 = null;
-        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton m_skill3 = null;
+        [SerializeField] private MainMenuUI_CharacterInfoPanel_SkilltButton[] m_skillButtons = null;
         [Header("Select Object Panel")]
         [SerializeField] private GameObject m_selectObjectPanelRoot = null;
         [SerializeField] private RectTransform m_selectObjectContainer = null;
@@ -94,10 +91,10 @@ namespace ProjectBS.UI
             m_bodyEquipment.OnSelected += StartChangeEquipment;
             m_handEquipment.OnSelected += StartChangeEquipment;
             m_footEquipment.OnSelected += StartChangeEquipment;
-            m_skill0.OnSelected += StartChangeSkill;
-            m_skill1.OnSelected += StartChangeSkill;
-            m_skill2.OnSelected += StartChangeSkill;
-            m_skill3.OnSelected += StartChangeSkill;
+            for(int i = 0; i < m_skillButtons.Length; i++)
+            {
+                m_skillButtons[i].OnSelected += StartChangeSkill;
+            }
         }
 
         public void Enable(Data.OwningCharacterData characterData)
@@ -148,10 +145,14 @@ namespace ProjectBS.UI
         private void StartChangeSkill(MainMenuUI_CharacterInfoPanel_SkilltButton skill)
         {
             m_targetSkillSlotIndex = -1;
-            if (skill == m_skill0) m_targetSkillSlotIndex = 0;
-            if (skill == m_skill1) m_targetSkillSlotIndex = 1;
-            if (skill == m_skill2) m_targetSkillSlotIndex = 2;
-            if (skill == m_skill3) m_targetSkillSlotIndex = 3;
+            for (int i = 0; i < m_skillButtons.Length; i++)
+            {
+                if(m_skillButtons[i] == skill)
+                {
+                    m_targetSkillSlotIndex = i;
+                    break;
+                }
+            }
 
             if (m_targetSkillSlotIndex == -1) 
                 throw new System.Exception("[MainMenuUI_CharacterInfoPanel][StartChangeSkill] Invaild skill button");
@@ -432,10 +433,10 @@ namespace ProjectBS.UI
             m_handEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Hand));
             m_footEquipment.SetUp(PlayerManager.Instance.GetEquipmentByUDID(m_refCharacter.Equipment_UDID_Foot));
 
-            m_skill0.SetUp(m_refCharacter.GetSkill(0));
-            m_skill1.SetUp(m_refCharacter.GetSkill(1));
-            m_skill2.SetUp(m_refCharacter.GetSkill(2));
-            m_skill3.SetUp(m_refCharacter.GetSkill(3));
+            for(int i = 0; i < m_refCharacter.Skills.Length; i++)
+            {
+                m_skillButtons[i].SetUp(m_refCharacter.GetSkill(i));
+            }
 
             m_nameText.text = m_refCharacter.Name;
             m_iconImage.texture = m_refCharacter.GetIcon();
@@ -455,10 +456,10 @@ namespace ProjectBS.UI
             m_speedText.text = m_refCharacter.GetTotal(Keyword.Speed).ToString();
 
             // const value from designer
-            int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).MaxValue * 100 + 100000;
-            int _maxAttackValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).MaxValue * 100 + 10000;
-            int _maxDefenseValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).MaxValue * 100 + 10000;
-            int _maxSpeedValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).MaxValue * 100 + 10000;
+            int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).MaxValue * 100;
+            int _maxAttackValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).MaxValue * 100;
+            int _maxDefenseValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).MaxValue * 100;
+            int _maxSpeedValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).MaxValue * 100;
 
             m_hpProgressBarImage.fillAmount = (float)m_refCharacter.HP / (float)_maxHPValue;
             m_hpProgressText.text = m_refCharacter.HP + " / " + _maxHPValue;

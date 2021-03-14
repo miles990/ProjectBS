@@ -269,13 +269,10 @@ namespace ProjectBS.UI
 
             CombatUnit _unit = CombatUtility.ComabtManager.GetUnitByUDID(m_refUnitUDID);
 
-            string[] _skillName = new string[4];
+            string[] _skillName = new string[8];
             for(int i = 0; i < _unit.skills.Length; i++)
             {
-                if (_unit.skills[i] == 0)
-                    _skillName[i] = "無";
-                else
-                    _skillName[i] = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_unit.skills[i]).NameContextID);
+                _skillName[i] = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_unit.skills[i]).NameContextID);
             }
 
             List<CombatUnit> _allUnits = CombatUtility.ComabtManager.AllUnit;

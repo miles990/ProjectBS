@@ -17,11 +17,11 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_attackValueText = null;
         [SerializeField] private TextMeshProUGUI m_defenseValueText = null;
         [SerializeField] private TextMeshProUGUI m_speedValueText = null;
-        [Header("Skills")]
-        [SerializeField] private TextMeshProUGUI m_skill0Text = null;
-        [SerializeField] private TextMeshProUGUI m_skill1Text = null;
-        [SerializeField] private TextMeshProUGUI m_skill2Text = null;
-        [SerializeField] private TextMeshProUGUI m_skill3Text = null;
+        //[Header("Skills")]
+        //[SerializeField] private TextMeshProUGUI m_skill0Text = null;
+        //[SerializeField] private TextMeshProUGUI m_skill1Text = null;
+        //[SerializeField] private TextMeshProUGUI m_skill2Text = null;
+        //[SerializeField] private TextMeshProUGUI m_skill3Text = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -36,15 +36,24 @@ namespace ProjectBS.UI
             m_nameText.text = m_refCharacter.Name;
             m_iconImage.texture = m_refCharacter.GetIcon();
 
-            m_hpValueText.text = m_refCharacter.GetTotal(Keyword.HP).ToString();
-            m_attackValueText.text = m_refCharacter.GetTotal(Keyword.Attack).ToString();
-            m_defenseValueText.text = m_refCharacter.GetTotal(Keyword.Defense).ToString();
-            m_speedValueText.text = m_refCharacter.GetTotal(Keyword.Speed).ToString();
+            string _hpRankString = m_refCharacter.GetAbilityRankString(Keyword.HP);
+            string _attackRankString = m_refCharacter.GetAbilityRankString(Keyword.Attack);
+            string _defenseRankString = m_refCharacter.GetAbilityRankString(Keyword.Defense);
+            string _speedRankString = m_refCharacter.GetAbilityRankString(Keyword.Speed);
+            Color _hpRankColor = UITextColorStorer.GetRankStringColor(_hpRankString);
+            Color _attackRankColor = UITextColorStorer.GetRankStringColor(_attackRankString);
+            Color _defenseRankColor = UITextColorStorer.GetRankStringColor(_defenseRankString);
+            Color _speedRankColor = UITextColorStorer.GetRankStringColor(_speedRankString);
 
-            m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_0).NameContextID);
-            m_skill1Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_1).NameContextID);
-            m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_2).NameContextID);
-            m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.SkillSlot_3).NameContextID);
+            m_hpValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_hpRankColor) + ">" + _hpRankString + "</color> " + m_refCharacter.GetTotal(Keyword.HP).ToString();
+            m_attackValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_attackRankColor) + ">" + _attackRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Attack).ToString();
+            m_defenseValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_defenseRankColor) + ">" + _defenseRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Defense).ToString();
+            m_speedValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_speedRankColor) + ">" + _speedRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Speed).ToString();
+
+            //m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[0]).NameContextID);
+            //m_skill1Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[1]).NameContextID);
+            //m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[2]).NameContextID);
+            //m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[3]).NameContextID);
 
             int _partyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
             if (_partyIndex != -1)

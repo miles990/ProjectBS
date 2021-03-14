@@ -773,10 +773,7 @@ namespace ProjectBS.Combat
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
-            _newUnit.skills[0] = character.SkillSlot_0;
-            _newUnit.skills[1] = character.SkillSlot_1;
-            _newUnit.skills[2] = character.SkillSlot_2;
-            _newUnit.skills[3] = character.SkillSlot_3;
+            _newUnit.skills = character.Skills;
 
             return _newUnit;
         }

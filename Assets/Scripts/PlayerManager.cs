@@ -301,14 +301,14 @@ namespace ProjectBS
                 HPAbilityID = 4,
                 Exp = 0,
                 Level = 0,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SkillSlot_2 = 101,
-                SkillSlot_3 = 108,
                 SpeedAbilityID = 36,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 101;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 108;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // healer
@@ -321,14 +321,14 @@ namespace ProjectBS
                 HPAbilityID = 4,
                 Exp = 0,
                 Level = 0,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SkillSlot_2 = 127,
-                SkillSlot_3 = 119,
                 SpeedAbilityID = 35,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 127;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 119;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // DPS 0
@@ -341,14 +341,14 @@ namespace ProjectBS
                 HPAbilityID = 5,
                 Exp = 0,
                 Level = 0,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SkillSlot_2 = 129,
-                SkillSlot_3 = 106,
                 SpeedAbilityID = 34,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 129;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 106;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // DPS 1
@@ -361,14 +361,14 @@ namespace ProjectBS
                 HPAbilityID = 6,
                 Exp = 0,
                 Level = 0,
-                SkillSlot_0 = 1,
-                SkillSlot_1 = 2,
-                SkillSlot_2 = 104,
-                SkillSlot_3 = 125,
                 SpeedAbilityID = 35,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 104;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 125;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             _newPlayer.Party.MemberUDID_0 = _newPlayer.Characters[0].UDID;
