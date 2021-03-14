@@ -376,23 +376,23 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_2 = _newPlayer.Characters[2].UDID;
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
-            DropUtility.DropInfo _drop = DropUtility.Drop("1:25;2:25;3:25;4:25");
-            for (int i = 0; i < _drop.equipments.Count; i++)
-            {
-                _newPlayer.Equipments.Add(_drop.equipments[i]);
-            }
-            for (int i = 0; i < _drop.skillIDs.Count; i++)
-            {
-                OwningSkillData _owningData = _newPlayer.Skills.Find(x => x.SkillSourceID == _drop.skillIDs[i]);
-                if (_owningData != null)
-                {
-                    _owningData.Amount++;
-                }
-                else
-                {
-                    _newPlayer.Skills.Add(new OwningSkillData { SkillSourceID = _drop.skillIDs[i], Amount = 1 });
-                }
-            }
+            //DropUtility.DropInfo _drop = DropUtility.Drop("1:25;2:25;3:25;4:25");
+            //for (int i = 0; i < _drop.equipments.Count; i++)
+            //{
+            //    _newPlayer.Equipments.Add(_drop.equipments[i]);
+            //}
+            //for (int i = 0; i < _drop.skillIDs.Count; i++)
+            //{
+            //    OwningSkillData _owningData = _newPlayer.Skills.Find(x => x.SkillSourceID == _drop.skillIDs[i]);
+            //    if (_owningData != null)
+            //    {
+            //        _owningData.Amount++;
+            //    }
+            //    else
+            //    {
+            //        _newPlayer.Skills.Add(new OwningSkillData { SkillSourceID = _drop.skillIDs[i], Amount = 1 });
+            //    }
+            //}
             return _newPlayer;
         }
 

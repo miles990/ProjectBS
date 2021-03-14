@@ -71,20 +71,22 @@ namespace ProjectBS.Combat
                 }
                 else
                 {
-                    //try
-                    //{
-                    //    command.Process(vars, onCompleted);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    string _errorMsg = "EffectData Error Info:";
-                    //    _errorMsg += "\nError Msg=" + e.Message;
-                    //    _errorMsg += "\nType=" + command.GetType();
-                    //    _errorMsg += command.processData.referenceBuff == null ? "" : "\nref buff=" + command.processData.referenceBuff.soruceID;
-                    //    _errorMsg += command.processData.refenceSkill == null ? "" : "\nref skill=" + command.processData.refenceSkill.skill.ID;
-                    //    _errorMsg += "\n\n\n";
-                    //    UnityEngine.Debug.LogError(_errorMsg);
-                    //}
+                    if(command.processData.skipIfCount <= 0
+                    && !EffectProcessManager.IsIfCommand(command.GetType()))
+                    {
+                        if (command.processData.refenceSkill != null)
+                        {
+                            if (command.processData.timing != TriggerTiming.OnActived)
+                            {
+                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」技能效果發動");
+                            }
+                            else
+                            {
+                                CombatUtility.ComabtManager.AddInfo(command.processData.refenceSkill.owner.name + "使用「" + ContextConverter.Instance.GetContext(command.processData.refenceSkill.skill.NameContextID) + "」");
+                            }
+                        }
+                    }
+
                     command.Process(vars, onCompleted);
                 }
             }
@@ -143,6 +145,21 @@ namespace ProjectBS.Combat
                 new Processer<EffectData>(_effects.ToArray()).Start(processData.onEnded);
             }
         }
+
+        //private void ShowSkillInfo(ProcessData processData)
+        //{
+        //    if (processData.refenceSkill != null)
+        //    {
+        //        if (processData.timing != TriggerTiming.OnActived)
+        //        {
+        //            CombatUtility.ComabtManager.AddInfo(processData.refenceSkill.owner.name + "「" + ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID) + "」技能效果發動");
+        //        }
+        //        else
+        //        {
+        //            CombatUtility.ComabtManager.AddInfo(processData.refenceSkill.owner.name + "使用「" + ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID) + "」");
+        //        }
+        //    }
+        //}
 
         private string DeserializeCommandRawDatas(string timing, string rawData)
         {

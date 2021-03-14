@@ -33,6 +33,9 @@ namespace ProjectBS.UI
         [SerializeField] private CombatUI_CharacterPanel[] m_characterPanels = null;
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
+        [Header("Combat Info")]
+        [SerializeField] private RectTransform m_infoContainer = null;
+        [SerializeField] private CombatUI_InfoText m_infoTextPrefab = null;
         [Header("Shake")]
         [SerializeField] private float m_shakeTime = 0.3f;
         [SerializeField] private float m_moveSpeed = 2f;
@@ -41,6 +44,7 @@ namespace ProjectBS.UI
         [SerializeField] private PhotonView m_photonView = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
+        private List<CombatUI_InfoText> m_cloneInfoTexts = new List<CombatUI_InfoText>();
 
         // 0~3:Player 4~8:Enemy
         private Dictionary<int, CombatUnit> m_indexToUnit = new Dictionary<int, CombatUnit>();
@@ -194,6 +198,12 @@ namespace ProjectBS.UI
             m_allUnits = new List<CombatUnit>(units);
             m_camp0Layout.SetUp(_camp0Count);
             m_camp1Layout.SetUp(_camp1Count);
+
+            for(int i = 0; i < m_cloneInfoTexts.Count; i++)
+            {
+                Destroy(m_cloneInfoTexts[i].gameObject);
+            }
+            m_cloneInfoTexts.Clear();
         }
 
         public void RefreshActionQueueInfo(List<CombatUnitAction> actions)
@@ -241,6 +251,20 @@ namespace ProjectBS.UI
             m_indexToUnit.Remove(m_unitToIndex[_unit]);
             m_unitToIndex.Remove(_unit);
             RefreshAllInfo();
+        }
+
+        public void AddCombatInfo(string text)
+        {
+            CombatUI_InfoText _cloneInfo = Instantiate(m_infoTextPrefab);
+            _cloneInfo.transform.SetParent(m_infoContainer);
+            _cloneInfo.transform.localScale = Vector3.one;
+            _cloneInfo.SetText(text);
+            if(m_cloneInfoTexts.Count >= 5)
+            {
+                Destroy(m_cloneInfoTexts[0].gameObject);
+                m_cloneInfoTexts.RemoveAt(0);
+            }
+            m_cloneInfoTexts.Add(_cloneInfo);
         }
 
         public void ShowForceEndAction(CombatUnit actor)
