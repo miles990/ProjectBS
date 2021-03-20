@@ -34,13 +34,14 @@ namespace ProjectBS
             string[] _dropPool = info.Split(';');
             for (int i = 0; i < _randomDropCount; i++)
             {
-                if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropSkillChance)
+                if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropNormalSkillChance)
                 {
                     _dropInfo.skillIDs.Add(RollSkill());
                 }
                 else
                 {
-                    _dropInfo.equipments.Add(RollEquipment(_dropPool));
+                    //_dropInfo.equipments.Add(RollEquipment(_dropPool));
+                    RollAndAddSpecialSkill(_dropPool);
                 }
             }
 
@@ -65,6 +66,25 @@ namespace ProjectBS
                 }
             }
             return null;
+        }
+
+        private static void RollAndAddSpecialSkill(string[] pool)
+        {
+            int _total = 0;
+            for (int i = 0; i < pool.Length; i++)
+            {
+                _total += int.Parse(pool[i].Split(':')[1]);
+            }
+            int _random = Random.Range(0, _total);
+            for (int i = 0; i < pool.Length; i++)
+            {
+                string[] _data = pool[i].Split(':');
+                _random -= int.Parse(_data[1]);
+                if (_random < 0)
+                {
+                    PlayerManager.Instance.AddSkill(int.Parse(_data[0]));
+                }
+            }
         }
 
         private static int RollSkill()
