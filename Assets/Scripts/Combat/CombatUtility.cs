@@ -469,54 +469,59 @@ namespace ProjectBS.Combat
             string[] _getValueData = paraString.Split('.');
             CombatUnit _getValueTarget = data.caster;
 
-            switch (_getValueData[0].Trim())
+            if(_getValueData[0].Trim().Contains(Keyword.LastSelected))
             {
-                case Keyword.Self:
-                case Keyword.Caster:
-                    {
-                        _getValueTarget = data.caster;
-                        break;
-                    }
-                case Keyword.Target:
-                    {
-                        _getValueTarget = data.target;
-                        break;
-                    }
-                case Keyword.CombatField:
-                    {
-                        if (_minus)
-                            return -GetCombatFieldStatus(_getValueData[1]);
-                        else
-                            return GetCombatFieldStatus(_getValueData[1]);
-                    }
-                case Keyword.Random:
-                    {
-                        string _value = paraString.RemoveBlankCharacters().Replace(Keyword.Random, "");
-                        _value = paraString.Replace("(", "");
-                        _value = paraString.Replace(")", "");
-                        string[] _valueParts = _value.Split(',');
-                        int _min = int.Parse(_valueParts[0]);
-                        int _max = int.Parse(_valueParts[1]);
-
-                        return UnityEngine.Random.Range(_min, _max);
-                    }
-                case Keyword.CurrentActor:
-                    {
-                        _getValueTarget = ComabtManager.CurrentActionInfo.actor;
-                        break;
-                    }
-                case Keyword.LastSelected:
-                    {
-                        if(data.processData != null)
+                int _index = int.Parse(_getValueData[0].Trim().Replace(Keyword.LastSelected, ""));
+                _getValueTarget = CombatTargetSelecter.Instance.GetLastSelected(CombatTargetSelecter.Instance.GetSelectID(data.processData))[_index];
+            }
+            else if (_getValueData[0].Trim().Contains(Keyword.LastAttacked))
+            {
+                int _index = int.Parse(_getValueData[0].Trim().Replace(Keyword.LastAttacked, ""));
+                _getValueTarget = m_currentCombatManager.GetUnitByUDID(new List<string>(data.caster.targetToDmg.Keys)[_index]);
+            }
+            else
+            {
+                switch (_getValueData[0].Trim())
+                {
+                    case Keyword.Self:
+                    case Keyword.Caster:
                         {
-                            _getValueTarget = CombatTargetSelecter.Instance.GetLastSelected(CombatTargetSelecter.Instance.GetSelectID(data.processData))[0];
+                            _getValueTarget = data.caster;
+                            break;
                         }
-                        break;
-                    }
-                default:
-                    {
-                        throw new System.Exception("[CombatUtility][GetValueByParaString] Invaild target=" + _getValueData[0]);
-                    }
+                    case Keyword.Target:
+                        {
+                            _getValueTarget = data.target;
+                            break;
+                        }
+                    case Keyword.CombatField:
+                        {
+                            if (_minus)
+                                return -GetCombatFieldStatus(_getValueData[1]);
+                            else
+                                return GetCombatFieldStatus(_getValueData[1]);
+                        }
+                    case Keyword.Random:
+                        {
+                            string _value = paraString.RemoveBlankCharacters().Replace(Keyword.Random, "");
+                            _value = paraString.Replace("(", "");
+                            _value = paraString.Replace(")", "");
+                            string[] _valueParts = _value.Split(',');
+                            int _min = int.Parse(_valueParts[0]);
+                            int _max = int.Parse(_valueParts[1]);
+
+                            return UnityEngine.Random.Range(_min, _max);
+                        }
+                    case Keyword.CurrentActor:
+                        {
+                            _getValueTarget = ComabtManager.CurrentActionInfo.actor;
+                            break;
+                        }
+                    default:
+                        {
+                            throw new System.Exception("[CombatUtility][GetValueByParaString] Invaild target=" + _getValueData[0]);
+                        }
+                }
             }
 
             if (_minus)
