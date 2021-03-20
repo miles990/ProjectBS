@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
-                id = GetSelectID(),
+                id = CombatTargetSelecter.Instance.GetSelectID(processData),
                 attacker = GetSelf(),
                 currentEffectedTarget = processData.target,
                 commandString = vars[0],
@@ -51,7 +51,7 @@ namespace ProjectBS.Combat.EffectCommand
                     caster = processData.caster,
                     target = processData.target,
                     formula = m_valueString,
-                    referenceBuff = processData.referenceBuff,
+                    processData = processData,
                     useRawValue = true
                 });
             int _set = Convert.ToInt32(_value);

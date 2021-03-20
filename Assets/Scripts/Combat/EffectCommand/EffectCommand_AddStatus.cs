@@ -20,7 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
-                id = GetSelectID(),
+                id = CombatTargetSelecter.Instance.GetSelectID(processData),
                 attacker = GetSelf(),
                 currentEffectedTarget = processData.target,
                 commandString = vars[0],
@@ -92,7 +92,7 @@ namespace ProjectBS.Combat.EffectCommand
                             {
                                 caster = processData.caster,
                                 target = m_targets[m_currentTargetIndex],
-                                referenceBuff = processData.referenceBuff,
+                                processData = processData,
                                 formula = m_valueString,
                                 useRawValue = true
                             });

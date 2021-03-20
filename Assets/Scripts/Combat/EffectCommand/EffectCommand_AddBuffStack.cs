@@ -24,7 +24,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
             new CombatTargetSelecter.SelectTargetData
             {
-                id = GetSelectID(),
+                id = CombatTargetSelecter.Instance.GetSelectID(processData),
                 attacker = processData.caster,
                 currentEffectedTarget = processData.target,
                 commandString = vars[0],
@@ -50,7 +50,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             if(m_buffID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_buffID);
+                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffStack(

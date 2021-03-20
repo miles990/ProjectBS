@@ -70,6 +70,38 @@ namespace ProjectBS.Combat
         private Dictionary<string, List<CombatUnit>> m_idToSelected = new Dictionary<string, List<CombatUnit>>();
         private string m_currnetManualSelectingID = "";
 
+        public string GetSelectID(EffectProcesser.ProcessData processData)
+        {
+            if (processData.refenceSkill != null)
+            {
+                return Keyword.Skill + processData.refenceSkill.skill.ID;
+            }
+
+            if (processData.referenceBuff != null)
+            {
+                return Keyword.Buff + processData.referenceBuff.GetBuffSourceData().ID;
+            }
+
+            if (processData.caster != null)
+            {
+                return Keyword.Actor + processData.caster.GetHashCode();
+            }
+
+            throw new Exception("[EffectCommandBase][GetSelectID] Must reference to skill or buff or having caster when select");
+        }
+
+        public List<CombatUnit> GetLastSelected(string selectID)
+        {
+            if(m_idToSelected.ContainsKey(selectID))
+            {
+                return new List<CombatUnit>(m_idToSelected[selectID]);
+            }
+            else
+            {
+                return new List<CombatUnit>();
+            }
+        }
+
         public void StartSelect(SelectTargetData data)
         {
             string[] _commandParts = data.commandString.Split('(');
@@ -84,8 +116,8 @@ namespace ProjectBS.Combat
 
             switch (_command)
             {
-                case "Caster":
-                case "Self":
+                case Keyword.Caster:
+                case Keyword.Self:
                     {
                         if (m_idToSelected.ContainsKey(data.id))
                         {
@@ -98,7 +130,7 @@ namespace ProjectBS.Combat
                         data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
                     }
-                case "Target":
+                case Keyword.Target:
                     {
                         if (m_idToSelected.ContainsKey(data.id))
                         {
@@ -111,7 +143,7 @@ namespace ProjectBS.Combat
                         data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
                     }
-                case "CurrentActor":
+                case Keyword.CurrentActor:
                     {
                         if (m_idToSelected.ContainsKey(data.id))
                         {
@@ -125,8 +157,8 @@ namespace ProjectBS.Combat
                         data.onSelected?.Invoke(m_idToSelected[data.id]);
                         return;
                     }
-                case "Select":
-                case "SelectOther":
+                case Keyword.Select:
+                case Keyword.SelectOther:
                     {
                         m_currnetManualSelectingID = data.id;
 
@@ -167,7 +199,7 @@ namespace ProjectBS.Combat
                         }
                         return;
                     }
-                case "LastSelected":
+                case Keyword.LastSelected:
                     {
                         if (m_idToSelected.ContainsKey(data.id))
                         {
@@ -180,7 +212,7 @@ namespace ProjectBS.Combat
 
                         return;
                     }
-                case "LastAttacked":
+                case Keyword.LastAttacked:
                     {
                         if(data.attacker == null)
                         {

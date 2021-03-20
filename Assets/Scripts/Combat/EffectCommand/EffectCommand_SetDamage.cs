@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
                 caster = GetSelf(),
                 target = null,
                 formula = _valueString,
-                referenceBuff = processData.referenceBuff,
+                processData = processData,
                 useRawValue = false
             });
             _valueString = Convert.ToInt32(_pureValue).ToString();

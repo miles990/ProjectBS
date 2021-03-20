@@ -214,7 +214,7 @@ namespace ProjectBS.Combat
             }
         }
 
-        public Buff GetBuffByBuffEffectID(int id)
+        public Buff GetBuffByBuffID(int id)
         {
             return m_buffs.Find(x => x.soruceID == id);
         }
@@ -328,7 +328,10 @@ namespace ProjectBS.Combat
                         {
                             caster = this,
                             target = this,
-                            referenceBuff = GetBuffByBuffEffectID(statusAdders[i].parentBuffID),
+                            processData = new EffectProcesser.ProcessData
+                            {
+                                 referenceBuff = GetBuffByBuffID(statusAdders[i].parentBuffID)
+                            },
                             formula = statusAdders[i].valueString,
                             useRawValue = true
                         });

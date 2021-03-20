@@ -23,7 +23,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
-                    id = GetSelectID(),
+                    id = CombatTargetSelecter.Instance.GetSelectID(processData),
                     attacker = GetSelf(),
                     currentEffectedTarget = processData.target,
                     commandString = vars[0],
@@ -87,7 +87,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     caster = processData.caster,
                     target = m_targets[m_currentTargetIndex],
-                    referenceBuff = processData.referenceBuff,
+                    processData = processData,
                     formula = m_valueString,
                     useRawValue = false
                 });
@@ -272,7 +272,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 caster = m_targets[m_currentTargetIndex],
                                 target = processData.caster,
                                 refenceSkill = null,
-                                referenceBuff = m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
+                                referenceBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
                                 skipIfCount = 0,
                                 timing = EffectProcesser.TriggerTiming.OnActived,
                                 onEnded = OnShieldSkillTriggered
@@ -300,7 +300,7 @@ namespace ProjectBS.Combat.EffectCommand
             else
             {
                 m_targets[m_currentTargetIndex].AddBuffStack(
-                    m_targets[m_currentTargetIndex].GetBuffByBuffEffectID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
+                    m_targets[m_currentTargetIndex].GetBuffByBuffID(m_targets[m_currentTargetIndex].shields[0].parentBuffID),
                     -1,
                     OnShieldBuffStackRemoved,
                     OnShieldBuffStackRemoved);

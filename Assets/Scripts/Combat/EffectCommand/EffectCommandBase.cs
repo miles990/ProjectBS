@@ -25,25 +25,5 @@ namespace ProjectBS.Combat.EffectCommand
                 return CombatUtility.ComabtManager.GetUnitByUDID(processData.referenceBuff.ownerUnitUDID);
             }
         }
-
-        protected string GetSelectID()
-        {
-            if(processData.refenceSkill != null)
-            {
-                return "Skill" + processData.refenceSkill.skill.ID;
-            }
-
-            if (processData.referenceBuff != null)
-            {
-                return "Buff" + processData.referenceBuff.GetBuffSourceData().ID;
-            }
-
-            if(processData.caster != null)
-            {
-                return "Actor" + processData.caster.GetHashCode();
-            }
-
-            throw new Exception("[EffectCommandBase][GetSelectID] Must reference to skill or buff or having caster when select");
-        }
     }
 }

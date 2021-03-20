@@ -28,7 +28,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
-                    id = GetSelectID(),
+                    id = CombatTargetSelecter.Instance.GetSelectID(processData),
                     attacker = processData.caster,
                     currentEffectedTarget = processData.target,
                     commandString = vars[0],
@@ -43,7 +43,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             for(int i = 0; i < targets.Count; i++)
             {
-                bool _isOwning = targets[i].GetBuffByBuffEffectID(_buffID) != null;
+                bool _isOwning = targets[i].GetBuffByBuffID(_buffID) != null;
                 if (_isOwning != _checkIsOwning)
                 {
                     processData.skipIfCount++;

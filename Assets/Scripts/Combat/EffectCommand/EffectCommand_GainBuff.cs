@@ -23,7 +23,7 @@ namespace ProjectBS.Combat.EffectCommand
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
-                    id = GetSelectID(),
+                    id = CombatTargetSelecter.Instance.GetSelectID(processData),
                     attacker = processData.caster,
                     currentEffectedTarget = processData.target,
                     commandString = vars[0],
@@ -47,7 +47,7 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffEffectID(m_buffID);
+            CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffID(m_buffID);
             BuffData _skillEffectData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
             if(_skillEffectData == null)

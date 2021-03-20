@@ -48,7 +48,7 @@ namespace ProjectBS.Combat
         {
             public CombatUnit caster = null;
             public CombatUnit target = null;
-            public CombatUnit.Buff referenceBuff = null;
+            public EffectProcesser.ProcessData processData = null;
             public string formula = "";
             public bool useRawValue = false;
         }
@@ -407,12 +407,12 @@ namespace ProjectBS.Combat
                                 }
                             case Keyword.Owner:
                                 {
-                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.referenceBuff.ownerUnitUDID);
+                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.processData.referenceBuff.ownerUnitUDID);
                                     break;
                                 }
                             case Keyword.From:
                                 {
-                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.referenceBuff.fromUnitUDID);
+                                    _getValueTarget = ComabtManager.GetUnitByUDID(data.processData.referenceBuff.fromUnitUDID);
                                     break;
                                 }
                             default:
@@ -422,7 +422,7 @@ namespace ProjectBS.Combat
                         }
 
                         int _buffID = int.Parse(_varParts[1]);
-                        CombatUnit.Buff _buff = _getValueTarget.GetBuffByBuffEffectID(_buffID);
+                        CombatUnit.Buff _buff = _getValueTarget.GetBuffByBuffID(_buffID);
                         if (_buff == null)
                         {
                             return 0;
@@ -439,7 +439,7 @@ namespace ProjectBS.Combat
                                     {
                                         return _buff.remainingTime;
                                     }
-                                case Keyword.SkillEffectID:
+                                case Keyword.BuffID:
                                     {
                                         return _buff.soruceID;
                                     }
@@ -503,6 +503,14 @@ namespace ProjectBS.Combat
                 case Keyword.CurrentActor:
                     {
                         _getValueTarget = ComabtManager.CurrentActionInfo.actor;
+                        break;
+                    }
+                case Keyword.LastSelected:
+                    {
+                        if(data.processData != null)
+                        {
+                            _getValueTarget = CombatTargetSelecter.Instance.GetLastSelected(CombatTargetSelecter.Instance.GetSelectID(data.processData))[0];
+                        }
                         break;
                     }
                 default:

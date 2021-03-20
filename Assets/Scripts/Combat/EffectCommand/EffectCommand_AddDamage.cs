@@ -21,7 +21,7 @@ namespace ProjectBS.Combat.EffectCommand
                 {
                     caster = GetSelf(),
                     target = processData.target,
-                    referenceBuff = processData.referenceBuff,
+                    processData = processData,
                     formula = _valueString,
                     useRawValue = false
                 });
