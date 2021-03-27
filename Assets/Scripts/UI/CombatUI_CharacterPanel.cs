@@ -148,6 +148,7 @@ namespace ProjectBS.UI
             public Vector3 casterPos = default;
             public List<CombatUI_CharacterPanel> targets = new List<CombatUI_CharacterPanel>();
             public int skillID = 0;
+            public int camp = 0;
             public Dictionary<CombatUI_CharacterPanel, int> targetToDmg = new Dictionary<CombatUI_CharacterPanel, int>();
             public System.Action onEnded = null;
         }
@@ -196,7 +197,7 @@ namespace ProjectBS.UI
             }
 
             m_animator.enabled = true;
-            m_animator.Play(_aniName.ToString(), 0, 0f);
+            m_animator.Play(_aniName + "_" + animationData.camp, 0, 0f);
 
             TimerManager.Schedule(1.1f,
                 delegate

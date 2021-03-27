@@ -55,10 +55,5 @@ namespace ProjectBS.Combat
         public abstract void ForceUnitDie(string unitUDID, System.Action onDiedCommandEnded);
         public abstract void ForceRemoveUnit(string unitUDID);
         public abstract void StartCombat(List<CombatUnit> playerUnits, List<CombatUnit> opponentUnits);
-        
-        public void AddInfo(string text, System.Action onShown)
-        {
-            GetPage<UI.CombatUIView>().AddCombatInfo(text, onShown);
-        }
     }
 }

@@ -259,7 +259,7 @@ namespace ProjectBS.UI
             _cloneInfo.transform.SetParent(m_infoContainer);
             _cloneInfo.transform.localScale = Vector3.one;
             _cloneInfo.SetText(text);
-            if(m_cloneInfoTexts.Count >= 5)
+            if(m_cloneInfoTexts.Count >= 20)
             {
                 Destroy(m_cloneInfoTexts[0].gameObject);
                 m_cloneInfoTexts.RemoveAt(0);
@@ -382,6 +382,7 @@ namespace ProjectBS.UI
                         casterPos = m_characterPanels[m_unitToIndex[skillAnimationData.caster]].transform.position,
                         targets = _targets,
                         targetToDmg = _targetToDmg,
+                        camp = m_unitToIndex[skillAnimationData.caster] <= 3 ? 0 : 1,
                         skillID = skillAnimationData.skillID,
                         onEnded = skillAnimationData.onEnded
                     }

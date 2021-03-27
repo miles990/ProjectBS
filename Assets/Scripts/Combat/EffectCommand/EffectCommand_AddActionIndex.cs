@@ -16,6 +16,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_addIndex = int.Parse(vars[1]);
             m_onCompleted = onCompleted;
 
+            GetPage<UI.CombatUIView>().AddCombatInfo("EffectCommand_AddActionIndex", null);
+
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
                 id = CombatTargetSelecter.Instance.GetSelectID(processData),
