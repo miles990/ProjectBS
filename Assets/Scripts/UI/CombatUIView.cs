@@ -34,6 +34,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_skillPanel = null;
         [SerializeField] private CombatUI_SelectSkillButton[] m_skillButtons = null;
         [Header("Combat Info")]
+        [SerializeField] private UnityEngine.UI.ScrollRect m_scrollRect = null;
         [SerializeField] private RectTransform m_infoContainer = null;
         [SerializeField] private CombatUI_InfoText m_infoTextPrefab = null;
         [Header("Shake")]
@@ -211,8 +212,8 @@ namespace ProjectBS.UI
             string _info = "";
             for (int i = 0; i < actions.Count; i++)
             {
-                _info += actions[i].Actor.name;
-                _info += "\n";
+                _info += actions[i].Actor.UDID;
+                _info += ";";
             }
 
             if(Network.PhotonManager.Instance.IsConnected)
@@ -228,7 +229,20 @@ namespace ProjectBS.UI
         [PunRPC]
         private void Sync_RefreshActionQueueInfo(string info)
         {
-            //m_actionSortInfoText.text = info;
+            for(int i = 0; i < m_characterPanels.Length; i++)
+            {
+                m_characterPanels[i].SetActionIndex(-1);
+            }
+            string[] _udids = info.Split(';');
+            for(int i = 0; i < _udids.Length; i++)
+            {
+                if(string.IsNullOrEmpty(_udids[i]))
+                {
+                    continue;
+                }
+                //Debug.LogError(m_unitToIndex[CombatUtility.ComabtManager.GetUnitByUDID(_udids[i])]);
+                m_characterPanels[m_unitToIndex[CombatUtility.ComabtManager.GetUnitByUDID(_udids[i])]].SetActionIndex(i + 1);
+            }
         }
 
         public void RemoveActor(CombatUnit unit)
@@ -265,6 +279,7 @@ namespace ProjectBS.UI
                 m_cloneInfoTexts.RemoveAt(0);
             }
             m_cloneInfoTexts.Add(_cloneInfo);
+            TimerManager.Schedule(Time.deltaTime * 2f, delegate { m_scrollRect.normalizedPosition = new Vector2(0f, 0f); });
 
             TimerManager.Schedule(0.75f, onShown);
         }

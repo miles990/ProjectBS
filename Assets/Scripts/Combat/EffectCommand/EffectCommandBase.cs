@@ -7,6 +7,18 @@ namespace ProjectBS.Combat.EffectCommand
         public EffectProcesser.ProcessData processData = null;
         public abstract void Process(string[] vars, Action onCompleted);
 
+        protected virtual void AddSkillOrEffectInfo()
+        {
+            if(processData.refenceSkill != null)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo("processData.refenceSkill", null);
+            }
+            if (processData.referenceBuff != null)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo("processData.referenceBuff", null);
+            }
+        }
+
         protected CombatUnit GetSelf()
         {
             if(processData.referenceBuff == null)

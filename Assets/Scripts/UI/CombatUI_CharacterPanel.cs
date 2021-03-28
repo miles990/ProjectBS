@@ -85,6 +85,7 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_spText = null;
         [SerializeField] private TextMeshProUGUI m_hatePersentText = null;
         [SerializeField] private GameObject m_actingHint = null;
+        [SerializeField] private TextMeshProUGUI m_actionIndexText = null;
 
         private string m_refUnitUDID = "";
 
@@ -296,6 +297,14 @@ namespace ProjectBS.UI
 
             if(_unit.icon != null)
                 m_iconImage.sprite = Sprite.Create(_unit.icon, new Rect(0.0f, 0.0f, _unit.icon.width, _unit.icon.height), new Vector2(0.5f, 0.5f), 100.0f);
+        }
+
+        public void SetActionIndex(int index)
+        {
+            if (index > 0)
+                m_actionIndexText.text = "#" + index;
+            else
+                m_actionIndexText.text = "-";
         }
 
         public void RefreshInfo()

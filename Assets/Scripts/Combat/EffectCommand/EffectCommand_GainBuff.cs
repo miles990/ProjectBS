@@ -20,6 +20,7 @@ namespace ProjectBS.Combat.EffectCommand
             m_buffTime = int.Parse(vars[2]);
             m_onCompleted = onCompleted;
 
+            AddSkillOrEffectInfo();
             GetPage<UI.CombatUIView>().AddCombatInfo("EffectCommand_GainBuff", null);
 
             CombatTargetSelecter.Instance.StartSelect(
