@@ -64,6 +64,33 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
+                if (m_addAmountCount > 0)
+                {
+                    GetPage<UI.CombatUIView>().AddCombatInfo
+                        (
+                          string.Format
+                          (
+                              ContextConverter.Instance.GetContext(500005),
+                              m_targets[m_currentTargetIndex].name,
+                              m_addAmountCount.ToString(),
+                              ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
+                          ), null
+                        );
+                }
+                else
+                {
+                    GetPage<UI.CombatUIView>().AddCombatInfo
+                        (
+                          string.Format
+                          (
+                              ContextConverter.Instance.GetContext(500006),
+                              m_targets[m_currentTargetIndex].name,
+                              (m_addAmountCount * -1).ToString(),
+                              ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
+                          ), null
+                        );
+                }
+
                 m_targets[m_currentTargetIndex].AddBuffAmount(
                     m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
                     m_addAmountCount,
