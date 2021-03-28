@@ -10,7 +10,7 @@ namespace ProjectBS.Combat
         {
             public int soruceID = 0;
             public int remainingTime = 1;
-            public int stackCount = 1;
+            public int amount = 1;
             public string ownerUnitUDID = "";
             public string fromUnitUDID = "";
 
@@ -205,7 +205,7 @@ namespace ProjectBS.Combat
             }
             else
             {
-                if(_oldBuff.stackCount < buff.stackCount
+                if(_oldBuff.amount < buff.amount
                     || _oldBuff.remainingTime < buff.remainingTime)
                 {
                     m_buffs.Remove(_oldBuff);
@@ -239,7 +239,7 @@ namespace ProjectBS.Combat
             return m_buffs.Find(x => x.GetBuffSourceData().Tag == tag) != null;
         }
 
-        public void AddBuffStack(Buff buff, int stackCount, System.Action onRemoved, System.Action onNotRemoved)
+        public void AddBuffAmount(Buff buff, int amount, System.Action onRemoved, System.Action onNotRemoved)
         {
             if(buff == null)
             {
@@ -247,8 +247,8 @@ namespace ProjectBS.Combat
                 return;
             }
 
-            buff.stackCount += stackCount;
-            if (buff.stackCount <= 0)
+            buff.amount += amount;
+            if (buff.amount <= 0)
             {
                 RemoveBuff(buff, onRemoved);
                 return;

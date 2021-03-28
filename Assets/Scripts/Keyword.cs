@@ -29,7 +29,7 @@
         public const string Buff = "Buff";
         public const string Skill = "Skill";
         public const string Actor = "Actor";
-        public const string StackCount = "StackCount";
+        public const string Amount = "Amount";
         public const string Time = "Time";
         public const string Owner = "Owner";
         public const string From = "From";

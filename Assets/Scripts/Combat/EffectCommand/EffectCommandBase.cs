@@ -11,11 +11,25 @@ namespace ProjectBS.Combat.EffectCommand
         {
             if(processData.refenceSkill != null)
             {
-                GetPage<UI.CombatUIView>().AddCombatInfo("processData.refenceSkill", null);
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500001), 
+                          ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID)
+                      ), null
+                    );
             }
             if (processData.referenceBuff != null)
             {
-                GetPage<UI.CombatUIView>().AddCombatInfo("processData.referenceBuff", null);
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500002),
+                          ContextConverter.Instance.GetContext(processData.referenceBuff.GetBuffSourceData().NameContextID)
+                      ), null
+                    );
             }
         }
 

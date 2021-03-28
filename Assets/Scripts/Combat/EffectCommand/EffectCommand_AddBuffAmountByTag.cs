@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_AddBuffStackByTag : EffectCommandBase
+    public class EffectCommand_AddBuffAmountByTag : EffectCommandBase
     {
         private int m_tag = 0;
-        private int m_removeStackCount = 0;
+        private int m_addAmountCount = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
         private int m_currentBuffIndex = -1;
@@ -17,7 +17,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_tag = int.Parse(vars[1]);
-            m_removeStackCount = int.Parse(vars[2]);
+            m_addAmountCount = int.Parse(vars[2]);
             m_onEnded = onCompleted;
 
             CombatTargetSelecter.Instance.StartSelect(
@@ -64,9 +64,9 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
-                m_targets[m_currentTargetIndex].AddBuffStack(
+                m_targets[m_currentTargetIndex].AddBuffAmount(
                     m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
-                    m_removeStackCount,
+                    m_addAmountCount,
                     DisaplayRemoveBuff,
                     GoNextBuff);
             }

@@ -28,8 +28,8 @@ namespace ProjectBS.Combat
         private int m_currentBuffIndex = -1;
         private EffectProcesser m_currentBuffProcesser = null;
         private EffectProcesser.ProcessData m_currentBuffProcessData = null;
-        private int m_currentBuffStack = 0;
-        private int m_currentBuffRunningStack = -1;
+        private int m_currentBuffAmount = 0;
+        private int m_currentBuffRunningAmountIndex = -1;
 
         public AllCombatUnitAllEffectProcesser(List<CombatUnit> units)
         {
@@ -229,19 +229,19 @@ namespace ProjectBS.Combat
                 allEffectProcesser = this,
                 referenceBuff = _currentBuff,
                 refenceSkill = null,
-                onEnded = GoNextBuffStack
+                onEnded = GoNextBuffAmountIndex
             };
 
-            m_currentBuffStack = _currentBuff.stackCount;
-            m_currentBuffRunningStack = 0;
-            GoNextBuffStack();
+            m_currentBuffAmount = _currentBuff.amount;
+            m_currentBuffRunningAmountIndex = 0;
+            GoNextBuffAmountIndex();
         }
 
-        private void GoNextBuffStack()
+        private void GoNextBuffAmountIndex()
         {
-            m_currentBuffRunningStack++;
+            m_currentBuffRunningAmountIndex++;
 
-            if (m_currentBuffRunningStack > m_currentBuffStack)
+            if (m_currentBuffRunningAmountIndex > m_currentBuffAmount)
             {
                 GoNextBuff();
                 return;

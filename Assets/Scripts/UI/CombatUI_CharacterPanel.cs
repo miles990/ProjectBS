@@ -332,7 +332,7 @@ namespace ProjectBS.UI
             {
                 Data.BuffData _effect = _unit.GetBuffByIndex(i).GetBuffSourceData();
                 string _tag = _effect.Tag == 0 ? "" : "[" + ContextConverter.Instance.GetContext(_effect.Tag) + "]\n";
-                _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + _unit.GetBuffByIndex(i).stackCount
+                _buffString += ContextConverter.Instance.GetContext(_effect.NameContextID) + " x" + _unit.GetBuffByIndex(i).amount
                     + " (" + (_unit.GetBuffByIndex(i).remainingTime == -1 ? "永久" : "剩餘 " + _unit.GetBuffByIndex(i).remainingTime.ToString() + " 回合") + ")\n"
                     + _tag 
                     + ContextConverter.Instance.GetContext(_effect.DescriptionContextID);

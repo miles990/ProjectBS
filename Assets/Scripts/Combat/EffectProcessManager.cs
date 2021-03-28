@@ -76,13 +76,13 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_GainBuff();
                     }
-                case "AddBuffStack":
+                case "AddBuffAmount":
                     {
-                        return new EffectCommand_AddBuffStack();
+                        return new EffectCommand_AddBuffAmount();
                     }
-                case "AddBuffStackByTag":
+                case "AddBuffAmountByTag":
                     {
-                        return new EffectCommand_AddBuffStackByTag();
+                        return new EffectCommand_AddBuffAmountByTag();
                     }
                 case "AddBuffTime":
                     {

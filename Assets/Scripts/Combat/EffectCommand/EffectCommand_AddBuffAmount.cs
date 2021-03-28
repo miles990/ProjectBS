@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_AddBuffStack : EffectCommandBase
+    public class EffectCommand_AddBuffAmount : EffectCommandBase
     {
         private int m_buffID = 0;
-        private int m_removeStackCount = 0;
+        private int m_addAmointCount = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
         private CombatUnit.Buff m_currentBuff = null;
@@ -16,10 +16,10 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_buffID = int.Parse(vars[1]);
-
-            m_removeStackCount = int.Parse(vars[2]);
-
+            m_addAmointCount = int.Parse(vars[2]);
             m_onCompleted = onCompleted;
+
+            AddSkillOrEffectInfo();
 
             CombatTargetSelecter.Instance.StartSelect(
             new CombatTargetSelecter.SelectTargetData
@@ -53,9 +53,9 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
-                    m_targets[m_currentTargetIndex].AddBuffStack(
+                    m_targets[m_currentTargetIndex].AddBuffAmount(
                         m_currentBuff,
-                        m_removeStackCount,
+                        m_addAmointCount,
                         delegate { DisaplayRemoveBuff(GoNextTarget); },
                         GoNextTarget);
                 }
@@ -89,9 +89,9 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
-            m_targets[m_currentTargetIndex].AddBuffStack(
+            m_targets[m_currentTargetIndex].AddBuffAmount(
                             m_currentBuff,
-                            m_removeStackCount,
+                            m_addAmointCount,
                             delegate { DisaplayRemoveBuff(GoNextBuff); },
                             GoNextBuff);
         }

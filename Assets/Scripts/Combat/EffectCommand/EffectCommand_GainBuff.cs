@@ -63,9 +63,9 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (_buff != null)
             {
-                if (_skillEffectData.MaxStackCount > _buff.stackCount)
+                if (_skillEffectData.MaxAmount > _buff.amount)
                 {
-                    _buff.stackCount++;
+                    _buff.amount++;
                 }
                 if(_buff.remainingTime < m_buffTime)
                 {
@@ -80,7 +80,7 @@ namespace ProjectBS.Combat.EffectCommand
                     fromUnitUDID = processData.caster.UDID,
                     ownerUnitUDID = m_targets[m_currentActiveTargetIndex].UDID,
                     remainingTime = m_buffTime,
-                    stackCount = 1
+                    amount = 1
                 };
 
                 m_targets[m_currentActiveTargetIndex].AddBuff(_buff);

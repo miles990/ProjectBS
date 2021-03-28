@@ -431,9 +431,9 @@ namespace ProjectBS.Combat
                         {
                             switch(_varParts[2])
                             {
-                                case Keyword.StackCount:
+                                case Keyword.Amount:
                                     {
-                                        return _buff.stackCount;
+                                        return _buff.amount;
                                     }
                                 case Keyword.Time:
                                     {
@@ -836,7 +836,7 @@ namespace ProjectBS.Combat
                         fromUnitUDID = _boss.UDID,
                         ownerUnitUDID = _boss.UDID,
                         remainingTime = -1,
-                        stackCount = 1
+                        amount = 1
                     });
                 }
             }

@@ -17,7 +17,6 @@ namespace ProjectBS.Combat.EffectCommand
             m_onCompleted = onCompleted;
 
             AddSkillOrEffectInfo();
-            GetPage<UI.CombatUIView>().AddCombatInfo("EffectCommand_AddActionIndex", null);
 
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
@@ -47,6 +46,32 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUtility.ComabtManager.AddActionIndex(m_targets[m_currentTargetIndex].UDID, m_addIndex);
+            
+            if(m_addIndex < 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500003),
+                          m_targets[m_currentTargetIndex].name,
+                          (m_addIndex * -1).ToString()
+                      ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500004),
+                          m_targets[m_currentTargetIndex].name,
+                          m_addIndex.ToString()
+                      ), null
+                    );
+            }
+            
             GetPage<UI.CombatUIView>().ShowAddActionIndex(m_targets[m_currentTargetIndex], m_addIndex, GoNextTarget);
         }
     }
