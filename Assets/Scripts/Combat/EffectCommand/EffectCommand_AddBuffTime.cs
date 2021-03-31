@@ -5,7 +5,7 @@ namespace ProjectBS.Combat.EffectCommand
 {
     public class EffectCommand_AddBuffTime : EffectCommandBase
     {
-        private int m_effectID = 0;
+        private int m_buffID = 0;
         private int m_addTime = 0;
         private List<CombatUnit> m_targets = null;
         private int m_currentTargetIndex = -1;
@@ -15,7 +15,7 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            m_effectID = int.Parse(vars[1]);
+            m_buffID = int.Parse(vars[1]);
 
             m_addTime = int.Parse(vars[2]);
 
@@ -48,9 +48,9 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            if (m_effectID != -1)
+            if (m_buffID != -1)
             {
-                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_effectID);
+                m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
                     m_targets[m_currentTargetIndex].AddBuffTime(
