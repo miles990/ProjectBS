@@ -98,6 +98,7 @@ namespace ProjectBS
 
         private static IEnumerator IELoadData<T>(string name) where T : IGameData
         {
+            UnityEngine.Debug.Log("Start Load Data:" + typeof(T).ToString());
             string _url = string.Format(DATA_URL, "dev", name);
             UnityWebRequest _request = UnityWebRequest.Get(_url);
             
@@ -122,6 +123,7 @@ namespace ProjectBS
                 }
                 m_gameData.Add(typeof(T), _gameDatas);
             }
+            UnityEngine.Debug.Log("Completed Load Data:" + typeof(T).ToString());
         }
 
         private static IEnumerator IELoadGameProperties(string name)
