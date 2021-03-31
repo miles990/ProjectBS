@@ -29,19 +29,29 @@ namespace ProjectBS
         public static DropInfo Drop(string info)
         {
             DropInfo _dropInfo = new DropInfo();
-
+            Debug.Log(info);
             int _randomDropCount = Random.Range(10, 21);
-            string[] _dropPool = info.Split(';');
-            for (int i = 0; i < _randomDropCount; i++)
+            if(!string.IsNullOrEmpty(info))
             {
-                if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropNormalSkillChance)
+                string[] _dropPool = info.Split(';');
+                for (int i = 0; i < _randomDropCount; i++)
+                {
+                    if (Random.Range(0f, 100f) <= GameDataManager.GameProperties.DropNormalSkillChance)
+                    {
+                        _dropInfo.skillIDs.Add(RollSkill());
+                    }
+                    else
+                    {
+                        //_dropInfo.equipments.Add(RollEquipment(_dropPool));
+                        RollAndAddSpecialSkill(_dropPool);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _randomDropCount; i++)
                 {
                     _dropInfo.skillIDs.Add(RollSkill());
-                }
-                else
-                {
-                    //_dropInfo.equipments.Add(RollEquipment(_dropPool));
-                    RollAndAddSpecialSkill(_dropPool);
                 }
             }
 
