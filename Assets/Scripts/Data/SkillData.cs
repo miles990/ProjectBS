@@ -11,6 +11,7 @@ namespace ProjectBS.Data
         public int DescriptionContextID { get; private set; }
         public int StoryContextID { get; private set; }
         public string AnimationInfo { get; private set; }
+        public string ReferenceSkillIDs { get; private set; }
         public string ReferenceBuffIDs { get; private set; }
         public string Command { get; private set; }
         public int IsDrop { get; private set; }
@@ -34,6 +35,28 @@ namespace ProjectBS.Data
             }
 
             _description += ContextConverter.Instance.GetContext(DescriptionContextID);
+
+            if (!string.IsNullOrEmpty(ReferenceSkillIDs))
+            {
+                string[] _refSkillIDs = ReferenceSkillIDs.Split(';');
+                for (int i = 0; i < _refSkillIDs.Length; i++)
+                {
+                    SkillData _refSkill = GameDataManager.GetGameData<SkillData>(_refSkillIDs[i].ToInt());
+
+                    _description += "\n\n";
+                    _description += ContextConverter.Instance.GetContext(_refSkill.NameContextID);
+                    _description += "\n";
+                    if (!string.IsNullOrEmpty(_refSkill.Tag))
+                    {
+                        string[] _tags = Tag.Split(';');
+                        for (int _refSkillTagIndex = 0; _refSkillTagIndex < _tags.Length; _refSkillTagIndex++)
+                        {
+                            _description += "[" + ContextConverter.Instance.GetContext(int.Parse(_tags[_refSkillTagIndex])) + "]";
+                        }
+                    }
+                    _description += ContextConverter.Instance.GetContext(_refSkill.DescriptionContextID);
+                }
+            }
 
             if (!string.IsNullOrEmpty(ReferenceBuffIDs))
             {
