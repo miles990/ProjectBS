@@ -446,6 +446,51 @@ namespace ProjectBS.UI
             if (m_currentSelectData != null)
                 return;
 
+            if (data.selectRange == CombatTargetSelecter.SelectRange.All)
+            {
+                int _count = 0;
+                for(int i = 0; i < m_allUnits.Count; i++)
+                {
+                    if (m_allUnits[i].HP <= 0)
+                    {
+                        _count++;
+                    }
+                }
+                if (_count >= m_allUnits.Count)
+                {
+                    data.onSelected(new List<CombatUnit>());
+                    return;
+                }
+            }
+            else
+            {
+                int i = 0;
+                if (data.selectRange == CombatTargetSelecter.SelectRange.Opponent)
+                {
+                    i = data.attacker.camp == 0 ? 4 : 0;
+                }
+                else
+                {
+                    i = data.attacker.camp == 0 ? 0 : 4;
+                }
+
+                int _max = i + 4;
+                if (_max > m_allUnits.Count) _max = m_allUnits.Count;
+                int _count = 0;
+                for (; i < _max; i++)
+                {
+                    if (m_allUnits[i].HP <= 0)
+                    {
+                        _count++;
+                    }
+                }
+                if (_count >= 4)
+                {
+                    data.onSelected(new List<CombatUnit>());
+                    return;
+                }
+            }
+
             m_currentSelectedTargets.Clear();
             m_currentSelectData = data;
             m_onSelected = data.onSelected;
