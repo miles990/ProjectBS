@@ -51,7 +51,7 @@ namespace ProjectBS.Combat
 
         public class SelectTargetData
         {
-            public string id = "";
+            public string selectID = "";
             public CombatUnit attacker = null;
             public CombatUnit currentEffectedTarget = null;
             public string commandString = "";
@@ -119,56 +119,56 @@ namespace ProjectBS.Combat
                 case Keyword.Caster:
                 case Keyword.Self:
                     {
-                        if (m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.id] = new List<CombatUnit> { data.attacker };
+                            m_idToSelected[data.selectID] = new List<CombatUnit> { data.attacker };
                         }
                         else
                         {
-                            m_idToSelected.Add(data.id, new List<CombatUnit> { data.attacker });
+                            m_idToSelected.Add(data.selectID, new List<CombatUnit> { data.attacker });
                         }
-                        data.onSelected?.Invoke(m_idToSelected[data.id]);
+                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
                         return;
                     }
                 case Keyword.Target:
                     {
-                        if (m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.id] = new List<CombatUnit> { data.currentEffectedTarget };
+                            m_idToSelected[data.selectID] = new List<CombatUnit> { data.currentEffectedTarget };
                         }
                         else
                         {
-                            m_idToSelected.Add(data.id, new List<CombatUnit> { data.currentEffectedTarget });
+                            m_idToSelected.Add(data.selectID, new List<CombatUnit> { data.currentEffectedTarget });
                         }
-                        data.onSelected?.Invoke(m_idToSelected[data.id]);
+                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
                         return;
                     }
                 case Keyword.CurrentActor:
                     {
-                        if (m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.id] = new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor };
+                            m_idToSelected[data.selectID] = new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor };
                         }
                         else
                         {
-                            m_idToSelected.Add(data.id, new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor });
+                            m_idToSelected.Add(data.selectID, new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor });
                         }
 
-                        data.onSelected?.Invoke(m_idToSelected[data.id]);
+                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
                         return;
                     }
                 case Keyword.Select:
                 case Keyword.SelectOther:
                     {
-                        m_currnetManualSelectingID = data.id;
+                        m_currnetManualSelectingID = data.selectID;
 
-                        if (m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.id].Clear();
+                            m_idToSelected[data.selectID].Clear();
                         }
                         else
                         {
-                            m_idToSelected.Add(data.id, new List<CombatUnit>());
+                            m_idToSelected.Add(data.selectID, new List<CombatUnit>());
                         }
 
                         m_currentSelectRange = (SelectRange)Enum.Parse(typeof(SelectRange), _vars[0]);
@@ -201,9 +201,9 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.LastSelected:
                     {
-                        if (m_idToSelected.ContainsKey(data.id))
+                        if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            data.onSelected?.Invoke(m_idToSelected[data.id]);
+                            data.onSelected?.Invoke(m_idToSelected[data.selectID]);
                         }
                         else
                         {
@@ -227,6 +227,50 @@ namespace ProjectBS.Combat
                             _lastAttackedUnits.Add(CombatUtility.ComabtManager.GetUnitByUDID(_lastAttackedUnitUDID[i]));
                         }
                         data.onSelected?.Invoke(_lastAttackedUnits);
+                        break;
+                    }
+                case Keyword.SkillLastSelected:
+                    {
+                        int _skillID;
+                        if (int.TryParse(_vars[0], out _skillID))
+                        {
+                            if (m_idToSelected.ContainsKey(Keyword.Skill + _skillID))
+                            {
+                                data.onSelected?.Invoke(m_idToSelected[Keyword.Skill + _skillID]);
+                            }
+                            else
+                            {
+                                data.onSelected?.Invoke(new List<CombatUnit>());
+                            }
+                        }
+                        else
+                        {
+                            switch(_vars[0])
+                            {
+                                case Keyword.Self:
+                                    {
+                                        _skillID = data.attacker.lastSkillID;
+                                        break;
+                                    }
+                                case Keyword.CurrentActor:
+                                    {
+                                        _skillID = CombatUtility.ComabtManager.CurrentActionInfo.actor.lastSkillID;
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        throw new Exception("[CombatTargetSelecter][StartSelect] SkillLastSelected is using invaild vars: " + _vars[0]);
+                                    }
+                            }
+                            if (m_idToSelected.ContainsKey(Keyword.Skill + _skillID))
+                            {
+                                data.onSelected?.Invoke(m_idToSelected[Keyword.Skill + _skillID]);
+                            }
+                            else
+                            {
+                                data.onSelected?.Invoke(new List<CombatUnit>());
+                            }
+                        }
                         break;
                     }
                 default:

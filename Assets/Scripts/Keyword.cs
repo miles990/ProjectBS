@@ -39,6 +39,7 @@
         public const string LastDefenseRoll = "LastDefenseRoll";
         public const string LastSelected = "LastSelected";
         public const string LastAttacked = "LastAttacked";
+        public const string SkillLastSelected = "SkillLastSelected";
         public const string MyUnitCount = "MyUnitCount";
         public const string OpponentUnitCount = "OpponentUnitCount";
         public const string CurrentActor = "CurrentActor";
