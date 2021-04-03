@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
 {
-    public class EffectCommand_BeginIf_HasEffectTag : EffectCommandBase
+    public class EffectCommand_BeginIf_HasBuffTag : EffectCommandBase
     {
         private string m_checkIsOwning = "";
         private string m_tag = "";

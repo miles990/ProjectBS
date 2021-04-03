@@ -19,7 +19,7 @@ namespace ProjectBS.UI
             SkillData _source = skillData.GetSourceData();
 
             m_nameText.text = ContextConverter.Instance.GetContext(_source.NameContextID);
-            m_descriptionText.text = _source.GetAllDescriptionContext();
+            m_descriptionText.text = "SP: " + _source.SP + "\n\n" + _source.GetAllDescriptionContext();
             m_amoumtText.text = "x " + skillData.Amount;
 
             m_referenceOwingSkill = skillData;
@@ -51,7 +51,7 @@ namespace ProjectBS.UI
             string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
 
             GameManager.Instance.MessageManager.ShowCommonMessage(
-                "Cost SP:" + _skill.SP + "\n\n" + _skill.GetAllDescriptionContext(),
+                "SP: " + _skill.SP + "\n\n" + _skill.GetAllDescriptionContext(),
                 _name, null);
         }
     }

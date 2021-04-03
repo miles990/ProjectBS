@@ -10,9 +10,9 @@ namespace ProjectBS.Combat
         {
             typeof(EffectCommand_EndIf),
             typeof(EffectCommand_BeginIf),
-            typeof(EffectCommand_BeginIf_Effect),
+            typeof(EffectCommand_BeginIf_Buff),
             typeof(EffectCommand_BeginIf_Skill),
-            typeof(EffectCommand_BeginIf_HasEffectTag),
+            typeof(EffectCommand_BeginIf_HasBuffTag),
             typeof(EffectCommand_BeginIf_LastSkillTag)
         };
 
@@ -96,9 +96,9 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_BeginIf();
                     }
-                case "BeginIf_Effect":
+                case "EffectCommand_BeginIf_Buff":
                     {
-                        return new EffectCommand_BeginIf_Effect();
+                        return new EffectCommand_BeginIf_Buff();
                     }
                 case "BeginIf_Skill":
                     {
@@ -108,9 +108,9 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_BeginIf_LastSkillTag();
                     }
-                case "BeginIf_HasEffectTag":
+                case "EffectCommand_BeginIf_HasBuffTag":
                     {
-                        return new EffectCommand_BeginIf_HasEffectTag();
+                        return new EffectCommand_BeginIf_HasBuffTag();
                     }
                 case "EndIf":
                     {

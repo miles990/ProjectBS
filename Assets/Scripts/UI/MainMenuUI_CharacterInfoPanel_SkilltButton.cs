@@ -8,6 +8,7 @@ namespace ProjectBS.UI
         public event System.Action<MainMenuUI_CharacterInfoPanel_SkilltButton> OnSelected = null;
 
         [SerializeField] private TMPro.TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TMPro.TextMeshProUGUI m_spText = null;
 
         private Data.SkillData m_referenceSkill = null;
         private float m_showInfoTimer = 0f;
@@ -16,6 +17,15 @@ namespace ProjectBS.UI
         {
             m_referenceSkill = data;
             m_nameText.text = ContextConverter.Instance.GetContext(data.NameContextID);
+            if (data.SP > 0)
+            {
+                m_spText.text = "SP " + data.SP;
+                m_spText.gameObject.SetActive(true);
+            }
+            else
+            {
+                m_spText.gameObject.SetActive(false);
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -40,7 +50,7 @@ namespace ProjectBS.UI
                     string _name = ContextConverter.Instance.GetContext(m_referenceSkill.NameContextID);
 
                     GameManager.Instance.MessageManager.ShowCommonMessage(
-                        "Cost SP:" + m_referenceSkill.SP + "\n\n" + m_referenceSkill.GetAllDescriptionContext(),
+                        "SP: " + m_referenceSkill.SP + "\n\n" + m_referenceSkill.GetAllDescriptionContext(),
                         _name, null);
                 }
             }
