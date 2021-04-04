@@ -786,7 +786,11 @@ namespace ProjectBS.Combat
                 statusAdders = new List<CombatUnit.StatusAdder>()
             };
 
-            _newUnit.skills = character.Skills;
+            _newUnit.skills = new int[character.Skills.Length];
+            for(int i = 0; i < _newUnit.skills.Length; i++)
+            {
+                _newUnit.skills[i] = character.Skills[i];
+            }
 
             return _newUnit;
         }

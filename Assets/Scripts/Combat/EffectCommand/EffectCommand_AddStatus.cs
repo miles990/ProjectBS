@@ -56,6 +56,8 @@ namespace ProjectBS.Combat.EffectCommand
                 case Keyword.MaxHP:
                 case Keyword.Speed:
                     {
+                        int _previousMaxHP = m_targets[m_currentTargetIndex].GetMaxHP();
+
                         CombatUnit.Buff _buff = processData.referenceBuff;
                         if(_buff == null)
                         {
@@ -80,6 +82,12 @@ namespace ProjectBS.Combat.EffectCommand
                                     valueString = m_valueString
                                 });
                             }
+                        }
+
+                        int _currentMaxHP = m_targets[m_currentTargetIndex].GetMaxHP();
+                        if (_currentMaxHP != _previousMaxHP)
+                        {
+                            m_targets[m_currentTargetIndex].HP += (_currentMaxHP - _previousMaxHP);
                         }
 
                         GoNextTarget();

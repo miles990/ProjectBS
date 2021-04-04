@@ -96,7 +96,7 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_BeginIf();
                     }
-                case "EffectCommand_BeginIf_Buff":
+                case "BeginIf_Buff":
                     {
                         return new EffectCommand_BeginIf_Buff();
                     }
@@ -163,6 +163,10 @@ namespace ProjectBS.Combat
                 case "AddExtraAction":
                     {
                         return new EffectCommand_AddExtraAction();
+                    }
+                case "TriggerBuff":
+                    {
+                        return new EffectCommand_TriggerBuff();
                     }
                 default:
                     {

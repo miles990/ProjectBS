@@ -16,7 +16,7 @@ namespace ProjectBS.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (Vector2.Distance(m_touchDownPos, eventData.position) <= 2f && m_longPressTimer > 0f)
+            if (Vector2.Distance(m_touchDownPos, eventData.position) <= 1f && m_longPressTimer > 0f)
             {
                 OnPressed();
             }

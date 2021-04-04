@@ -123,6 +123,15 @@ namespace ProjectBS
                 if(character == null)
                     throw new System.Exception("[PlayerManager][SetSkill] Target character is null");
 
+                for (int i = 0; i < character.Skills.Length; i++)
+                {
+                    if(character.Skills[i] == skillID)
+                    {
+                        GameManager.Instance.MessageManager.ShowCommonMessage("不能裝備相同的技能", "通知", null);
+                        return;
+                    }
+                }
+
                 character.SetSkill(targetSlotIndex, skillID);
 
                 _owingSkillData.Amount--;

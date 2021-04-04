@@ -51,9 +51,9 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffID(m_buffID);
-            BuffData _skillEffectData = GameDataManager.GetGameData<BuffData>(m_buffID);
+            BuffData _buffData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
-            if(_skillEffectData == null)
+            if(_buffData == null)
             {
                 throw new Exception(string.Format("[EffectCommand_GainBuff][SetNextTargetBuff] invaild buff id={0}, ref skill id={1}, ref buff id=",
                     m_buffID,
@@ -63,11 +63,11 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (_buff != null)
             {
-                if (_skillEffectData.MaxAmount > _buff.amount)
+                if (_buffData.MaxAmount > _buff.amount)
                 {
                     _buff.amount++;
                 }
-                if(_buff.remainingTime < m_buffTime)
+                if(_buff.remainingTime != -1 && _buff.remainingTime < m_buffTime)
                 {
                     _buff.remainingTime = m_buffTime;
                 }
@@ -86,7 +86,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_targets[m_currentActiveTargetIndex].AddBuff(_buff);
             }
 
-            EffectProcessManager.GetBuffProcesser(_skillEffectData.ID).Start(
+            EffectProcessManager.GetBuffProcesser(_buffData.ID).Start(
                 new EffectProcesser.ProcessData
                 {
                     caster = m_targets[m_currentActiveTargetIndex],
@@ -95,7 +95,7 @@ namespace ProjectBS.Combat.EffectCommand
                     timing = EffectProcesser.TriggerTiming.OnActived,
                     referenceBuff = _buff,
                     refenceSkill = null,
-                    onEnded = delegate { DisplayGainBuff(_skillEffectData); }
+                    onEnded = delegate { DisplayGainBuff(_buffData); }
                 });
         }
 
