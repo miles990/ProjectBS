@@ -21,7 +21,16 @@ namespace ProjectBS.Combat.EffectCommand
             List<RandomSkillSource> _randomPool = new List<RandomSkillSource>();
             int _totalWeight = 0;
 
-            if(_randomSKillData.SkillID1 != 0)
+            AddSkillOrEffectInfo();
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500026)
+                    ), null
+                );
+
+            if (_randomSKillData.SkillID1 != 0)
             {
                 _randomPool.Add(new RandomSkillSource { skillID = _randomSKillData.SkillID1, weight = _randomSKillData.Weight1 });
                 _totalWeight += _randomSKillData.Weight1;

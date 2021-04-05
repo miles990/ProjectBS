@@ -7,6 +7,8 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
+            AddSkillOrEffectInfo();
+
             bool _isPersent;
             string _valueString = vars[0];
             if (vars[0].Contains("%"))
@@ -43,12 +45,15 @@ namespace ProjectBS.Combat.EffectCommand
                         float _dmg = (float)processData.caster.targetToDmg[_targets[i]];
                         _intDmg = Convert.ToInt32(_dmg * _value);
                         processData.caster.targetToDmg[_targets[i]] += _intDmg;
+
                     }
                     else
                     {
                         _intDmg = Convert.ToInt32(_value);
                         processData.caster.targetToDmg[_targets[i]] += _intDmg;
                     }
+
+                    ShowAddAttackDamage(_intDmg, _targets[i]);
 
                     if (processData.caster.targetToDmg[_targets[i]] < 1)
                         processData.caster.targetToDmg[_targets[i]] = 1;
@@ -69,13 +74,71 @@ namespace ProjectBS.Combat.EffectCommand
                     CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] += _intDmg;
                 }
 
+                ShowAddTargetTakenDamage(_intDmg, processData.caster.UDID);
+
                 if (CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] < 1)
                     CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] = 1;
-
             }
 
             onCompleted?.Invoke();
         }
+
+        private void ShowAddTargetTakenDamage(int add, string udid)
+        {
+            if (add > 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500010),
+                            CombatUtility.ComabtManager.GetUnitByUDID(udid).name,
+                            add
+                        ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500010),
+                            CombatUtility.ComabtManager.GetUnitByUDID(udid).name,
+                            add * -1
+                        ), null
+                    );
+            }
+        }
+
+        private void ShowAddAttackDamage(int add, string udid)
+        {
+            if (add > 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500009),
+                            CombatUtility.ComabtManager.GetUnitByUDID(udid).name,
+                            add
+                        ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500011),
+                            CombatUtility.ComabtManager.GetUnitByUDID(udid).name,
+                            add * -1
+                        ), null
+                    );
+            }
+        }
+
     }
 }
 

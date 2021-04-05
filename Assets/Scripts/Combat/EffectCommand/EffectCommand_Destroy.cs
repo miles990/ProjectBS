@@ -12,6 +12,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_onCompleted = onCompleted;
+            AddSkillOrEffectInfo();
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
                 selectID = CombatTargetSelecter.Instance.GetSelectID(processData),
@@ -40,6 +41,14 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUtility.ComabtManager.ForceRemoveUnit(m_targets[m_currentTargetIndex].UDID);
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500023),
+                        m_targets[m_currentTargetIndex].name
+                    ), null
+                );
             GetPage<UI.CombatUIView>().ShowUnitDestoryed(m_targets[m_currentTargetIndex], GoNextTarget);
         }
     }

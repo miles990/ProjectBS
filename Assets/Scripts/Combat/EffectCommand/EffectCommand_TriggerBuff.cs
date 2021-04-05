@@ -17,6 +17,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_timing = (EffectProcesser.TriggerTiming)Enum.Parse(typeof(EffectProcesser.TriggerTiming), vars[2]);
             m_onCompleted = onCompleted;
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
@@ -45,7 +47,18 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUnit.Buff _buff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
-            if(_buff != null)
+
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500030),
+                        m_targets[m_currentTargetIndex].name,
+                        ContextConverter.Instance.GetContext(_buff.GetBuffSourceData().NameContextID)
+                    ), null
+                );
+
+            if (_buff != null)
             {
                 EffectProcessManager.GetBuffProcesser(m_buffID).Start(
                     new EffectProcesser.ProcessData

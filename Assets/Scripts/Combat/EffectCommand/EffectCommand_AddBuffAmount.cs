@@ -71,25 +71,9 @@ namespace ProjectBS.Combat.EffectCommand
             }
         }
 
-        private void DisaplayRemoveBuff(Action onShonw)
+        private void AddInfo()
         {
-            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
-            {
-                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
-                taker = m_targets[m_currentTargetIndex]
-            }, onShonw);
-        }
-
-        private void GoNextBuff()
-        {
-            m_currentBuffIndex++;
-            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
-            {
-                GoNextTarget();
-                return;
-            }
-
-            if(m_addAmountCount > 0)
+            if (m_addAmountCount > 0)
             {
                 GetPage<UI.CombatUIView>().AddCombatInfo
                     (
@@ -115,8 +99,27 @@ namespace ProjectBS.Combat.EffectCommand
                       ), null
                     );
             }
+        }
 
+        private void DisaplayRemoveBuff(Action onShonw)
+        {
+            GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
+            {
+                buffName = ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                taker = m_targets[m_currentTargetIndex]
+            }, onShonw);
+        }
+
+        private void GoNextBuff()
+        {
+            m_currentBuffIndex++;
+            if(m_currentBuffIndex >= m_targets[m_currentTargetIndex].OwnBuffCount)
+            {
+                GoNextTarget();
+                return;
+            }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
+            AddInfo();
             m_targets[m_currentTargetIndex].AddBuffAmount(
                             m_currentBuff,
                             m_addAmountCount,

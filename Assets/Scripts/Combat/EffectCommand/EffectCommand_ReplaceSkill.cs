@@ -9,10 +9,22 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
+            AddSkillOrEffectInfo();
+
             int _orginSkillID = int.Parse(vars[0]);
             int _targetSKillID = int.Parse(vars[1]);
 
-            for(int i = 0; i < GetSelf().skills.Length; i++)
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500027),
+                        ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_orginSkillID).NameContextID),
+                        ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_targetSKillID).NameContextID)
+                    ), null
+                );
+
+            for (int i = 0; i < GetSelf().skills.Length; i++)
             {
                 if(GetSelf().skills[i] == _orginSkillID)
                 {

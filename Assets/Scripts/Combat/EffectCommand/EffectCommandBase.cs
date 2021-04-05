@@ -16,6 +16,7 @@ namespace ProjectBS.Combat.EffectCommand
                       string.Format
                       (
                           ContextConverter.Instance.GetContext(500001), 
+                          processData.refenceSkill.owner.name,
                           ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID)
                       ), null
                     );
@@ -27,6 +28,7 @@ namespace ProjectBS.Combat.EffectCommand
                       string.Format
                       (
                           ContextConverter.Instance.GetContext(500002),
+                          CombatUtility.ComabtManager.GetUnitByUDID(processData.referenceBuff.ownerUnitUDID).name,
                           ContextConverter.Instance.GetContext(processData.referenceBuff.GetBuffSourceData().NameContextID)
                       ), null
                     );

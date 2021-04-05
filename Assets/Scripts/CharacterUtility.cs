@@ -183,13 +183,13 @@ namespace ProjectBS
         {
             if (PlayerManager.Instance.Player.Characters.Count <= 4)
             {
-                GameManager.Instance.MessageManager.ShowCommonMessage("角色不可少於4人", "Warning", null);
+                GameManager.Instance.MessageManager.ShowCommonMessage("1000016", "Warning", null);
                 return false;
             }
 
             if (PlayerManager.Instance.GetPartyIndex(UDID) != -1)
             {
-                GameManager.Instance.MessageManager.ShowCommonMessage("不可分解已編組角色", "Warning", null);
+                GameManager.Instance.MessageManager.ShowCommonMessage("1000017", "Warning", null);
                 return false;
             }
 

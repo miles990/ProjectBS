@@ -9,6 +9,8 @@ namespace ProjectBS.Combat.EffectCommand
     {
         public override void Process(string[] vars, Action onCompleted)
         {
+            AddSkillOrEffectInfo();
+
             string _valueString = vars[0];
             float _pureValue = CombatUtility.Calculate(new CombatUtility.CalculateData
             {
@@ -31,6 +33,16 @@ namespace ProjectBS.Combat.EffectCommand
 
                     if (processData.caster.targetToDmg[_targetUDIDs[i]] < 0)
                         processData.caster.targetToDmg[_targetUDIDs[i]] = 0;
+
+                    GetPage<UI.CombatUIView>().AddCombatInfo
+                        (
+                            string.Format
+                            (
+                                ContextConverter.Instance.GetContext(500024),
+                                CombatUtility.ComabtManager.GetUnitByUDID(_targetUDIDs[i]).name,
+                                processData.caster.targetToDmg[_targetUDIDs[i]]
+                            ), null
+                        );
                 }
             }
             else
@@ -40,6 +52,16 @@ namespace ProjectBS.Combat.EffectCommand
 
                 if (CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] < 0)
                     CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID] = 0;
+
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500024),
+                            CombatUtility.ComabtManager.GetUnitByUDID(processData.caster.UDID).name,
+                            CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID]
+                        ), null
+                    );
             }
 
             onCompleted?.Invoke();

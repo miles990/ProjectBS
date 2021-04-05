@@ -30,6 +30,17 @@ namespace ProjectBS.Combat.EffectCommand
 
             int _roll = UnityEngine.Random.Range(0, _pool.Count);
             Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(int.Parse(vars[0]));
+
+            AddSkillOrEffectInfo();
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500019),
+                        ContextConverter.Instance.GetContext(_skill.NameContextID)
+                    ), null
+                );
+
             _pool[_roll].lastSkillID = _skill.ID;
             new EffectProcesser(_skill.Command).
                 Start(new EffectProcesser.ProcessData

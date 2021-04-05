@@ -21,7 +21,6 @@ namespace ProjectBS.Combat.EffectCommand
             m_onCompleted = onCompleted;
 
             AddSkillOrEffectInfo();
-            GetPage<UI.CombatUIView>().AddCombatInfo("EffectCommand_GainBuff", null);
 
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
@@ -53,7 +52,17 @@ namespace ProjectBS.Combat.EffectCommand
             CombatUnit.Buff _buff = m_targets[m_currentActiveTargetIndex].GetBuffByBuffID(m_buffID);
             BuffData _buffData = GameDataManager.GetGameData<BuffData>(m_buffID);
 
-            if(_buffData == null)
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500025),
+                        m_targets[m_currentActiveTargetIndex].name,
+                        ContextConverter.Instance.GetContext(_buffData.NameContextID)
+                    ), null
+                );
+
+            if (_buffData == null)
             {
                 throw new Exception(string.Format("[EffectCommand_GainBuff][SetNextTargetBuff] invaild buff id={0}, ref skill id={1}, ref buff id=",
                     m_buffID,
@@ -99,12 +108,12 @@ namespace ProjectBS.Combat.EffectCommand
                 });
         }
 
-        private void DisplayGainBuff(BuffData _skillEffectData)
+        private void DisplayGainBuff(BuffData _buffData)
         {
             GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayBuffData
             {
                 taker = m_targets[m_currentActiveTargetIndex],
-                buffName = ContextConverter.Instance.GetContext(_skillEffectData.NameContextID)
+                buffName = ContextConverter.Instance.GetContext(_buffData.NameContextID)
             }, SetNextTargetBuff);
         }
     }

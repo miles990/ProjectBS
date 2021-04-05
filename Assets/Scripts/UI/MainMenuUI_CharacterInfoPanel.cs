@@ -190,10 +190,17 @@ namespace ProjectBS.UI
         {
             if(m_currentSelectSkill != null)
             {
-                PlayerManager.Instance.SetSkill(m_refCharacter, m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID);
+                if (PlayerManager.Instance.SetSkill(m_refCharacter, m_targetSkillSlotIndex, m_currentSelectSkill.SkillSourceID))
+                {
+                    RefreshInfo();
+                    DisableAllSubPanel();
+                }
+                else
+                {
+                    m_compareSkillPanelRoot.SetActive(false);
+                }
             }
-            RefreshInfo();
-            DisableAllSubPanel();
+
         }
 
         public void Button_Back()

@@ -21,6 +21,8 @@ namespace ProjectBS.Combat.EffectCommand
 
             m_onCompleted = onCompleted;
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(
             new CombatTargetSelecter.SelectTargetData
             {
@@ -89,11 +91,42 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
+            AddInfo();
             m_targets[m_currentTargetIndex].AddBuffTime(
                 m_currentBuff,
                 m_addTime,
                 delegate { DisaplayRemoveBuff(GoNextBuff); },
                 GoNextBuff);
+        }
+
+        private void AddInfo()
+        {
+            if (m_addTime > 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500007),
+                          m_targets[m_currentTargetIndex].name,
+                          m_addTime.ToString(),
+                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID)
+                      ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500008),
+                          m_targets[m_currentTargetIndex].name,
+                          (m_addTime * -1).ToString(),
+                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID)
+                      ), null
+                    );
+            }
         }
     }
 }

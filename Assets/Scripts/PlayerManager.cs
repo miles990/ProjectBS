@@ -115,7 +115,7 @@ namespace ProjectBS
             return null;
         }
 
-        public void SetSkill(OwningCharacterData character, int targetSlotIndex, int skillID)
+        public bool SetSkill(OwningCharacterData character, int targetSlotIndex, int skillID)
         {
             OwningSkillData _owingSkillData = m_player.Skills.Find(x => x.SkillSourceID == skillID);
             if (_owingSkillData != null)
@@ -128,7 +128,7 @@ namespace ProjectBS
                     if(character.Skills[i] == skillID)
                     {
                         GameManager.Instance.MessageManager.ShowCommonMessage("不能裝備相同的技能", "通知", null);
-                        return;
+                        return false;
                     }
                 }
 
@@ -140,6 +140,7 @@ namespace ProjectBS
                     m_player.Skills.Remove(_owingSkillData);
                 }
                 SavePlayer();
+                return true;
             }
             else
                 throw new System.Exception("[PlayerManager][SetSkill] Is not having Skill " + skillID + " but still trying to set it");
@@ -316,8 +317,8 @@ namespace ProjectBS
             });
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 101;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 108;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 163;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 165;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // healer
@@ -336,8 +337,8 @@ namespace ProjectBS
             });
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 127;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 119;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 107;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 155;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // DPS 0
@@ -356,8 +357,8 @@ namespace ProjectBS
             });
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 129;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 106;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 115;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 123;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             // DPS 1
@@ -376,8 +377,8 @@ namespace ProjectBS
             });
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[0] = 1;
             _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[1] = 2;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 104;
-            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 125;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[2] = 101;
+            _newPlayer.Characters[_newPlayer.Characters.Count - 1].Skills[3] = 103;
             CharacterUtility.SetLevel(_newPlayer.Characters[_newPlayer.Characters.Count - 1], 1);
 
             _newPlayer.Party.MemberUDID_0 = _newPlayer.Characters[0].UDID;
@@ -385,23 +386,6 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_2 = _newPlayer.Characters[2].UDID;
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
-            //DropUtility.DropInfo _drop = DropUtility.Drop("1:25;2:25;3:25;4:25");
-            //for (int i = 0; i < _drop.equipments.Count; i++)
-            //{
-            //    _newPlayer.Equipments.Add(_drop.equipments[i]);
-            //}
-            //for (int i = 0; i < _drop.skillIDs.Count; i++)
-            //{
-            //    OwningSkillData _owningData = _newPlayer.Skills.Find(x => x.SkillSourceID == _drop.skillIDs[i]);
-            //    if (_owningData != null)
-            //    {
-            //        _owningData.Amount++;
-            //    }
-            //    else
-            //    {
-            //        _newPlayer.Skills.Add(new OwningSkillData { SkillSourceID = _drop.skillIDs[i], Amount = 1 });
-            //    }
-            //}
             return _newPlayer;
         }
 

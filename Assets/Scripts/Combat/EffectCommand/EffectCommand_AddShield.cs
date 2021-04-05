@@ -20,6 +20,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_valueString = vars[1];
             m_skillID = int.Parse(vars[2]);
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
                 selectID = CombatTargetSelecter.Instance.GetSelectID(processData),
@@ -56,13 +58,25 @@ namespace ProjectBS.Combat.EffectCommand
                 useRawValue = false
             });
 
-            if(processData.referenceBuff == null)
+            int _addShield = Convert.ToInt32(_floatValue);
+
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500015),
+                        m_targets[m_currentTargetIndex].name,
+                        _addShield
+                    ), null
+                );
+
+            if (processData.referenceBuff == null)
             {
                 m_targets[m_currentTargetIndex].shields.Add(new CombatUnit.Shield
                 {
                     parentBuffID = 0,
                     triggerSKillID = m_skillID,
-                    value = Convert.ToInt32(_floatValue)
+                    value = _addShield
                 });
             }
             else
@@ -70,7 +84,7 @@ namespace ProjectBS.Combat.EffectCommand
                 CombatUnit.Shield _shield = m_targets[m_currentTargetIndex].shields.Find(x => x.parentBuffID == processData.referenceBuff.soruceID);
                 if(_shield != null)
                 {
-                    _shield.value = Convert.ToInt32(_floatValue);
+                    _shield.value = _addShield;
                 }
                 else
                 {
@@ -78,7 +92,7 @@ namespace ProjectBS.Combat.EffectCommand
                     {
                         parentBuffID = 0,
                         triggerSKillID = m_skillID,
-                        value = Convert.ToInt32(_floatValue)
+                        value = _addShield
                     });
                 }
             }

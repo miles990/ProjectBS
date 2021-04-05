@@ -18,6 +18,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_isImmediate = vars[1] == "1";
             m_onCompleted = onCompleted;
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
                 selectID = CombatTargetSelecter.Instance.GetSelectID(processData),
@@ -46,6 +48,20 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUtility.ComabtManager.AddExtraAction(m_targets[m_currentTargetIndex].UDID, m_isImmediate);
+            if(m_isImmediate)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format(ContextConverter.Instance.GetContext(500014), m_targets[m_currentTargetIndex].name), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format(ContextConverter.Instance.GetContext(500013), m_targets[m_currentTargetIndex].name), null
+                    );
+            }
             GetPage<UI.CombatUIView>().ShowAddExtraAction(m_targets[m_currentTargetIndex], GoNextTarget);
         }
     }

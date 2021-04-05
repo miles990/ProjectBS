@@ -20,6 +20,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_addAmountCount = int.Parse(vars[2]);
             m_onEnded = onCompleted;
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
@@ -64,33 +66,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
-                if (m_addAmountCount > 0)
-                {
-                    GetPage<UI.CombatUIView>().AddCombatInfo
-                        (
-                          string.Format
-                          (
-                              ContextConverter.Instance.GetContext(500005),
-                              m_targets[m_currentTargetIndex].name,
-                              m_addAmountCount.ToString(),
-                              ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
-                          ), null
-                        );
-                }
-                else
-                {
-                    GetPage<UI.CombatUIView>().AddCombatInfo
-                        (
-                          string.Format
-                          (
-                              ContextConverter.Instance.GetContext(500006),
-                              m_targets[m_currentTargetIndex].name,
-                              (m_addAmountCount * -1).ToString(),
-                              ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
-                          ), null
-                        );
-                }
-
+                AddInfo();
                 m_targets[m_currentTargetIndex].AddBuffAmount(
                     m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
                     m_addAmountCount,
@@ -110,6 +86,36 @@ namespace ProjectBS.Combat.EffectCommand
                 buffName = ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID),
                 taker = m_targets[m_currentTargetIndex]
             }, GoNextBuff);
+        }
+
+        private void AddInfo()
+        {
+            if (m_addAmountCount > 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500005),
+                          m_targets[m_currentTargetIndex].name,
+                          m_addAmountCount.ToString(),
+                          ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
+                      ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500006),
+                          m_targets[m_currentTargetIndex].name,
+                          (m_addAmountCount * -1).ToString(),
+                          ContextConverter.Instance.GetContext(m_targetBuff.GetBuffSourceData().NameContextID)
+                      ), null
+                    );
+            }
         }
     }
 }

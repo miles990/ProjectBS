@@ -28,6 +28,34 @@ namespace ProjectBS.Combat.EffectCommand
             });
         }
 
+        private void AddInfo(CombatUnit unit)
+        {
+            if (m_addIndex < 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500003),
+                          unit.name,
+                          m_addIndex * -1
+                      ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                      string.Format
+                      (
+                          ContextConverter.Instance.GetContext(500004),
+                          unit.name,
+                          m_addIndex
+                      ), null
+                    );
+            }
+        }
+
         private void OnSelected(List<CombatUnit> targets)
         {
             m_targets = targets;
@@ -46,32 +74,8 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUtility.ComabtManager.AddActionIndex(m_targets[m_currentTargetIndex].UDID, m_addIndex);
-            
-            if(m_addIndex < 0)
-            {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                      string.Format
-                      (
-                          ContextConverter.Instance.GetContext(500003),
-                          m_targets[m_currentTargetIndex].name,
-                          (m_addIndex * -1).ToString()
-                      ), null
-                    );
-            }
-            else
-            {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                      string.Format
-                      (
-                          ContextConverter.Instance.GetContext(500004),
-                          m_targets[m_currentTargetIndex].name,
-                          m_addIndex.ToString()
-                      ), null
-                    );
-            }
-            
+            AddInfo(m_targets[m_currentTargetIndex]);
+
             GetPage<UI.CombatUIView>().ShowAddActionIndex(m_targets[m_currentTargetIndex], m_addIndex, GoNextTarget);
         }
     }

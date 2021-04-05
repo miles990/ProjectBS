@@ -20,6 +20,16 @@ namespace ProjectBS.Combat.EffectCommand
             m_ingnoreDefense = vars[2];
             m_onCompleted = onCompleted;
 
+            AddSkillOrEffectInfo();
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500020),
+                        GetSelf().name
+                    ), null
+                );
+
             CombatTargetSelecter.Instance.StartSelect(
                 new CombatTargetSelecter.SelectTargetData
                 {
@@ -107,7 +117,19 @@ namespace ProjectBS.Combat.EffectCommand
             if (_dmg < 1)
                 _dmg = 1;
 
-            if(processData.caster.targetToDmg.ContainsKey(_attackTarget.UDID))
+            GetPage<UI.CombatUIView>().AddCombatInfo
+                (
+                    string.Format
+                    (
+                        ContextConverter.Instance.GetContext(500021),
+                        Convert.ToInt32(_finalAttackValue),
+                        (CombatUtility.LastAttackRoll + 100).ToString() + "%",
+                        Convert.ToInt32(_finalDefenseValue),
+                        (CombatUtility.LastDefenseRoll + 100).ToString() + "%"
+                    ), null
+                );
+
+            if (processData.caster.targetToDmg.ContainsKey(_attackTarget.UDID))
             {
                 processData.caster.targetToDmg[_attackTarget.UDID] = _dmg;
             }
@@ -191,7 +213,16 @@ namespace ProjectBS.Combat.EffectCommand
         {
             for(int i = 0; i < m_targets.Count; i++)
             {
-                if(i == m_targets.Count - 1)
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500022),
+                            processData.caster.targetToDmg[m_targets[i].UDID]
+                        ), null
+                    );
+
+                if (i == m_targets.Count - 1)
                 {
                     GetPage<UI.CombatUIView>().DisplayDamage(new UI.CombatUIView.DisplayDamageData
                     {

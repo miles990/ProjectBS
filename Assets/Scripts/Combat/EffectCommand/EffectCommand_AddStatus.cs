@@ -18,6 +18,8 @@ namespace ProjectBS.Combat.EffectCommand
             m_statusString = vars[1].Trim();
             m_valueString = vars[2].Trim();
 
+            AddSkillOrEffectInfo();
+
             CombatTargetSelecter.Instance.StartSelect(new CombatTargetSelecter.SelectTargetData
             {
                 selectID = CombatTargetSelecter.Instance.GetSelectID(processData),
@@ -47,6 +49,84 @@ namespace ProjectBS.Combat.EffectCommand
                 }
                 m_onCompleted?.Invoke();
                 return;
+            }
+
+            string _statusInfoName = "";
+            switch (m_statusString)
+            {
+                case Keyword.Attack:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000020);
+                        break;
+                    }
+                case Keyword.Defense:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000021);
+                        break;
+                    }
+                case Keyword.MaxHP:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000018);
+                        break;
+                    }
+                case Keyword.Speed:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000022);
+                        break;
+                    }
+                case Keyword.Hatred:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000023);
+                        break;
+                    }
+                case Keyword.HP:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000019);
+                        break;
+                    }
+                case Keyword.SP:
+                    {
+                        _statusInfoName = ContextConverter.Instance.GetContext(1000024);
+                        break;
+                    }
+            }
+
+            float _result = CombatUtility.Calculate(new CombatUtility.CalculateData
+            {
+                caster = m_targets[m_currentTargetIndex],
+                target = m_targets[m_currentTargetIndex],
+                processData = new EffectProcesser.ProcessData(),
+                formula = m_valueString,
+                useRawValue = true
+            });
+
+            int _resultIntValue = Convert.ToInt32(_result);
+
+            if (_resultIntValue > 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500016),
+                            m_targets[m_currentTargetIndex].name,
+                            _resultIntValue,
+                            _statusInfoName
+                        ), null
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500017),
+                            m_targets[m_currentTargetIndex].name,
+                            _resultIntValue * -1,
+                            _statusInfoName
+                        ), null
+                    );
             }
 
             switch (m_statusString)

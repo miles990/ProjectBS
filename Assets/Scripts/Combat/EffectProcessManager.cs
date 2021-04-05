@@ -168,6 +168,10 @@ namespace ProjectBS.Combat
                     {
                         return new EffectCommand_TriggerBuff();
                     }
+                case "Remember":
+                    {
+                        return new EffectCommand_Remember();
+                    }
                 default:
                     {
                         throw new System.Exception("[EffectProcesser][GetEffectCommand] Invaild command=" + command);
