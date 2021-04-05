@@ -93,7 +93,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             float _result = CombatUtility.Calculate(new CombatUtility.CalculateData
             {
-                caster = m_targets[m_currentTargetIndex],
+                caster = processData.caster,
                 target = m_targets[m_currentTargetIndex],
                 processData = new EffectProcesser.ProcessData(),
                 formula = m_valueString,
@@ -102,7 +102,7 @@ namespace ProjectBS.Combat.EffectCommand
 
             int _resultIntValue = Convert.ToInt32(_result);
 
-            if (_resultIntValue > 0)
+            if (_resultIntValue >= 0)
             {
                 GetPage<UI.CombatUIView>().AddCombatInfo
                     (

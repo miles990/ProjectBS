@@ -194,6 +194,8 @@ namespace ProjectBS.Combat
                 return;
             }
 
+            GetPage<UI.CombatUIView>().AddCombatInfo("-----------------------------", null);
+
             m_currentAction = m_unitActions[0];
             m_unitActions.RemoveAt(0);
             m_currentAction.Start(OnActionEnded);

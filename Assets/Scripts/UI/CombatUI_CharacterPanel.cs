@@ -109,7 +109,7 @@ namespace ProjectBS.UI
             {
                 TimerManager.Cancel(m_currentInfoTimerID);
             }
-            m_currentInfoTimerID = TimerManager.Schedule(1.26f, delegate 
+            m_currentInfoTimerID = TimerManager.Schedule(1.3f, delegate 
             {
                 m_infoAnimator.gameObject.SetActive(false);
                 m_currentInfoTimerID = -1L;
@@ -131,7 +131,7 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
 
-            TimerManager.Schedule(1.1f, 
+            TimerManager.Schedule(1.3f, 
                 delegate 
                 {
                     m_animator.enabled = false;
@@ -200,7 +200,7 @@ namespace ProjectBS.UI
             m_animator.enabled = true;
             m_animator.Play(_aniName + "_" + animationData.camp, 0, 0f);
 
-            TimerManager.Schedule(1.1f,
+            TimerManager.Schedule(1.3f,
                 delegate
                 {
                     m_animator.enabled = false;

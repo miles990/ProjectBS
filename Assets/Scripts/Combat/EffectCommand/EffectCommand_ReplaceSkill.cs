@@ -19,6 +19,7 @@ namespace ProjectBS.Combat.EffectCommand
                     string.Format
                     (
                         ContextConverter.Instance.GetContext(500027),
+                        GetSelf().name,
                         ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_orginSkillID).NameContextID),
                         ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(_targetSKillID).NameContextID)
                     ), null

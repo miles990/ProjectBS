@@ -11,6 +11,7 @@ namespace ProjectBS.UI
     public class CombatUIView : UIView
     {
         public const float DISPLAY_INFO_TIME = 1f;
+        public const int MAX_INFO_COUNT = 50;
 
         public override bool IsShowing { get { return m_root.activeSelf; } }
 
@@ -273,7 +274,7 @@ namespace ProjectBS.UI
             _cloneInfo.transform.SetParent(m_infoContainer);
             _cloneInfo.transform.localScale = Vector3.one;
             _cloneInfo.SetText(text);
-            if(m_cloneInfoTexts.Count >= 20)
+            if(m_cloneInfoTexts.Count >= MAX_INFO_COUNT)
             {
                 Destroy(m_cloneInfoTexts[0].gameObject);
                 m_cloneInfoTexts.RemoveAt(0);
