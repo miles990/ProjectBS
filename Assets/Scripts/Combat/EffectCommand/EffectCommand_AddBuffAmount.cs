@@ -15,8 +15,16 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
-            m_buffID = int.Parse(vars[1]);
-            m_addAmountCount = int.Parse(vars[2]);
+            if(!int.TryParse(vars[1], out m_buffID))
+            {
+                throw new Exception("[EffectCommand_AddBuffAmount][Process] invaild buff id=" + vars[1]);
+            }
+
+            if (!int.TryParse(vars[2], out m_addAmountCount))
+            {
+                throw new Exception("[EffectCommand_AddBuffAmount][Process] invaild add amount=" + vars[2]);
+            }
+
             m_onCompleted = onCompleted;
 
             AddSkillOrEffectInfo();
