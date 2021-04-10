@@ -91,11 +91,12 @@ namespace ProjectBS.Combat
 
             CurrentDyingUnit = GetUnitByUDID(unit);
             m_onDiedCommandEnded = onDiedCommandEnded;
+            CurrentState = EffectProcesser.TriggerTiming.OnDied_Other;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
                 target = CurrentDyingUnit,
-                timing = EffectProcesser.TriggerTiming.OnDied_Other,
+                timing = CurrentState,
                 onEnded = OnDied_Any_Ended
             });
         }
@@ -138,12 +139,12 @@ namespace ProjectBS.Combat
         private void StartBattle()
         {
             TurnCount = 0;
-
+            CurrentState = EffectProcesser.TriggerTiming.OnBattleStarted;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
-                timing = EffectProcesser.TriggerTiming.OnBattleStarted,
+                timing = CurrentState,
                 onEnded = StartNewTurn
             });
         }
@@ -174,11 +175,12 @@ namespace ProjectBS.Combat
 
         private void OnTurnStartAnimationEnded()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnTurnStarted;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
-                timing = EffectProcesser.TriggerTiming.OnTurnStarted,
+                timing = CurrentState,
                 onEnded = GoNextAction
             });
         }
@@ -245,11 +247,12 @@ namespace ProjectBS.Combat
 
         private void OnDied_Any_Ended()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnDied_Self;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
                 target = CurrentDyingUnit,
-                timing = EffectProcesser.TriggerTiming.OnDied_Self,
+                timing = CurrentState,
                 onEnded = OnDied_Self_Ended
             });
         }
@@ -267,11 +270,13 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnStartToEndTurn;
+
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
-                timing = EffectProcesser.TriggerTiming.OnStartToEndTurn,
+                timing = CurrentState,
                 onEnded = OnStartToEndTurnEnded
             });
         }

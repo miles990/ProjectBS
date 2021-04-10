@@ -55,6 +55,9 @@ namespace ProjectBS
 
         private void Update()
         {
+            if (GameManager.Instance.IsCombating)
+                return;
+
             m_timer += Time.deltaTime;
             if(m_timer >= 1f)
             {

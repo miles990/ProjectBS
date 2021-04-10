@@ -106,6 +106,8 @@ namespace ProjectBS.Combat
 
             if(Actor.SP < skill.SP && !Actor.IsSkipCheckSP)
             {
+                GameManager.Instance.MessageManager.ShowCommonMessage(
+                    ContextConverter.Instance.GetContext(1000028), "Warning", null);
                 Act();
                 return;
             }

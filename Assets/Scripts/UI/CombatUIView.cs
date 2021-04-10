@@ -244,7 +244,7 @@ namespace ProjectBS.UI
                 {
                     continue;
                 }
-                //Debug.LogError(m_unitToIndex[CombatUtility.ComabtManager.GetUnitByUDID(_udids[i])]);
+
                 m_characterPanels[m_unitToIndex[CombatUtility.ComabtManager.GetUnitByUDID(_udids[i])]].SetActionIndex(i + 1);
             }
         }
@@ -273,17 +273,27 @@ namespace ProjectBS.UI
 
         public void AddCombatInfo(string text, Action onShown)
         {
+            if(CombatUtility.ComabtManager.CurrentState == EffectProcesser.TriggerTiming.OnBattleStarted)
+            {
+                onShown?.Invoke();
+                return;
+            }
+
             CombatUI_InfoText _cloneInfo = Instantiate(m_infoTextPrefab);
             _cloneInfo.transform.SetParent(m_infoContainer);
             _cloneInfo.transform.localScale = Vector3.one;
+            _cloneInfo.transform.localPosition = new Vector3(_cloneInfo.transform.localPosition.x, _cloneInfo.transform.localPosition.y, 0f);
             _cloneInfo.SetText(text);
-            if(m_cloneInfoTexts.Count >= MAX_INFO_COUNT)
+            if (m_cloneInfoTexts.Count >= MAX_INFO_COUNT)
             {
                 Destroy(m_cloneInfoTexts[0].gameObject);
                 m_cloneInfoTexts.RemoveAt(0);
             }
             m_cloneInfoTexts.Add(_cloneInfo);
-            TimerManager.Schedule(Time.deltaTime * 2f, delegate { m_scrollRect.normalizedPosition = new Vector2(0f, 0f); });
+            TimerManager.Schedule(Time.deltaTime * 2f, delegate
+            {
+                m_scrollRect.normalizedPosition = new Vector2(0f, 0f);
+            });
 
             TimerManager.Schedule(0.75f, onShown);
         }

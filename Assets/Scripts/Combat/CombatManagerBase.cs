@@ -26,6 +26,8 @@ namespace ProjectBS.Combat
         }
 
         public int TurnCount { get; protected set; } = 0;
+        public EffectProcesser.TriggerTiming CurrentState { get; protected set; }
+
         public List<CombatUnit> AllUnit { get { return new List<CombatUnit>(m_units); } }
         protected List<CombatUnit> m_units = new List<CombatUnit>();
 

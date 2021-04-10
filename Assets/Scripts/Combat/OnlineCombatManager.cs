@@ -142,6 +142,7 @@ namespace ProjectBS.Combat
         private void MasterToSlave_RemoveUnit(string unitUDID)
         {
             m_currentCheckBuffEndUnitIndex--; // might remove by buff, so need to decrease back
+            GetPage<UI.CombatUIView>().RemoveActor(GetUnitByUDID(unitUDID));
             m_unitActions.Remove(m_unitActions.Find(x => x.Actor.UDID == unitUDID));
             m_myUnits.Remove(GetUnitByUDID(unitUDID));
             m_units.Remove(GetUnitByUDID(unitUDID));
@@ -170,6 +171,7 @@ namespace ProjectBS.Combat
 
                 CurrentDyingUnit = GetUnitByUDID(unitUDID);
                 m_onDiedCommandEnded = onDiedCommandEnded;
+                CurrentState = EffectProcesser.TriggerTiming.OnDied_Other;
                 GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
                 {
                     caster = null,
@@ -196,6 +198,7 @@ namespace ProjectBS.Combat
 
         private void OnDied_Any_Ended()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnDied_Self;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
@@ -218,22 +221,37 @@ namespace ProjectBS.Combat
 
         public override List<CombatUnit> GetSameCampUnits(int camp)
         {
-            throw new NotImplementedException();
+            List<CombatUnit> _units = new List<CombatUnit>();
+            for (int i = 0; i < m_units.Count; i++)
+            {
+                if (m_units[i].camp == camp)
+                {
+                    _units.Add(m_units[i]);
+                }
+            }
+
+            return _units;
         }
 
         public override void SetCurrentActionMinAttackRoll(int value)
         {
-            throw new NotImplementedException();
+            if (value < 0)
+                value = 0;
+
+            m_currentAction.MinAttackRoll = value;
         }
 
         public override void SetCurrentActionMinDefenseRoll(int value)
         {
-            throw new NotImplementedException();
+            if (value < 0)
+                value = 0;
+
+            m_currentAction.MinDefenseRoll = value;
         }
 
         public override void Shake()
         {
-            throw new NotImplementedException();
+            GetPage<UI.CombatUIView>().Shake();
         }
 
         public void ForceUpdateCombatUnitsStatus(CombatUnit[] units)
@@ -287,6 +305,7 @@ namespace ProjectBS.Combat
 
         private void TriggerOnBattleStarted()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnBattleStarted;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -342,6 +361,7 @@ namespace ProjectBS.Combat
 
         private void TriggerOnTurnStarted()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnTurnStarted;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -424,6 +444,7 @@ namespace ProjectBS.Combat
 
         private void EndTurn()
         {
+            CurrentState = EffectProcesser.TriggerTiming.OnStartToEndTurn;
             GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
@@ -495,6 +516,11 @@ namespace ProjectBS.Combat
 
         private void DisplayRemoveBuff(CombatUnit.Buff _buff)
         {
+            if (!m_units.Contains(m_currentCheckingUnit))
+            {
+                CheckNextUnitBuffEnd();
+                return;
+            }
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_buff.GetBuffSourceData().NameContextID),
