@@ -30,12 +30,11 @@ namespace KahaGameCore.Common
             m_currentIndex++;
             if (m_currentIndex >= m_processableItems.Length)
             {
+                m_currentIndex = -1;
                 if (m_onDone != null)
                 {
                     m_onDone();
                 }
-
-                m_currentIndex = -1;
                 return;
             }
 

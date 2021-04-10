@@ -121,40 +121,43 @@ namespace ProjectBS.Combat
                     {
                         if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.selectID] = new List<CombatUnit> { data.attacker };
+                            m_idToSelected[data.selectID].Clear();
+                            m_idToSelected[data.selectID].Add(data.attacker);
                         }
                         else
                         {
                             m_idToSelected.Add(data.selectID, new List<CombatUnit> { data.attacker });
                         }
-                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
+                        data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[data.selectID]));
                         return;
                     }
                 case Keyword.Target:
                     {
                         if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.selectID] = new List<CombatUnit> { data.currentEffectedTarget };
+                            m_idToSelected[data.selectID].Clear();
+                            m_idToSelected[data.selectID].Add(data.currentEffectedTarget);
                         }
                         else
                         {
                             m_idToSelected.Add(data.selectID, new List<CombatUnit> { data.currentEffectedTarget });
                         }
-                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
+                        data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[data.selectID]));
                         return;
                     }
                 case Keyword.CurrentActor:
                     {
                         if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            m_idToSelected[data.selectID] = new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor };
+                            m_idToSelected[data.selectID].Clear();
+                            m_idToSelected[data.selectID].Add(CombatUtility.ComabtManager.CurrentActionInfo.actor);
                         }
                         else
                         {
                             m_idToSelected.Add(data.selectID, new List<CombatUnit> { CombatUtility.ComabtManager.CurrentActionInfo.actor });
                         }
 
-                        data.onSelected?.Invoke(m_idToSelected[data.selectID]);
+                        data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[data.selectID]));
                         return;
                     }
                 case Keyword.Select:
@@ -203,7 +206,7 @@ namespace ProjectBS.Combat
                     {
                         if (m_idToSelected.ContainsKey(data.selectID))
                         {
-                            data.onSelected?.Invoke(m_idToSelected[data.selectID]);
+                            data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[data.selectID]));
                         }
                         else
                         {
@@ -231,12 +234,11 @@ namespace ProjectBS.Combat
                     }
                 case Keyword.SkillLastSelected:
                     {
-                        int _skillID;
-                        if (int.TryParse(_vars[0], out _skillID))
+                        if (int.TryParse(_vars[0], out int _skillID))
                         {
                             if (m_idToSelected.ContainsKey(Keyword.Skill + _skillID))
                             {
-                                data.onSelected?.Invoke(m_idToSelected[Keyword.Skill + _skillID]);
+                                data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[Keyword.Skill + _skillID]));
                             }
                             else
                             {
@@ -245,7 +247,7 @@ namespace ProjectBS.Combat
                         }
                         else
                         {
-                            switch(_vars[0])
+                            switch (_vars[0])
                             {
                                 case Keyword.Self:
                                     {
@@ -264,7 +266,7 @@ namespace ProjectBS.Combat
                             }
                             if (m_idToSelected.ContainsKey(Keyword.Skill + _skillID))
                             {
-                                data.onSelected?.Invoke(m_idToSelected[Keyword.Skill + _skillID]);
+                                data.onSelected?.Invoke(new List<CombatUnit>(m_idToSelected[Keyword.Skill + _skillID]));
                             }
                             else
                             {

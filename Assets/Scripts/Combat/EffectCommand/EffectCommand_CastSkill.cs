@@ -35,7 +35,7 @@ namespace ProjectBS.Combat.EffectCommand
                 caster = GetSelf(),
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnActived,
-                allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
+                allEffectProcesser = new AllCombatUnitAllEffectProcesser(CombatUtility.ComabtManager.AllUnit),
                 referenceBuff = null,
                 refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
                 {

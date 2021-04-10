@@ -38,8 +38,10 @@ namespace ProjectBS.Combat
 
         public void Start(ProcesserData data)
         {
+            if (m_currentUnitIndex != -1)
+                throw new Exception("[AllCombatUnitAllEffectProcesser][Start] was using by others!");
+
             m_data = data;
-            m_currentUnitIndex = -1;
             GoNextUnit();
         }
 
@@ -49,6 +51,7 @@ namespace ProjectBS.Combat
 
             if (m_currentUnitIndex >= m_units.Count)
             {
+                m_currentUnitIndex = -1;
                 m_data.onEnded?.Invoke();
                 return;
             }

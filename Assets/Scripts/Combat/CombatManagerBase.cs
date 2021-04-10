@@ -41,10 +41,7 @@ namespace ProjectBS.Combat
 
         public CombatUnit CurrentDyingUnit { get; protected set; }
 
-        public AllCombatUnitAllEffectProcesser GetNewAllProcesser()
-        {
-            return new AllCombatUnitAllEffectProcesser(m_units);
-        }
+        public AllCombatUnitAllEffectProcesser AllProcesser { get; protected set; }
 
         public abstract void Shake();
         public abstract void AddActionIndex(string unitUDID, int addIndex);

@@ -52,6 +52,7 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             string _statusInfoName = "";
+            bool _showInfo = false;
             switch (m_statusString)
             {
                 case Keyword.Attack:
@@ -100,35 +101,6 @@ namespace ProjectBS.Combat.EffectCommand
                 useRawValue = true
             });
 
-            int _resultIntValue = Convert.ToInt32(_result);
-
-            if (_resultIntValue >= 0)
-            {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                        string.Format
-                        (
-                            ContextConverter.Instance.GetContext(500016),
-                            m_targets[m_currentTargetIndex].name,
-                            _resultIntValue,
-                            _statusInfoName
-                        ), null
-                    );
-            }
-            else
-            {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                        string.Format
-                        (
-                            ContextConverter.Instance.GetContext(500017),
-                            m_targets[m_currentTargetIndex].name,
-                            _resultIntValue * -1,
-                            _statusInfoName
-                        ), null
-                    );
-            }
-
             switch (m_statusString)
             {
                 case Keyword.Attack:
@@ -147,6 +119,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 statusType = m_statusString,
                                 valueString = m_valueString
                             });
+                            _showInfo = true;
                         }
                         else
                         {
@@ -161,6 +134,7 @@ namespace ProjectBS.Combat.EffectCommand
                                     statusType = m_statusString,
                                     valueString = m_valueString
                                 });
+                                _showInfo = true;
                             }
                         }
 
@@ -170,7 +144,6 @@ namespace ProjectBS.Combat.EffectCommand
                             m_targets[m_currentTargetIndex].HP += (_currentMaxHP - _previousMaxHP);
                         }
 
-                        GoNextTarget();
                         break;
                     }
                 default:
@@ -191,7 +164,6 @@ namespace ProjectBS.Combat.EffectCommand
                             case Keyword.Hatred:
                                 {
                                     m_targets[m_currentTargetIndex].Hatred += _add;
-                                    GoNextTarget();
                                     break;
                                 }
                             case Keyword.HP:
@@ -202,7 +174,8 @@ namespace ProjectBS.Combat.EffectCommand
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             damageValue = -_add,
-                                        }, delegate { OnHPValueInfoShown(_add); });
+                                        }, null);
+                                        OnHPValueInfoShown(_add);
                                     }
                                     else
                                     {
@@ -210,14 +183,14 @@ namespace ProjectBS.Combat.EffectCommand
                                         {
                                             taker = m_targets[m_currentTargetIndex],
                                             healValue = _add
-                                        }, delegate { OnHPValueInfoShown(_add); });
+                                        }, null);
+                                        OnHPValueInfoShown(_add);
                                     }
                                     break;
                                 }
                             case Keyword.SP:
                                 {
                                     m_targets[m_currentTargetIndex].SP += _add;
-                                    GoNextTarget();
                                     break;
                                 }
                             default:
@@ -225,9 +198,46 @@ namespace ProjectBS.Combat.EffectCommand
                                     throw new Exception("[EffectCommand_AddStatus][Process] Invaild status=" + m_statusString);
                                 }
                         }
-
+                        _showInfo = true;
                         break;
                     }
+            }
+
+            if (_showInfo)
+                AddInfo(_result, _statusInfoName);
+            else
+                GoNextTarget();
+        }
+
+        private void AddInfo(float _result, string _statusInfoName)
+        {
+            int _resultIntValue = Convert.ToInt32(_result);
+
+            if (_resultIntValue >= 0)
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500016),
+                            m_targets[m_currentTargetIndex].name,
+                            _resultIntValue,
+                            _statusInfoName
+                        ), GoNextTarget
+                    );
+            }
+            else
+            {
+                GetPage<UI.CombatUIView>().AddCombatInfo
+                    (
+                        string.Format
+                        (
+                            ContextConverter.Instance.GetContext(500017),
+                            m_targets[m_currentTargetIndex].name,
+                            _resultIntValue * -1,
+                            _statusInfoName
+                        ), GoNextTarget
+                    );
             }
         }
 
@@ -235,8 +245,6 @@ namespace ProjectBS.Combat.EffectCommand
         {
             m_targets[m_currentTargetIndex].HP += value;
             if(value > 0) GetSelf().Hatred += value;
-
-            GoNextTarget();
         }
     }
 }

@@ -117,6 +117,15 @@ namespace ProjectBS.Combat.EffectCommand
             if (_dmg < 1)
                 _dmg = 1;
 
+            if (processData.caster.targetToDmg.ContainsKey(_attackTarget.UDID))
+            {
+                processData.caster.targetToDmg[_attackTarget.UDID] = _dmg;
+            }
+            else
+            {
+                processData.caster.targetToDmg.Add(_attackTarget.UDID, _dmg);
+            }
+
             GetPage<UI.CombatUIView>().AddCombatInfo
                 (
                     string.Format
@@ -126,17 +135,12 @@ namespace ProjectBS.Combat.EffectCommand
                         (CombatUtility.LastAttackRoll + 100).ToString() + "%",
                         Convert.ToInt32(_finalDefenseValue),
                         (CombatUtility.LastDefenseRoll + 100).ToString() + "%"
-                    ), null
+                    ), OnAttackInfoShown
                 );
+        }
 
-            if (processData.caster.targetToDmg.ContainsKey(_attackTarget.UDID))
-            {
-                processData.caster.targetToDmg[_attackTarget.UDID] = _dmg;
-            }
-            else
-            {
-                processData.caster.targetToDmg.Add(_attackTarget.UDID, _dmg);
-            }
+        private void OnAttackInfoShown()
+        {
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,

@@ -290,7 +290,7 @@ namespace ProjectBS.Combat
                 caster = null,
                 target = null,
                 timing = EffectProcesser.TriggerTiming.OnDeactived,
-                allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
+                allEffectProcesser = CombatUtility.ComabtManager.AllProcesser,
                 referenceBuff = buff,
                 refenceSkill = null,
                 onEnded = delegate { OnBuffRemoved(buff, _effect, onRemoved); }

@@ -45,7 +45,7 @@ namespace ProjectBS.Combat.EffectCommand
             new EffectProcesser(_skill.Command).
                 Start(new EffectProcesser.ProcessData
                 {
-                    allEffectProcesser = CombatUtility.ComabtManager.GetNewAllProcesser(),
+                    allEffectProcesser = CombatUtility.ComabtManager.AllProcesser,
                     caster = _pool[_roll],
                     refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
                     {

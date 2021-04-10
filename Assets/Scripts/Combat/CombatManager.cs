@@ -28,7 +28,7 @@ namespace ProjectBS.Combat
 
         public override void AddExtraAction(string unit, bool isImmediate)
         {
-            CombatUnitAction _newAction = new CombatUnitAction(GetUnitByUDID(unit), GetNewAllProcesser());
+            CombatUnitAction _newAction = new CombatUnitAction(GetUnitByUDID(unit), AllProcesser);
             if (isImmediate)
             {
                 m_unitActions.Insert(0, _newAction);
@@ -92,7 +92,7 @@ namespace ProjectBS.Combat
             CurrentDyingUnit = GetUnitByUDID(unit);
             m_onDiedCommandEnded = onDiedCommandEnded;
             CurrentState = EffectProcesser.TriggerTiming.OnDied_Other;
-            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
                 target = CurrentDyingUnit,
@@ -130,6 +130,8 @@ namespace ProjectBS.Combat
                 m_units[i].HP = m_units[i].GetMaxHP();
             }
 
+            AllProcesser = new AllCombatUnitAllEffectProcesser(m_units);
+
             GetPage<UI.CombatUIView>().InitBattleUnits(m_units);
             GetPage<UI.CombatUIView>().Show(this, true, StartBattle);
 
@@ -140,7 +142,7 @@ namespace ProjectBS.Combat
         {
             TurnCount = 0;
             CurrentState = EffectProcesser.TriggerTiming.OnBattleStarted;
-            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -166,7 +168,7 @@ namespace ProjectBS.Combat
             for (int i = 0; i < m_units.Count; i++)
             {
                 m_units[i].actionIndex = i;
-                m_unitActions.Add(new CombatUnitAction(m_units[i], GetNewAllProcesser()));
+                m_unitActions.Add(new CombatUnitAction(m_units[i], AllProcesser));
             }
 
             GetPage<UI.CombatUIView>().RefreshActionQueueInfo(m_unitActions);
@@ -176,7 +178,7 @@ namespace ProjectBS.Combat
         private void OnTurnStartAnimationEnded()
         {
             CurrentState = EffectProcesser.TriggerTiming.OnTurnStarted;
-            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,
@@ -248,7 +250,7 @@ namespace ProjectBS.Combat
         private void OnDied_Any_Ended()
         {
             CurrentState = EffectProcesser.TriggerTiming.OnDied_Self;
-            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = CurrentDyingUnit,
                 target = CurrentDyingUnit,
@@ -272,7 +274,7 @@ namespace ProjectBS.Combat
         {
             CurrentState = EffectProcesser.TriggerTiming.OnStartToEndTurn;
 
-            GetNewAllProcesser().Start(new AllCombatUnitAllEffectProcesser.ProcesserData
+            AllProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = null,
                 target = null,

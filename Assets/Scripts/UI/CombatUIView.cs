@@ -275,7 +275,7 @@ namespace ProjectBS.UI
         {
             if(CombatUtility.ComabtManager.CurrentState == EffectProcesser.TriggerTiming.OnBattleStarted)
             {
-                onShown?.Invoke();
+                TimerManager.Schedule(Time.deltaTime, onShown);
                 return;
             }
 
@@ -554,7 +554,7 @@ namespace ProjectBS.UI
                 EnableSelectPlayerButton(false);
 
                 m_currentSelectData = null;
-                m_onSelected?.Invoke(m_currentSelectedTargets);
+                m_onSelected?.Invoke(new List<CombatUnit>(m_currentSelectedTargets));
             }
         }
 
