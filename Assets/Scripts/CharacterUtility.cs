@@ -183,13 +183,13 @@ namespace ProjectBS
         {
             if (PlayerManager.Instance.Player.Characters.Count <= 4)
             {
-                GameManager.Instance.MessageManager.ShowCommonMessage("1000016", "Warning", null);
+                GameManager.Instance.MessageManager.ShowCommonMessage(ContextConverter.Instance.GetContext(1000016), "Warning", null);
                 return false;
             }
 
             if (PlayerManager.Instance.GetPartyIndex(UDID) != -1)
             {
-                GameManager.Instance.MessageManager.ShowCommonMessage("1000017", "Warning", null);
+                GameManager.Instance.MessageManager.ShowCommonMessage(ContextConverter.Instance.GetContext(1000017), "Warning", null);
                 return false;
             }
 

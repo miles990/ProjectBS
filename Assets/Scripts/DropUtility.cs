@@ -29,7 +29,6 @@ namespace ProjectBS
         public static DropInfo Drop(string info)
         {
             DropInfo _dropInfo = new DropInfo();
-            Debug.Log(info);
             int _randomDropCount = Random.Range(10, 21);
             if(!string.IsNullOrEmpty(info))
             {

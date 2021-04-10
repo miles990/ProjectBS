@@ -116,15 +116,18 @@ namespace ProjectBS.UI
         public override void Show(Manager manager, bool show, Action onCompleted)
         {
             m_root.SetActive(show);
-            //m_actionSortInfoText.gameObject.SetActive(show);
-            for(int i = 0; i < m_characterPanels.Length; i++)
+
+            if(show)
             {
-                m_characterPanels[i].EnableActingHint(false);
-                m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
+                for (int i = 0; i < m_characterPanels.Length; i++)
+                {
+                    m_characterPanels[i].EnableActingHint(false);
+                    m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
+                }
             }
 
             Time.timeScale = show ? 2f : 1f;
-            TimerManager.Schedule(1.75f, onCompleted);
+            onCompleted?.Invoke();
         }
 
         public void InitBattleUnits(List<CombatUnit> units)
@@ -407,16 +410,10 @@ namespace ProjectBS.UI
 
         public void ShowGameEnd(bool playerWin)
         {
-            m_skillPanel.SetActive(false);
-            for (int i = 0; i < m_characterPanels.Length; i++)
+            TimerManager.Schedule(Time.fixedDeltaTime, delegate
             {
-                m_characterPanels[i].gameObject.SetActive(false);
-            }
-            TimerManager.Schedule(1.5f, 
-                delegate
-                {
-                    CombatUtility.ComabtManager.EndComabat(playerWin);
-                });
+                CombatUtility.ComabtManager.EndComabat(playerWin);
+            });
         }
 
         public void RefreshCurrentSkillMenu(List<Data.SkillData> datas)

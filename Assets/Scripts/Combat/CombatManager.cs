@@ -73,11 +73,7 @@ namespace ProjectBS.Combat
 
         public override void EndComabat(bool isWin)
         {
-            GetPage<UI.CombatUIView>().Show(this, false,
-                delegate
-                {
-                    GameManager.Instance.EndCombat(isWin);
-                });
+            GameManager.Instance.EndCombat(isWin);
         }
 
         public override void ForceEndCurrentAction()

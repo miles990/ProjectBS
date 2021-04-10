@@ -106,27 +106,12 @@ namespace ProjectBS
                 throw new System.Exception("[GameManager][EndCombat] Can't end comabt since it didn't start");
 
             m_currentState = State.MainMenu;
-            GetPage<UI.MainMenuUIView>().Show(this, true, null);
 
             if(isWin)
             {
                 DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
 
-                // TODO: should set UI here, use _resultString for testing now
-                string _resultString = "Add Exp: " + _drop.exp + "\n\nAdd Equipments:\n";
-
                 PlayerManager.Instance.Player.OwnExp += _drop.exp;
-                for (int i = 0; i < _drop.equipments.Count; i++)
-                {
-                    Data.RawEquipmentData _source = _drop.equipments[i].GetSourceData();
-                    _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
-                    PlayerManager.Instance.Player.Equipments.Add(_drop.equipments[i]);
-
-                    if (i != _drop.equipments.Count - 1)
-                        _resultString += ", ";
-                    else
-                        _resultString += "\n\nAdd Skills:\n";
-                }
 
                 if(!PlayerManager.Instance.Player.ClearedBossStage.Contains(m_currentPlayingStage.ID))
                 {
@@ -135,19 +120,18 @@ namespace ProjectBS
                 PlayerManager.Instance.Player.Stamina -= m_currentPlayingStage.Stamina;
                 for (int i = 0; i < _drop.skillIDs.Count; i++)
                 {
-                    Data.SkillData _source = GameDataManager.GetGameData<Data.SkillData>(_drop.skillIDs[i]);
-                    _resultString += ContextConverter.Instance.GetContext(_source.NameContextID);
-
                     PlayerManager.Instance.AddSkill(_drop.skillIDs[i]);
-
-                    if (i != _drop.skillIDs.Count - 1)
-                        _resultString += ", ";
                 }
-                MessageManager.ShowCommonMessage(_resultString, "Victory", null);
+
+                GetPage<UI.EndUIView>().ShowGameWin(new UI.EndUIView.GameWinInfo
+                {
+                    exp = _drop.exp,
+                    skills = _drop.skillIDs
+                }, ShowMainMenu);
             }
             else
             {
-                MessageManager.ShowCommonMessage("", "Lose.....", null);
+                GetPage<UI.EndUIView>().ShowGameLose(ShowMainMenu);
             }
 
             m_currentPlayingStage = null;
@@ -175,6 +159,7 @@ namespace ProjectBS
         {
             m_currentState = State.MainMenu;
             GetPage<UI.MainMenuUIView>().Show(this, true, null);
+            GetPage<UI.CombatUIView>().Show(this, false, null);
         }
 
         private void HandleLog(string condition, string stackTrace, UnityEngine.LogType type)

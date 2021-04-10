@@ -128,6 +128,9 @@ namespace ProjectBS.UI
             if (!gameObject.activeSelf || !m_animator.gameObject.activeSelf)
                 return;
 
+            if (!m_animator.gameObject.activeSelf)
+                return;
+
             m_animator.enabled = true;
             m_animator.Play(name.ToString(), 0, 0f);
 

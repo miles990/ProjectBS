@@ -553,7 +553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000025
 --- !u!222 &27009649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1153,6 +1153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 65319236}
+  - component: {fileID: 65319237}
   m_Layer: 5
   m_Name: EndUI
   m_TagString: Untagged
@@ -1181,6 +1182,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &65319237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65319235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22d651d1ef07134ca9a9ebe2ad86046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gameWinInfoPanelRoot: {fileID: 712854366}
+  m_gameLoseInfoPanelRoot: {fileID: 882016599}
+  m_expText: {fileID: 1829049025}
+  m_skillInfoObjectRoot: {fileID: 1542438311}
+  m_skillInfoPrefab: {fileID: 8045282277346338501, guid: 27f2d1fd981d9e648b21b476f50223cd,
+    type: 3}
 --- !u!1 &75871235
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,7 +3550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000026
 --- !u!222 &183141494
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10754,7 +10773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000007
 --- !u!222 &549617979
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13783,7 +13802,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -60, y: -60.000008}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &712854368
 MonoBehaviour:
@@ -17701,7 +17720,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -60, y: -60.000008}
+  m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &882016601
 Animator:
@@ -22706,7 +22725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1130012473
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25168,7 +25187,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1250392798}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 65319237}
+        m_TargetAssemblyTypeName: ProjectBS.UI.EndUIView, Assembly-CSharp
+        m_MethodName: Button_OkButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1250392800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26245,7 +26276,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 134217727
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -26317,7 +26348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000025
 --- !u!222 &1286547672
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32632,7 +32663,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1496130506}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 65319237}
+        m_TargetAssemblyTypeName: ProjectBS.UI.EndUIView, Assembly-CSharp
+        m_MethodName: Button_OkButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1496130508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38614,7 +38657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000027
 --- !u!222 &1771090939
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -39512,7 +39555,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1829049024}
   - component: {fileID: 1829049027}
-  - component: {fileID: 1829049026}
   - component: {fileID: 1829049025}
   m_Layer: 5
   m_Name: Value
@@ -39631,19 +39673,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1829049026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829049023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_id: 1000005
 --- !u!222 &1829049027
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40361,7 +40390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_id: 1000005
+  m_id: 1000027
 --- !u!222 &1861952323
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40411,7 +40440,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -40, y: -39.999992}
+  m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1862046932
 MonoBehaviour:
