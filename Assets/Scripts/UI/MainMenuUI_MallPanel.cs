@@ -13,5 +13,13 @@ namespace ProjectBS.UI
         protected override void OnShown()
         {
         }
+
+        public void AddNewCharacter(int count)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                PlayerManager.Instance.Player.Characters.Add(CharacterUtility.CreateNewCharacter());
+            }
+        }
     }
 }
