@@ -152,6 +152,7 @@ namespace ProjectBS
             _gameTimeCounter.AddComponent<GameTimeCounter>();
 
             PlayerManager.Instance.Init();
+            IAP.ProductManager.Instance.Initialize();
             ShowMainMenu();
         }
 

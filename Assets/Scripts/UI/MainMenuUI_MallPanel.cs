@@ -14,12 +14,9 @@ namespace ProjectBS.UI
         {
         }
 
-        public void AddNewCharacter(int count)
+        public void Purchase(string id)
         {
-            for(int i = 0; i < count; i++)
-            {
-                PlayerManager.Instance.Player.Characters.Add(CharacterUtility.CreateNewCharacter());
-            }
+            IAP.ProductManager.Instance.BuyProductID(id);
         }
     }
 }
