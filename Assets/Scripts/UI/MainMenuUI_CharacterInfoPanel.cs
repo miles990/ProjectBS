@@ -280,6 +280,7 @@ namespace ProjectBS.UI
                 PlayerManager.Instance.SetToParty(_currentCharacterPartyIndex, characterData);
             }
             PlayerManager.Instance.SavePlayer();
+            RefreshInfo();
             DisableAllSubPanel();
         }
 
@@ -427,11 +428,10 @@ namespace ProjectBS.UI
             int _partyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
             if(_partyIndex == -1)
             {
-                m_partyHint.SetActive(false);
+                m_partyHintText.text = "+";
             }
             else
             {
-                m_partyHint.SetActive(true);
                 m_partyHintText.text = "#" + (_partyIndex + 1);
             }
 

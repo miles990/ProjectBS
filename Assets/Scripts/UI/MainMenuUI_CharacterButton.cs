@@ -17,11 +17,6 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_attackValueText = null;
         [SerializeField] private TextMeshProUGUI m_defenseValueText = null;
         [SerializeField] private TextMeshProUGUI m_speedValueText = null;
-        //[Header("Skills")]
-        //[SerializeField] private TextMeshProUGUI m_skill0Text = null;
-        //[SerializeField] private TextMeshProUGUI m_skill1Text = null;
-        //[SerializeField] private TextMeshProUGUI m_skill2Text = null;
-        //[SerializeField] private TextMeshProUGUI m_skill3Text = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -49,11 +44,6 @@ namespace ProjectBS.UI
             m_attackValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_attackRankColor) + ">" + _attackRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Attack).ToString();
             m_defenseValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_defenseRankColor) + ">" + _defenseRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Defense).ToString();
             m_speedValueText.text = "<#" + ColorUtility.ToHtmlStringRGB(_speedRankColor) + ">" + _speedRankString + "</color> " + m_refCharacter.GetTotal(Keyword.Speed).ToString();
-
-            //m_skill0Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[0]).NameContextID);
-            //m_skill1Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[1]).NameContextID);
-            //m_skill2Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[2]).NameContextID);
-            //m_skill3Text.text = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<Data.SkillData>(m_refCharacter.Skills[3]).NameContextID);
 
             int _partyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
             if (_partyIndex != -1)
