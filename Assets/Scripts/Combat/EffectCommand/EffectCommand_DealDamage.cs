@@ -14,6 +14,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         public override void Process(string[] vars, Action onCompleted)
         {
+            //UnityEngine.Debug.Log("DealDamage Start(" + GetHashCode() + ")");
+
             GetSelf().targetToDmg.Clear();
 
             m_valueString = vars[1];
@@ -43,6 +45,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnTargetSelected(List<CombatUnit> targets)
         {
+            //UnityEngine.Debug.Log("DealDamage OnTargetSelected(" + GetHashCode() + ")");
+
             m_targets = targets;
             m_currentTargetIndex = -1;
             GoNextTarget();
@@ -51,12 +55,14 @@ namespace ProjectBS.Combat.EffectCommand
         private void GoNextTarget()
         {
             m_currentTargetIndex++;
+            //UnityEngine.Debug.Log("DealDamage GoNextTarget(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
             if (m_currentTargetIndex >= m_targets.Count)
             {
                 ShowAttackAnimation();
                 return;
             }
 
+            //UnityEngine.Debug.Log("DealDamage OnStartToAttack_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -68,6 +74,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToAttack_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnStartToAttack_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -79,6 +87,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToAttack_Self_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage Calculate Dmg(" + GetHashCode() + ")");
+
             CombatUnit _attackTarget = m_targets[m_currentTargetIndex];
 
             CombatManagerBase.CombatActionInfo _info = CombatUtility.ComabtManager.CurrentActionInfo;
@@ -141,6 +151,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnAttackInfoShown()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageCalculated_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -152,6 +164,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageCalculated_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -163,6 +177,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageCalculated_Self_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnStartToTakeDamage_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -174,6 +190,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnStartToTakeDamage_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnStartToTakeDamage_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -185,6 +203,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void ShowAttackAnimation()
         {
+            //UnityEngine.Debug.Log("DealDamage ShowAttackAnimation(" + GetHashCode() + ")");
+
             int _id = 0;
             if(processData.refenceSkill != null)
             {
@@ -247,12 +267,24 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageShown()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageShown(" + GetHashCode() + ")");
+
+            for (int i = 0; i < m_targets.Count; i++)
+            {
+                m_targets[i].lastTakenDamage = processData.caster.targetToDmg[m_targets[i].UDID];
+                m_targets[i].HP -= processData.caster.targetToDmg[m_targets[i].UDID];
+                m_targets[i].Hatred -= processData.caster.targetToDmg[m_targets[i].UDID];
+                processData.caster.Hatred += processData.caster.targetToDmg[m_targets[i].UDID];
+            }
+
             m_currentTargetIndex = -1;
-            OnDmgShown();
+            StartDoAfterApplyDamageEvent();
         }
 
         private void OnDamageApplied()
         {
+            //UnityEngine.Debug.Log("DealDamage OnAttackEnded_Other(" + GetHashCode() + ")");
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -264,6 +296,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnAttacked_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnAttacked_Other_Ended(" + GetHashCode() + ")");
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -275,12 +309,16 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void End()
         {
+            //UnityEngine.Debug.Log("DealDamage End(" + GetHashCode() + ")");
+
             m_onCompleted?.Invoke();
         }
 
         private void ApplyDamageToNextTargetShield()
         {
             m_currentTargetIndex++;
+            //UnityEngine.Debug.Log("DealDamage ApplyDamageToNextTargetShield(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             if (m_currentTargetIndex >= m_targets.Count)
             {
                 OnShieldDamageApplied();
@@ -327,7 +365,9 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnShieldSkillTriggered()
         {
-            if(m_targets[m_currentTargetIndex].shields[0].parentBuffID == 0)
+            //UnityEngine.Debug.Log("DealDamage OnShieldSkillTriggered(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
+            if (m_targets[m_currentTargetIndex].shields[0].parentBuffID == 0)
             {
                 m_targets[m_currentTargetIndex].shields.RemoveAt(0);
                 OnShieldBuffAmountRemoved();
@@ -344,23 +384,22 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnShieldBuffAmountRemoved()
         {
+            //UnityEngine.Debug.Log("DealDamage OnShieldBuffAmountRemoved(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             m_currentTargetIndex--;
             ApplyDamageToNextTargetShield();
         }
 
-        private void OnDmgShown()
+        private void StartDoAfterApplyDamageEvent()
         {
             m_currentTargetIndex++;
+            //UnityEngine.Debug.Log("DealDamage OnDamageDealed_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             if (m_currentTargetIndex >= m_targets.Count)
             {
                 OnDamageApplied();
                 return;
             }
-
-            m_targets[m_currentTargetIndex].lastTakenDamage = processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            m_targets[m_currentTargetIndex].HP -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            m_targets[m_currentTargetIndex].Hatred -= processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
-            processData.caster.Hatred += processData.caster.targetToDmg[m_targets[m_currentTargetIndex].UDID];
 
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
@@ -373,6 +412,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageDealed_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageDealed_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = processData.caster,
@@ -384,6 +425,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageDealed_Self_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageTaken_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -395,6 +438,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageTaken_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnDamageTaken_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -406,6 +451,8 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnDamageTaken_Self_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnBeAttackedEnded_Other(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
@@ -417,12 +464,14 @@ namespace ProjectBS.Combat.EffectCommand
 
         private void OnBeAttackedEnded_Other_Ended()
         {
+            //UnityEngine.Debug.Log("DealDamage OnBeAttackedEnded_Self(" + GetHashCode() + ") m_currentTargetIndex=" + m_currentTargetIndex + ", m_targets.Count=" + m_targets.Count);
+
             processData.allEffectProcesser.Start(new AllCombatUnitAllEffectProcesser.ProcesserData
             {
                 caster = m_targets[m_currentTargetIndex],
                 target = processData.caster,
                 timing = EffectProcesser.TriggerTiming.OnBeAttackedEnded_Self,
-                onEnded = OnDmgShown
+                onEnded = StartDoAfterApplyDamageEvent
             });
         }
     }

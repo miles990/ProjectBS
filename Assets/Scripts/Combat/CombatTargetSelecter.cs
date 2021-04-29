@@ -284,7 +284,7 @@ namespace ProjectBS.Combat
 
         private void OnManualSelected(List<CombatUnit> targets)
         {
-            m_idToSelected[m_currnetManualSelectingID] = targets;
+            m_idToSelected[m_currnetManualSelectingID] = new List<CombatUnit>(targets);
         }
 
         private void DoSelect()

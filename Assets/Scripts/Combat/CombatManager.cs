@@ -335,7 +335,6 @@ namespace ProjectBS.Combat
                 m_currentCheckingUnit.RemoveBuff(
                     _buff,
                     delegate { DisplayRemoveBuff(_buff); });
-                m_currentCheckBuffIndex--;
             }
             else
             {
@@ -350,6 +349,7 @@ namespace ProjectBS.Combat
                 CheckNextUnitBuffEnd();
                 return;
             }
+            m_currentCheckBuffIndex--;
             GetPage<UI.CombatUIView>().DisplayRemoveBuff(new UI.CombatUIView.DisplayBuffData
             {
                 buffName = ContextConverter.Instance.GetContext(_buff.GetBuffSourceData().NameContextID),

@@ -62,6 +62,9 @@ namespace ProjectBS.UI
         private float m_moveTimer = 0f;
         private bool m_isMoingToRight = true;
 
+        private bool m_isPressingScrollRect;
+        private float m_reenableAutoScrollTimer;
+
         private void Start()
         {
             for(int i = 0; i < m_skillButtons.Length; i++)
@@ -105,6 +108,15 @@ namespace ProjectBS.UI
             else
             {
                 transform.position = Vector3.Lerp(transform.position, Vector3.zero, 0.1f);
+            }
+
+            if (m_reenableAutoScrollTimer > 0f && !m_isPressingScrollRect)
+            {
+                m_reenableAutoScrollTimer -= Time.deltaTime;
+                if(m_reenableAutoScrollTimer <= 0f)
+                {
+                    m_scrollRect.normalizedPosition = new Vector2(0f, 0f);
+                }
             }
         }
 
@@ -292,10 +304,16 @@ namespace ProjectBS.UI
             m_cloneInfoTexts.Add(_cloneInfo);
             TimerManager.Schedule(Time.deltaTime * 2f, delegate
             {
-                m_scrollRect.normalizedPosition = new Vector2(0f, 0f);
+                if(!m_isPressingScrollRect && m_reenableAutoScrollTimer <= 0f) m_scrollRect.normalizedPosition = new Vector2(0f, 0f);
             });
 
             TimerManager.Schedule(0.75f, onShown);
+        }
+
+        public void SetIsPressingOnScrollRect(bool enable)
+        {
+            m_isPressingScrollRect = enable;
+            m_reenableAutoScrollTimer = 4f;
         }
 
         public void ShowForceEndAction(CombatUnit actor)
@@ -706,14 +724,7 @@ namespace ProjectBS.UI
         {
             for(int i = 4; i < 9; i++)
             {
-                if(m_indexToUnit.ContainsKey(i))
-                {
-                    if(!m_currentSelectData.inculdeAttacker && m_indexToUnit[i] == m_currentSelectData.attacker)
-                    {
-                        continue;
-                    }
-                    m_characterPanels[i].EnableButton(m_indexToUnit[i].HP > 0 ? enable : false);
-                }
+                EnableButton(i, enable);
             }
         }
 
@@ -721,14 +732,30 @@ namespace ProjectBS.UI
         {
             for (int i = 0; i < 4; i++)
             {
-                if (m_indexToUnit.ContainsKey(i))
+                EnableButton(i, enable);
+            }
+        }
+
+        private void EnableButton(int i, bool enable)
+        {
+            if (!m_indexToUnit.ContainsKey(i))
+            {
+                return;
+            }
+
+            if (m_currentSelectedTargets.Contains(m_indexToUnit[i]))
+            {
+                m_characterPanels[i].EnableButton(false);
+                return;
+            }
+
+            if (m_indexToUnit.ContainsKey(i))
+            {
+                if (!m_currentSelectData.inculdeAttacker && m_indexToUnit[i] == m_currentSelectData.attacker)
                 {
-                    if (!m_currentSelectData.inculdeAttacker && m_indexToUnit[i] == m_currentSelectData.attacker)
-                    {
-                        continue;
-                    }
-                    m_characterPanels[i].EnableButton(m_indexToUnit[i].HP > 0 ? enable : false);
+                    return;
                 }
+                m_characterPanels[i].EnableButton(m_indexToUnit[i].HP > 0 ? enable : false);
             }
         }
     }

@@ -48,21 +48,23 @@ namespace ProjectBS.Combat.EffectCommand
             }
 
             CombatUtility.ComabtManager.AddExtraAction(m_targets[m_currentTargetIndex].UDID, m_isImmediate);
-            if(m_isImmediate)
+            GetPage<UI.CombatUIView>().ShowAddExtraAction(m_targets[m_currentTargetIndex], delegate
             {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                        string.Format(ContextConverter.Instance.GetContext(500014), m_targets[m_currentTargetIndex].name), null
-                    );
-            }
-            else
-            {
-                GetPage<UI.CombatUIView>().AddCombatInfo
-                    (
-                        string.Format(ContextConverter.Instance.GetContext(500013), m_targets[m_currentTargetIndex].name), null
-                    );
-            }
-            GetPage<UI.CombatUIView>().ShowAddExtraAction(m_targets[m_currentTargetIndex], GoNextTarget);
+                if (m_isImmediate)
+                {
+                    GetPage<UI.CombatUIView>().AddCombatInfo
+                        (
+                            string.Format(ContextConverter.Instance.GetContext(500014), m_targets[m_currentTargetIndex].name), GoNextTarget
+                        );
+                }
+                else
+                {
+                    GetPage<UI.CombatUIView>().AddCombatInfo
+                        (
+                            string.Format(ContextConverter.Instance.GetContext(500013), m_targets[m_currentTargetIndex].name), GoNextTarget
+                        );
+                }
+            });
         }
     }
 }
