@@ -57,7 +57,7 @@ namespace ProjectBS.Combat.EffectCommand
                     (
                         string.Format
                         (
-                            ContextConverter.Instance.GetContext(500024),
+                            ContextConverter.Instance.GetContext(500028),
                             CombatUtility.ComabtManager.GetUnitByUDID(processData.caster.UDID).name,
                             CombatUtility.ComabtManager.CurrentActionInfo.actor.targetToDmg[processData.caster.UDID]
                         ), null

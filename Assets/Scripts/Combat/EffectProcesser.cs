@@ -130,21 +130,6 @@ namespace ProjectBS.Combat
             }
         }
 
-        //private void ShowSkillInfo(ProcessData processData)
-        //{
-        //    if (processData.refenceSkill != null)
-        //    {
-        //        if (processData.timing != TriggerTiming.OnActived)
-        //        {
-        //            CombatUtility.ComabtManager.AddInfo(processData.refenceSkill.owner.name + "「" + ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID) + "」技能效果發動");
-        //        }
-        //        else
-        //        {
-        //            CombatUtility.ComabtManager.AddInfo(processData.refenceSkill.owner.name + "使用「" + ContextConverter.Instance.GetContext(processData.refenceSkill.skill.NameContextID) + "」");
-        //        }
-        //    }
-        //}
-
         private string DeserializeCommandRawDatas(string timing, string rawData)
         {
             string _deserializeBuffer = "";

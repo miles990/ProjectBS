@@ -56,16 +56,22 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
 
-            if(m_buffID != -1)
+            if (m_buffID != -1)
             {
                 m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
-                    m_targets[m_currentTargetIndex].AddBuffAmount(
-                        m_currentBuff,
-                        m_addAmountCount,
-                        delegate { DisaplayRemoveBuff(GoNextTarget); },
-                        GoNextTarget);
+                    AddInfo();
+                    GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
+                        ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                        m_addAmountCount, delegate
+                        {
+                            m_targets[m_currentTargetIndex].AddBuffAmount(
+                                m_currentBuff,
+                                m_addAmountCount,
+                                delegate { DisaplayRemoveBuff(GoNextTarget); },
+                                GoNextTarget);
+                        });
                 }
                 else
                 {
@@ -128,11 +134,16 @@ namespace ProjectBS.Combat.EffectCommand
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
             AddInfo();
-            m_targets[m_currentTargetIndex].AddBuffAmount(
-                            m_currentBuff,
-                            m_addAmountCount,
-                            delegate { DisaplayRemoveBuff(GoNextBuff); },
-                            GoNextBuff);
+            GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
+                ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                m_addAmountCount, delegate
+                {
+                    m_targets[m_currentTargetIndex].AddBuffAmount(
+                                    m_currentBuff,
+                                    m_addAmountCount,
+                                    delegate { DisaplayRemoveBuff(GoNextBuff); },
+                                    GoNextBuff);
+                });
         }
     }
 }

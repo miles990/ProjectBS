@@ -395,6 +395,7 @@ namespace ProjectBS.Combat
                         CombatUnit _getValueTarget;
                         switch (_varParts[0])
                         {
+                            case Keyword.Self:
                             case Keyword.Caster:
                                 {
                                     _getValueTarget = data.caster;
