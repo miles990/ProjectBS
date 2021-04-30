@@ -113,10 +113,6 @@ namespace ProjectBS.UI
             if (m_reenableAutoScrollTimer > 0f && !m_isPressingScrollRect)
             {
                 m_reenableAutoScrollTimer -= Time.deltaTime;
-                if(m_reenableAutoScrollTimer <= 0f)
-                {
-                    m_scrollRect.normalizedPosition = new Vector2(0f, 0f);
-                }
             }
         }
 
@@ -562,7 +558,38 @@ namespace ProjectBS.UI
 
             m_currentSelectedTargets.Add(m_indexToUnit[index]);
 
-            if(m_currentSelectedTargets.Count < m_currentSelectData.needCount)
+            int i = 0;
+            if (m_currentSelectData.selectRange == CombatTargetSelecter.SelectRange.Opponent)
+            {
+                i = m_currentSelectData.attacker.camp == 0 ? 4 : 0;
+            }
+            else if (m_currentSelectData.selectRange == CombatTargetSelecter.SelectRange.SameSide)
+            {
+                i = m_currentSelectData.attacker.camp == 0 ? 0 : 4;
+            }
+
+            int _max = i + 4;
+            if (_max > m_allUnits.Count || m_currentSelectData.selectRange == CombatTargetSelecter.SelectRange.All) _max = m_allUnits.Count;
+            int _count = 0;
+            for (; i < _max; i++)
+            {
+                if (m_allUnits[i].HP > 0 && !m_currentSelectedTargets.Contains(m_allUnits[i]))
+                {
+                    _count++;
+                }
+            }
+
+            if (_count <= 0)
+            {
+                EnableSelectBossButton(false);
+                EnableSelectPlayerButton(false);
+
+                m_currentSelectData = null;
+                m_onSelected?.Invoke(new List<CombatUnit>(m_currentSelectedTargets));
+                return;
+            }
+
+            if (m_currentSelectedTargets.Count < m_currentSelectData.needCount)
             {
                 WaitPlayerSelect();
             }

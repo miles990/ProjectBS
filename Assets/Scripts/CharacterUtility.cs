@@ -201,12 +201,19 @@ namespace ProjectBS
 
         public static void AddExp(OwningCharacterData character, int addExp)
         {
+            if (character.Exp == -1)
+                return;
+
             character.Exp += addExp;
             while(GameDataManager.GetGameData<ExpData>(character.Level).Require != -1 &&
                   character.Exp - GameDataManager.GetGameData<ExpData>(character.Level).Require >= 0)
             {
                 character.Exp -= GameDataManager.GetGameData<ExpData>(character.Level).Require;
                 ForceLevelUp(character);
+                if(GameDataManager.GetGameData<ExpData>(character.Level).Require == -1)
+                {
+                    character.Exp = -1;
+                }
             }
         }
 

@@ -153,6 +153,7 @@ namespace ProjectBS
 
             PlayerManager.Instance.Init();
             IAP.ProductManager.Instance.Initialize();
+
             ShowMainMenu();
         }
 

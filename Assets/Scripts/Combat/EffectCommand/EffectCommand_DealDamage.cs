@@ -48,6 +48,13 @@ namespace ProjectBS.Combat.EffectCommand
             //UnityEngine.Debug.Log("DealDamage OnTargetSelected(" + GetHashCode() + ")");
 
             m_targets = targets;
+
+            if (m_targets.Count <= 0)
+            {
+                End();
+                return;
+            }
+
             m_currentTargetIndex = -1;
             GoNextTarget();
         }

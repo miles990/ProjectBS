@@ -37,27 +37,24 @@ namespace ProjectBS.Combat.EffectCommand
             if(CombatUtility.ComabtManager.CurrentActionInfo.actor == GetSelf())
             {
                 List<string> _targets = new List<string>(processData.caster.targetToDmg.Keys);
-                for(int i = 0; i < _targets.Count; i++)
+                int _intDmg;
+                if (_isPersent)
                 {
-                    int _intDmg;
-                    if (_isPersent)
-                    {
-                        float _dmg = (float)processData.caster.targetToDmg[_targets[i]];
-                        _intDmg = Convert.ToInt32(_dmg * _value);
-                        processData.caster.targetToDmg[_targets[i]] += _intDmg;
+                    float _dmg = (float)processData.caster.targetToDmg[processData.target.UDID];
+                    _intDmg = Convert.ToInt32(_dmg * _value);
+                    processData.caster.targetToDmg[processData.target.UDID] += _intDmg;
 
-                    }
-                    else
-                    {
-                        _intDmg = Convert.ToInt32(_value);
-                        processData.caster.targetToDmg[_targets[i]] += _intDmg;
-                    }
-
-                    ShowAddAttackDamage(_intDmg, _targets[i]);
-
-                    if (processData.caster.targetToDmg[_targets[i]] < 1)
-                        processData.caster.targetToDmg[_targets[i]] = 1;
                 }
+                else
+                {
+                    _intDmg = Convert.ToInt32(_value);
+                    processData.caster.targetToDmg[processData.target.UDID] += _intDmg;
+                }
+
+                ShowAddAttackDamage(_intDmg, processData.target.UDID);
+
+                if (processData.caster.targetToDmg[processData.target.UDID] < 1)
+                    processData.caster.targetToDmg[processData.target.UDID] = 1;
             }
             else
             {
@@ -103,7 +100,7 @@ namespace ProjectBS.Combat.EffectCommand
                     (
                         string.Format
                         (
-                            ContextConverter.Instance.GetContext(500010),
+                            ContextConverter.Instance.GetContext(500012),
                             CombatUtility.ComabtManager.GetUnitByUDID(udid).name,
                             add * -1
                         ), null

@@ -22,35 +22,36 @@ namespace ProjectBS
 
             Instance = this;
             m_timer = 0f;
-            OnApplicationPause(true);
+        }
+
+        public void ForceCollect()
+        {
+            long _last = Convert.ToInt64(PlayerPrefs.GetString(KEY, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()));
+            long _current = DateTimeOffset.Now.ToUnixTimeSeconds();
+            long _passed = _current - _last;
+
+            if (_passed > GameDataManager.GameProperties.MaxPassedTimeCount)
+            {
+                _passed = GameDataManager.GameProperties.MaxPassedTimeCount;
+            }
+            for (long i = 0; i < _passed; i++)
+            {
+                OnOneSecPassed?.Invoke();
+            }
+            m_timer = 0f;
+            PlayerPrefs.SetString(KEY, DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
         }
 
         private void OnApplicationPause(bool pause)
         {
             if(pause)
             {
-                PlayerPrefs.SetFloat(KEY, DateTimeOffset.Now.ToUnixTimeSeconds());
+                PlayerPrefs.SetString(KEY, DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
             }
             else
             {
-                long _last = Convert.ToInt64(PlayerPrefs.GetFloat(KEY, DateTimeOffset.Now.ToUnixTimeSeconds()));
-                long _current = Convert.ToInt64(PlayerPrefs.GetFloat(KEY, DateTimeOffset.Now.ToUnixTimeSeconds()));
-                long _passed = _current - _last;
-                if(_passed > GameDataManager.GameProperties.MaxPassedTimeCount)
-                {
-                    _passed = GameDataManager.GameProperties.MaxPassedTimeCount;
-                }
-                for(long i = 0; i < _passed; i++)
-                {
-                    OnOneSecPassed?.Invoke();
-                }
-                m_timer = 0f;
+                ForceCollect();
             }
-        }
-
-        private void OnApplicationQuit()
-        {
-            PlayerPrefs.SetFloat(KEY, DateTimeOffset.Now.ToUnixTimeSeconds());
         }
 
         private void Update()
@@ -62,6 +63,7 @@ namespace ProjectBS
             if(m_timer >= 1f)
             {
                 OnOneSecPassed?.Invoke();
+                PlayerPrefs.SetString(KEY, DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
                 m_timer = 0f;
             }
         }

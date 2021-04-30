@@ -229,7 +229,8 @@ namespace ProjectBS.UI
         {
             if(CharacterUtility.Depart(m_refCharacter.UDID))
             {
-                Button_Save();
+                PlayerManager.Instance.SavePlayer();
+                Button_Back();
             }
         }
 
@@ -242,12 +243,6 @@ namespace ProjectBS.UI
 
             RefreshInfo();
             PlayerManager.Instance.SavePlayer();
-        }
-
-        public void Button_Save()
-        {
-            PlayerManager.Instance.SavePlayer();
-            Button_Back();
         }
 
         public void Button_StartSetToParty()

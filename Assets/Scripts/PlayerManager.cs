@@ -56,6 +56,7 @@ namespace ProjectBS
             }
 
             GameTimeCounter.Instance.OnOneSecPassed += OnOneSecPassed;
+            GameTimeCounter.Instance.ForceCollect();
             IsInited = true;
         }
 
