@@ -67,11 +67,27 @@ namespace ProjectBS.Combat.EffectCommand
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
                 AddInfo();
-                m_targets[m_currentTargetIndex].AddBuffAmount(
-                    m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
-                    m_addAmountCount,
-                    DisaplayRemoveBuff,
-                    GoNextBuff);
+                if (m_addAmountCount != -99)
+                {
+                    GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
+                        ContextConverter.Instance.GetContext(m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex).GetBuffSourceData().NameContextID),
+                        m_addAmountCount, delegate
+                        {
+                            m_targets[m_currentTargetIndex].AddBuffAmount(
+                                m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
+                                m_addAmountCount,
+                                DisaplayRemoveBuff,
+                                GoNextBuff);
+                        });
+                }
+                else
+                {
+                    m_targets[m_currentTargetIndex].AddBuffAmount(
+                        m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex),
+                        m_addAmountCount,
+                        DisaplayRemoveBuff,
+                        GoNextBuff);
+                }
             }
             else
             {

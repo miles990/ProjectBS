@@ -31,7 +31,7 @@ namespace ProjectBS.Data
         public string Name = "";
         public int Level = 1;
         public int Exp = 0;
-        public int HP = 100;
+        public int HP = 0;
         public int HPAbilityID = 0;
         public int SP = 100;
         public int Attack = 0;

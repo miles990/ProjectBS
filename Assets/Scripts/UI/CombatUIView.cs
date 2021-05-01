@@ -133,6 +133,10 @@ namespace ProjectBS.UI
                     m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
                 }
             }
+            else
+            {
+                m_turnStartAni.gameObject.SetActive(false);
+            }
 
             Time.timeScale = show ? 2f : 1f;
             onCompleted?.Invoke();
@@ -338,8 +342,14 @@ namespace ProjectBS.UI
         public void ShowTurnStart(int turnCount, Action onTurnStartAnimationEnded)
         {
             m_turnInfoText.text = string.Format(ContextConverter.Instance.GetContext(1000008), turnCount);
-            m_turnStartAni.gameObject.SetActive(true);
-            m_turnStartAni.Play("Display", 0, 0f);
+            if(m_turnStartAni.gameObject.activeSelf)
+            {
+                m_turnStartAni.Play("Display", 0, 0f);
+            }
+            else
+            {
+                m_turnStartAni.gameObject.SetActive(true);
+            }
             TimerManager.Schedule(1f, onTurnStartAnimationEnded);
         }
 

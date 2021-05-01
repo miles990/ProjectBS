@@ -134,16 +134,27 @@ namespace ProjectBS.Combat.EffectCommand
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
             AddInfo();
-            GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
-                ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
-                m_addAmountCount, delegate
-                {
-                    m_targets[m_currentTargetIndex].AddBuffAmount(
-                                    m_currentBuff,
-                                    m_addAmountCount,
-                                    delegate { DisaplayRemoveBuff(GoNextBuff); },
-                                    GoNextBuff);
-                });
+            if(m_addAmountCount != -99)
+            {
+                GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
+                    ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                    m_addAmountCount, delegate
+                    {
+                        m_targets[m_currentTargetIndex].AddBuffAmount(
+                                        m_currentBuff,
+                                        m_addAmountCount,
+                                        delegate { DisaplayRemoveBuff(GoNextBuff); },
+                                        GoNextBuff);
+                    });
+            }
+            else
+            {
+                m_targets[m_currentTargetIndex].AddBuffAmount(
+                                m_currentBuff,
+                                m_addAmountCount,
+                                delegate { DisaplayRemoveBuff(GoNextBuff); },
+                                GoNextBuff);
+            }
         }
     }
 }

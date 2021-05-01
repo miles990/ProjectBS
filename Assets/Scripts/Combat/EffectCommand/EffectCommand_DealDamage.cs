@@ -103,7 +103,7 @@ namespace ProjectBS.Combat.EffectCommand
             float _minDefenseRollPersent = (float)_info.minDefenseRoll / 100f;
 
             float _attackAddRollPersent = UnityEngine.Random.Range(_minAttackRollPersent, 1f);
-            float _defenseAddRollPersent = UnityEngine.Random.Range(_minDefenseRollPersent, 1f);
+            float _defenseAddRollPersent = UnityEngine.Random.Range(_minDefenseRollPersent, 0f);
 
             CombatUtility.LastAttackRoll = Convert.ToInt32(_attackAddRollPersent * 100f);
             CombatUtility.LastDefenseRoll = Convert.ToInt32(_defenseAddRollPersent * 100f);
