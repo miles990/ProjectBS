@@ -8,14 +8,6 @@ namespace ProjectBS.Combat
 
         private System.Action m_onDiedCommandEnded = null;
 
-        private class CastSkillInfo
-        {
-            public string udid;
-            public int skillID;
-        }
-        private Stack<CastSkillInfo> m_castSkillStack = new Stack<CastSkillInfo>();
-        private CastSkillInfo m_currentCastSkillInfo;
-
         public override void AddActionIndex(string unit, int addIndex)
         {
             int _currentIndex = m_unitActions.FindIndex(x => x.Actor.UDID == unit);
@@ -51,7 +43,7 @@ namespace ProjectBS.Combat
 
         public override void AddCastSkill(string unitUDID, int skillID)
         {
-            m_castSkillStack.Push(new CastSkillInfo { udid = unitUDID, skillID = skillID });
+            m_currentAction.AddCastSkill(unitUDID, skillID);
         }
 
         public override List<CombatUnit> GetSameCampUnits(int camp)
@@ -167,7 +159,6 @@ namespace ProjectBS.Combat
         private void StartNewTurn()
         {
             TurnCount++;
-            m_castSkillStack.Clear();
 
             GetPage<UI.CombatUIView>().AddCombatInfo("-----------------------------", null);
 
@@ -212,54 +203,7 @@ namespace ProjectBS.Combat
 
             m_currentAction = m_unitActions[0];
             m_unitActions.RemoveAt(0);
-            m_currentAction.Start(StartCheckSkillQueue);
-        }
-
-        private void StartCheckSkillQueue()
-        {
-            if(m_castSkillStack.Count <= 0)
-            {
-                EndAction();
-                return;
-            }
-
-            m_currentCastSkillInfo = m_castSkillStack.Pop();
-            CombatUnit _curUnit = GetUnitByUDID(m_currentCastSkillInfo.udid);
-            if (_curUnit.HP <= 0 || _curUnit.IsSkipAtion)
-            {
-                StartCheckSkillQueue();
-                return;
-            }
-
-            StartProcessSkillInQueue();
-        }
-
-        private void StartProcessSkillInQueue()
-        {
-            Data.SkillData _curSkill = GameDataManager.GetGameData<Data.SkillData>(m_currentCastSkillInfo.skillID);
-            if(_curSkill == null)
-            {
-                StartCheckSkillQueue();
-                return;
-            }
-
-            CombatUnit _curUnit = GetUnitByUDID(m_currentCastSkillInfo.udid);
-
-            EffectProcessManager.GetSkillProcesser(_curSkill.ID).Start(new EffectProcesser.ProcessData
-            {
-                caster = _curUnit,
-                target = null,
-                allEffectProcesser = AllProcesser,
-                refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
-                {
-                    owner = _curUnit,
-                    skill = _curSkill
-                },
-                referenceBuff = null,
-                timing = EffectProcesser.TriggerTiming.OnActived,
-                skipIfCount = 0,
-                onEnded = StartCheckSkillQueue
-            });
+            m_currentAction.Start(EndAction);
         }
 
         private void EndAction()

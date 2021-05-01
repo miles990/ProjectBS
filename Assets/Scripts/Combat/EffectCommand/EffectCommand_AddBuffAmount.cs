@@ -62,16 +62,28 @@ namespace ProjectBS.Combat.EffectCommand
                 if (m_currentBuff != null)
                 {
                     AddInfo();
-                    GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
-                        ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
-                        m_addAmountCount, delegate
-                        {
-                            m_targets[m_currentTargetIndex].AddBuffAmount(
-                                m_currentBuff,
-                                m_addAmountCount,
-                                delegate { DisaplayRemoveBuff(GoNextTarget); },
-                                GoNextTarget);
-                        });
+                    if (m_addAmountCount != -99)
+                    {
+                        GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
+                            ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                            m_addAmountCount, 
+                            delegate
+                            {
+                                m_targets[m_currentTargetIndex].AddBuffAmount(
+                                                m_currentBuff,
+                                                m_addAmountCount,
+                                                delegate { DisaplayRemoveBuff(GoNextTarget); },
+                                                GoNextTarget);
+                            });
+                    }
+                    else
+                    {
+                        m_targets[m_currentTargetIndex].AddBuffAmount(
+                                        m_currentBuff,
+                                        m_addAmountCount,
+                                        delegate { DisaplayRemoveBuff(GoNextTarget); },
+                                        GoNextTarget);
+                    }
                 }
                 else
                 {
