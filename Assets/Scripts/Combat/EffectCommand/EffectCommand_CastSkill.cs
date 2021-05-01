@@ -46,7 +46,7 @@ namespace ProjectBS.Combat.EffectCommand
             //    onEnded = onCompleted
             //});
 
-            CombatUtility.ComabtManager.AddSkillQueue(GetSelf().UDID, _skill.ID);
+            CombatUtility.ComabtManager.AddCastSkill(GetSelf().UDID, _skill.ID);
             onCompleted?.Invoke();
 
         }

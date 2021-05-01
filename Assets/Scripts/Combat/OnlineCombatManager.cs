@@ -104,7 +104,7 @@ namespace ProjectBS.Combat
             }
         }
 
-        public override void AddSkillQueue(string unitUDID, int skillID)
+        public override void AddCastSkill(string unitUDID, int skillID)
         {
             throw new NotImplementedException();
         }

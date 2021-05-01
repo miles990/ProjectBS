@@ -46,7 +46,7 @@ namespace ProjectBS.Combat
         public abstract void Shake();
         public abstract void AddActionIndex(string unitUDID, int addIndex);
         public abstract void AddExtraAction(string unitUDID, bool isImmediate);
-        public abstract void AddSkillQueue(string unitUDID, int skillID);
+        public abstract void AddCastSkill(string unitUDID, int skillID);
         public abstract List<CombatUnit> GetSameCampUnits(int camp);
         public abstract void SetCurrentActionMinAttackRoll(int value);
         public abstract void SetCurrentActionMinDefenseRoll(int value);

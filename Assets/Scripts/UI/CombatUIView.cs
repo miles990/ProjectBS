@@ -517,12 +517,12 @@ namespace ProjectBS.UI
                 int _count = 0;
                 for (; i < _max; i++)
                 {
-                    if (m_allUnits[i].HP <= 0)
+                    if (m_allUnits[i].HP > 0)
                     {
                         _count++;
                     }
                 }
-                if (_count >= 4)
+                if (_count <= 0)
                 {
                     data.onSelected(new List<CombatUnit>());
                     return;
