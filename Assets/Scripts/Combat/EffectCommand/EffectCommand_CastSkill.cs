@@ -18,7 +18,8 @@ namespace ProjectBS.Combat.EffectCommand
             {
                 throw new Exception("[EffectCommand_CastSkill][Process] Invaild Skill ID=" + int.Parse(vars[0]));
             }
-            GetSelf().lastSkillID = _skill.ID;
+
+            //GetSelf().lastSkillID = _skill.ID;
 
             GetPage<UI.CombatUIView>().AddCombatInfo
                 (
@@ -30,20 +31,24 @@ namespace ProjectBS.Combat.EffectCommand
                     ), null
                 );
 
-            new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
-            {
-                caster = GetSelf(),
-                target = null,
-                timing = EffectProcesser.TriggerTiming.OnActived,
-                allEffectProcesser = new AllCombatUnitAllEffectProcesser(CombatUtility.ComabtManager.AllUnit),
-                referenceBuff = null,
-                refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
-                {
-                    skill = _skill,
-                    owner = GetSelf()
-                },
-                onEnded = onCompleted
-            });
+            //new EffectProcesser(_skill.Command).Start(new EffectProcesser.ProcessData
+            //{
+            //    caster = GetSelf(),
+            //    target = null,
+            //    timing = EffectProcesser.TriggerTiming.OnActived,
+            //    allEffectProcesser = new AllCombatUnitAllEffectProcesser(CombatUtility.ComabtManager.AllUnit),
+            //    referenceBuff = null,
+            //    refenceSkill = new EffectProcesser.ProcessData.ReferenceSkillInfo
+            //    {
+            //        skill = _skill,
+            //        owner = GetSelf()
+            //    },
+            //    onEnded = onCompleted
+            //});
+
+            CombatUtility.ComabtManager.AddSkillQueue(GetSelf().UDID, _skill.ID);
+            onCompleted?.Invoke();
+
         }
     }
 }

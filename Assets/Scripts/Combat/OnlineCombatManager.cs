@@ -104,6 +104,11 @@ namespace ProjectBS.Combat
             }
         }
 
+        public override void AddSkillQueue(string unitUDID, int skillID)
+        {
+            throw new NotImplementedException();
+        }
+
         private void SalveToMaster_CalledToAddExtraAction(int callbackCode, string unitUDID, bool isImmediate)
         {
             if (!PhotonManager.Instance.IsMaster)
