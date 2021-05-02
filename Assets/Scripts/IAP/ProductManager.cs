@@ -27,6 +27,8 @@ namespace ProjectBS.IAP
 
         public void Initialize()
         {
+            return;
+
             if (m_isInited)
                 return;
 

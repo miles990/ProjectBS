@@ -387,6 +387,8 @@ namespace ProjectBS
             _newPlayer.Party.MemberUDID_2 = _newPlayer.Characters[2].UDID;
             _newPlayer.Party.MemberUDID_3 = _newPlayer.Characters[3].UDID;
 
+            _newPlayer.Stamina = GameDataManager.GameProperties.MaxStamina;
+
             return _newPlayer;
         }
 
