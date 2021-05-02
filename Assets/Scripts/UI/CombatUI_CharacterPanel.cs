@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using ProjectBS.Combat;
 using KahaGameCore.Static;
+using DG.Tweening;
 
 namespace ProjectBS.UI
 {
@@ -65,6 +66,7 @@ namespace ProjectBS.UI
                                 if (_dmg < 1f) _dmg = 1f;
 
                                 targets[i].SimpleShowDamage(System.Convert.ToInt32(_dmg));
+                                targets[i].ShowGetHitShake();
                             }
 
                             break;
@@ -361,6 +363,11 @@ namespace ProjectBS.UI
             {
                 bar.fillAmount = target;
             }
+        }
+
+        private void ShowGetHitShake()
+        {
+            transform.DOShakePosition(0.5f, 10);
         }
     }
 }
