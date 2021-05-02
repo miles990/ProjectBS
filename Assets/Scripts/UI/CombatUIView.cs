@@ -38,6 +38,7 @@ namespace ProjectBS.UI
         [SerializeField] private UnityEngine.UI.ScrollRect m_scrollRect = null;
         [SerializeField] private RectTransform m_infoContainer = null;
         [SerializeField] private CombatUI_InfoText m_infoTextPrefab = null;
+        [SerializeField] private GameObject m_selectTaregtHint = null;
         [Header("Shake")]
         [SerializeField] private float m_shakeTime = 0.3f;
         [SerializeField] private float m_moveSpeed = 2f;
@@ -132,6 +133,7 @@ namespace ProjectBS.UI
                     m_characterPanels[i].EnableActingHint(false);
                     m_characterPanels[i].PlayAni(CombatUI_CharacterPanel.AnimationClipName.Appear);
                 }
+                m_skillPanel.SetActive(false);
             }
             else
             {
@@ -140,6 +142,11 @@ namespace ProjectBS.UI
 
             Time.timeScale = show ? 2f : 1f;
             onCompleted?.Invoke();
+        }
+
+        public void Button_ForceEndCombat(bool win)
+        {
+            CombatUtility.ComabtManager.EndComabat(win);
         }
 
         public void InitBattleUnits(List<CombatUnit> units)
@@ -285,6 +292,9 @@ namespace ProjectBS.UI
 
         public void AddCombatInfo(string text, Action onShown)
         {
+            if (CombatUtility.ComabtManager == null)
+                return;
+
             if(CombatUtility.ComabtManager.CurrentState == EffectProcesser.TriggerTiming.OnBattleStarted)
             {
                 TimerManager.Schedule(Time.deltaTime, onShown);
@@ -535,6 +545,7 @@ namespace ProjectBS.UI
                 }
             }
 
+            m_selectTaregtHint.SetActive(true);
             m_currentSelectedTargets.Clear();
             m_currentSelectData = data;
             m_onSelected = data.onSelected;
@@ -607,6 +618,7 @@ namespace ProjectBS.UI
                 EnableSelectPlayerButton(false);
 
                 m_currentSelectData = null;
+                m_selectTaregtHint.SetActive(false);
                 m_onSelected?.Invoke(new List<CombatUnit>(m_currentSelectedTargets));
                 return;
             }
@@ -621,6 +633,7 @@ namespace ProjectBS.UI
                 EnableSelectPlayerButton(false);
 
                 m_currentSelectData = null;
+                m_selectTaregtHint.SetActive(false);
                 m_onSelected?.Invoke(new List<CombatUnit>(m_currentSelectedTargets));
             }
         }

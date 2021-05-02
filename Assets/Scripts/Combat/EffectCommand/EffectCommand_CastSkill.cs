@@ -29,12 +29,9 @@ namespace ProjectBS.Combat.EffectCommand
                     ), null
                 );
 
+            CombatUtility.ComabtManager.AddCastSkill(GetSelf().UDID, _skill.ID);
             GetPage<UI.CombatUIView>().ShowCastSkill(GetSelf(), ContextConverter.Instance.GetContext(_skill.NameContextID),
-            delegate
-            {
-                CombatUtility.ComabtManager.AddCastSkill(GetSelf().UDID, _skill.ID);
-                onCompleted?.Invoke();
-            });
+            onCompleted);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace KahaGameCore.Common
             public string title;
             public string content;
             public Action onConfirmed;
+            public Action onCanceled;
         }
         private Queue<MessageObject> m_messageQueue = new Queue<MessageObject>();
 
@@ -20,7 +21,7 @@ namespace KahaGameCore.Common
             m_window = window;
         }
 
-        public void ShowCommonMessage(string content, string title, Action onConfirmed)
+        public void ShowCommonMessage(string content, string title, Action onConfirmed, Action onCanceled = null)
         {
             if(m_window == null)
             {
@@ -31,7 +32,8 @@ namespace KahaGameCore.Common
             {
                 title = title,
                 content = content,
-                onConfirmed = onConfirmed
+                onConfirmed = onConfirmed,
+                onCanceled = onCanceled
             };
 
             _messageObject.onConfirmed += CloseWindow;
@@ -46,7 +48,14 @@ namespace KahaGameCore.Common
         private void ShowNext()
         {
             MessageObject _messageObject = m_messageQueue.Dequeue();
-            m_window.SetMessage(_messageObject.content, _messageObject.title, _messageObject.onConfirmed);
+            if(_messageObject.onCanceled == null)
+            {
+                m_window.SetMessage(_messageObject.content, _messageObject.title, _messageObject.onConfirmed);
+            }
+            else
+            {
+                ((ProjectBS.UI.ConfirmWindowUIView)m_window).SetCancelableMessage(_messageObject.content, _messageObject.title, _messageObject.onConfirmed, _messageObject.onCanceled);
+            }
             if (!m_window.IsShowing)
             {
                 m_window.Show(this, true, null);

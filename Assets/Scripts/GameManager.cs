@@ -70,7 +70,7 @@ namespace ProjectBS
 
             GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
-            if(m_localGameCombatManager == null) m_localGameCombatManager = new Combat.CombatManager();
+            m_localGameCombatManager = new Combat.CombatManager();
             Combat.CombatUtility.SetCombatManager(m_localGameCombatManager);
 
             List<Combat.CombatUnit> _playerParty = new List<Combat.CombatUnit>
@@ -127,17 +127,21 @@ namespace ProjectBS
                 {
                     exp = _drop.exp,
                     skills = _drop.skillIDs
-                }, ShowMainMenu);
+                }, EndLoaclCombat);
             }
             else
             {
-                GetPage<UI.EndUIView>().ShowGameLose(ShowMainMenu);
+                GetPage<UI.EndUIView>().ShowGameLose(EndLoaclCombat);
             }
 
             m_currentPlayingStage = null;
-            Combat.CombatUtility.EndCombatProcess(m_localGameCombatManager);
-
             PlayerManager.Instance.SavePlayer();
+        }
+
+        private void EndLoaclCombat()
+        {
+            Combat.CombatUtility.EndCombatProcess(m_localGameCombatManager);
+            ShowMainMenu();
         }
 
         private void StartInitData()
