@@ -10,6 +10,8 @@
         public int MaxStamina { get; private set; }
         public int AddStaminaPerSec { get; private set; }
         public int AddStaminaPerTime { get; private set; }
+        public int DrawCharacterCost { get; private set; }
+        public int AddCharacterCountPerDraw { get; private set; }
     }
 }
 

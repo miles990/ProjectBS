@@ -146,7 +146,18 @@ namespace ProjectBS.UI
 
         public void Button_ForceEndCombat(bool win)
         {
-            CombatUtility.ComabtManager.EndComabat(win);
+            if(!win)
+            {
+                GameManager.Instance.MessageManager.ShowCommonMessage
+                    (ContextConverter.Instance.GetContext(1000030),
+                    "Event",
+                    delegate { CombatUtility.ComabtManager.EndComabat(win); },
+                    delegate { });
+            }
+            else
+            {
+                CombatUtility.ComabtManager.EndComabat(win);
+            }
         }
 
         public void InitBattleUnits(List<CombatUnit> units)

@@ -78,11 +78,7 @@ namespace ProjectBS.Combat
 
         public override void EndComabat(bool isWin)
         {
-            GameManager.Instance.MessageManager.ShowCommonMessage
-                ("認輸?",
-                "Event",
-                delegate { GameManager.Instance.EndCombat(isWin); },
-                delegate { });
+            GameManager.Instance.EndCombat(isWin);
         }
 
         public override void ForceEndCurrentAction()
