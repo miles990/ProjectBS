@@ -56,6 +56,10 @@ namespace ProjectBS
 
             if (PlayerManager.Instance.Player.Stamina < bossStageData.Stamina)
             {
+                MessageManager.ShowCommonMessage(
+                    ContextConverter.Instance.GetContext(1000033),
+                    "Warning",
+                    null);
                 return;
             }
 

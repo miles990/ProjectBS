@@ -396,11 +396,11 @@ namespace ProjectBS
             if(m_passedGameTime >= GameDataManager.GameProperties.AddStaminaPerSec)
             {
                 m_passedGameTime = 0;
-                m_player.Stamina += GameDataManager.GameProperties.AddStaminaPerTime;
-                if(m_player.Stamina > GameDataManager.GameProperties.MaxStamina)
+                if(m_player.Stamina >= GameDataManager.GameProperties.MaxStamina)
                 {
-                    m_player.Stamina = GameDataManager.GameProperties.MaxStamina;
+                    return;
                 }
+                m_player.Stamina += GameDataManager.GameProperties.AddStaminaPerTime;
                 SavePlayer();
             }
         }

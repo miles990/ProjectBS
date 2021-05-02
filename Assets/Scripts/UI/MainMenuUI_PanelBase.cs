@@ -26,7 +26,7 @@ namespace ProjectBS.UI
         protected abstract void OnShown();
         protected abstract void OnHidden();
 
-        private void Update()
+        protected virtual void Update()
         {
             m_root.alpha = Mathf.Lerp(m_root.alpha, m_targetValue, 0.1f);
             if (Mathf.Approximately(m_targetValue, 0f)

@@ -77,15 +77,27 @@ namespace ProjectBS.UI
             }
         }
 
-        public void Test_Mall()
+        public void Button_Ad_AddStamina()
         {
-            DisableAllPanel();
-            for (int i = 0; i < 11; i++)
-            {
-                PlayerManager.Instance.Player.Characters.Add(CharacterUtility.CreateNewCharacter());
-            }
-            GameManager.Instance.MessageManager.ShowCommonMessage("新增了11隻角色，快去確認看看!", "", null);
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                string.Format(ContextConverter.Instance.GetContext(1000032), GameDataManager.GameProperties.AddStaminaByAd),
+                "Event",
+                StartShowAd,
+                delegate { });
+        }
+
+        private void StartShowAd()
+        {
+            PlayerManager.Instance.Player.Stamina += GameDataManager.GameProperties.AddStaminaByAd;
             PlayerManager.Instance.SavePlayer();
+
+            KahaGameCore.Static.TimerManager.Schedule(0.1f, delegate
+            {
+                GameManager.Instance.MessageManager.ShowCommonMessage(
+                    "測試訊息：你吃了一個廣告",
+                    "Event",
+                    null);
+            });
         }
 
         private void DisableAllPanel()
