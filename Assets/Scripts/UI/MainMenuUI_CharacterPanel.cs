@@ -74,6 +74,9 @@ namespace ProjectBS.UI
 
         private void OnEnable()
         {
+            RefreshCharacterPageButtonState();
+            RefreshSkillPageButtonState();
+            RefreshEquipmentPageButtonState();
             m_characterInfoPanel.Hide();
         }
 

@@ -23,6 +23,12 @@ namespace ProjectBS.UI
             OnHidden();
         }
 
+        public void ForceHide()
+        {
+            m_root.alpha = 0f;
+            Hide();
+        }
+
         protected abstract void OnShown();
         protected abstract void OnHidden();
 

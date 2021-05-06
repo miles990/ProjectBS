@@ -210,7 +210,7 @@ namespace ProjectBS.UI
                 case State.None:
                     {
                         OnEditEnded?.Invoke();
-                        Hide();
+                        ForceHide();
                         break;
                     }
                 case State.ChangingEquipment:

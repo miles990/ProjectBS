@@ -29,7 +29,7 @@ namespace ProjectBS
         public static DropInfo Drop(string info)
         {
             DropInfo _dropInfo = new DropInfo();
-            int _randomDropCount = Random.Range(10, 21);
+            int _randomDropCount = Random.Range(GameDataManager.GameProperties.MinDropCount, GameDataManager.GameProperties.MaxDropCount + 1);
             if(!string.IsNullOrEmpty(info))
             {
                 string[] _dropPool = info.Split(';');
