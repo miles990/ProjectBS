@@ -95,6 +95,9 @@ namespace ProjectBS.Combat
                 List<EffectData> _effects = new List<EffectData>();
                 for(int _commandStringIndex = 0; _commandStringIndex < _commandStrings.Length; _commandStringIndex++)
                 {
+                    if (string.IsNullOrEmpty(_commandStrings[_commandStringIndex]))
+                        continue;
+
                     EffectData _effectData = DeserializeCommands(_commandStrings[_commandStringIndex]);
                     if(_effectData == null)
                     {
