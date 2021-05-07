@@ -36,6 +36,7 @@ namespace ProjectBS.UI
         {
             for(int i = 0; i < m_partyCharacterButtons.Length; i++)
             {
+                m_partyCharacterButtons[i].OnEdited += RefreshCharacterPageButtonState;
                 m_partyCharacterButtons[i].OnButtonPressed += OnCharacterButtonPressed;
             }
             m_characterInfoPanel.OnEditEnded += RefreshCharacterPageButtonState;
