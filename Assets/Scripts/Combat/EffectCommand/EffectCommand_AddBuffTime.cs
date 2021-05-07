@@ -55,11 +55,18 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
-                    m_targets[m_currentTargetIndex].AddBuffTime(
-                        m_currentBuff,
+                    GetPage<UI.CombatUIView>().ShowAddBuffTime
+                        (m_targets[m_currentTargetIndex],
+                        ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                         m_addTime,
-                        delegate { DisaplayRemoveBuff(GoNextTarget); },
-                        GoNextTarget);
+                        delegate
+                        {
+                            m_targets[m_currentTargetIndex].AddBuffTime(
+                                m_currentBuff,
+                                m_addTime,
+                                delegate { DisaplayRemoveBuff(GoNextTarget); },
+                                GoNextTarget);
+                        });
                 }
                 else
                 {
@@ -92,11 +99,19 @@ namespace ProjectBS.Combat.EffectCommand
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
             AddInfo();
-            m_targets[m_currentTargetIndex].AddBuffTime(
-                m_currentBuff,
+
+            GetPage<UI.CombatUIView>().ShowAddBuffTime
+                (m_targets[m_currentTargetIndex],
+                ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                 m_addTime,
-                delegate { DisaplayRemoveBuff(GoNextBuff); },
-                GoNextBuff);
+                delegate
+                {
+                    m_targets[m_currentTargetIndex].AddBuffTime(
+                        m_currentBuff,
+                        m_addTime,
+                        delegate { DisaplayRemoveBuff(GoNextBuff); },
+                        GoNextBuff);
+                });
         }
 
         private void AddInfo()

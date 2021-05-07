@@ -65,6 +65,13 @@ namespace ProjectBS.UI
         [Header("Set To Party Panel")]
         [SerializeField] private GameObject m_setToPartyPanelRoot = null;
         [SerializeField] private MainMenuUI_CharacterButton[] m_partyButtons = null;
+        [SerializeField] private GameObject m_changeCharacterPanelRoot = null;
+        [SerializeField] private MainMenuUI_CharacterButton m_changeCharacter_before = null;
+        [SerializeField] private MainMenuUI_CharacterButton m_changeCharacter_after = null;
+        [SerializeField] private TextMeshProUGUI m_changeCharacter_defferentValue_hp = null;
+        [SerializeField] private TextMeshProUGUI m_changeCharacter_defferentValue_attack = null;
+        [SerializeField] private TextMeshProUGUI m_changeCharacter_defferentValue_defense = null;
+        [SerializeField] private TextMeshProUGUI m_changeCharacter_defferentValue_speed = null;
         [Header("Change Skill Panel")]
         [SerializeField] private MainMenuUI_SkillButton m_skillButtonPrefab = null;
         [SerializeField] private GameObject m_compareSkillPanelRoot = null;
@@ -81,6 +88,8 @@ namespace ProjectBS.UI
         private Data.OwningEquipmentData m_currrentSelectEquipment = null;
         private Data.OwningSkillData m_currentSelectSkill = null;
         private int m_targetSkillSlotIndex = 0;
+
+        private Data.OwningCharacterData m_currentInPartyCharacter = null;
 
         private List<MainMenuUI_EquipmentButton> m_clonedEquipmentButtons = new List<MainMenuUI_EquipmentButton>();
         private List<MainMenuUI_SkillButton> m_clonedSkillButtons = new List<MainMenuUI_SkillButton>();
@@ -259,20 +268,33 @@ namespace ProjectBS.UI
 
         private void OnPartyCharacterButtonSelected(Data.OwningCharacterData characterData)
         {
+            m_currentInPartyCharacter = characterData;
+
+            m_changeCharacterPanelRoot.SetActive(true);
+            m_changeCharacter_before.SetUp(m_currentInPartyCharacter);
+            m_changeCharacter_after.SetUp(m_refCharacter);
+            m_changeCharacter_defferentValue_hp.text = GetChangeStatusString(m_currentInPartyCharacter.HP, m_refCharacter.HP);
+            m_changeCharacter_defferentValue_attack.text = GetChangeStatusString(m_currentInPartyCharacter.Attack, m_refCharacter.Attack);
+            m_changeCharacter_defferentValue_defense.text = GetChangeStatusString(m_currentInPartyCharacter.Defense, m_refCharacter.Defense);
+            m_changeCharacter_defferentValue_speed.text = GetChangeStatusString(m_currentInPartyCharacter.Speed, m_refCharacter.Speed);
+        }
+
+        public void Button_ConfirmChangeCharacter()
+        {
             for (int i = 0; i < m_partyButtons.Length; i++)
             {
                 m_partyButtons[i].OnButtonPressed -= OnPartyCharacterButtonSelected;
             }
             int _currentCharacterPartyIndex = PlayerManager.Instance.GetPartyIndex(m_refCharacter);
-            int _selectPartyIndex = PlayerManager.Instance.GetPartyIndex(characterData);
-            if(_currentCharacterPartyIndex == -1)
+            int _selectPartyIndex = PlayerManager.Instance.GetPartyIndex(m_currentInPartyCharacter);
+            if (_currentCharacterPartyIndex == -1)
             {
                 PlayerManager.Instance.SetToParty(_selectPartyIndex, m_refCharacter);
             }
             else
             {
                 PlayerManager.Instance.SetToParty(_selectPartyIndex, m_refCharacter);
-                PlayerManager.Instance.SetToParty(_currentCharacterPartyIndex, characterData);
+                PlayerManager.Instance.SetToParty(_currentCharacterPartyIndex, m_currentInPartyCharacter);
             }
             PlayerManager.Instance.SavePlayer();
             RefreshInfo();
@@ -286,6 +308,7 @@ namespace ProjectBS.UI
             m_compareSkillPanelRoot.SetActive(false);
             m_compareEquipmentPanelRoot.SetActive(false);
             m_setToPartyPanelRoot.SetActive(false);
+            m_changeCharacterPanelRoot.SetActive(false);
         }
 
         private void RefreshChangeEquipmentPanel(string equipmentType)

@@ -36,6 +36,8 @@ namespace ProjectBS
         private Combat.CombatManager m_localGameCombatManager = null;
         private Data.BossStageData m_currentPlayingStage = null;
 
+        private bool m_isSweaping = false;
+
         public void StartGame()
         {
             if(m_currentState != State.None)
@@ -68,10 +70,12 @@ namespace ProjectBS
 
             if (PlayerManager.Instance.Player.ClearedBossStage.Contains(bossStageData.ID))
             {
+                m_isSweaping = true;
                 EndCombat(true);
                 return;
             }
 
+            m_isSweaping = false;
             GetPage<UI.MainMenuUIView>().Show(this, false, null);
 
             m_localGameCombatManager = new Combat.CombatManager();
@@ -113,6 +117,8 @@ namespace ProjectBS
 
             if(isWin)
             {
+                if (m_isSweaping) UnityEngine.Time.timeScale = 4f;
+
                 DropUtility.DropInfo _drop = DropUtility.Drop(m_currentPlayingStage);
 
                 PlayerManager.Instance.Player.OwnExp += _drop.exp;
@@ -145,7 +151,8 @@ namespace ProjectBS
         private void EndLoaclCombat()
         {
             Combat.CombatUtility.EndCombatProcess(m_localGameCombatManager);
-            ShowMainMenu();
+            if (!m_isSweaping) ShowMainMenu();
+            if (m_isSweaping) UnityEngine.Time.timeScale = 1f;
         }
 
         private void StartInitData()

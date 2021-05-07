@@ -12,6 +12,7 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_partyHintRoot = null;
         [SerializeField] private UnityEngine.UI.RawImage m_iconImage = null;
         [SerializeField] private TextMeshProUGUI m_nameText = null;
+        [SerializeField] private TextMeshProUGUI m_levelText = null;
         [Header("Status")]
         [SerializeField] private TextMeshProUGUI m_hpValueText = null;
         [SerializeField] private TextMeshProUGUI m_attackValueText = null;
@@ -30,6 +31,7 @@ namespace ProjectBS.UI
         {
             m_nameText.text = m_refCharacter.Name;
             m_iconImage.texture = m_refCharacter.GetIcon();
+            m_levelText.text = "Lv." + m_refCharacter.Level;
 
             string _hpRankString = m_refCharacter.GetAbilityRankString(Keyword.HP);
             string _attackRankString = m_refCharacter.GetAbilityRankString(Keyword.Attack);
@@ -63,6 +65,16 @@ namespace ProjectBS.UI
                 PlayerManager.Instance.SavePlayer();
                 OnEdited?.Invoke();
             }
+        }
+
+        public void Button_LevelUp(int add)
+        {
+            for(int i = 0; i < add; i++)
+            {
+                CharacterUtility.TryAddOneLevel(m_refCharacter);
+            }
+            PlayerManager.Instance.SavePlayer();
+            OnEdited?.Invoke();
         }
 
         protected override void OnPressed()

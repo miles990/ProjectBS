@@ -366,6 +366,12 @@ namespace ProjectBS.UI
             TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
         }
 
+        public void ShowAddBuffTime(CombatUnit unit, string name, int addAmount, Action onInfoShown)
+        {
+            SetInfoText(unit, string.Format(ContextConverter.Instance.GetContext(1000034), name, addAmount > 0 ? "+" + addAmount : addAmount.ToString())); ;
+            TimerManager.Schedule(DISPLAY_INFO_TIME, onInfoShown);
+        }
+
         public void ShowTurnStart(int turnCount, Action onTurnStartAnimationEnded)
         {
             m_turnInfoText.text = string.Format(ContextConverter.Instance.GetContext(1000008), turnCount);

@@ -72,19 +72,6 @@ namespace ProjectBS.UI
             RefreshButtonState();
         }
 
-        private void OnEnable()
-        {
-            RefreshCharacterPageButtonState();
-            RefreshSkillPageButtonState();
-            RefreshEquipmentPageButtonState();
-            m_characterInfoPanel.Hide();
-        }
-
-        private void OnDisable()
-        {
-            m_characterInfoPanel.Hide();
-        }
-
         private void OnCharacterButtonPressed(OwningCharacterData obj)
         {
             m_characterInfoPanel.Enable(obj);
@@ -92,10 +79,15 @@ namespace ProjectBS.UI
 
         protected override void OnHidden()
         {
+            m_characterInfoPanel.Hide();
         }
 
         protected override void OnShown()
         {
+            RefreshCharacterPageButtonState();
+            RefreshSkillPageButtonState();
+            RefreshEquipmentPageButtonState();
+            m_characterInfoPanel.Hide();
             OnWindowChanged(0);
         }
 

@@ -63,7 +63,7 @@ namespace ProjectBS.UI
                                 float _persent = float.Parse(commandParas[0]);
                                 float _dmg = (float)targetToDmg[targets[i]] * _persent;
 
-                                if (_dmg < 1f) _dmg = 1f;
+                                if (_dmg < 0f) _dmg = 0f;
 
                                 targets[i].SimpleShowDamage(System.Convert.ToInt32(_dmg));
                                 targets[i].ShowGetHitShake();

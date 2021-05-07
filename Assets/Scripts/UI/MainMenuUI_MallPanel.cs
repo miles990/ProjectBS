@@ -26,6 +26,7 @@ namespace ProjectBS.UI
 
         protected override void OnShown()
         {
+            Button_CloseDrawResult();
         }
 
         public void Purchase(string id)
