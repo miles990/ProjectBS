@@ -743,11 +743,16 @@ namespace ProjectBS.UI
         {
             public CombatUnit taker = null;
             public string buffName = "Unknown Buff";
+            public int amount = 1;
         }
 
         public void DisplayGainBuff(DisplayBuffData data, Action onDisplayEnded)
         {
-            m_characterPanels[m_unitToIndex[data.taker]].ShowInfo("+" + data.buffName);
+            if(data.amount != 1)
+                m_characterPanels[m_unitToIndex[data.taker]].ShowInfo("+ " + data.buffName + " x" + data.amount);
+            else
+                m_characterPanels[m_unitToIndex[data.taker]].ShowInfo("+ " + data.buffName);
+
             TimerManager.Schedule(DISPLAY_INFO_TIME, onDisplayEnded);
         }
 

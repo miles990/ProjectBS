@@ -1,6 +1,5 @@
-﻿using System;
-using KahaGameCore.Static;
-using ProjectBS.Data;
+﻿using ProjectBS.Data;
+using System;
 using System.Collections.Generic;
 
 namespace ProjectBS.Combat.EffectCommand
@@ -8,7 +7,7 @@ namespace ProjectBS.Combat.EffectCommand
     public class EffectCommand_GainBuff : EffectCommandBase
     {
         private int m_buffID = 0;
-        private int m_buffTime = 0;
+        private string m_buffAmountCrossBuffTime = "";
         private List<CombatUnit> m_targets = null;
         private int m_currentActiveTargetIndex = -1;
 
@@ -17,7 +16,7 @@ namespace ProjectBS.Combat.EffectCommand
         public override void Process(string[] vars, Action onCompleted)
         {
             m_buffID = int.Parse(vars[1]);
-            m_buffTime = int.Parse(vars[2]);
+            m_buffAmountCrossBuffTime = vars[2];
             m_onCompleted = onCompleted;
 
             AddSkillOrEffectInfo();
@@ -70,15 +69,21 @@ namespace ProjectBS.Combat.EffectCommand
                     processData.referenceBuff == null ? "null" : processData.referenceBuff.GetBuffSourceData().ID.ToString()));
             }
 
+            string[] _addBuffInfos = m_buffAmountCrossBuffTime.Split('t');
+            int _addBuffAmount = int.Parse(_addBuffInfos[0]);
+            int _addBuffTime = int.Parse(_addBuffInfos[1]);
+
             if (_buff != null)
             {
-                if (_buffData.MaxAmount > _buff.amount)
+                _buff.amount += _addBuffAmount;
+                if(_buff.amount > _buff.GetBuffSourceData().MaxAmount)
                 {
-                    _buff.amount++;
+                    _buff.amount = _buff.GetBuffSourceData().MaxAmount;
                 }
-                if(_buff.remainingTime != -1 && _buff.remainingTime < m_buffTime)
+
+                if (_buff.remainingTime != -1 && _buff.remainingTime < _addBuffTime)
                 {
-                    _buff.remainingTime = m_buffTime;
+                    _buff.remainingTime = _addBuffTime;
                 }
             }
             else
@@ -88,9 +93,13 @@ namespace ProjectBS.Combat.EffectCommand
                     soruceID = m_buffID,
                     fromUnitUDID = processData.caster.UDID,
                     ownerUnitUDID = m_targets[m_currentActiveTargetIndex].UDID,
-                    remainingTime = m_buffTime,
-                    amount = 1
+                    remainingTime = _addBuffTime,
+                    amount = _addBuffAmount
                 };
+                if (_buff.amount > _buff.GetBuffSourceData().MaxAmount)
+                {
+                    _buff.amount = _buff.GetBuffSourceData().MaxAmount;
+                }
 
                 m_targets[m_currentActiveTargetIndex].AddBuff(_buff);
             }
@@ -98,7 +107,8 @@ namespace ProjectBS.Combat.EffectCommand
             GetPage<UI.CombatUIView>().DisplayGainBuff(new UI.CombatUIView.DisplayBuffData
             {
                 taker = m_targets[m_currentActiveTargetIndex],
-                buffName = ContextConverter.Instance.GetContext(_buffData.NameContextID)
+                buffName = ContextConverter.Instance.GetContext(_buffData.NameContextID),
+                amount = _addBuffAmount
             }, delegate { DoActivedCommand(_buffData, _buff); });
         }
 
