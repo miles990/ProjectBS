@@ -7,6 +7,8 @@ namespace ProjectBS.UI
 {
     public class MainMenuUI_CharacterInfoPanel : MainMenuUI_PanelBase
     {
+        private const string PLAYER_PREFS_KEY_Tutorial = "MainMenuUI_CharacterInfoPanel_TutorialIndex";
+
         private enum State
         {
             None,
@@ -79,6 +81,8 @@ namespace ProjectBS.UI
         [SerializeField] private GameObject m_changeSkill_before_noContentRoot = null;
         [SerializeField] private MainMenuUI_SkillButton m_changeSkill_afterSkill = null;
         [SerializeField] private GameObject m_changeSkill_after_noContentRoot = null;
+        [Header("Tutorial")]
+        [SerializeField] private GameObject[] m_tutorialObjRoots = null;
 
         private Data.OwningCharacterData m_refCharacter = null;
 
@@ -112,6 +116,27 @@ namespace ProjectBS.UI
             DisableAllSubPanel();
             RefreshInfo();
             Show();
+            ShowTutorialObj();
+        }
+
+        public void Button_GoNextTutorialObj()
+        {
+            int _cur = PlayerPrefs.GetInt(PLAYER_PREFS_KEY_Tutorial, 0);
+            _cur++;
+            PlayerPrefs.SetInt(PLAYER_PREFS_KEY_Tutorial, _cur);
+            ShowTutorialObj();
+        }
+
+        private void ShowTutorialObj()
+        {
+            int _cur = PlayerPrefs.GetInt(PLAYER_PREFS_KEY_Tutorial, 0);
+
+            for (int i = 0; i < m_tutorialObjRoots.Length; i++)
+            {
+                m_tutorialObjRoots[i].SetActive(i == _cur);
+            }
+
+            PlayerPrefs.SetInt(PLAYER_PREFS_KEY_Tutorial, _cur);
         }
 
         private void StartChangeEquipment(MainMenuUI_CharacterInfoPanel_EquipmentButton button)

@@ -5,6 +5,8 @@ namespace ProjectBS
 {
     public class GameManager : KahaGameCore.Interface.Manager
     {
+        private const string PLAYER_PREFS_KEY_Tutorial = "GameManager_Tutorial";
+
         public static GameManager Instance 
         {
             get

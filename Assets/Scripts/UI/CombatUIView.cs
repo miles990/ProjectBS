@@ -10,6 +10,8 @@ namespace ProjectBS.UI
 {
     public class CombatUIView : UIView
     {
+        private const string PLAYER_PREFS_KEY_Tutorial = "CombatUIView_TutorialIndex";
+
         public const float DISPLAY_INFO_TIME = 1f;
         public const int MAX_INFO_COUNT = 50;
 
@@ -45,6 +47,8 @@ namespace ProjectBS.UI
         [SerializeField] private float m_moveTime = 0.1f;
         [Header("Network")]
         [SerializeField] private PhotonView m_photonView = null;
+        [Header("Tutorial")]
+        [SerializeField] private GameObject[] m_tutorialObjRoots = null;
 
         private List<Data.SkillData> m_currentShowingSkills = null;
         private List<CombatUI_InfoText> m_cloneInfoTexts = new List<CombatUI_InfoText>();
@@ -142,6 +146,26 @@ namespace ProjectBS.UI
 
             Time.timeScale = show ? 2f : 1f;
             onCompleted?.Invoke();
+        }
+
+        public void Button_GoNextTutorialObj()
+        {
+            int _cur = PlayerPrefs.GetInt(PLAYER_PREFS_KEY_Tutorial, 0);
+            _cur++;
+            PlayerPrefs.SetInt(PLAYER_PREFS_KEY_Tutorial, _cur);
+            ShowTutorialObj();
+        }
+
+        private void ShowTutorialObj()
+        {
+            int _cur = PlayerPrefs.GetInt(PLAYER_PREFS_KEY_Tutorial, 0);
+
+            for (int i = 0; i < m_tutorialObjRoots.Length; i++)
+            {
+                m_tutorialObjRoots[i].SetActive(i == _cur);
+            }
+
+            PlayerPrefs.SetInt(PLAYER_PREFS_KEY_Tutorial, _cur);
         }
 
         public void Button_ForceEndCombat(bool win)
@@ -399,6 +423,7 @@ namespace ProjectBS.UI
 
             SetInfoText(actor, ContextConverter.Instance.GetContext(1000011));
             TimerManager.Schedule(1f, onActionAnimationEnded);
+            TimerManager.Schedule(1f, ShowTutorialObj);
         }
 
         public void ShowActorActionEnd(CombatUnit actor, Action onActionAnimationEnded)

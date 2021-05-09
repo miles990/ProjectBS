@@ -23,6 +23,8 @@ namespace ProjectBS.UI
         [SerializeField] private TextMeshProUGUI m_staminaText = null;
         [SerializeField] private Image m_staminaImage = null;
         [SerializeField] private TextMeshProUGUI m_expAmountText = null;
+        [Header("Down")]
+        [SerializeField] private GameObject[] m_disableIfFirstPlay = null;
         [Header("Panels")]
         [SerializeField] private int m_defaultIndex = 0;
         [SerializeField] private PanelData[] m_panelDatas = null;
@@ -51,6 +53,11 @@ namespace ProjectBS.UI
             {
                 Button_SwitchTo(m_panelDatas[m_defaultIndex].downButtonAnimator);
                 m_preloadAnimationObject.SetActive(false);
+
+                for(int i = 0; i < m_disableIfFirstPlay.Length; i++)
+                {
+                    m_disableIfFirstPlay[i].SetActive(PlayerManager.Instance.Player.ClearedBossStage.Count > 0);
+                }
             }
             onCompleted?.Invoke();
         }
@@ -72,7 +79,8 @@ namespace ProjectBS.UI
                 }
                 else
                 {
-                    m_panelDatas[i].downButtonAnimator.Play("Enable");
+                    if(m_panelDatas[i].downButtonAnimator.gameObject.activeSelf)
+                        m_panelDatas[i].downButtonAnimator.Play("Enable");
                 }
             }
         }
