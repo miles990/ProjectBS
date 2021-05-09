@@ -63,7 +63,7 @@ namespace ProjectBS
                 MessageManager.ShowCommonMessage(
                     ContextConverter.Instance.GetContext(1000033),
                     "Warning",
-                    null);
+                    ShowAddStamina);
                 return;
             }
 
@@ -102,6 +102,11 @@ namespace ProjectBS
             }
 
             m_localGameCombatManager.StartCombat(_playerParty, _bossParty);
+        }
+
+        private void ShowAddStamina()
+        {
+            TimerManager.Schedule(UnityEngine.Time.fixedDeltaTime, GetPage<UI.MainMenuUIView>().Button_Ad_AddStamina);
         }
 
         public void StartOnlineCombat()

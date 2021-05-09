@@ -37,6 +37,8 @@ namespace KahaGameCore.Common
             };
 
             _messageObject.onConfirmed += CloseWindow;
+            if(onCanceled != null) _messageObject.onCanceled += CloseWindow;
+
             m_messageQueue.Enqueue(_messageObject);
 
             if(!m_window.IsShowing)

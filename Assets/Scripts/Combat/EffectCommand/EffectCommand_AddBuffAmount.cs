@@ -61,9 +61,9 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
-                    AddInfo();
                     if (m_addAmountCount != -99)
                     {
+                        AddInfo();
                         GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
                             ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                             m_addAmountCount, 
@@ -145,9 +145,10 @@ namespace ProjectBS.Combat.EffectCommand
                 return;
             }
             m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex);
-            AddInfo();
+
             if(m_addAmountCount != -99)
             {
+                AddInfo();
                 GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
                     ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
                     m_addAmountCount, delegate

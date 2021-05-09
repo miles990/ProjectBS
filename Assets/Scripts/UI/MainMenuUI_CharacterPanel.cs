@@ -42,6 +42,7 @@ namespace ProjectBS.UI
             m_characterInfoPanel.OnEditEnded += RefreshCharacterPageButtonState;
 
             m_panelManger.OnWindowChanged += OnWindowChanged;
+            OnWindowChanged(0);
         }
 
         private void OnWindowChanged(int windowIndex)
@@ -89,7 +90,6 @@ namespace ProjectBS.UI
             RefreshSkillPageButtonState();
             RefreshEquipmentPageButtonState();
             m_characterInfoPanel.Hide();
-            OnWindowChanged(0);
         }
 
         private void RefreshButtonState()

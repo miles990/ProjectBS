@@ -66,9 +66,9 @@ namespace ProjectBS.Combat.EffectCommand
 
             if (m_targetBuff.GetBuffSourceData().Tag == m_tag)
             {
-                AddInfo();
                 if (m_addAmountCount != -99)
                 {
+                    AddInfo();
                     GetPage<UI.CombatUIView>().ShowAddBuffAmount(m_targets[m_currentTargetIndex],
                         ContextConverter.Instance.GetContext(m_targets[m_currentTargetIndex].GetBuffByIndex(m_currentBuffIndex).GetBuffSourceData().NameContextID),
                         m_addAmountCount, delegate

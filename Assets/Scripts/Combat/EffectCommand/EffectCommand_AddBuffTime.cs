@@ -55,6 +55,7 @@ namespace ProjectBS.Combat.EffectCommand
                 m_currentBuff = m_targets[m_currentTargetIndex].GetBuffByBuffID(m_buffID);
                 if (m_currentBuff != null)
                 {
+                    AddInfo();
                     GetPage<UI.CombatUIView>().ShowAddBuffTime
                         (m_targets[m_currentTargetIndex],
                         ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
@@ -124,8 +125,8 @@ namespace ProjectBS.Combat.EffectCommand
                       (
                           ContextConverter.Instance.GetContext(500007),
                           m_targets[m_currentTargetIndex].name,
-                          m_addTime.ToString(),
-                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID)
+                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                          m_addTime.ToString()
                       ), null
                     );
             }
@@ -137,8 +138,8 @@ namespace ProjectBS.Combat.EffectCommand
                       (
                           ContextConverter.Instance.GetContext(500008),
                           m_targets[m_currentTargetIndex].name,
-                          (m_addTime * -1).ToString(),
-                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID)
+                          ContextConverter.Instance.GetContext(m_currentBuff.GetBuffSourceData().NameContextID),
+                          (m_addTime * -1).ToString()
                       ), null
                     );
             }

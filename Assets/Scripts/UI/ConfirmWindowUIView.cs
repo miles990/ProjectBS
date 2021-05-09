@@ -14,6 +14,8 @@ namespace ProjectBS.UI
         private Action m_onConfirmed = null;
         private Action m_onCanceled = null;
 
+        private bool m_defaultCancel = false;
+
         public override bool IsShowing 
         {
             get
@@ -22,18 +24,13 @@ namespace ProjectBS.UI
             }
         }
 
-        private void Start()
-        {
-            m_modernUI.onConfirm.AddListener(OnConfirmed);
-            m_modernUI.onCancel.AddListener(OnCanceled);
-        }
-
         public override void SetMessage(string content, string title, Action onConfirmed)
         {
             m_modernUI.descriptionText = content;
             m_modernUI.titleText = title;
             m_onConfirmed = onConfirmed;
             m_cancelButtonObj.SetActive(false);
+            m_defaultCancel = false;
         }
 
         public void SetCancelableMessage(string content, string title, Action onConfirmed, Action onCanceled)
@@ -43,16 +40,25 @@ namespace ProjectBS.UI
             m_onConfirmed = onConfirmed;
             m_onCanceled = onCanceled;
             m_cancelButtonObj.SetActive(true);
+            m_defaultCancel = true;
         }
 
-        private void OnConfirmed()
+        public void Confirm()
         {
             m_onConfirmed?.Invoke();
         }
 
-        private void OnCanceled()
+        public void Cancel()
         {
             m_onCanceled?.Invoke();
+        }
+
+        public void ClickBackground()
+        {
+            if (m_defaultCancel)
+                Cancel();
+            else
+                Confirm();
         }
 
         protected override void OnStartToShow(bool show, Action onShown)

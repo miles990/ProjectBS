@@ -2691,19 +2691,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 101301777}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 888313055}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: CloseWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &101301777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2769,7 +2757,19 @@ MonoBehaviour:
   buttonText: CANCEL
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1225262967}
+        m_TargetAssemblyTypeName: ProjectBS.UI.ConfirmWindowUIView, Assembly-CSharp
+        m_MethodName: Cancel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hoverEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -5471,6 +5471,7 @@ GameObject:
   - component: {fileID: 231989701}
   - component: {fileID: 231989703}
   - component: {fileID: 231989702}
+  - component: {fileID: 231989704}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -5596,6 +5597,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231989700}
   m_CullTransparentMesh: 0
+--- !u!114 &231989704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231989700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000035
 --- !u!1 &234008277
 GameObject:
   m_ObjectHideFlags: 0
@@ -14030,9 +14044,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 888313055}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: CloseWindow
+      - m_Target: {fileID: 1225262967}
+        m_TargetAssemblyTypeName: ProjectBS.UI.ConfirmWindowUIView, Assembly-CSharp
+        m_MethodName: ClickBackground
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18768,6 +18782,9 @@ MonoBehaviour:
   - windowName: Characters
     windowObject: {fileID: 324659089}
     buttonObject: {fileID: 773059980}
+  - windowName: Equipments
+    windowObject: {fileID: 184244382}
+    buttonObject: {fileID: 1087594006}
   - windowName: Skills
     windowObject: {fileID: 21227027}
     buttonObject: {fileID: 119572426}
@@ -21865,6 +21882,7 @@ GameObject:
   - component: {fileID: 797931645}
   - component: {fileID: 797931647}
   - component: {fileID: 797931646}
+  - component: {fileID: 797931648}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -21990,6 +22008,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797931644}
   m_CullTransparentMesh: 0
+--- !u!114 &797931648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797931644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000038
 --- !u!1 &802235096
 GameObject:
   m_ObjectHideFlags: 0
@@ -30895,6 +30926,7 @@ GameObject:
   - component: {fileID: 1147384044}
   - component: {fileID: 1147384046}
   - component: {fileID: 1147384045}
+  - component: {fileID: 1147384047}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -31020,6 +31052,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147384043}
   m_CullTransparentMesh: 0
+--- !u!114 &1147384047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147384043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000037
 --- !u!1 &1147485354
 GameObject:
   m_ObjectHideFlags: 0
@@ -31543,6 +31588,7 @@ GameObject:
   - component: {fileID: 1164585857}
   - component: {fileID: 1164585859}
   - component: {fileID: 1164585858}
+  - component: {fileID: 1164585860}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -31668,6 +31714,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164585856}
   m_CullTransparentMesh: 0
+--- !u!114 &1164585860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164585856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000041
 --- !u!114 &1170755992 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9182036251662747783, guid: 2817bcfed733bb74a9574b6390833762,
@@ -38645,6 +38704,7 @@ GameObject:
   - component: {fileID: 1362921016}
   - component: {fileID: 1362921018}
   - component: {fileID: 1362921017}
+  - component: {fileID: 1362921019}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -38770,6 +38830,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362921015}
   m_CullTransparentMesh: 0
+--- !u!114 &1362921019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362921015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000039
 --- !u!1 &1367830361
 GameObject:
   m_ObjectHideFlags: 0
@@ -39360,6 +39433,7 @@ GameObject:
   - component: {fileID: 1388454792}
   - component: {fileID: 1388454794}
   - component: {fileID: 1388454793}
+  - component: {fileID: 1388454795}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -39485,6 +39559,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388454791}
   m_CullTransparentMesh: 0
+--- !u!114 &1388454795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388454791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000036
 --- !u!1 &1389323505
 GameObject:
   m_ObjectHideFlags: 0
@@ -46061,6 +46148,7 @@ GameObject:
   - component: {fileID: 1595590866}
   - component: {fileID: 1595590868}
   - component: {fileID: 1595590867}
+  - component: {fileID: 1595590869}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -46186,6 +46274,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595590865}
   m_CullTransparentMesh: 0
+--- !u!114 &1595590869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595590865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e159d63efada4a808b32fc713a58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_id: 1000040
 --- !u!1 &1598324366
 GameObject:
   m_ObjectHideFlags: 0
@@ -53799,7 +53900,19 @@ MonoBehaviour:
   buttonText: OK
   clickEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1225262967}
+        m_TargetAssemblyTypeName: ProjectBS.UI.ConfirmWindowUIView, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hoverEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -53873,19 +53986,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1881086618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 888313055}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: CloseWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1881561458
 GameObject:
   m_ObjectHideFlags: 0
