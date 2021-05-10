@@ -155,7 +155,7 @@ namespace ProjectBS.Combat.EffectCommand
                                 target = m_targets[m_currentTargetIndex],
                                 processData = processData,
                                 formula = m_valueString,
-                                useRawValue = true
+                                useRawValue = false
                             });
                         int _add = Convert.ToInt32(_value);
 
