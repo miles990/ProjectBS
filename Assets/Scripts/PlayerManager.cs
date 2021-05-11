@@ -306,13 +306,9 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(1).NameContextID),
-                AttackAbilityID = 15,
                 AppearanceDataID = 1,
-                DefenseAbilityID = 24,
-                HPAbilityID = 4,
                 Exp = 0,
                 Level = 0,
-                SpeedAbilityID = 36,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
@@ -326,13 +322,9 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(2).NameContextID),
-                AttackAbilityID = 16,
                 AppearanceDataID = 2,
-                DefenseAbilityID = 24,
-                HPAbilityID = 4,
                 Exp = 0,
                 Level = 0,
-                SpeedAbilityID = 35,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
@@ -346,13 +338,9 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(3).NameContextID),
-                AttackAbilityID = 14,
                 AppearanceDataID = 3,
-                DefenseAbilityID = 26,
-                HPAbilityID = 5,
                 Exp = 0,
                 Level = 0,
-                SpeedAbilityID = 34,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });
@@ -366,13 +354,9 @@ namespace ProjectBS
             _newPlayer.Characters.Add(new OwningCharacterData
             {
                 Name = ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(4).NameContextID),
-                AttackAbilityID = 14,
                 AppearanceDataID = 4,
-                DefenseAbilityID = 24,
-                HPAbilityID = 6,
                 Exp = 0,
                 Level = 0,
-                SpeedAbilityID = 35,
                 SP = 100,
                 UDID = Guid.NewGuid().ToString()
             });

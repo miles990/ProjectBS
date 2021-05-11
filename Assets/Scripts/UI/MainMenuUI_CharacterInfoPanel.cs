@@ -506,10 +506,10 @@ namespace ProjectBS.UI
             m_speedText.text = m_refCharacter.GetTotal(Keyword.Speed).ToString();
 
             // const value from designer
-            int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.HPAbilityID).MaxValue * 100;
-            int _maxAttackValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.AttackAbilityID).MaxValue * 100;
-            int _maxDefenseValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.DefenseAbilityID).MaxValue * 100;
-            int _maxSpeedValue = GameDataManager.GetGameData<Data.AbilityData>(m_refCharacter.SpeedAbilityID).MaxValue * 100;
+            int _maxHPValue = 50000;
+            int _maxAttackValue = 10000;
+            int _maxDefenseValue = 10000;
+            int _maxSpeedValue = 10000;
 
             m_hpProgressBarImage.fillAmount = (float)m_refCharacter.HP / (float)_maxHPValue;
             m_hpProgressText.text = m_refCharacter.HP + " / " + _maxHPValue;

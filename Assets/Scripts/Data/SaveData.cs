@@ -32,14 +32,10 @@ namespace ProjectBS.Data
         public int Level = 1;
         public int Exp = 0;
         public int HP = 0;
-        public int HPAbilityID = 0;
         public int SP = 100;
         public int Attack = 0;
-        public int AttackAbilityID = 0;
         public int Defense = 0;
-        public int DefenseAbilityID = 0;
         public int Speed = 0;
-        public int SpeedAbilityID = 0;
         public string Equipment_UDID_Head = "";
         public string Equipment_UDID_Body = "";
         public string Equipment_UDID_Hand = "";
@@ -75,29 +71,27 @@ namespace ProjectBS.Data
 
         public string GetAbilityRankString(string statusType)
         {
+            List<AbilityData> _pool = CharacterUtility.GetAbilityPool(statusType);
+            int _value = 0;
             switch (statusType)
             {
-                case Keyword.Attack:
-                    {
-                        return GameDataManager.GetGameData<AbilityData>(AttackAbilityID).RankString;
-                    }
-                case Keyword.Defense:
-                    {
-                        return GameDataManager.GetGameData<AbilityData>(DefenseAbilityID).RankString;
-                    }
-                case Keyword.Speed:
-                    {
-                        return GameDataManager.GetGameData<AbilityData>(SpeedAbilityID).RankString;
-
-                    }
-                case Keyword.HP:
-                    {
-                        return GameDataManager.GetGameData<AbilityData>(HPAbilityID).RankString;
-
-                    }
+                case Keyword.Attack: { _value = Attack; break; }
+                case Keyword.Defense: { _value = Defense; break; }
+                case Keyword.Speed: { _value = Speed; break; }
+                case Keyword.HP: { _value = HP; break; }
                 default:
                     throw new System.Exception("[OwningCharacterData][GetAbilityRankString] Invaild statusType=" + statusType);
             }
+
+            for (int i = 0; i < _pool.Count; i++)
+            {
+                if (_value >= _pool[i].MinValue * Level)
+                {
+                    return _pool[i].RankString;
+                }
+            }
+
+            return _pool[_pool.Count - 1].RankString;
         }
 
         public int GetTotal(string statusType)

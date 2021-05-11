@@ -40,21 +40,17 @@ namespace ProjectBS
             {
                 Name = ContextConverter.Instance.GetContext(_skin.NameContextID),
                 Attack = Random.Range(_attack.MinValue, _attack.MaxValue),
-                AttackAbilityID = _attack.ID,
                 AppearanceDataID = _skin.ID,
                 Defense = Random.Range(_defense.MinValue, _defense.MaxValue),
-                DefenseAbilityID = _defense.ID,
                 Equipment_UDID_Body = null,
                 Equipment_UDID_Foot = null,
                 Equipment_UDID_Hand = null,
                 Equipment_UDID_Head = null,
                 Exp = 0,
                 HP = Random.Range(_hp.MinValue, _hp.MaxValue),
-                HPAbilityID = _hp.ID,
                 Level = 1,
                 SP = 100,
                 Speed = Random.Range(_speed.MinValue, _speed.MaxValue),
-                SpeedAbilityID = _speed.ID,
                 UDID = System.Guid.NewGuid().ToString()
             };
 
@@ -76,6 +72,34 @@ namespace ProjectBS
                 return _random;
             else
                 return GetRandomSkin();
+        }
+
+        public static List<AbilityData> GetAbilityPool(string statusType)
+        {
+            InitAbilityData();
+
+            switch (statusType)
+            {
+                case Keyword.Attack:
+                    {
+                        return new List<AbilityData>(m_attackAbiPool);
+                    }
+                case Keyword.Defense:
+                    {
+                        return new List<AbilityData>(m_defenseAbiPool);
+                    }
+                case Keyword.Speed:
+                    {
+                        return new List<AbilityData>(m_speedAbiPool);
+
+                    }
+                case Keyword.HP:
+                    {
+                        return new List<AbilityData>(m_hpAbiPool);
+                    }
+                default:
+                    throw new System.Exception("[CharacterUtility][GetAbilityPool] Invaild statusType=" + statusType);
+            }
         }
 
         private static void InitAbilityData()
@@ -223,10 +247,10 @@ namespace ProjectBS
 
             character.Level++;
 
-            AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);
-            AbilityData _attack = m_attackAbiPool.Find(x => x.ID == character.AttackAbilityID);
-            AbilityData _defense = m_defenseAbiPool.Find(x => x.ID == character.DefenseAbilityID);
-            AbilityData _speed = m_speedAbiPool.Find(x => x.ID == character.SpeedAbilityID);
+            AbilityData _hp = RollFromList(m_hpTotalWeight, m_hpAbiPool);
+            AbilityData _attack = RollFromList(m_attackTotalWeight, m_attackAbiPool);
+            AbilityData _defense = RollFromList(m_defenseTotalWeight, m_defenseAbiPool);
+            AbilityData _speed = RollFromList(m_speedTotalWeight, m_speedAbiPool);
 
             character.HP += Random.Range(_hp.MinValue, _hp.MaxValue);
             character.Attack += Random.Range(_attack.MinValue, _attack.MaxValue);

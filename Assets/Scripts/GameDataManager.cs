@@ -99,7 +99,7 @@ namespace ProjectBS
         private static IEnumerator IELoadData<T>(string name) where T : IGameData
         {
             UnityEngine.Debug.Log("Start Load Data:" + typeof(T).ToString());
-            string _url = string.Format(DATA_URL, "dev", name);
+            string _url = string.Format(DATA_URL, "testnewabi", name);
             UnityWebRequest _request = UnityWebRequest.Get(_url);
             
             yield return _request.SendWebRequest();
@@ -128,7 +128,7 @@ namespace ProjectBS
 
         private static IEnumerator IELoadGameProperties(string name)
         {
-            UnityWebRequest _request = UnityWebRequest.Get(string.Format(DATA_URL, "dev", name));
+            UnityWebRequest _request = UnityWebRequest.Get(string.Format(DATA_URL, "testnewabi", name));
             yield return _request.SendWebRequest();
             GameProperties = JsonReader.Deserialize<GameProperties>(_request.downloadHandler.text);
         }
