@@ -25,7 +25,6 @@ namespace ProjectBS.UI
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_footEquipment = null;
         [SerializeField] private MainMenuUI_CharacterInfoPanel_EquipmentButton m_handEquipment = null;
         [Header("Status")]
-        [SerializeField] private GameObject m_partyHint = null;
         [SerializeField] private TextMeshProUGUI m_partyHintText = null;
         [SerializeField] private TextMeshProUGUI m_levelText = null;
         [SerializeField] private TMP_InputField m_nameText = null;

@@ -7,11 +7,11 @@ namespace ProjectBS
     {
         private const string PLAYER_PREFS_KEY_Tutorial = "GameManager_Tutorial";
 
-        public static GameManager Instance 
+        public static GameManager Instance
         {
             get
-            { 
-                if(m_instance == null)
+            {
+                if (m_instance == null)
                 {
                     m_instance = new GameManager();
                 }
@@ -42,7 +42,7 @@ namespace ProjectBS
 
         public void StartGame()
         {
-            if(m_currentState != State.None)
+            if (m_currentState != State.None)
             {
                 throw new System.Exception("[GameManager][StartGame] Game is already started");
             }
@@ -122,7 +122,7 @@ namespace ProjectBS
 
             m_currentState = State.MainMenu;
 
-            if(isWin)
+            if (isWin)
             {
                 if (m_isSweaping) UnityEngine.Time.timeScale = 4f;
 
@@ -130,7 +130,7 @@ namespace ProjectBS
 
                 PlayerManager.Instance.Player.OwnExp += _drop.exp;
 
-                if(!PlayerManager.Instance.Player.ClearedBossStage.Contains(m_currentPlayingStage.ID))
+                if (!PlayerManager.Instance.Player.ClearedBossStage.Contains(m_currentPlayingStage.ID))
                 {
                     PlayerManager.Instance.Player.ClearedBossStage.Add(m_currentPlayingStage.ID);
                 }
@@ -165,18 +165,31 @@ namespace ProjectBS
         private void StartInitData()
         {
             m_currentState = State.InitData;
+            InitGameSetting();
             GameDataManager.StartLoad(OnAllDataLoaded);
         }
 
         private void OnAllDataLoaded()
         {
-            UnityEngine.GameObject _gameTimeCounter = new UnityEngine.GameObject("[GameTimeCounter]");
-            _gameTimeCounter.AddComponent<GameTimeCounter>();
-
+            CreateGameTimeCounter();
             PlayerManager.Instance.Init();
             IAP.ProductManager.Instance.Initialize();
-
             ShowMainMenu();
+        }
+
+        private void CreateGameTimeCounter()
+        {
+            UnityEngine.GameObject _gameTimeCounter = new UnityEngine.GameObject("[GameTimeCounter]");
+            _gameTimeCounter.AddComponent<GameTimeCounter>();
+        }
+
+        private void InitGameSetting()
+        {
+            string _setting = UnityEngine.Resources.Load<UnityEngine.TextAsset>("GameSetting").text;
+            string[] _settingPart = _setting.Split('|');
+
+            GameSetting.dataSource = _settingPart[0];
+            GameSetting.version = _settingPart[1];
         }
 
         private void ShowMainMenu()

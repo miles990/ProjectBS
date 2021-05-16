@@ -1,0 +1,16 @@
+{
+   "MaxDropCount" : 5,
+   "MinDropCount" : 1,
+   "DropNormalSkillChance" : 90,
+   "PressDownShowInfoTime" : 0.25,
+   "MaxPassedTimeCount" : 16400,
+   "MaxStamina": 300,
+   "AddStaminaPerSec" : 30,
+   "AddStaminaPerTime" : 1,
+   "DrawCharacterCost" : 500000,
+   "AddCharacterCountPerDraw" : 11,
+   "UpdateMainMenuHintTime" : 6,
+   "MainMenuHintMinID" : 2000001,
+   "MainMenuHintMaxID" : 2000016,
+   "AddStaminaByAd" : 80
+}

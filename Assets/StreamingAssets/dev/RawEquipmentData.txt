@@ -1,0 +1,70 @@
+[
+  {
+    "ID": 0,
+    "NameContextID": 0,
+    "DescriptionContextID": 0
+  },
+  {
+    "ID": 1,
+    "NameContextID": 200001,
+    "AbilityPool": "Attack:1~50;\nDefense:1~50;\nSpeed:1~50;\nHP:10~500;",
+    "EquipmentType": "Hand",
+    "DescriptionContextID": 0,
+    "StoryContextID": 200002
+  },
+  {
+    "ID": 2,
+    "NameContextID": 200003,
+    "AbilityPool": "Attack:1~50;\nDefense:1~50;\nSpeed:1~50;\nHP:10~500;",
+    "EquipmentType": "Head",
+    "DescriptionContextID": 0,
+    "StoryContextID": 200004
+  },
+  {
+    "ID": 3,
+    "NameContextID": 200005,
+    "AbilityPool": "Attack:1~50;\nDefense:1~50;\nSpeed:1~50;\nHP:10~500;",
+    "EquipmentType": "Body",
+    "DescriptionContextID": 0,
+    "StoryContextID": 200006
+  },
+  {
+    "ID": 4,
+    "NameContextID": 200007,
+    "AbilityPool": "Attack:1~50;\nDefense:1~50;\nSpeed:1~50;\nHP:10~500;",
+    "EquipmentType": "Foot",
+    "DescriptionContextID": 0,
+    "StoryContextID": 200008
+  },
+  {
+    "ID": 5,
+    "NameContextID": 200009,
+    "AbilityPool": "Attack:2~10;",
+    "BuffIDs": 200001,
+    "EquipmentType": "Hand",
+    "DescriptionContextID": 200010,
+    "StoryContextID": 200011
+  },
+  {
+    "ID": 6,
+    "NameContextID": 200012,
+    "AbilityPool": "Speed:2~10;",
+    "BuffIDs": 200002,
+    "EquipmentType": "Foot",
+    "DescriptionContextID": 200013,
+    "StoryContextID": 200014
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

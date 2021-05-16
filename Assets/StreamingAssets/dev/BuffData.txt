@@ -1,0 +1,243 @@
+[
+  {
+    "ID": 0,
+    "NameContextID": 0,
+    "DescriptionContextID": 0,
+    "MaxAmount": 0
+  },
+  {
+    "ID": 1,
+    "NameContextID": 5,
+    "DescriptionContextID": 6,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.3); \n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 2,
+    "NameContextID": 11,
+    "DescriptionContextID": 12,
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}",
+    "Tag": 400003,
+    "MaxAmount": 1
+  },
+  {
+    "ID": 3,
+    "NameContextID": 13,
+    "DescriptionContextID": 14,
+    "Command": "OnActionStarted_Self\n{\n     AddStatus(Self, HP, -Random(0, Self.MaxHP * 0.04));\n}",
+    "Tag": 400003,
+    "MaxAmount": 10
+  },
+  {
+    "ID": 4,
+    "NameContextID": 15,
+    "DescriptionContextID": 16,
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnStartToTakeDamage_Self\n{\n     AddDamage(25%);\n}\n\nOnDamageTaken_Self\n{\n     AddBuffAmount(Self, 4, -99);\n}",
+    "Tag": 400003,
+    "MaxAmount": 1
+  },
+  {
+    "ID": 5,
+    "NameContextID": 17,
+    "DescriptionContextID": 18,
+    "Command": "OnActionStarted_Self\n{\n     BeginIf(Self.HP >= Self.MaxHP * 0.02 + 1);\n     AddStatus(Self, HP, -Self.MaxHP * 0.02);\n     EndIf();\n}",
+    "Tag": 400003,
+    "MaxAmount": 10
+  },
+  {
+    "ID": 6,
+    "NameContextID": 19,
+    "DescriptionContextID": 20,
+    "Command": "OnActived\n{\n    SetForceEndAction();\n    AddStatus(Self, Defense, Self.Defense * 0.3); \n}",
+    "Tag": 400003,
+    "MaxAmount": 1
+  },
+  {
+    "ID": 7,
+    "NameContextID": 21,
+    "DescriptionContextID": 22,
+    "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.3); \n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 8,
+    "NameContextID": 23,
+    "DescriptionContextID": 24,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, -Self.Defense * 0.5); \n}",
+    "Tag": 400003,
+    "MaxAmount": 1
+  },
+  {
+    "ID": 9,
+    "NameContextID": 25,
+    "DescriptionContextID": 26,
+    "Command": "OnDeactived\n{\n     Destroy(Self);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10,
+    "NameContextID": 27,
+    "DescriptionContextID": 28,
+    "Command": "OnActived\n{\n     AddStatus(Self, Attack, -Self.Attack * 0.5); \n}",
+    "Tag": 400003,
+    "MaxAmount": 1
+  },
+  {},
+  {
+    "ID": 101,
+    "NameContextID": 103,
+    "DescriptionContextID": 104,
+    "Command": "OnActived\n{\n     BeginIf(Buff(Owner, 101, Amount) >= 10);\n         AddBuffAmount(Self, 101, -99);\n         ReplaceSkill(1, 102);\n    EndIf();\n}",
+    "MaxAmount": 10
+  },
+  {
+    "ID": 102,
+    "NameContextID": 115,
+    "DescriptionContextID": 116,
+    "Command": "OnTurnStarted\n{\n     AddStatus(Self, SP, 10);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 103,
+    "NameContextID": 239,
+    "DescriptionContextID": 240,
+    "Command": "OnStartToEndAction_Self\n{\n     SetStatus(Self, Hatred, 1);\n}\n\nOnDamageTaken_Self\n{\n      AddBuffAmount(Self, 103, -99);\n}",
+    "MaxAmount": 1
+  },
+  {},
+  {
+    "ID": 10001,
+    "NameContextID": 10003,
+    "DescriptionContextID": 10004,
+    "Command": "OnAttackEnded_Self\n{\n   BeginIf(Random(1,100) <= 45);\n     GainBuff(LastAttacked, 5, 1t2);\n   EndIf();\n\n  BeginIf(Random(1, 100) <= 30);\n    GainBuff(Self, 10, 1t1);\n    AddExtraAction(Self, 1);\n  EndIf();\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10002,
+    "NameContextID": 10005,
+    "DescriptionContextID": 10006,
+    "Command": "OnDamageTaken_Self\n{\n  BeginIf(Self.HP <= Self.MaxHP * 0.5);\n     AddStatus(Self, Attack, Self.Attack * 0.3);\n     AddStatus(Self, Speed, Self.Speed * 0.3);\n     AddStatus(Self, Defense, -Self.Defense * 0.3);\n  EndIf();\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10003,
+    "NameContextID": 10031,
+    "DescriptionContextID": 10032,
+    "Command": "OnActived\n{\n     AddStatus(Self, Attack, Self.Attack * 0.7);\n     AddStatus(Self, Defense, -Self.Defense * 0.3);\n     AddStatus(Self, Speed, -Self.Speed * 0.3);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10004,
+    "NameContextID": 10037,
+    "DescriptionContextID": 10038,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.7);\n     AddStatus(Self, Attack, -Self.Attack * 0.3);\n     AddStatus(Self, Speed, -Self.Speed * 0.3);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10005,
+    "NameContextID": 10045,
+    "DescriptionContextID": 10046,
+    "Command": "OnActived\n{\n     AddStatus(Self, Speed, Self.Speed * 0.7);\n     AddStatus(Self, Attack, -Self.Attack * 0.3);\n     AddStatus(Self, Defense, -Self.Defense * 0.3);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10006,
+    "NameContextID": 10054,
+    "DescriptionContextID": 10055,
+    "Command": "OnActived\n{\n    SetForceEndAction();\n}\n\nOnDamageTaken_Self\n{\n    AddBuffTime(Self, 10006, -1);\n}",
+    "MaxAmount": 1
+  },
+  {
+    "ID": 10007,
+    "NameContextID": 10061,
+    "DescriptionContextID": 10062,
+    "Command": "OnStartToTakeDamage_Self\n{\n     AddDamage(-30%);\n}",
+    "MaxAmount": 8
+  },
+  {
+    "ID": 10008,
+    "NameContextID": 10074,
+    "DescriptionContextID": 10075,
+    "MaxAmount": 3
+  },
+  {
+    "ID": 10009,
+    "NameContextID": 10082,
+    "DescriptionContextID": 10083,
+    "Command": "OnActived\n{\n     AddStatus(Self, Defense, Self.Defense * 0.8); \n}",
+    "MaxAmount": 1
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

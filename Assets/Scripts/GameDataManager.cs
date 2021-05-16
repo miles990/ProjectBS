@@ -15,6 +15,8 @@ namespace ProjectBS
 
         private const string DATA_URL = "https://wannasaynone.github.io/ProjectBSGameData/{0}/{1}.txt";
 
+        public static bool useLocalData = false;
+
         public static GameProperties GameProperties { get; private set; }
 
         private class DownloadDataTask : IProcessable
@@ -99,7 +101,14 @@ namespace ProjectBS
         private static IEnumerator IELoadData<T>(string name) where T : IGameData
         {
             UnityEngine.Debug.Log("Start Load Data:" + typeof(T).ToString());
-            string _url = string.Format(DATA_URL, "dev", name);
+
+            string _url;
+
+            if (useLocalData)
+                _url = UnityEngine.Application.streamingAssetsPath + "/" + GameSetting.dataSource + "/" + name + ".txt";
+            else
+                _url = string.Format(DATA_URL, GameSetting.dataSource, name);
+
             UnityWebRequest _request = UnityWebRequest.Get(_url);
             
             yield return _request.SendWebRequest();
@@ -128,7 +137,7 @@ namespace ProjectBS
 
         private static IEnumerator IELoadGameProperties(string name)
         {
-            UnityWebRequest _request = UnityWebRequest.Get(string.Format(DATA_URL, "dev", name));
+            UnityWebRequest _request = UnityWebRequest.Get(string.Format(DATA_URL, GameSetting.dataSource, name));
             yield return _request.SendWebRequest();
             GameProperties = JsonReader.Deserialize<GameProperties>(_request.downloadHandler.text);
         }

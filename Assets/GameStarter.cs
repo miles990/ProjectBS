@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class GameStarter : MonoBehaviour
 {
+    [SerializeField] private bool m_debug_useLocalData;
+
     // Start is called before the first frame update
     private void Start()
     {
+        ProjectBS.GameDataManager.useLocalData = m_debug_useLocalData;
         ProjectBS.GameManager.Instance.StartGame();
     }
 

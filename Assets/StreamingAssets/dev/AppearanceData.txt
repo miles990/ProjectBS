@@ -1,0 +1,73 @@
+[
+  {
+    "ID": 1,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 100001,
+    "DefaultSkillSet": "1;2;0;0",
+    "IsDrop": 1
+  },
+  {
+    "ID": 2,
+    "SpriteAssetPath": "Icon/icon_game_14",
+    "NameContextID": 100002,
+    "DefaultSkillSet": "1;2;0;0",
+    "IsDrop": 1
+  },
+  {
+    "ID": 3,
+    "SpriteAssetPath": "Icon/icon_game_91",
+    "NameContextID": 100003,
+    "DefaultSkillSet": "1;2;0;0",
+    "IsDrop": 1
+  },
+  {
+    "ID": 4,
+    "SpriteAssetPath": "Icon/icon_game_97",
+    "NameContextID": 100004,
+    "DefaultSkillSet": "1;2;0;0",
+    "IsDrop": 1
+  },
+  {},
+  {
+    "ID": 10001,
+    "SpriteAssetPath": "Icon/icon_animal_26",
+    "NameContextID": 10011,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10002,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10012,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10003,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10019,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10004,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10028,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10005,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10051,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10006,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10058,
+    "IsDrop": 0
+  },
+  {
+    "ID": 10007,
+    "SpriteAssetPath": "Icon/icon_game_100",
+    "NameContextID": 10071,
+    "IsDrop": 0
+  }
+]
