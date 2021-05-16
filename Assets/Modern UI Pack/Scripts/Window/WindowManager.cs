@@ -6,6 +6,7 @@ namespace Michsky.UI.ModernUIPack
 {
     public class WindowManager : MonoBehaviour
     {
+        public event System.Action<int> OnWindowStartToChange = null;
         public event System.Action<int> OnWindowChanged = null;
 
         // Content
@@ -140,6 +141,8 @@ namespace Michsky.UI.ModernUIPack
                 }
 
                 catch { }
+
+                OnWindowStartToChange?.Invoke(newWindowIndex);
 
                 currentWindowIndex = newWindowIndex;
                 nextWindow = windows[currentWindowIndex].windowObject;

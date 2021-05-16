@@ -43,8 +43,71 @@ namespace ProjectBS.UI
             }
             m_characterInfoPanel.OnEditEnded += RefreshCharacterPageButtonState;
 
+            m_panelManger.OnWindowStartToChange += OnWindowStartToChange;
             m_panelManger.OnWindowChanged += OnWindowChanged;
             OnWindowChanged(0);
+        }
+
+        private void OnWindowStartToChange(int nextWindowIndex)
+        {
+            switch (m_currentPanelType)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case PanelType.AllCharacter:
+                    {
+                        for (int i = 0; i < m_allClonedCharacterButtons.Count; i++)
+                        {
+                            m_allClonedCharacterButtons[i].gameObject.SetActive(!m_allClonedCharacterButtons[i].IsHide);
+                        }
+                        break;
+                    }
+                case PanelType.Equipment:
+                    {
+                        for (int i = 0; i < m_allClonedEquipmentButtons.Count; i++)
+                        {
+                            m_allClonedEquipmentButtons[i].gameObject.SetActive(!m_allClonedEquipmentButtons[i].IsHide);
+                        }
+                        break;
+                    }
+                case PanelType.Skill:
+                    {
+                        for (int i = 0; i < m_allClonedSkillButtons.Count; i++)
+                        {
+                            m_allClonedSkillButtons[i].gameObject.SetActive(!m_allClonedSkillButtons[i].IsHide);
+                        }
+                        break;
+                    }
+            }
+            switch (nextWindowIndex)
+            {
+                case 1:
+                    {
+                        for(int i = 4; i < m_allClonedCharacterButtons.Count; i++)
+                        {
+                            m_allClonedCharacterButtons[i].gameObject.SetActive(false);
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        for (int i = 4; i < m_allClonedEquipmentButtons.Count; i++)
+                        {
+                            m_allClonedEquipmentButtons[i].gameObject.SetActive(false);
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        for (int i = 4; i < m_allClonedSkillButtons.Count; i++)
+                        {
+                            m_allClonedSkillButtons[i].gameObject.SetActive(false);
+                        }
+                        break;
+                    }
+            }
         }
 
         private void OnWindowChanged(int windowIndex)
@@ -83,14 +146,13 @@ namespace ProjectBS.UI
 
         protected override void OnHidden()
         {
+            OnWindowStartToChange(0);
             m_characterInfoPanel.Hide();
         }
 
         protected override void OnShown()
         {
-            RefreshCharacterPageButtonState();
-            RefreshSkillPageButtonState();
-            RefreshEquipmentPageButtonState();
+            OnWindowChanged(0);
             m_characterInfoPanel.Hide();
         }
 
@@ -145,6 +207,30 @@ namespace ProjectBS.UI
                     m_allClonedEquipmentButtons.Add(_cloneButton);
                 }
             }
+        }
+
+        private int m_targetCharacterIndex;
+        protected override void Update()
+        {
+            if(Input.GetMouseButton(0))
+            {
+                for (int i = 0; i < m_allClonedCharacterButtons.Count; i++)
+                {
+                    if (!m_allClonedCharacterButtons[i].IsHide)
+                    {
+                        m_targetCharacterIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            if(!Input.GetMouseButton(0) && m_targetCharacterIndex < m_allClonedCharacterButtons.Count)
+            {
+                m_characterScrollRect.normalizedPosition = Vector2.Lerp(m_characterScrollRect.normalizedPosition,
+                    new Vector2(m_characterScrollRect.normalizedPosition.x, m_allClonedCharacterButtons[m_targetCharacterIndex].GetStartNormalizeHeight()), 0.35f);
+            }
+
+            base.Update();
         }
 
         private void RefreshCharacterPageButtonState()
