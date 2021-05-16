@@ -11,8 +11,7 @@ namespace ProjectBS.Data
         public int DescriptionContextID { get; private set; }
         public int StoryContextID { get; private set; }
         public string AnimationInfo { get; private set; }
-        public string ReferenceSkillIDs { get; private set; }
-        public string ReferenceBuffIDs { get; private set; }
+        public string References { get; private set; }
         public string Command { get; private set; }
         public int IsDrop { get; private set; }
         public string Tag { get; private set; }
@@ -36,40 +35,48 @@ namespace ProjectBS.Data
 
             _description += ContextConverter.Instance.GetContext(DescriptionContextID);
 
-            if (!string.IsNullOrEmpty(ReferenceSkillIDs))
+            if (!string.IsNullOrEmpty(References))
             {
-                string[] _refSkillIDs = ReferenceSkillIDs.Split(';');
-                for (int i = 0; i < _refSkillIDs.Length; i++)
-                {
-                    SkillData _refSkill = GameDataManager.GetGameData<SkillData>(_refSkillIDs[i].ToInt());
+                string[] _infos = References.Split(';');
 
-                    _description += "\n\n";
-                    _description += ContextConverter.Instance.GetContext(_refSkill.NameContextID);
-                    _description += "\n";
-                    if (!string.IsNullOrEmpty(_refSkill.Tag))
+                for (int i = 0; i < _infos.Length; i++)
+                {
+                    string[] _details = _infos[i].Split(':');
+
+                    switch(_details[0])
                     {
-                        string[] _tags = Tag.Split(';');
-                        for (int _refSkillTagIndex = 0; _refSkillTagIndex < _tags.Length; _refSkillTagIndex++)
-                        {
-                            _description += "[" + ContextConverter.Instance.GetContext(int.Parse(_tags[_refSkillTagIndex])) + "]";
-                        }
+                        case "S":
+                            {
+                                SkillData _refSkill = GameDataManager.GetGameData<SkillData>(_details[1].ToInt());
+
+                                _description += "\n\n";
+                                _description += ContextConverter.Instance.GetContext(_refSkill.NameContextID);
+                                _description += "\n";
+                                if (!string.IsNullOrEmpty(_refSkill.Tag))
+                                {
+                                    string[] _tags = Tag.Split(';');
+                                    for (int _refSkillTagIndex = 0; _refSkillTagIndex < _tags.Length; _refSkillTagIndex++)
+                                    {
+                                        _description += "[" + ContextConverter.Instance.GetContext(int.Parse(_tags[_refSkillTagIndex])) + "]";
+                                    }
+                                }
+                                _description += ContextConverter.Instance.GetContext(_refSkill.DescriptionContextID);
+                                break;
+                            }
+                        case "B":
+                            {
+                                BuffData _refBuff = GameDataManager.GetGameData<BuffData>(_details[1].ToInt());
+
+                                _description += "\n\n";
+                                _description += ContextConverter.Instance.GetContext(_refBuff.NameContextID);
+                                _description += "\n";
+                                _description += _refBuff.Tag == 0 ? "" : "[" + ContextConverter.Instance.GetContext(_refBuff.Tag) + "]\n";
+                                _description += ContextConverter.Instance.GetContext(_refBuff.DescriptionContextID);
+                                break;
+                            }
+                        default:
+                            throw new System.Exception("[SkillData][GetAllDescriptionContext] invaild References keyword:" + _details[0]);
                     }
-                    _description += ContextConverter.Instance.GetContext(_refSkill.DescriptionContextID);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(ReferenceBuffIDs))
-            {
-                string[] _refBuffIDs = ReferenceBuffIDs.Split(';');
-                for (int i = 0; i < _refBuffIDs.Length; i++)
-                {
-                    BuffData _refBuff = GameDataManager.GetGameData<BuffData>(_refBuffIDs[i].ToInt());
-
-                    _description += "\n\n";
-                    _description += ContextConverter.Instance.GetContext(_refBuff.NameContextID);
-                    _description += "\n";
-                    _description += _refBuff.Tag == 0 ? "" : "[" + ContextConverter.Instance.GetContext(_refBuff.Tag) + "]\n";
-                    _description += ContextConverter.Instance.GetContext(_refBuff.DescriptionContextID);
                 }
             }
 
