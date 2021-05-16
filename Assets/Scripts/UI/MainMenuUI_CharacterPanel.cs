@@ -17,6 +17,8 @@ namespace ProjectBS.UI
         }
 
         [SerializeField] private Michsky.UI.ModernUIPack.WindowManager m_panelManger = null;
+        [SerializeField] private ScrollRect m_characterScrollRect = null;
+        [SerializeField] private ScrollRect m_skillScrollRect = null;
         [SerializeField] private RectTransform m_characterButtonContainer = null;
         [SerializeField] private RectTransform m_equipmentButtonContainer = null;
         [SerializeField] private RectTransform m_skillButtonContainer = null;
@@ -175,6 +177,7 @@ namespace ProjectBS.UI
                         MainMenuUI_CharacterButton _cloneButton = Instantiate(m_characterButtonPrefab);
                         _cloneButton.transform.SetParent(m_characterButtonContainer);
                         _cloneButton.transform.localScale = Vector3.one;
+                        _cloneButton.refScrollRect = m_characterScrollRect;
                         _cloneButton.SetUp(_allCharacter[i]);
                         _cloneButton.OnButtonPressed += OnCharacterButtonPressed;
                         _cloneButton.OnEdited += RefreshCharacterPageButtonState;
@@ -206,6 +209,7 @@ namespace ProjectBS.UI
                     _cloneButton.transform.SetParent(m_skillButtonContainer);
                     _cloneButton.transform.localScale = Vector3.one;
                     _cloneButton.OnButtonPressed += OnSkillButtonPressed;
+                    _cloneButton.refScrollRect = m_skillScrollRect;
                     _cloneButton.SetUp(_allSkills[i]);
                     m_allClonedSkillButtons.Add(_cloneButton);
                 }
@@ -218,7 +222,7 @@ namespace ProjectBS.UI
             string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
 
             GameManager.Instance.MessageManager.ShowCommonMessage(
-                "Cost SP:" + _skill.SP + "\n\n" + _skill.GetAllDescriptionContext(),
+                _skill.GetAllDescriptionContext(),
                 _name, null);
         }
     }

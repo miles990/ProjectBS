@@ -49,7 +49,7 @@ namespace ProjectBS.UI
                     string _name = ContextConverter.Instance.GetContext(m_referenceSkill.GetSourceData().NameContextID);
 
                     GameManager.Instance.MessageManager.ShowCommonMessage(
-                        "Cost SP:" + m_referenceSkill.GetSourceData().SP + "\n\n" + m_referenceSkill.GetSourceData().GetAllDescriptionContext(),
+                        m_referenceSkill.GetSourceData().GetAllDescriptionContext(),
                         _name, null);
                 }
             }

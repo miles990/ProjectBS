@@ -13,7 +13,8 @@ namespace ProjectBS.UI
         [Header("Game Win Info")]
         [SerializeField] private TMPro.TextMeshProUGUI m_expText = null;
         [SerializeField] private Transform m_skillInfoObjectRoot = null;
-        [SerializeField] private CombatUI_InfoText m_skillInfoPrefab = null;
+        [SerializeField] private MainMenuUI_SkillButton m_skillInfoPrefab = null;
+        [SerializeField] private GameObject m_noContentInfoObjRoot = null;
 
         private Action onConfirm;
 
@@ -77,17 +78,36 @@ namespace ProjectBS.UI
                 Destroy(t.gameObject);
             }
             yield return new WaitForSeconds(3f);
-            for(int i = 0; i < skills.Count; i++)
+
+            if(skills.Count <= 0)
             {
-                yield return new WaitForSeconds(0.1f);
-                CombatUI_InfoText _cloneText = Instantiate(m_skillInfoPrefab);
-                _cloneText.transform.SetParent(m_skillInfoObjectRoot);
-                _cloneText.transform.localScale = Vector3.one;
-                Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(skills[i]);
-                string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
-                _cloneText.SetText(_name);
+                m_noContentInfoObjRoot.SetActive(true);
+            }
+            else
+            {
+                m_noContentInfoObjRoot.SetActive(false);
+                for (int i = 0; i < skills.Count; i++)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    MainMenuUI_SkillButton _cloneText = Instantiate(m_skillInfoPrefab);
+                    _cloneText.transform.SetParent(m_skillInfoObjectRoot);
+                    _cloneText.transform.localScale = Vector3.one;
+                    Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(skills[i]);
+                    string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
+                    _cloneText.OnButtonPressed += OnSkillButtonPressed;
+                    _cloneText.SetUp(_skill);
+                }
             }
         }
 
+        private void OnSkillButtonPressed(Data.OwningSkillData owningSkillData)
+        {
+            Data.SkillData _skill = GameDataManager.GetGameData<Data.SkillData>(owningSkillData.SkillSourceID);
+            string _name = ContextConverter.Instance.GetContext(_skill.NameContextID);
+
+            GameManager.Instance.MessageManager.ShowCommonMessage(
+                _skill.GetAllDescriptionContext(),
+                _name, null);
+        }
     }
 }

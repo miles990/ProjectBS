@@ -137,7 +137,14 @@ namespace ProjectBS
 
         private static IEnumerator IELoadGameProperties(string name)
         {
-            UnityWebRequest _request = UnityWebRequest.Get(string.Format(DATA_URL, GameSetting.dataSource, name));
+            string _url;
+
+            if (useLocalData)
+                _url = UnityEngine.Application.streamingAssetsPath + "/" + GameSetting.dataSource + "/" + name + ".txt";
+            else
+                _url = string.Format(DATA_URL, GameSetting.dataSource, name);
+
+            UnityWebRequest _request = UnityWebRequest.Get(_url);
             yield return _request.SendWebRequest();
             GameProperties = JsonReader.Deserialize<GameProperties>(_request.downloadHandler.text);
         }

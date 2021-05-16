@@ -50,7 +50,7 @@ namespace ProjectBS.UI
                     string _name = ContextConverter.Instance.GetContext(m_referenceSkill.NameContextID);
 
                     GameManager.Instance.MessageManager.ShowCommonMessage(
-                        "SP: " + m_referenceSkill.SP + "\n\n" + m_referenceSkill.GetAllDescriptionContext(),
+                        m_referenceSkill.GetAllDescriptionContext(),
                         _name, null);
                 }
             }

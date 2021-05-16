@@ -57,6 +57,25 @@ namespace ProjectBS
             return _dropInfo;
         }
 
+        public static Data.SkillData GetRandomSkill()
+        {
+            Data.SkillData[] _allSkill = GameDataManager.GetAllGameData<Data.SkillData>();
+            Data.SkillData _random = _allSkill[Random.Range(0, _allSkill.Length)];
+
+            int _count = 0;
+            while (_random.IsDrop == 0)
+            {
+                _random = _allSkill[Random.Range(0, _allSkill.Length)];
+                _count++;
+                if (_count >= 100)
+                {
+                    return null;
+                }
+            }
+
+            return _random;
+        }
+
         private static Data.OwningEquipmentData RollEquipment(string[] pool)
         {
             int _total = 0;
@@ -98,21 +117,9 @@ namespace ProjectBS
 
         private static int RollSkill()
         {
-            Data.SkillData[] _allSkill = GameDataManager.GetAllGameData<Data.SkillData>();
-            Data.SkillData _random = _allSkill[Random.Range(0, _allSkill.Length)];
+            Data.SkillData _ran = GetRandomSkill();
 
-            int _count = 0;
-            while(_random.IsDrop == 0)
-            {
-                _random = _allSkill[Random.Range(0, _allSkill.Length)];
-                _count++;
-                if(_count >= 100)
-                {
-                    return 1;
-                }
-            }
-
-            return _random.ID;
+            return _ran == null ? -1 : _ran.ID;
         }
     }
 }

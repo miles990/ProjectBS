@@ -18,7 +18,8 @@ namespace ProjectBS.Data
 
         public string GetAllDescriptionContext()
         {
-            string _description = "";
+            string _description = "Cost SP: " + SP + "\n";
+
             if (!string.IsNullOrEmpty(Tag))
             {
                 string[] _tags = Tag.Split(';');
