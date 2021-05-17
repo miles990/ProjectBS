@@ -60,7 +60,7 @@ namespace ProjectBS.UI
                     {
                         for (int i = 0; i < m_allClonedCharacterButtons.Count; i++)
                         {
-                            m_allClonedCharacterButtons[i].gameObject.SetActive(!m_allClonedCharacterButtons[i].IsHide);
+                            m_allClonedCharacterButtons[i].gameObject.SetActive(false);
                         }
                         break;
                     }
@@ -68,7 +68,7 @@ namespace ProjectBS.UI
                     {
                         for (int i = 0; i < m_allClonedEquipmentButtons.Count; i++)
                         {
-                            m_allClonedEquipmentButtons[i].gameObject.SetActive(!m_allClonedEquipmentButtons[i].IsHide);
+                            m_allClonedEquipmentButtons[i].gameObject.SetActive(false);
                         }
                         break;
                     }
@@ -76,7 +76,7 @@ namespace ProjectBS.UI
                     {
                         for (int i = 0; i < m_allClonedSkillButtons.Count; i++)
                         {
-                            m_allClonedSkillButtons[i].gameObject.SetActive(!m_allClonedSkillButtons[i].IsHide);
+                            m_allClonedSkillButtons[i].gameObject.SetActive(false);
                         }
                         break;
                     }
@@ -212,25 +212,34 @@ namespace ProjectBS.UI
         private int m_targetCharacterIndex;
         protected override void Update()
         {
-            if(Input.GetMouseButton(0))
+            if(!Input.GetMouseButton(0))
             {
-                for (int i = 0; i < m_allClonedCharacterButtons.Count; i++)
+                switch(m_currentPanelType)
                 {
-                    if (!m_allClonedCharacterButtons[i].IsHide)
-                    {
-                        m_targetCharacterIndex = i;
-                        break;
-                    }
+                    case PanelType.AllCharacter: { SetButtonScrollRectPostion(m_allClonedCharacterButtons, m_characterScrollRect); break; }
+                    case PanelType.Skill: { SetButtonScrollRectPostion(m_allClonedSkillButtons, m_skillScrollRect); break; }
                 }
             }
 
-            if(!Input.GetMouseButton(0) && m_targetCharacterIndex < m_allClonedCharacterButtons.Count)
+            base.Update();
+        }
+
+        private void SetButtonScrollRectPostion<T>(List<T> list, ScrollRect scrollRect) where T : MainMenuUI_CustomButtonBase
+        {
+            for (int i = 0; i < list.Count; i++)
             {
-                m_characterScrollRect.normalizedPosition = Vector2.Lerp(m_characterScrollRect.normalizedPosition,
-                    new Vector2(m_characterScrollRect.normalizedPosition.x, m_allClonedCharacterButtons[m_targetCharacterIndex].GetStartNormalizeHeight()), 0.35f);
+                if (!list[i].IsOverMiddle)
+                {
+                    m_targetCharacterIndex = i;
+                    break;
+                }
             }
 
-            base.Update();
+            if(Mathf.Abs(scrollRect.velocity.y) <= 100f && m_targetCharacterIndex < list.Count)
+            {
+                scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition,
+                    new Vector2(scrollRect.normalizedPosition.x, list[m_targetCharacterIndex].GetStartNormalizeHeight()), 0.35f);
+            }
         }
 
         private void RefreshCharacterPageButtonState()
