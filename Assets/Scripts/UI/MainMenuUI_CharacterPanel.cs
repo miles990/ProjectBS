@@ -146,13 +146,24 @@ namespace ProjectBS.UI
 
         protected override void OnHidden()
         {
-            OnWindowStartToChange(0);
+            for (int i = 0; i < m_allClonedSkillButtons.Count; i++)
+            {
+                m_allClonedSkillButtons[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < m_allClonedEquipmentButtons.Count; i++)
+            {
+                m_allClonedEquipmentButtons[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < m_allClonedCharacterButtons.Count; i++)
+            {
+                m_allClonedCharacterButtons[i].gameObject.SetActive(false);
+            }
             m_characterInfoPanel.Hide();
         }
 
         protected override void OnShown()
         {
-            OnWindowChanged(0);
+            RefreshButtonState();
             m_characterInfoPanel.Hide();
         }
 
