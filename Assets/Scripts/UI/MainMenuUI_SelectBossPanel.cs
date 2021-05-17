@@ -8,6 +8,7 @@ namespace ProjectBS.UI
     public class MainMenuUI_SelectBossPanel : MainMenuUI_PanelBase
     {
         [SerializeField] private MainMenuUI_BossButton m_bossButtonPrefab = null;
+        [SerializeField] private ScrollRect m_bossButtonScrollRect = null;
         [SerializeField] private RectTransform m_buttonContainer = null;
 
         private List<MainMenuUI_BossButton> m_clonedButtons = new List<MainMenuUI_BossButton>();
@@ -76,6 +77,7 @@ namespace ProjectBS.UI
                     _cloneButton.transform.SetParent(m_buttonContainer);
                     _cloneButton.transform.localScale = Vector3.one;
                     _cloneButton.SetUp(_allStage[i]);
+                    _cloneButton.refScrollRect = m_bossButtonScrollRect;
                     m_clonedButtons.Add(_cloneButton);
                 }
             }

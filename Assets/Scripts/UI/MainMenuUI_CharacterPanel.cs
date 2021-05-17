@@ -163,7 +163,7 @@ namespace ProjectBS.UI
 
         protected override void OnShown()
         {
-            RefreshButtonState();
+            KahaGameCore.Static.TimerManager.Schedule(0.3f, RefreshButtonState);
             m_characterInfoPanel.Hide();
         }
 

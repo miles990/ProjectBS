@@ -4713,7 +4713,7 @@ MonoBehaviour:
   m_Inertia: 1
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
+  m_Viewport: {fileID: 152110529}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 853287235}
   m_HorizontalScrollbarVisibility: 0
@@ -7191,11 +7191,6 @@ MonoBehaviour:
   refScrollRect: {fileID: 0}
   m_hidePartRoot: {fileID: 0}
   m_rectTransform: {fileID: 0}
-  see__topPos: 0
-  see__downPos: 0
-  see_refScrollRectnormalizedPositiony: 0
-  see_GetStartNormalizeHeight: 0
-  see_GetEndNormalizeHeight: 0
   m_levelText: {fileID: 1380213881}
   m_nameText: {fileID: 860000147}
   m_hpText: {fileID: 1432857686}
@@ -7654,8 +7649,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 413, y: 0}
+  m_SizeDelta: {x: 786, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &294253808
 MonoBehaviour:
@@ -18223,11 +18218,6 @@ MonoBehaviour:
   refScrollRect: {fileID: 0}
   m_hidePartRoot: {fileID: 0}
   m_rectTransform: {fileID: 0}
-  see__topPos: 0
-  see__downPos: 0
-  see_refScrollRectnormalizedPositiony: 0
-  see_GetStartNormalizeHeight: 0
-  see_GetEndNormalizeHeight: 0
   m_levelText: {fileID: 717131565}
   m_nameText: {fileID: 925774536}
   m_hpText: {fileID: 2010547131}
@@ -18535,7 +18525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 450, y: 0}
   m_SizeDelta: {x: 826, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603501071
@@ -31037,11 +31027,6 @@ MonoBehaviour:
   refScrollRect: {fileID: 0}
   m_hidePartRoot: {fileID: 0}
   m_rectTransform: {fileID: 0}
-  see__topPos: 0
-  see__downPos: 0
-  see_refScrollRectnormalizedPositiony: 0
-  see_GetStartNormalizeHeight: 0
-  see_GetEndNormalizeHeight: 0
   m_partyHintRoot: {fileID: 473043412}
   m_iconImage: {fileID: 1112055511}
   m_nameText: {fileID: 1552005902}
@@ -32657,11 +32642,6 @@ MonoBehaviour:
   refScrollRect: {fileID: 0}
   m_hidePartRoot: {fileID: 0}
   m_rectTransform: {fileID: 0}
-  see__topPos: 0
-  see__downPos: 0
-  see_refScrollRectnormalizedPositiony: 0
-  see_GetStartNormalizeHeight: 0
-  see_GetEndNormalizeHeight: 0
   m_partyHintRoot: {fileID: 97556324}
   m_iconImage: {fileID: 1854942048}
   m_nameText: {fileID: 508321032}
@@ -48304,6 +48284,7 @@ MonoBehaviour:
   m_root: {fileID: 1823929756}
   m_bossButtonPrefab: {fileID: 3251637922005875495, guid: 46d09792e94daf94d89add7edb762cf2,
     type: 3}
+  m_bossButtonScrollRect: {fileID: 152110531}
   m_buttonContainer: {fileID: 927714919}
 --- !u!1 &1541019538
 GameObject:
