@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using KahaGameCore.Static;
 
 using Random = UnityEngine.Random;
+// using UnityEngine;
 
 namespace ProjectBS
 {
@@ -221,17 +222,34 @@ namespace ProjectBS
         {
             InitAbilityData();
 
-            character.Level++;
+            character.Level++;            
 
             AbilityData _hp = m_hpAbiPool.Find(x => x.ID == character.HPAbilityID);
             AbilityData _attack = m_attackAbiPool.Find(x => x.ID == character.AttackAbilityID);
             AbilityData _defense = m_defenseAbiPool.Find(x => x.ID == character.DefenseAbilityID);
             AbilityData _speed = m_speedAbiPool.Find(x => x.ID == character.SpeedAbilityID);
 
-            character.HP += Random.Range(_hp.MinValue, _hp.MaxValue);
-            character.Attack += Random.Range(_attack.MinValue, _attack.MaxValue);
-            character.Defense += Random.Range(_defense.MinValue, _defense.MaxValue);
-            character.Speed += Random.Range(_speed.MinValue, _speed.MaxValue);
+            // int _maxHPValue = GameDataManager.GetGameData<Data.AbilityData>(character.HPAbilityID).MaxValue * 100;
+            // int _maxAttackValue = GameDataManager.GetGameData<Data.AbilityData>(character.AttackAbilityID).MaxValue * 100;
+            // int _maxDefenseValue = GameDataManager.GetGameData<Data.AbilityData>(character.DefenseAbilityID).MaxValue * 100;
+            // int _maxSpeedValue = GameDataManager.GetGameData<Data.AbilityData>(character.SpeedAbilityID).MaxValue * 100;
+
+            // Debug.Log("lv:"+character.Level);
+            // Debug.Log("id:"+character.HPAbilityID+" _hp:"+_hp.MinValue+" - "+_hp.MaxValue+" max:"+_maxHPValue);
+            // Debug.Log("id:"+character.AttackAbilityID+" _attack:"+_attack.MinValue+" - "+_attack.MaxValue+" max:"+_maxAttackValue);
+            // Debug.Log("id:"+character.DefenseAbilityID+" _defense:"+_defense.MinValue+" - "+_defense.MaxValue+" max:"+_maxDefenseValue);
+            // Debug.Log("id:"+character.SpeedAbilityID+" _speed:"+_speed.MinValue+" - "+_speed.MaxValue+" max:"+_maxSpeedValue);
+
+            if (character.Level == 1) {                
+                character.LevelUpValueHP = Random.Range(_hp.MinValue, _hp.MaxValue);
+                character.LevelUpValueAttack = Random.Range(_attack.MinValue, _attack.MaxValue);
+                character.LevelUpValueDefense = Random.Range(_defense.MinValue, _defense.MaxValue);
+                character.LevelUpValueSpeed = Random.Range(_speed.MinValue, _speed.MaxValue);                
+            }
+            character.HP += character.LevelUpValueHP;
+            character.Attack += character.LevelUpValueAttack;
+            character.Defense += character.LevelUpValueDefense;
+            character.Speed += character.LevelUpValueSpeed;            
         }
     }
 }

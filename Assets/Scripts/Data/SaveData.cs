@@ -46,6 +46,11 @@ namespace ProjectBS.Data
         public string Equipment_UDID_Foot = "";
         public int[] Skills = new int[8];
 
+        public int LevelUpValueHP = 0;
+        public int LevelUpValueAttack = 0;
+        public int LevelUpValueDefense = 0;
+        public int LevelUpValueSpeed = 0;
+
         public string GetOriginName()
         {
             return ContextConverter.Instance.GetContext(GameDataManager.GetGameData<AppearanceData>(AppearanceDataID).NameContextID);
